@@ -28,6 +28,31 @@
   color: #61dafb;
 }
 
+.menu {
+  text-align: center;
+  font-size: 4vmin;
+}
+
+#menuButtonStart {
+  height: 10vmin;
+  width: 30vmin;
+  background-color: rgb(30, 235, 3);
+  border: none;
+  position: relative;
+  bottom: -45vh;
+  font-size: 6vmin;
+}
+
+#menuButtonQuit {
+  height: 10vmin;
+  width: 30vmin;
+  background-color: rgb(235, 3, 3);
+  bottom: -50vh;
+  position: relative;
+  border: none;
+  font-size: 6vmin;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
