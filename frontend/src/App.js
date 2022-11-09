@@ -1,41 +1,37 @@
 import logo from './logo.svg';
 import './App.css';
 
-
-const Intro = (props) => {
-  return (
-    <>
-    <h1>Intro: {props.text}</h1>
-    </>
-  )
-}
-const StartButton = () => {
-  return (
-    <div>
-      <button id="menuButtonStart">Start</button>
-    </div>
-  )
-}
-
-const MenuButtonQuit = () => {
-  return (
-    <button id="menuButtonQuit">Quit</button>
-  )
-}
-
 function App() {
   return (
     <div>
       <header class="menu">
-        <Intro text={"testing"} />
+        <h1>A-Life Challenge</h1>
       </header>
       <div class="menu">
-      <div id="testAnimation"></div> 
-      <StartButton />
-      <MenuButtonQuit />
-    </div>
+
+        <div>
+          <button id="menuButtonStart">Start</button>
+        </div>
+
+        <div>
+          <button id="menuButtonQuit">Quit</button>
+        </div>
+
+      </div>
     </div>
   )
 }
+
+
+//const menuButtonStart = document.getElementById("menuButtonStart")
+//const menuButtonQuit = document.getElementById("menuButtonQuit")
+
+//menuButtonStart.addEventListener("click", function () {
+//  menuButtonStart.style.backgroundColor = "purple"
+//})
+
+//menuButtonQuit.addEventListener("click", function () {
+//  menuButtonQuit.style.backgroundColor = "blue"
+//})
 
 export default App;
