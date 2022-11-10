@@ -1,0 +1,11 @@
+name: Autoformat
+
+on: push
+jobs:
+  auto_format:
+    name: Prettier and Autopep8 autoformatting
+    steps:
+      - name: prettier formatting
+        run: npx prettier --write ./
+      - name: autopep8 formatting
+        run: autopep8 --in-place --recursive  --aggressive --aggressive ./
