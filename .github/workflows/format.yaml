@@ -4,8 +4,15 @@ on: push
 jobs:
   auto_format:
     name: Prettier and Autopep8 autoformatting
+    runs-on: ubuntu-22.04
     steps:
       - name: prettier formatting
         run: npx prettier --write ./
       - name: autopep8 formatting
         run: autopep8 --in-place --recursive  --aggressive --aggressive ./
+      - name: Add formatted changes
+        run: git add -u
+      - name: Commit formatted changes
+        run: git commit -m "Autoformatter changes"
+      - name: push changes
+        run: git push
