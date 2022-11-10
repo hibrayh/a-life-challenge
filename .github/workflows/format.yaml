@@ -5,6 +5,7 @@ jobs:
   auto_format:
     name: Prettier and Autopep8 autoformatting
     runs-on: ubuntu-22.04
+    shell: bash
     steps:
       - name: prettier formatting
         run: npx prettier --write ./
@@ -15,4 +16,4 @@ jobs:
       - name: Commit formatted changes
         run: git commit -m "Autoformatter changes"
       - name: push changes
-        run: git push
+        run: git push origin ${GITHUB_REF##*/}
