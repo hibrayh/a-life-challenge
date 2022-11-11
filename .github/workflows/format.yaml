@@ -7,7 +7,7 @@ jobs:
         runs-on: self-hosted
         steps:
             - name: Clone repo (if-needed)
-              run: [ -d a-life-challenge ] || git clone git@github.com:hibrayh/a-life-challenge.git && cd a-life-challenge
+              run: test -d a-life-challenge || git clone git@github.com:hibrayh/a-life-challenge.git
               shell: bash
             - name: Pull fresh copy of repo
               run: cd a-life-challenge && git pull
