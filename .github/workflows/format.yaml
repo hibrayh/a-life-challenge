@@ -31,9 +31,9 @@ jobs:
               shell: bash
             - name: Commit formatted changes
               working-directory: ./a-life-challenge
-              run: git commit -m "Autoformatter changes"
+              run: git commit -m "Autoformatter changes" || echo
               shell: bash
             - name: push changes
               working-directory: ./a-life-challenge
-              run: git push origin ${GITHUB_REF##*/}
+              run: git push origin ${GITHUB_REF##*/} || echo
               shell: bash
