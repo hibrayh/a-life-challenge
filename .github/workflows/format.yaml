@@ -6,8 +6,9 @@ jobs:
         name: Prettier and Autopep8 autoformatting
         runs-on: self-hosted
         steps:
+            - run: ls -a
             - name: prettier formatting
-              run: npx prettier -w "./"
+              run: npx prettier -w ./
               shell: bash
             - name: autopep8 formatting
               run: autopep8 --in-place --recursive  --aggressive --aggressive ./
