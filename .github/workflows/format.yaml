@@ -12,6 +12,8 @@ jobs:
             - name: Pull fresh copy of repo
               run: cd a-life-challenge && git pull
               shell: bash
+            - run: echo ${GITHUB_REF##*/}
+            - run: echo "${GITHUB_REF##*/}"
             - name: Switch to correct branch
               run: git checkout "${GITHUB_REF##*/}"
               shell: bash
