@@ -13,7 +13,7 @@ jobs:
               run: cd a-life-challenge && git pull
               shell: bash
             - name: Switch to correct branch
-              run: git checkout ${GITHUB_REF##*/}
+              run: git checkout "${GITHUB_REF##*/}"
               shell: bash
             - name: prettier formatting
               run: npx prettier -w ./
@@ -28,5 +28,5 @@ jobs:
               run: git commit -m "Autoformatter changes"
               shell: bash
             - name: push changes
-              run: git push origin ${GITHUB_REF##*/}
+              run: git push origin "${GITHUB_REF##*/}"
               shell: bash
