@@ -4,6 +4,8 @@ import signal
 import time
 
 # Routine to run the application
+
+
 def runApp():
     # Change working directory
     os.chdir("frontend/")
@@ -20,10 +22,11 @@ def runApp():
     # Start Electron
     electron_app = 0
     if os.name == 'nt':
-        electron_app = subprocess.Popen(["npm", "run", "electron-dev"], shell=True)
+        electron_app = subprocess.Popen(
+            ["npm", "run", "electron-dev"], shell=True)
     else:
         electron_app = subprocess.Popen(["npm", "run", "electron-dev"])
-    
+
     electron_app.wait()
 
     # Kill the React app
@@ -32,5 +35,6 @@ def runApp():
         os.kill(react_app.pid, signal.CTRL_C_EVENT)
     else:
         os.killpg(os.getpgid(react_app.pid), signal.SIGTERM)
+
 
 runApp()

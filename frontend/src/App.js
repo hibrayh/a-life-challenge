@@ -1,27 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.svg'
+import './App.css'
 
 function App() {
-  return (
-    <div>
-      <header class="menu">
-        <h1>A-Life Challenge</h1>
-      </header>
-      <div class="menu">
-
+    return (
         <div>
-          <button id="menuButtonStart">Start</button>
-        </div>
+            <header class="menu">
+                <h1>A-Life Challenge</h1>
+            </header>
+            <div class="menu">
+                <div>
+                    <button id="menuButtonStart">Start</button>
+                </div>
 
-        <div>
-          <button id="menuButtonQuit">Quit</button>
+                <div>
+                    <button id="menuButtonQuit">Quit</button>
+                </div>
+            </div>
         </div>
-
-      </div>
-    </div>
-  )
+    )
 }
-
 
 //const menuButtonStart = document.getElementById("menuButtonStart")
 //const menuButtonQuit = document.getElementById("menuButtonQuit")
@@ -34,4 +31,4 @@ function App() {
 //  menuButtonQuit.style.backgroundColor = "blue"
 //})
 
-export default App;
+export default App
