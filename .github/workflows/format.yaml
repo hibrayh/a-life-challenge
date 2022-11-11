@@ -10,29 +10,30 @@ jobs:
               run: test -d a-life-challenge || git clone git@github.com:hibrayh/a-life-challenge.git
               shell: bash
             - name: Pull fresh copy of repo
-              run: cd a-life-challenge && git pull
-              shell: bash
-            - run: echo ${GITHUB_REF##*/}
-              shell: bash
-            - run: echo "${GITHUB_REF##*/}"
-              shell: bash
-            - run: ls
+              working-directory: ./a-life-challenge
+              run: git pull
               shell: bash
             - name: Switch to correct branch
+              working-directory: ./a-life-challenge
               run: git checkout ${GITHUB_REF##*/}
               shell: bash
             - name: prettier formatting
+              working-directory: ./a-life-challenge
               run: npx prettier -w ./
               shell: bash
             - name: autopep8 formatting
+              working-directory: ./a-life-challenge
               run: autopep8 --in-place --recursive  --aggressive --aggressive ./
               shell: bash
             - name: Add formatted changes
+              working-directory: ./a-life-challenge
               run: git add -u
               shell: bash
             - name: Commit formatted changes
+              working-directory: ./a-life-challenge
               run: git commit -m "Autoformatter changes"
               shell: bash
             - name: push changes
+              working-directory: ./a-life-challenge
               run: git push origin ${GITHUB_REF##*/}
               shell: bash
