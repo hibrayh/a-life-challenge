@@ -6,7 +6,15 @@ jobs:
         name: Prettier and Autopep8 autoformatting
         runs-on: self-hosted
         steps:
-            - run: ls -a
+            - name: Clone repo (if-needed)
+              run: [ -d a-life-challenge ] || git clone git@github.com:hibrayh/a-life-challenge.git && cd a-life-challenge
+              shell: bash
+            - name: Pull fresh copy of repo
+              run: cd a-life-challenge && git pull
+              shell: bash
+            - name: Switch to correct branch
+              run: git checkout ${GITHUB_REF##*/}
+              shell: bash
             - name: prettier formatting
               run: npx prettier -w ./
               shell: bash
