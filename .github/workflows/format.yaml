@@ -2,22 +2,22 @@ name: Autoformat
 
 on: push
 jobs:
-  auto_format:
-    name: Prettier and Autopep8 autoformatting
-    runs-on: ubuntu-22.04
-    steps:
-      - name: prettier formatting
-        run: npx prettier --write ./
-        shell: bash
-      - name: autopep8 formatting
-        run: autopep8 --in-place --recursive  --aggressive --aggressive ./
-        shell: bash
-      - name: Add formatted changes
-        run: git add -u
-        shell: bash
-      - name: Commit formatted changes
-        run: git commit -m "Autoformatter changes"
-        shell: bash
-      - name: push changes
-        run: git push origin ${GITHUB_REF##*/}
-        shell: bash
+    auto_format:
+        name: Prettier and Autopep8 autoformatting
+        runs-on: self-hosted
+        steps:
+            - name: prettier formatting
+              run: npx prettier -c ./
+              shell: bash
+            - name: autopep8 formatting
+              run: autopep8 --in-place --recursive  --aggressive --aggressive ./
+              shell: bash
+            - name: Add formatted changes
+              run: git add -u
+              shell: bash
+            - name: Commit formatted changes
+              run: git commit -m "Autoformatter changes"
+              shell: bash
+            - name: push changes
+              run: git push origin ${GITHUB_REF##*/}
+              shell: bash
