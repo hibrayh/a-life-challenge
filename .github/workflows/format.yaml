@@ -7,7 +7,7 @@ jobs:
         runs-on: self-hosted
         steps:
             - name: prettier formatting
-              run: npx prettier -c .
+              run: npx prettier -w "./"
               shell: bash
             - name: autopep8 formatting
               run: autopep8 --in-place --recursive  --aggressive --aggressive ./
