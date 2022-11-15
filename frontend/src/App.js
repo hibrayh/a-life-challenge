@@ -1,34 +1,59 @@
-import logo from './logo.svg'
+import { useState } from 'react'
 import './App.css'
 
 function App() {
-    return (
-        <div>
-            <header class="menu">
-                <h1>A-Life Challenge</h1>
-            </header>
-            <div class="menu">
-                <div>
-                    <button id="menuButtonStart">Start</button>
-                </div>
+    const [showMenu, setShowMenu] = useState(true)
+    const [showSimulation, setShowSimulation] = useState(false)
 
-                <div>
-                    <button id="menuButtonQuit">Quit</button>
+    const Menu = () => {
+        return (
+            <>
+                <header className="menu">
+                    <h1>A-Life Challenge</h1>
+                </header>
+                <div class="menu">
+                    <div>
+                        <button
+                            id="menuButtonStart"
+                            onClick={() => {
+                                setShowMenu(false)
+                                setShowSimulation(true)
+                            }}>
+                            Start
+                        </button>
+                    </div>
+
+                    <div>
+                        <button id="menuButtonQuit">Quit</button>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </>
+        )
+    }
+
+    // "Page" that will show the simulation
+    const Simulation = () => {
+        return (
+            <>
+                <header className="menu">
+                    <h1>New page</h1>
+                </header>
+            </>
+        )
+    }
+
+    return (
+        <>
+            {
+                //Apparently this is how you comment in react, need to have the {}
+                /* This is a multi-line comment, also needs the {} 
+        if showMenu = true, display the menu. If showSimulation = true, show the simulation.
+        */
+            }
+            {showMenu ? <Menu /> : null}
+            {showSimulation ? <Simulation /> : null}
+        </>
     )
 }
-
-//const menuButtonStart = document.getElementById("menuButtonStart")
-//const menuButtonQuit = document.getElementById("menuButtonQuit")
-
-//menuButtonStart.addEventListener("click", function () {
-//  menuButtonStart.style.backgroundColor = "purple"
-//})
-
-//menuButtonQuit.addEventListener("click", function () {
-//  menuButtonQuit.style.backgroundColor = "blue"
-//})
 
 export default App
