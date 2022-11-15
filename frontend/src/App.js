@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import DummyConnection from './DummyConnection'
 
 function App() {
     const [showMenu, setShowMenu] = useState(true)
