@@ -1,5 +1,6 @@
 import logo from './logo.svg'
 import './App.css'
+import DummyConnection from './DummyConnection'
 
 function App() {
     return (
@@ -8,6 +9,9 @@ function App() {
                 <h1>A-Life Challenge</h1>
             </header>
             <div class="menu">
+                <div>
+                    <DummyConnection />
+                </div>
                 <div>
                     <button id="menuButtonStart">Start</button>
                 </div>

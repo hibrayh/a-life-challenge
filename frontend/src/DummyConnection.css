@@ -1,0 +1,8 @@
+.getButton {
+    margin: auto;
+    background-color: rgb(30, 235, 3);
+    border: none;
+    position: relative;
+    bottom: 0vh;
+    font-size: 5vmin;
+}
