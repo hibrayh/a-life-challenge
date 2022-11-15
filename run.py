@@ -12,10 +12,12 @@ def runApp():
     backend = 0
     if os.name == 'nt':
         os.chdir("venv/Scripts/")
-        backend = subprocess.Popen(["flask.exe", "--app", "../../main", "run", "--host=0.0.0.0"], shell=True)
+        backend = subprocess.Popen(
+            ["flask.exe", "--app", "../../main", "run", "--host=0.0.0.0"], shell=True)
         os.chdir("../../")
     else:
-        backend = subprocess.Popen([virtual_env, "--app", "main", "run", "--host=0.0.0.0"])
+        backend = subprocess.Popen(
+            [virtual_env, "--app", "main", "run", "--host=0.0.0.0"])
 
     # Start frontend
     print("Starting React")

@@ -5,6 +5,7 @@ api = Flask(__name__)
 cors = CORS(api)
 api.config["CORS_HEADERS"] = "Content-Type"
 
+
 @api.route('/get-info')
 @cross_origin()
 def return_dummy_info():
