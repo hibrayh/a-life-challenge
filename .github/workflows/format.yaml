@@ -37,3 +37,6 @@ jobs:
               working-directory: ./a-life-challenge
               run: git push origin ${GITHUB_REF##*/} || echo
               shell: bash
+            - name: clean up working directory
+              run: rm -f -r a-life-challenge
+              shell: bash
