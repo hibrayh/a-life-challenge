@@ -4,24 +4,47 @@ import signal
 import time
 
 
+def installDependencies():
+    # Install React dependencies
+    print("Installing React dependencies")
+    os.chdir("frontend/")
+    reactDepProcess = 0
+    if os.name == 'nt':
+        reactDepProcess = subprocess.Popen(["npm", "install"], shell=True)
+    else:
+        reactDepProcess = subprocess.Popen(["npm", "install"])
+    
+    # Initialize Virtual Environment to run backend
+    os.chdir("../")
+    vmInitProcess = 0
+    if os.name == 'nt':
+        vmInitProcess = subprocess.Popen(["python3", "init-vm.py"], shell=True)
+    else:
+        vmInitProcess = subprocess.Popen(["python3", "init-vm.py"])
+    
+    reactDepProcess.wait()
+    vmInitProcess.wait()
+
+
+
 def runApp():
+    installDependencies()
     # Start the backend
     print("Starting Flask")
     os.chdir("backend/")
-    virtual_env = "venv/bin/flask"
     backend = 0
     if os.name == 'nt':
         os.chdir("venv/Scripts/")
         backend = subprocess.Popen(
             ["flask.exe", "--app", "../../main", "run", "--host=0.0.0.0"], shell=True)
-        os.chdir("../../")
     else:
+        os.chdir("venv/bin/")
         backend = subprocess.Popen(
-            [virtual_env, "--app", "main", "run", "--host=0.0.0.0"])
+            ["flask", "--app", "../../main", "run", "--host=0.0.0.0"])
 
     # Start frontend
     print("Starting React")
-    os.chdir("../frontend/")
+    os.chdir("../../../frontend/")
     react_app = 0
     if os.name == 'nt':
         react_app = subprocess.Popen(["npm", "start"], shell=True)
