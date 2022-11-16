@@ -13,7 +13,7 @@ def installDependencies():
         reactDepProcess = subprocess.Popen(["npm", "install"], shell=True)
     else:
         reactDepProcess = subprocess.Popen(["npm", "install"])
-        
+
     os.chdir("../")
 
 
