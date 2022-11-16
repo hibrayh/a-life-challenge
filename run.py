@@ -11,7 +11,9 @@ def runApp():
     virtual_env = "venv/bin/flask"
     backend = 0
     if os.name == 'nt':
-        backend = subprocess.Popen([virtual_env, "--app", "main", "run", "--host=0.0.0.0"], shell=True)
+        os.chdir("venv/Scripts/")
+        backend = subprocess.Popen(["flask.exe", "--app", "../../main", "run", "--host=0.0.0.0"], shell=True)
+        os.chdir("../../")
     else:
         backend = subprocess.Popen([virtual_env, "--app", "main", "run", "--host=0.0.0.0"])
 
