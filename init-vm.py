@@ -23,15 +23,16 @@ def initVM():
         os.chdir("venv/Scripts/")
         flaskProcess = subprocess.Popen(
             ["pip.exe", "install", "Flask"], shell=True)
+        flaskProcess.wait()
         flaskCorProcess = subprocess.Popen(
             ["pip.exe", "install", "flask-cors"], shell=True)
+        flaskCorProcess.wait()
     else:
         os.chdir("venv/bin/")
         flaskProcess = subprocess.Popen(["./pip", "install", "Flask"])
+        flaskProcess.wait()
         flaskCorProcess = subprocess.Popen(["./pip", "install", "flask-cors"])
-
-    flaskProcess.wait()
-    flaskCorProcess.wait()
+        flaskCorProcess.wait()
 
     print("Completed installation")
 
