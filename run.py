@@ -13,17 +13,8 @@ def installDependencies():
         reactDepProcess = subprocess.Popen(["npm", "install"], shell=True)
     else:
         reactDepProcess = subprocess.Popen(["npm", "install"])
-
-    # Initialize Virtual Environment to run backend
+        
     os.chdir("../")
-    vmInitProcess = 0
-    if os.name == 'nt':
-        vmInitProcess = subprocess.Popen(["python3", "init-vm.py"], shell=True)
-    else:
-        vmInitProcess = subprocess.Popen(["python3", "init-vm.py"])
-
-    reactDepProcess.wait()
-    vmInitProcess.wait()
 
 
 def runApp():
