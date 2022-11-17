@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import DummyConnection from './DummyConnection'
+import Animation from './Animation'
 
 function App() {
     const [showMenu, setShowMenu] = useState(true)
@@ -18,6 +19,7 @@ function App() {
                     <DummyConnection />
                 </div>
                 */}
+                <Animation />
                 <div class="menu">
                     <div>
                         <button

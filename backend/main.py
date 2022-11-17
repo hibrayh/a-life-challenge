@@ -12,7 +12,8 @@ def return_dummy_info():
     response_body = {
         "creatureId": "0A34D2",
         "species": "Shlorpians",
-        "location": "(x, y)",
+        "locationX": "x",
+        "locationY": "y",
         "shape": "square",
         "color": "blue",
     }
