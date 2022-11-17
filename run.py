@@ -30,7 +30,7 @@ def runApp():
     else:
         os.chdir("venv/bin/")
         backend = subprocess.Popen(
-            ["flask", "--app", "../../main", "run", "--host=0.0.0.0"])
+            ["./flask", "--app", "../../main", "run", "--host=0.0.0.0"])
 
     # Start frontend
     print("Starting React")
