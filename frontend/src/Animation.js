@@ -2,10 +2,10 @@ import './DummyConnection.css'
 import React from 'react'
 import axios from 'axios'
 import ReactAnime from 'react-animejs'
-const {Anime} = ReactAnime
+const { Anime } = ReactAnime
 
 //const used to define the creature element size
-const grown = "25px";
+const grown = '25px'
 
 // Dummy backend connection component. For reference purposes
 class Animation extends React.Component {
@@ -27,45 +27,52 @@ class Animation extends React.Component {
         this.getCreatureInfo = this.getCreatureInfo.bind(this)
     }
 
-    AnimateBirth(creatureId, locationX, locationY, color, shape){
+    AnimateBirth(creatureId, locationX, locationY, color, shape) {
         // Takes the creature ID, their location x and y, color, and shape, to create an element with specific animation
-        let roundness = "0%";
-        if(shape === "circle"){
-            roundness = "50%"
+        let roundness = '0%'
+        if (shape === 'circle') {
+            roundness = '50%'
         }
-        return(
+        return (
             <>
-                <div id={creatureId} style={{ position: "absolute", left: `${locationX}px`, top: `${locationY}px`, background: color, borderRadius: roundness, height: grown, width: grown }}/>
+                <div
+                    id={creatureId}
+                    style={{
+                        position: 'absolute',
+                        left: `${locationX}px`,
+                        top: `${locationY}px`,
+                        background: color,
+                        borderRadius: roundness,
+                        height: grown,
+                        width: grown,
+                    }}
+                />
                 <Anime
                     initial={[
                         {
-                        targets: '#'+creatureId,
-                        scale: [0, 1],
-                        rotate: 180,
-                        easing: "linear"
-                        }
-                    ]}
-                    >
-                </Anime>
+                            targets: '#' + creatureId,
+                            scale: [0, 1],
+                            rotate: 180,
+                            easing: 'linear',
+                        },
+                    ]}></Anime>
             </>
         )
     }
 
-    AnimateMovement(creatureId, locationX, locationY){
+    AnimateMovement(creatureId, locationX, locationY) {
         // Takes the creature ID and moves to to the specified X and Y location
-        return(
+        return (
             <>
-            <Anime
-                initial={[
-                    {
-                    targets: '#'+creatureId,
-                    left: `${locationX}px`,
-                    top: `${locationY}px`,
-                    easing: "linear",
-                    }
-                ]}
-                >
-            </Anime>
+                <Anime
+                    initial={[
+                        {
+                            targets: '#' + creatureId,
+                            left: `${locationX}px`,
+                            top: `${locationY}px`,
+                            easing: 'linear',
+                        },
+                    ]}></Anime>
             </>
         )
     }
@@ -92,7 +99,6 @@ class Animation extends React.Component {
     }
 
     render() {
-    
         if (this.state.creatureId === '') {
             return (
                 <button className="getButton" onClick={this.getCreatureInfo}>
@@ -104,15 +110,18 @@ class Animation extends React.Component {
             return (
                 <>
                     <div>
-                        {this.AnimateBirth(this.state.creatureId, this.state.locationX, this.state.locationY, this.state.color, this.state.shape)}
+                        {this.AnimateBirth(
+                            this.state.creatureId,
+                            this.state.locationX,
+                            this.state.locationY,
+                            this.state.color,
+                            this.state.shape
+                        )}
                     </div>
-                    
                 </>
             )
         }
-        
     }
-    
 }
 
 export default Animation
