@@ -4,7 +4,8 @@ import axios from 'axios'
 import ReactAnime from 'react-animejs'
 const {Anime} = ReactAnime
 
-const grown = 25;
+//const used to define the creature element size
+const grown = "25px";
 
 // Dummy backend connection component. For reference purposes
 class Animation extends React.Component {
@@ -21,29 +22,50 @@ class Animation extends React.Component {
             shape: '',
             color: '',
         }
-        this.AnimateBirth = this.AnimateBirth.bind(this);
+        this.AnimateBirth = this.AnimateBirth.bind(this)
+        this.AnimateMovement = this.AnimateMovement.bind(this)
         this.getCreatureInfo = this.getCreatureInfo.bind(this)
     }
 
     AnimateBirth(creatureId, locationX, locationY, color, shape){
+        // Takes the creature ID, their location x and y, color, and shape, to create an element with specific animation
         let roundness = "0%";
         if(shape === "circle"){
-            roundness = "50%";
+            roundness = "50%"
         }
         return(
             <>
-                <div id='GAH' style={{ position: "absolute", left: `${locationX}px`, top: `${locationY}px`, background: color, borderRadius: roundness }}/>
+                <div id={creatureId} style={{ position: "absolute", left: `${locationX}px`, top: `${locationY}px`, background: color, borderRadius: roundness, height: grown, width: grown }}/>
                 <Anime
                     initial={[
                         {
-                        targets: '#GAH',
-                        height: [0, grown],
-                        width: [0, grown],
-                        easing: "linear",
+                        targets: '#'+creatureId,
+                        scale: [0, 1],
+                        rotate: 180,
+                        easing: "linear"
                         }
                     ]}
                     >
-                    </Anime>
+                </Anime>
+            </>
+        )
+    }
+
+    AnimateMovement(creatureId, locationX, locationY){
+        // Takes the creature ID and moves to to the specified X and Y location
+        return(
+            <>
+            <Anime
+                initial={[
+                    {
+                    targets: '#'+creatureId,
+                    left: `${locationX}px`,
+                    top: `${locationY}px`,
+                    easing: "linear",
+                    }
+                ]}
+                >
+            </Anime>
             </>
         )
     }
@@ -70,14 +92,15 @@ class Animation extends React.Component {
     }
 
     render() {
-        
+    
         if (this.state.creatureId === '') {
             return (
                 <button className="getButton" onClick={this.getCreatureInfo}>
                     Play
                 </button>
             )
-        } if (this.state.birth === 1) {
+        } else if (this.state.birth === 1) {
+            //call the animation for creating a creature element
             return (
                 <>
                     <div>

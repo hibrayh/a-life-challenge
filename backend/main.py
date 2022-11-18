@@ -10,7 +10,7 @@ api.config["CORS_HEADERS"] = "Content-Type"
 @cross_origin()
 def return_dummy_info():
     response_body = {
-        "creatureId": "0A34D2",
+        "creatureId": "boop",
         "species": "Shlorpians",
         "movement": 0,
         "birth": 1,
