@@ -2,8 +2,9 @@ import './DummyConnection.css'
 import React from 'react'
 import axios from 'axios'
 import ReactAnime from 'react-animejs'
-const {Anime, stagger} = ReactAnime
+const {Anime} = ReactAnime
 
+const grown = 25;
 
 // Dummy backend connection component. For reference purposes
 class Animation extends React.Component {
@@ -13,26 +14,32 @@ class Animation extends React.Component {
         this.state = {
             creatureId: '',
             species: '',
-            location: '',
+            movement: 0,
+            birth: 0,
+            locationX: 0,
+            locationY: 0,
             shape: '',
             color: '',
         }
-        this.Animate = this.AnimateMovement.bind(this);
+        this.AnimateBirth = this.AnimateBirth.bind(this);
         this.getCreatureInfo = this.getCreatureInfo.bind(this)
     }
 
-    AnimateMovement(creatureId, locationX, locationY, color){
+    AnimateBirth(creatureId, locationX, locationY, color, shape){
+        let roundness = "0%";
+        if(shape === "circle"){
+            roundness = "50%";
+        }
         return(
             <>
-                <div id="GAH" style={{ height: 50, width: 50, background: color }}/>
-                
+                <div id='GAH' style={{ position: "absolute", left: `${locationX}px`, top: `${locationY}px`, background: color, borderRadius: roundness }}/>
                 <Anime
                     initial={[
                         {
-                        targets: "#GAH",
-                        translateX: locationX,
-                        translateY: locationY,
-                        easing: "linear"
+                        targets: '#GAH',
+                        height: [0, grown],
+                        width: [0, grown],
+                        easing: "linear",
                         }
                     ]}
                     >
@@ -52,6 +59,8 @@ class Animation extends React.Component {
             this.setState({
                 creatureId: res.creatureId,
                 species: res.species,
+                movement: res.movement,
+                birth: res.birth,
                 locationX: res.locationX,
                 locationY: res.locationY,
                 shape: res.shape,
@@ -61,27 +70,18 @@ class Animation extends React.Component {
     }
 
     render() {
-
+        
         if (this.state.creatureId === '') {
             return (
                 <button className="getButton" onClick={this.getCreatureInfo}>
-                    Get Creature Info
+                    Play
                 </button>
             )
-        } else {
+        } if (this.state.birth === 1) {
             return (
                 <>
-                {/*
-                    <div className="getButton">
-                        Creature id: {this.state.creatureId},<br />
-                        Species: {this.state.species},<br />
-                        LocationX: {this.state.locationX},<br />
-                        Shape: {this.state.shape},<br />
-                        Color: {this.state.color}
-                    </div>
-            */}
                     <div>
-                        {this.AnimateMovement(this.state.creatureId, this.state.locationX, this.state.locationY, this.state.color)}
+                        {this.AnimateBirth(this.state.creatureId, this.state.locationX, this.state.locationY, this.state.color, this.state.shape)}
                     </div>
                     
                 </>

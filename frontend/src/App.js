@@ -19,7 +19,6 @@ function App() {
                     <DummyConnection />
                 </div>
                 */}
-                <Animation />
                 <div class="menu">
                     <div>
                         <button
@@ -47,6 +46,7 @@ function App() {
                 <header className="menu">
                     <h1>New page</h1>
                 </header>
+                <Animation />
             </>
         )
     }
