@@ -9,9 +9,9 @@ def initVM():
     initProcess = 0
     if os.name == 'nt':
         initProcess = subprocess.Popen(
-            ["python3", "-m", "venv", "venv"], shell=True)
+            ["py", "-m", "venv", "venv"], shell=True)
     else:
-        initProcess = subprocess.Popen(["python3", "-m", "venv", "venv"])
+        initProcess = subprocess.Popen(["py", "-m", "venv", "venv"])
 
     initProcess.wait()
 
