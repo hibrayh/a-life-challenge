@@ -1,10 +1,14 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
 
 api = Flask(__name__)
 cors = CORS(api)
 api.config["CORS_HEADERS"] = "Content-Type"
 
+@api.route("/main-menu")
+@api.route("/")
+def main_menu():
+    return render_template("menu.html")
 
 @api.route('/get-info')
 @cross_origin()
@@ -21,10 +25,10 @@ def return_dummy_info():
 @api.route('/env-info')
 @cross_origin()
 def environment_info():
-    env_body = {
+    environment_details = {
         "topographyId": "Grasslands",
         "lightVisibility": "100%",
-        "resources": "water, food",
+        "resources": "[water, food]",
         "timeofSim": "Daytime",
     }
-    return env_body
+    return environment_details
