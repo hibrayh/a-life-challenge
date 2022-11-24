@@ -17,3 +17,14 @@ def return_dummy_info():
         "color": "blue",
         }
     return response_body
+
+@api.route('/env-info')
+@cross_origin()
+def environment_info():
+    env_body = {
+        "topographyId": "Grasslands",
+        "lightVisibility": "100%",
+        "resources": "water, food",
+        "timeofSim": "Daytime",
+    }
+    return env_body
