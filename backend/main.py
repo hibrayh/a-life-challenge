@@ -15,8 +15,9 @@ def return_dummy_info():
         "location": "(x, y)",
         "shape": "square",
         "color": "blue",
-        }
+    }
     return response_body
+
 
 @api.route('/env-info')
 @cross_origin()

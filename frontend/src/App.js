@@ -13,9 +13,9 @@ function App() {
                     <h1>A-Life Challenge</h1>
                 </header>
                 {
-                <div>
-                    <DummyConnection />
-                </div>
+                    <div>
+                        <DummyConnection />
+                    </div>
                 }
                 <div class="menu">
                     <div>
