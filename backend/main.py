@@ -5,10 +5,12 @@ api = Flask(__name__)
 cors = CORS(api)
 api.config["CORS_HEADERS"] = "Content-Type"
 
+
 @api.route("/main-menu")
 @api.route("/")
 def main_menu():
     return render_template("menu.html")
+
 
 @api.route('/get-info')
 @cross_origin()
@@ -23,6 +25,7 @@ def return_dummy_info():
 
     return response_body
 
+
 @api.route('/env-info')
 @cross_origin()
 def environment_info():
@@ -32,4 +35,4 @@ def environment_info():
         "resources": "[water, food]",
         "timeofSim": "Daytime",
     }
-    return environment_details 
+    return environment_details
