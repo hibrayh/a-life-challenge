@@ -2,20 +2,50 @@ import logging
 import random
 from enum import Enum
 
-logging.basicConfig(level=logging.INFO, format='%(levelname)s %(asctime)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(levelname)s %(asctime)s - %(message)s')
 
 MinorVariationConstant = 0.01
+
 
 class Receptors(Enum):
     VISION = 1
     SMELL = 2
     HEAR = 3
 
+
 class Genome:
-    def __init__(self, visibility, maxHealth, receptors, sightAbility, smellAbility, hearingAbility, sightRange, 
-                 smellRange, hearingRange, reactionTime, intelligence, selfPreservation, mobility, reproductionType, 
-                 offspringAmount, motivation, maxEnergy, individualism, territorial, fightOrFlight, hostility, scent, 
-                 stealth, lifeExpectancy, offensiveAbility, defensiveAbility, shape, color):
+    def __init__(
+            self,
+            visibility,
+            maxHealth,
+            receptors,
+            sightAbility,
+            smellAbility,
+            hearingAbility,
+            sightRange,
+            smellRange,
+            hearingRange,
+            reactionTime,
+            intelligence,
+            selfPreservation,
+            mobility,
+            reproductionType,
+            offspringAmount,
+            motivation,
+            maxEnergy,
+            individualism,
+            territorial,
+            fightOrFlight,
+            hostility,
+            scent,
+            stealth,
+            lifeExpectancy,
+            offensiveAbility,
+            defensiveAbility,
+            shape,
+            color):
         logging.info("Creating new genome object")
 
         self.visibility = visibility
@@ -47,11 +77,13 @@ class Genome:
         self.shape = shape
         self.color = color
 
+
 def _generateTraitValue(valA, valB):
     smallerVal = min([valA, valB])
     largerVal = max([valA, valB])
     mean = smallerVal + ((largerVal - smallerVal) / 2)
     return random.normalvariate(mean, MinorVariationConstant)
+
 
 def createNewGenomeSexual(parentAGenome, parentBGenome):
     logging.info("Creating new Genome object via sexual reproduction")
@@ -86,6 +118,7 @@ def createNewGenomeSexual(parentAGenome, parentBGenome):
         parentAGenome.shape,
         parentAGenome.color
     )
+
 
 def createNewGenomeAsexual(parentGenome):
     logging.info("Creating new Genome object via asexual reproduction")

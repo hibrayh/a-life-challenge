@@ -1,9 +1,12 @@
 import logging
 import creatures.species_manager
 
-logging.basicConfig(level=logging.INFO, format='%(levelname)s %(asctime)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(levelname)s %(asctime)s - %(message)s')
 
-class God:    
+
+class God:
     def __init__(self):
         logging.info("Initializing new God object")
 
@@ -32,7 +35,7 @@ class God:
 
     def getSpeciesInfo(self, speciesName):
         pass
-    
+
     def getCreatureInfo(self, creatureId):
         pass
 

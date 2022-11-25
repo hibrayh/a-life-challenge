@@ -2,7 +2,10 @@ import logging
 from enum import Enum
 import creature
 
-logging.basicConfig(level=logging.INFO, format='%(levelname)s %(asctime)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(levelname)s %(asctime)s - %(message)s')
+
 
 class SpeciesRelationship(Enum):
     HUNTS = 1
@@ -16,6 +19,7 @@ class SpeciesRelationship(Enum):
     GATHERS_FOOD_FOR = 9
     RECEIVES_FOOD_FROM = 10
 
+
 class SpeciesManager:
     def __init__(self, speciesName, startingGenome, speciesRelationships):
         logging.info(f"Initializing new Species Manager for {speciesName}")
@@ -24,7 +28,7 @@ class SpeciesManager:
         self._startingGenome = startingGenome
         self._creatures = []
         self._species_relations = speciesRelationships
-    
+
     def createNewCreature(self, startingGenome):
         pass
 
