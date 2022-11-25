@@ -2,7 +2,10 @@ import logging
 from abc import ABCMeta, abstractmethod
 from enum import Enum
 
-logging.basicConfig(level=logging.INFO, format='%(levelname)s %(asctime)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(levelname)s %(asctime)s - %(message)s')
+
 
 class CreatureAction(Enum):
     REPRODUCE = 1
@@ -22,40 +25,57 @@ class CreatureAction(Enum):
     SCAN_AREA = 15
     NURTURE_CREATURE = 16
 
+
 class ActionNode(metaclass=ABCMeta):
     def __init__(self, actionType):
         self.actionType = actionType
 
     @abstractmethod
-    def determineDecisionProbability(self, creatureOfInterest, perceivableEnvironment):
+    def determineDecisionProbability(
+            self,
+            creatureOfInterest,
+            perceivableEnvironment):
         pass
 
+
 class ReproduceNode(ActionNode):
-    def determineDecisionProbability(self, creatureOfInterest, perceivableEnvironment):
+    def determineDecisionProbability(
+            self,
+            creatureOfInterest,
+            perceivableEnvironment):
         """
         How does the current state of a creature affect its desire to reproduce?
             * lower health -> lower desire to reproduce
-            * lower energy -> lower desire to reproduce 
-        
+            * lower energy -> lower desire to reproduce
+
         How does the environment around the creature affect its desire to reproduce?
             * more enemy creatures perceived -> lower desire to reproduce
-        
+
         How do the traits of a creature affect its desire to reproduce?
-            * 
+            *
         """
 
 
 class SearchForFoodNode(ActionNode):
-    def determineDecisionProbability(self, creatureOfInterest, perceivableEnvironment):
+    def determineDecisionProbability(
+            self,
+            creatureOfInterest,
+            perceivableEnvironment):
         pass
 
+
 class SearchForMateNode(ActionNode):
-    def determineDecisionProbability(self, creatureOfInterest, perceivableEnvironment):
+    def determineDecisionProbability(
+            self,
+            creatureOfInterest,
+            perceivableEnvironment):
         pass
+
 
 class DecisionNetwork():
     def __init__(self):
         self.actionNodes = []
-    
-    def determineMostLikelyCreatureAction(self, creatureOfInterest, perceivableEnvironment):
+
+    def determineMostLikelyCreatureAction(
+            self, creatureOfInterest, perceivableEnvironment):
         pass
