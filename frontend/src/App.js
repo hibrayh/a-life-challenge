@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import DummyConnection from './DummyConnection'
+import Animation from './Animation'
 
 function App() {
     const [showMenu, setShowMenu] = useState(true)
@@ -45,6 +46,7 @@ function App() {
                 <header className="menu">
                     <h1>New page</h1>
                 </header>
+                <Animation />
             </>
         )
     }
