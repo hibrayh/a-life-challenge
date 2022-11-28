@@ -31,16 +31,20 @@ class CreatureAction(Enum):
 
 def _skew_positive(traitValue, environmentalFavorability, midPoint):
     if traitValue < .5:
-        return (((-1 * environmentalFavorability)/((-1 * midPoint) ** 3)) * ((traitValue - midPoint) ** 3) + environmentalFavorability)
+        return (((-1 * environmentalFavorability) / ((-1 * midPoint) ** 3))
+                * ((traitValue - midPoint) ** 3) + environmentalFavorability)
     else:
-        return (((1 - environmentalFavorability) / ((1 - midPoint) ** 3)) * ((traitValue - midPoint) ** 3) + environmentalFavorability)
+        return (((1 - environmentalFavorability) / ((1 - midPoint) ** 3))
+                * ((traitValue - midPoint) ** 3) + environmentalFavorability)
 
 
 def _skew_negative(traitValue, environmentalFavorability, midPoint):
     if traitValue < .5:
-        return (((1 - environmentalFavorability) / ((-1 * midPoint) ** 3)) * ((traitValue - midPoint) ** 3) + environmentalFavorability)
+        return (((1 - environmentalFavorability) / ((-1 * midPoint) ** 3))
+                * ((traitValue - midPoint) ** 3) + environmentalFavorability)
     else:
-        return (((-1 * environmentalFavorability) / ((1 - midPoint) ** 3)) * ((traitValue - midPoint) ** 3) + environmentalFavorability)
+        return (((-1 * environmentalFavorability) / ((1 - midPoint) ** 3))
+                * ((traitValue - midPoint) ** 3) + environmentalFavorability)
 
 
 def _determine_creature_perception_impact(numberOfCreatures):
@@ -53,7 +57,14 @@ class ActionPerceptron(metaclass=ABCMeta):
 
     # Linear function of the perceptron
     @abstractmethod
-    def getEnvironmentalFavorability(self, health, energy, immediateMates, perceivableMates, perceivablePredators, perceivablePrey):
+    def getEnvironmentalFavorability(
+            self,
+            health,
+            energy,
+            immediateMates,
+            perceivableMates,
+            perceivablePredators,
+            perceivablePrey):
         pass
 
     # Activation function of the perceptron
@@ -63,27 +74,55 @@ class ActionPerceptron(metaclass=ABCMeta):
 
 
 class SexualReproductionPerceptron(ActionPerceptron):
-    def getEnvironmentalFavorability(self, health, energy, immediateMates, perceivableMates, perceivablePredators, perceivablePrey):
+    def getEnvironmentalFavorability(
+            self,
+            health,
+            energy,
+            immediateMates,
+            perceivableMates,
+            perceivablePredators,
+            perceivablePrey):
         healthWeight = .1
         energyWeight = .1
         immediateMatesWeight = .8
         perceivableMatesWeight = 0
         perceivablePredatorsWeight = -1
         perceivablePreyWeight = 0
-        total = healthWeight + energyWeight + immediateMatesWeight + perceivablePredatorsWeight
-        
-        return max(((healthWeight * health) + (energyWeight * energy) + (immediateMatesWeight * immediateMates)
-                + (perceivableMatesWeight * perceivableMates) + (perceivablePredatorsWeight * perceivablePredators)
-                + (perceivablePreyWeight * perceivablePrey)) / total, 0)
-    
+        total = healthWeight + energyWeight + \
+            immediateMatesWeight + perceivablePredatorsWeight
+
+        return max(((healthWeight *
+                     health) +
+                    (energyWeight *
+                     energy) +
+                    (immediateMatesWeight *
+                     immediateMates) +
+                    (perceivableMatesWeight *
+                     perceivableMates) +
+                    (perceivablePredatorsWeight *
+                     perceivablePredators) +
+                    (perceivablePreyWeight *
+                     perceivablePrey)) /
+                   total, 0)
+
     def determineActivation(self, environmentalFavorability, creatureGenome):
-        activation = _skew_positive(creatureGenome.motivation, environmentalFavorability, 0.5)
+        activation = _skew_positive(
+            creatureGenome.motivation,
+            environmentalFavorability,
+            0.5)
 
         return activation
 
 
 class AsexualReproductionPerceptron(ActionPerceptron):
-    def getEnvironmentalFavorability(self, health, energy, immediateMates, perceivableMates, perceivablePredators, perceivablePrey):
+    def getEnvironmentalFavorability(
+            self,
+            health,
+            energy,
+            immediateMates,
+            perceivableMates,
+            perceivablePredators,
+            perceivablePrey):
         healthWeight = .5
         energyWeight = .5
         immediateMatesWeight = 0
@@ -91,19 +130,39 @@ class AsexualReproductionPerceptron(ActionPerceptron):
         perceivablePredatorsWeight = -1
         perceivablePreyWeight = 0
         total = healthWeight + energyWeight
-        
-        return max(((healthWeight * health) + (energyWeight * energy) + (immediateMatesWeight * immediateMates)
-                + (perceivableMatesWeight * perceivableMates) + (perceivablePredatorsWeight * perceivablePredators)
-                + (perceivablePreyWeight * perceivablePrey)) / total, 0)
-    
+
+        return max(((healthWeight *
+                     health) +
+                    (energyWeight *
+                     energy) +
+                    (immediateMatesWeight *
+                     immediateMates) +
+                    (perceivableMatesWeight *
+                     perceivableMates) +
+                    (perceivablePredatorsWeight *
+                     perceivablePredators) +
+                    (perceivablePreyWeight *
+                     perceivablePrey)) /
+                   total, 0)
+
     def determineActivation(self, environmentalFavorability, creatureGenome):
-        activation = _skew_positive(creatureGenome.motivation, environmentalFavorability, 0.5)
+        activation = _skew_positive(
+            creatureGenome.motivation,
+            environmentalFavorability,
+            0.5)
 
         return activation
 
 
 class SearchForMatePerceptron(ActionPerceptron):
-    def getEnvironmentalFavorability(self, health, energy, immediateMates, perceivableMates, perceivablePredators, perceivablePrey):
+    def getEnvironmentalFavorability(
+            self,
+            health,
+            energy,
+            immediateMates,
+            perceivableMates,
+            perceivablePredators,
+            perceivablePrey):
         healthWeight = .5
         energyWeight = .5
         immediateMatesWeight = -.2
@@ -111,19 +170,39 @@ class SearchForMatePerceptron(ActionPerceptron):
         perceivablePredatorsWeight = -.8
         perceivablePreyWeight = 0
         total = healthWeight + energyWeight
-        
-        return max(((healthWeight * health) + (energyWeight * energy) + (immediateMatesWeight * immediateMates)
-                + (perceivableMatesWeight * perceivableMates) + (perceivablePredatorsWeight * perceivablePredators)
-                + (perceivablePreyWeight * perceivablePrey)) / total, 0)
+
+        return max(((healthWeight *
+                     health) +
+                    (energyWeight *
+                     energy) +
+                    (immediateMatesWeight *
+                     immediateMates) +
+                    (perceivableMatesWeight *
+                     perceivableMates) +
+                    (perceivablePredatorsWeight *
+                     perceivablePredators) +
+                    (perceivablePreyWeight *
+                     perceivablePrey)) /
+                   total, 0)
 
     def determineActivation(self, environmentalFavorability, creatureGenome):
-        activation = _skew_positive(creatureGenome.motivation, environmentalFavorability, 0.5)
+        activation = _skew_positive(
+            creatureGenome.motivation,
+            environmentalFavorability,
+            0.5)
 
         return activation
 
 
 class FleeFromCreaturePerceptron(ActionPerceptron):
-    def getEnvironmentalFavorability(self, health, energy, immediateMates, perceivableMates, perceivablePredators, perceivablePrey):
+    def getEnvironmentalFavorability(
+            self,
+            health,
+            energy,
+            immediateMates,
+            perceivableMates,
+            perceivablePredators,
+            perceivablePrey):
         healthWeight = -.1
         energyWeight = -.1
         immediateMatesWeight = 0
@@ -131,22 +210,45 @@ class FleeFromCreaturePerceptron(ActionPerceptron):
         perceivablePredatorsWeight = 1
         perceivablePreyWeight = 0
         total = perceivablePredatorsWeight
-        
-        return max(((healthWeight * health) + (energyWeight * energy) + (immediateMatesWeight * immediateMates)
-                + (perceivableMatesWeight * perceivableMates) + (perceivablePredatorsWeight * perceivablePredators)
-                + (perceivablePreyWeight * perceivablePrey)) / total, 0)
-    
+
+        return max(((healthWeight *
+                     health) +
+                    (energyWeight *
+                     energy) +
+                    (immediateMatesWeight *
+                     immediateMates) +
+                    (perceivableMatesWeight *
+                     perceivableMates) +
+                    (perceivablePredatorsWeight *
+                     perceivablePredators) +
+                    (perceivablePreyWeight *
+                     perceivablePrey)) /
+                   total, 0)
+
     def determineActivation(self, environmentalFavorability, creatureGenome):
-        activation = _skew_positive(creatureGenome.selfPreservation, environmentalFavorability, 0.5)
-        activation = _skew_positive(creatureGenome.fightOrFlight, activation, 0.5)
-        activation = _skew_negative(creatureGenome.offensiveAbility, activation, 0.5)
-        activation = _skew_negative(creatureGenome.defensiveAbility, activation, 0.5)
+        activation = _skew_positive(
+            creatureGenome.selfPreservation,
+            environmentalFavorability,
+            0.5)
+        activation = _skew_positive(
+            creatureGenome.fightOrFlight, activation, 0.5)
+        activation = _skew_negative(
+            creatureGenome.offensiveAbility, activation, 0.5)
+        activation = _skew_negative(
+            creatureGenome.defensiveAbility, activation, 0.5)
 
         return activation
 
 
 class ChaseACreaturePerceptron(ActionPerceptron):
-    def getEnvironmentalFavorability(self, health, energy, immediateMates, perceivableMates, perceivablePredators, perceivablePrey):
+    def getEnvironmentalFavorability(
+            self,
+            health,
+            energy,
+            immediateMates,
+            perceivableMates,
+            perceivablePredators,
+            perceivablePrey):
         healthWeight = .1
         energyWeight = .1
         immediateMatesWeight = 0
@@ -154,16 +256,32 @@ class ChaseACreaturePerceptron(ActionPerceptron):
         perceivablePredatorsWeight = 0
         perceivablePreyWeight = .8
         total = healthWeight + energyWeight + perceivablePreyWeight
-        
-        return max(((healthWeight * health) + (energyWeight * energy) + (immediateMatesWeight * immediateMates)
-                + (perceivableMatesWeight * perceivableMates) + (perceivablePredatorsWeight * perceivablePredators)
-                + (perceivablePreyWeight * perceivablePrey)) / total, 0)
-    
+
+        return max(((healthWeight *
+                     health) +
+                    (energyWeight *
+                     energy) +
+                    (immediateMatesWeight *
+                     immediateMates) +
+                    (perceivableMatesWeight *
+                     perceivableMates) +
+                    (perceivablePredatorsWeight *
+                     perceivablePredators) +
+                    (perceivablePreyWeight *
+                     perceivablePrey)) /
+                   total, 0)
+
     def determineActivation(self, environmentalFavorability, creatureGenome):
-        activation = _skew_negative(creatureGenome.selfPreservation, environmentalFavorability, 0.5)
-        activation = _skew_negative(creatureGenome.fightOrFlight, activation, 0.5)
-        activation = _skew_positive(creatureGenome.offensiveAbility, activation, 0.5)
-        activation = _skew_positive(creatureGenome.defensiveAbility, activation, 0.5)
+        activation = _skew_negative(
+            creatureGenome.selfPreservation,
+            environmentalFavorability,
+            0.5)
+        activation = _skew_negative(
+            creatureGenome.fightOrFlight, activation, 0.5)
+        activation = _skew_positive(
+            creatureGenome.offensiveAbility, activation, 0.5)
+        activation = _skew_positive(
+            creatureGenome.defensiveAbility, activation, 0.5)
 
         return activation
 
@@ -183,10 +301,13 @@ class DecisionNetwork(metaclass=ABCMeta):
         perceivablePrey = 0
 
         for creature in perceivableEnvironment.perceivableCreatures:
-            distanceFromCreature = (math.sqrt((abs(creature.xCoordinate - creatureOfInterest.xCoordinate) ** 2) +
-                                    (abs(creature.yCoordinate - creatureOfInterest.yCoordinate) ** 2)))
-            
-            if (creature.species == creatureOfInterest.species) and (distanceFromCreature <= 1):
+            distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
+                                                   creatureOfInterest.xCoordinate) ** 2) +
+                                              (abs(creature.yCoordinate -
+                                                   creatureOfInterest.yCoordinate) ** 2)))
+
+            if (creature.species == creatureOfInterest.species) and (
+                    distanceFromCreature <= 1):
                 immediateMates += 1
             elif creature.species == creatureOfInterest.species:
                 perceivableMates += 1
@@ -195,33 +316,61 @@ class DecisionNetwork(metaclass=ABCMeta):
             elif creatureOfInterest.speciesRelationship(creature.species) == species_manager.SpeciesRelationship.HUNTS:
                 perceivablePrey += 1
 
-        immediateMatesSignal = _determine_creature_perception_impact(immediateMates)
-        perceivableMatesSignal = _determine_creature_perception_impact(perceivableMates)
-        perceivablePredatorsSignal = _determine_creature_perception_impact(perceivablePredators)
-        perceivablePreySignal = _determine_creature_perception_impact(perceivablePrey)
+        immediateMatesSignal = _determine_creature_perception_impact(
+            immediateMates)
+        perceivableMatesSignal = _determine_creature_perception_impact(
+            perceivableMates)
+        perceivablePredatorsSignal = _determine_creature_perception_impact(
+            perceivablePredators)
+        perceivablePreySignal = _determine_creature_perception_impact(
+            perceivablePrey)
 
         activationValues = []
 
         for actionNode in self.actionNodes:
-            environmentalFavorability = actionNode.getEnvironmentalFavorability(health, energy, immediateMatesSignal, perceivableMatesSignal, perceivablePredatorsSignal, perceivablePreySignal)
-            activationValues.append(actionNode.determineActivation(environmentalFavorability, creatureOfInterest.genome))
-        
-        mostLikelyDecision = self.actionNodes[activationValues.index(max(activationValues))].actionType
+            environmentalFavorability = actionNode.getEnvironmentalFavorability(
+                health,
+                energy,
+                immediateMatesSignal,
+                perceivableMatesSignal,
+                perceivablePredatorsSignal,
+                perceivablePreySignal)
+            activationValues.append(
+                actionNode.determineActivation(
+                    environmentalFavorability,
+                    creatureOfInterest.genome))
+
+        mostLikelyDecision = self.actionNodes[activationValues.index(
+            max(activationValues))].actionType
         return mostLikelyDecision
 
 
 class DecisionNetworkSexual(DecisionNetwork):
     def __init__(self):
         self.actionNodes = []
-        self.actionNodes.append(SexualReproductionPerceptron(CreatureAction.REPRODUCE))
-        self.actionNodes.append(SearchForMatePerceptron(CreatureAction.SEARCH_FOR_MATE))
-        self.actionNodes.append(FleeFromCreaturePerceptron(CreatureAction.FLEE_FROM_CREATURE))
-        self.actionNodes.append(ChaseACreaturePerceptron(CreatureAction.CHASE_A_CREATURE))
+        self.actionNodes.append(
+            SexualReproductionPerceptron(
+                CreatureAction.REPRODUCE))
+        self.actionNodes.append(
+            SearchForMatePerceptron(
+                CreatureAction.SEARCH_FOR_MATE))
+        self.actionNodes.append(
+            FleeFromCreaturePerceptron(
+                CreatureAction.FLEE_FROM_CREATURE))
+        self.actionNodes.append(
+            ChaseACreaturePerceptron(
+                CreatureAction.CHASE_A_CREATURE))
 
 
 class DecisionNetworkAsexual(DecisionNetwork):
     def __init__(self):
         self.actionNodes = []
-        self.actionNodes.append(AsexualReproductionPerceptron(CreatureAction.REPRODUCE))
-        self.actionNodes.append(FleeFromCreaturePerceptron(CreatureAction.FLEE_FROM_CREATURE))
-        self.actionNodes.append(ChaseACreaturePerceptron(CreatureAction.CHASE_A_CREATURE))
+        self.actionNodes.append(
+            AsexualReproductionPerceptron(
+                CreatureAction.REPRODUCE))
+        self.actionNodes.append(
+            FleeFromCreaturePerceptron(
+                CreatureAction.FLEE_FROM_CREATURE))
+        self.actionNodes.append(
+            ChaseACreaturePerceptron(
+                CreatureAction.CHASE_A_CREATURE))
