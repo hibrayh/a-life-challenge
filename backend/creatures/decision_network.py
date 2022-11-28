@@ -360,9 +360,11 @@ class DecisionNetworkSexual(DecisionNetwork):
         self.actionNodes.append(
             ChaseACreaturePerceptron(
                 CreatureAction.CHASE_A_CREATURE))
-    
-    def determineMostFavorableCreatureAction(self, creatureOfInterest, perceivableEnvironment):
-        return super().determineMostFavorableCreatureAction(creatureOfInterest, perceivableEnvironment)
+
+    def determineMostFavorableCreatureAction(
+            self, creatureOfInterest, perceivableEnvironment):
+        return super().determineMostFavorableCreatureAction(
+            creatureOfInterest, perceivableEnvironment)
 
 
 class DecisionNetworkAsexual(DecisionNetwork):
@@ -377,6 +379,8 @@ class DecisionNetworkAsexual(DecisionNetwork):
         self.actionNodes.append(
             ChaseACreaturePerceptron(
                 CreatureAction.CHASE_A_CREATURE))
-    
-    def determineMostFavorableCreatureAction(self, creatureOfInterest, perceivableEnvironment):
-        return super().determineMostFavorableCreatureAction(creatureOfInterest, perceivableEnvironment)
+
+    def determineMostFavorableCreatureAction(
+            self, creatureOfInterest, perceivableEnvironment):
+        return super().determineMostFavorableCreatureAction(
+            creatureOfInterest, perceivableEnvironment)
