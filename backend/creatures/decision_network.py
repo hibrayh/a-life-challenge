@@ -30,7 +30,7 @@ class CreatureAction(Enum):
 
 
 def _skew_positive(traitValue, environmentalFavorability, midPoint):
-    if traitValue < .5:
+    if traitValue < midPoint:
         return (((-1 * environmentalFavorability) / ((-1 * midPoint) ** 3))
                 * ((traitValue - midPoint) ** 3) + environmentalFavorability)
     else:
@@ -39,7 +39,7 @@ def _skew_positive(traitValue, environmentalFavorability, midPoint):
 
 
 def _skew_negative(traitValue, environmentalFavorability, midPoint):
-    if traitValue < .5:
+    if traitValue < midPoint:
         return (((1 - environmentalFavorability) / ((-1 * midPoint) ** 3))
                 * ((traitValue - midPoint) ** 3) + environmentalFavorability)
     else:
@@ -360,6 +360,9 @@ class DecisionNetworkSexual(DecisionNetwork):
         self.actionNodes.append(
             ChaseACreaturePerceptron(
                 CreatureAction.CHASE_A_CREATURE))
+    
+    def determineMostFavorableCreatureAction(self, creatureOfInterest, perceivableEnvironment):
+        return super().determineMostFavorableCreatureAction(creatureOfInterest, perceivableEnvironment)
 
 
 class DecisionNetworkAsexual(DecisionNetwork):
@@ -374,3 +377,6 @@ class DecisionNetworkAsexual(DecisionNetwork):
         self.actionNodes.append(
             ChaseACreaturePerceptron(
                 CreatureAction.CHASE_A_CREATURE))
+    
+    def determineMostFavorableCreatureAction(self, creatureOfInterest, perceivableEnvironment):
+        return super().determineMostFavorableCreatureAction(creatureOfInterest, perceivableEnvironment)
