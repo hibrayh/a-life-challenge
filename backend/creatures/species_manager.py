@@ -24,10 +24,10 @@ class SpeciesManager:
     def __init__(self, speciesName, startingGenome, speciesRelationships):
         logging.info(f"Initializing new Species Manager for {speciesName}")
 
-        self._speciesName = speciesName
+        self.speciesName = speciesName
         self._startingGenome = startingGenome
         self._creatures = []
-        self._species_relations = speciesRelationships
+        self.speciesRelations = speciesRelationships
 
     def createNewCreature(self, startingGenome):
         pass
