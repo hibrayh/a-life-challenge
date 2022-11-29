@@ -13,7 +13,7 @@ class God:
 
         self._speciesManagers = []
         self._environment = environment.Environment()
-    
+
     def _getSpeciesManagerFromName(self, speciesName):
         speciesManagerOfInterest = None
 
@@ -21,21 +21,22 @@ class God:
             if speciesManager.speciesName == speciesName:
                 speciesManagerOfInterest = speciesManager
                 break
-        
+
         return speciesManagerOfInterest
 
     def createNewSpecies(self, speciesName, startingGenome):
         logging.info(f"Creating new species: {speciesName}")
 
-        newSpecies = creatures.species_manager.SpeciesManager(speciesName, startingGenome)
+        newSpecies = creatures.species_manager.SpeciesManager(
+            speciesName, startingGenome)
         self._speciesManagers.append(newSpecies)
 
     def deleteSpecies(self, speciesName):
         logging.info(f"Deleting species: {speciesName}")
 
         speciesManagerToDelete = self._getSpeciesManagerFromName(speciesName)
-        
-        if speciesManagerToDelete == None:
+
+        if speciesManagerToDelete is None:
             logging.info("Could not find species to delete")
         else:
             self._speciesManagers.remove(speciesManagerToDelete)
@@ -49,20 +50,27 @@ class God:
             speciesManagerToEdit.editSpeciesGenome(newGenome)
 
     def renameSpecies(self, originalSpeciesName, newSpeciesName):
-        speciesManagerToRename = self._getSpeciesManagerFromName(originalSpeciesName)
+        speciesManagerToRename = self._getSpeciesManagerFromName(
+            originalSpeciesName)
 
         if speciesManagerToRename is None:
             logging.info("Could not find species to rename")
         else:
             speciesManagerToRename.renameSpecies(newSpeciesName)
 
-    def addSpeciesRelationship(self, speciesOfInterest, newSpecies, newRelationship):
-        speciesManagerToAddRelation = self._getSpeciesManagerFromName(speciesOfInterest)
+    def addSpeciesRelationship(
+            self,
+            speciesOfInterest,
+            newSpecies,
+            newRelationship):
+        speciesManagerToAddRelation = self._getSpeciesManagerFromName(
+            speciesOfInterest)
 
         if speciesManagerToAddRelation is None:
             logging.info("Could not find species to add relationship to")
         else:
-            speciesManagerToAddRelation.addSpeciesRelationship(newSpecies, newRelationship)
+            speciesManagerToAddRelation.addSpeciesRelationship(
+                newSpecies, newRelationship)
 
     def createNewCreature(self, speciesName, startingGenome):
         speciesManagerOfInterest = self._getSpeciesManagerFromName(speciesName)
