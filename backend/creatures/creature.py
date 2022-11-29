@@ -3,6 +3,7 @@ import copy
 import math
 import genome
 import decision_network
+import species_manager
 import random
 
 logging.basicConfig(
@@ -22,6 +23,7 @@ class Creature:
             yCoordinate,
             speciesManager,
             environment):
+        logging.info(f"Initializing new creature with id {id}")
         self.genome = inputGenome
         self.species = species
         self.id = id
@@ -43,19 +45,23 @@ class Creature:
 
         self.reactionTime = inputGenome.reactionTime * 100
 
+        logging.info(f"Registering {self.id} to the Environment")
         self.environment.addToCreatureRegistry(self)
 
     def __del__(self):
+        logging.info(f"Unregistering {self.id} from the Environment")
         self.environment.removeFromCreatureRegistry(self)
 
     def speciesRelationship(self, species):
         return self.speciesManager.speciesRelations[species]
 
     def reproduceAsexual(self):
+        logging.info(f"{self.id} reproducing asexually")
         childGenome = genome.createNewGenomeAsexual(self.genome)
         self.speciesManager.createNewCreature(childGenome)
 
     def reproduceSexual(self, otherParent):
+        logging.info(f"{self.id} reproducing sexually with {otherParent.id}")
         childGenome = genome.createNewGenomeSexual(
             self.genome, otherParent.genome)
         self.speciesManager.createNewCreature(childGenome)
@@ -68,6 +74,7 @@ class Creature:
         self.yCoordinate += yMovement
 
     def moveRandom(self):
+        logging.info(f"{self.id} is moving in a random direction")
         degreeOfMovement = math.radians(random.randrange(360))
         movementLength = self.genome.mobility * MAX_MOVEMENT
 
@@ -79,12 +86,11 @@ class Creature:
         else:
             distances = []
             for creature in perceivableMates:
-                if creature.species == self.species:
-                    distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                           self.xCoordinate) ** 2) +
-                                                      (abs(creature.yCoordinate -
-                                                           self.yCoordinate) ** 2)))
-                    distances.append(distanceFromCreature)
+                distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
+                                                        self.xCoordinate) ** 2) +
+                                                    (abs(creature.yCoordinate -
+                                                        self.yCoordinate) ** 2)))
+                distances.append(distanceFromCreature)
 
             closestMateDistance = min(distances)
             closestMate = perceivableMates[distances.index(
@@ -92,22 +98,71 @@ class Creature:
             degreeOfMovement = math.acos(
                 (closestMate.xCoordinate - self.xCoordinate) / closestMateDistance)
 
-            if closestMate.yCoordinate - self.xCoordinate:
+            if closestMate.yCoordinate - self.yCoordinate < 0:
                 degreeOfMovement = -1 * degreeOfMovement
 
             movementLength = min(
                 self.genome.mobility * MAX_MOVEMENT,
                 closestMateDistance - 1)
 
+            logging.info(f"{self.id} moving towards potential mate")
+            self.moveCreature(degreeOfMovement, movementLength)
+    
+    def fleeFromPredator(self, perceivablePredators):
+        if perceivablePredators == []:
+            self.moveRandom()
+        else:
+            distances = []
+            for creature in perceivablePredators:
+                distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
+                                                        self.xCoordinate) ** 2) +
+                                                    (abs(creature.yCoordinate -
+                                                        self.yCoordinate) ** 2)))
+                distances.append(distanceFromCreature)
+            
+            closestPredatorDistance = min(distances)
+            closestPredator = perceivablePredators[distances.index(closestPredatorDistance)]
+            degreeOfMovement = math.acos((closestPredator.xCoordinate - self.xCoordinate) / closestPredatorDistance)
+
+            if closestPredator.yCoordinate - self.yCoordinate < 0:
+                degreeOfMovement = -1 * degreeOfMovement
+            
+            movementLength = self.genome.mobility * MAX_MOVEMENT
+            logging.info(f"{self.id} fleeing from predator")
+            self.moveCreature(degreeOfMovement, movementLength)
+    
+    def chasePrey(self, perceivablePrey):
+        if perceivablePrey == []:
+            self.moveRandom()
+        else:
+            distances = []
+            for creature in perceivablePrey:
+                distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
+                                                        self.xCoordinate) ** 2) +
+                                                    (abs(creature.yCoordinate -
+                                                        self.yCoordinate) ** 2)))
+                distances.append(distanceFromCreature)
+
+            closestPreyDistance = min(distances)
+            closestPrey = perceivablePrey[distances.index(closestPreyDistance)]
+            degreeOfMovement = math.acos((closestPrey.xCoordinate - self.xCoordinate) / closestPreyDistance)
+
+            if closestPrey.yCoordinate - self.yCoordinate < 0:
+                degreeOfMovement = -1 * degreeOfMovement
+            
+            movementLength = min(self.genome.mobility * MAX_MOVEMENT, closestPreyDistance - 1)
+            logging.info(f"{self.id} chasing prey")
             self.moveCreature(degreeOfMovement, movementLength)
 
     def performAction(self):
+        logging.info(f"{self.id} determining its next action")
         perceivableEnvironment = self.environment.returnCreaturesPerceivableEnvironment(
             self)
         actionToPerform = self._decisionNetwork.determineMostFavorableCreatureAction(
             self, perceivableEnvironment)
 
         if actionToPerform == decision_network.CreatureAction.REPRODUCE:
+            logging.info(f"{self.id} has decided to reproduce")
             if self.genome.reproductionType == genome.ReproductionType.ASEXUAL:
                 self.reproduceAsexual()
             else:
@@ -122,9 +177,28 @@ class Creature:
                 self.reproduceSexual(
                     perceivableEnvironment.perceivableCreatures[distances.index(min(distances))])
         elif actionToPerform == decision_network.CreatureAction.SEARCH_FOR_MATE:
+            logging.info(f"{self.id} has decided to search for a mate")
             possibleMates = []
             for creature in perceivableEnvironment.perceivableCreatures:
                 if creature.species == self.species:
                     possibleMates.append(creature)
 
             self.searchForMate(possibleMates)
+        elif actionToPerform == decision_network.CreatureAction.FLEE_FROM_CREATURE:
+            logging.info(f"{self.id} has decided to flee from predators")
+            perceivablePredators = []
+            for creature in perceivableEnvironment.perceivableCreatures:
+                if self.speciesRelationship(creature.species) == species_manager.SpeciesRelationship.IS_HUNTED_BY:
+                    perceivablePredators.append(creature)
+            
+            self.fleeFromPredator(perceivablePredators)
+        elif actionToPerform == decision_network.CreatureAction.CHASE_A_CREATURE:
+            logging.info(f"{self.id} has decided to chase prey")
+            perceivablePrey = []
+            for creature in perceivableEnvironment.perceivableCreatures:
+                if self.speciesRelationship(creature.species) == species_manager.SpeciesRelationship.HUNTS:
+                    perceivablePrey.append(creature)
+            
+            self.chasePrey(perceivablePrey)
+        else:
+            logging.info(f"{self.id} has decided to do nothing")

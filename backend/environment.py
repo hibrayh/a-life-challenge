@@ -18,8 +18,6 @@ class Environment:
         logging.info("Creating new environment")
         self.creatureRegistry = []
         self.foodRegistry = []
-        self.xMax = 100
-        self.yMax = 100
 
     def addToCreatureRegistry(self, newCreature):
         logging.info(
