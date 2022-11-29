@@ -47,6 +47,27 @@ function App() {
                     <h1>New page</h1>
                 </header>
                 <Animation />
+                <SimulationNavBar />
+            </>
+        )
+    }
+
+    const SimulationNavBar = () => {
+        return(
+            <>
+            
+                <div id="simulationNavBar">
+
+                    <button id="pauseStartButton">P</button>
+                    <span id="simulationTime">2022-11-28 01:02 pm</span>
+                    <span id="simulationSpeed">5.3 day/sec</span>
+                    <button id="simulationSlowDownButton">-</button>
+                    <button id="simulationSpeedUpButton">+</button>
+                    <button id="simulationInformationButton">I</button>
+
+                </div>
+
+            
             </>
         )
     }
