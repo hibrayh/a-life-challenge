@@ -87,9 +87,9 @@ class Creature:
             distances = []
             for creature in perceivableMates:
                 distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                        self.xCoordinate) ** 2) +
-                                                    (abs(creature.yCoordinate -
-                                                        self.yCoordinate) ** 2)))
+                                                       self.xCoordinate) ** 2) +
+                                                  (abs(creature.yCoordinate -
+                                                       self.yCoordinate) ** 2)))
                 distances.append(distanceFromCreature)
 
             closestMateDistance = min(distances)
@@ -107,7 +107,7 @@ class Creature:
 
             logging.info(f"{self.id} moving towards potential mate")
             self.moveCreature(degreeOfMovement, movementLength)
-    
+
     def fleeFromPredator(self, perceivablePredators):
         if perceivablePredators == []:
             self.moveRandom()
@@ -115,22 +115,26 @@ class Creature:
             distances = []
             for creature in perceivablePredators:
                 distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                        self.xCoordinate) ** 2) +
-                                                    (abs(creature.yCoordinate -
-                                                        self.yCoordinate) ** 2)))
+                                                       self.xCoordinate) ** 2) +
+                                                  (abs(creature.yCoordinate -
+                                                       self.yCoordinate) ** 2)))
                 distances.append(distanceFromCreature)
-            
+
             closestPredatorDistance = min(distances)
-            closestPredator = perceivablePredators[distances.index(closestPredatorDistance)]
-            degreeOfMovement = math.acos((closestPredator.xCoordinate - self.xCoordinate) / closestPredatorDistance)
+            closestPredator = perceivablePredators[distances.index(
+                closestPredatorDistance)]
+            degreeOfMovement = math.acos(
+                (closestPredator.xCoordinate -
+                 self.xCoordinate) /
+                closestPredatorDistance)
 
             if closestPredator.yCoordinate - self.yCoordinate < 0:
                 degreeOfMovement = -1 * degreeOfMovement
-            
+
             movementLength = self.genome.mobility * MAX_MOVEMENT
             logging.info(f"{self.id} fleeing from predator")
             self.moveCreature(degreeOfMovement, movementLength)
-    
+
     def chasePrey(self, perceivablePrey):
         if perceivablePrey == []:
             self.moveRandom()
@@ -138,19 +142,22 @@ class Creature:
             distances = []
             for creature in perceivablePrey:
                 distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                        self.xCoordinate) ** 2) +
-                                                    (abs(creature.yCoordinate -
-                                                        self.yCoordinate) ** 2)))
+                                                       self.xCoordinate) ** 2) +
+                                                  (abs(creature.yCoordinate -
+                                                       self.yCoordinate) ** 2)))
                 distances.append(distanceFromCreature)
 
             closestPreyDistance = min(distances)
             closestPrey = perceivablePrey[distances.index(closestPreyDistance)]
-            degreeOfMovement = math.acos((closestPrey.xCoordinate - self.xCoordinate) / closestPreyDistance)
+            degreeOfMovement = math.acos(
+                (closestPrey.xCoordinate - self.xCoordinate) / closestPreyDistance)
 
             if closestPrey.yCoordinate - self.yCoordinate < 0:
                 degreeOfMovement = -1 * degreeOfMovement
-            
-            movementLength = min(self.genome.mobility * MAX_MOVEMENT, closestPreyDistance - 1)
+
+            movementLength = min(
+                self.genome.mobility * MAX_MOVEMENT,
+                closestPreyDistance - 1)
             logging.info(f"{self.id} chasing prey")
             self.moveCreature(degreeOfMovement, movementLength)
 
@@ -188,17 +195,19 @@ class Creature:
             logging.info(f"{self.id} has decided to flee from predators")
             perceivablePredators = []
             for creature in perceivableEnvironment.perceivableCreatures:
-                if self.speciesRelationship(creature.species) == species_manager.SpeciesRelationship.IS_HUNTED_BY:
+                if self.speciesRelationship(
+                        creature.species) == species_manager.SpeciesRelationship.IS_HUNTED_BY:
                     perceivablePredators.append(creature)
-            
+
             self.fleeFromPredator(perceivablePredators)
         elif actionToPerform == decision_network.CreatureAction.CHASE_A_CREATURE:
             logging.info(f"{self.id} has decided to chase prey")
             perceivablePrey = []
             for creature in perceivableEnvironment.perceivableCreatures:
-                if self.speciesRelationship(creature.species) == species_manager.SpeciesRelationship.HUNTS:
+                if self.speciesRelationship(
+                        creature.species) == species_manager.SpeciesRelationship.HUNTS:
                     perceivablePrey.append(creature)
-            
+
             self.chasePrey(perceivablePrey)
         else:
             logging.info(f"{self.id} has decided to do nothing")

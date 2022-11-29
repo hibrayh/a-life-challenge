@@ -9,6 +9,7 @@ api.config["CORS_HEADERS"] = "Content-Type"
 
 GOD = None
 
+
 def _convertRequestToGenome(request):
     receptorsList = []
 
@@ -18,36 +19,36 @@ def _convertRequestToGenome(request):
         receptorsList.append(creatures.genome.Receptors.SMELL)
     if request.form['canHear'] == 'true':
         receptorsList.append(creatures.genome.Receptors.HEAR)
-    
+
     inputGenome = creatures.genome.Genome(int(request.form['visibility']),
-        int(request.form['maxHealth']),
-        receptorsList,
-        int(request.form['sightAbility']),
-        int(request.form['smellAbility']),
-        int(request.form['hearingAbility']),
-        int(request.form['sightRange']),
-        int(request.form['smellRange']),
-        int(request.form['hearingRange']),
-        int(request.form['reactionTime']),
-        int(request.form['intelligence']),
-        int(request.form['selfPreservation']),
-        int(request.form['mobility']),
-        int(request.form['reproductionType']),
-        int(request.form['offspringAmount']),
-        int(request.form['motivation']),
-        int(request.form['maxEnergy']),
-        int(request.form['individualism']),
-        int(request.form['territorial']),
-        int(request.form['fightOrFlight']),
-        int(request.form['hostility']),
-        int(request.form['scent']),
-        int(request.form['stealth']),
-        int(request.form['lifeExpectancy']),
-        int(request.form['offensiveAbility']),
-        int(request.form['defensiveAbility']),
-        int(request.form['shape']),
-        int(request.form['color'])
-        )
+                                          int(request.form['maxHealth']),
+                                          receptorsList,
+                                          int(request.form['sightAbility']),
+                                          int(request.form['smellAbility']),
+                                          int(request.form['hearingAbility']),
+                                          int(request.form['sightRange']),
+                                          int(request.form['smellRange']),
+                                          int(request.form['hearingRange']),
+                                          int(request.form['reactionTime']),
+                                          int(request.form['intelligence']),
+                                          int(request.form['selfPreservation']),
+                                          int(request.form['mobility']),
+                                          int(request.form['reproductionType']),
+                                          int(request.form['offspringAmount']),
+                                          int(request.form['motivation']),
+                                          int(request.form['maxEnergy']),
+                                          int(request.form['individualism']),
+                                          int(request.form['territorial']),
+                                          int(request.form['fightOrFlight']),
+                                          int(request.form['hostility']),
+                                          int(request.form['scent']),
+                                          int(request.form['stealth']),
+                                          int(request.form['lifeExpectancy']),
+                                          int(request.form['offensiveAbility']),
+                                          int(request.form['defensiveAbility']),
+                                          int(request.form['shape']),
+                                          int(request.form['color'])
+                                          )
 
     return inputGenome
 
@@ -92,7 +93,7 @@ def deleteSpecies():
 def createNewCreature():
     initialGenome = _convertRequestToGenome(request)
     GOD.createNewCreature(request.form['speciesName'], initialGenome)
-    
+
 
 @api.route('/delete-creature', methods=['POST'])
 @cross_origin()

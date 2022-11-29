@@ -38,7 +38,7 @@ class SpeciesManager:
         self._creatureIdIncrementer = 0
         self._spawnPointXCoordinate = random.randrange(100)
         self._spawnPointYCoordinate = random.randrange(100)
-    
+
     def _getCreatureFromId(self, creatureId):
         desiredCreature = None
 
@@ -46,7 +46,7 @@ class SpeciesManager:
             if creature.id == creatureId:
                 desiredCreature = creature
                 break
-        
+
         return desiredCreature
 
     def createNewCreature(self, startingGenome):
@@ -60,12 +60,22 @@ class SpeciesManager:
         newCreatureSpawnX = self._spawnPointXCoordinate + OffsetX
         newCreatureSpawnY = self._spawnPointYCoordinate + OffsetY
 
-        newCreature = creature.Creature(startingGenome, self.speciesName, newCreatureId, newCreatureSpawnX, 
-            newCreatureSpawnY, self, self.environment)
-        
+        newCreature = creature.Creature(
+            startingGenome,
+            self.speciesName,
+            newCreatureId,
+            newCreatureSpawnX,
+            newCreatureSpawnY,
+            self,
+            self.environment)
+
         self._creatures.append(newCreature)
 
-    def createNewChild(self, startingGenome, parentXCoordinate, parentYCoordinate):
+    def createNewChild(
+            self,
+            startingGenome,
+            parentXCoordinate,
+            parentYCoordinate):
         newCreatureId = f"{self.speciesName}{self._creatureIdIncrementer}"
         self._creatureIdIncrementer += 1
 
@@ -73,9 +83,15 @@ class SpeciesManager:
         newCreatureSpawnX = parentXCoordinate + math.cos(randomDegreeOfOffset)
         newCreatureSpawnY = parentYCoordinate + math.sin(randomDegreeOfOffset)
 
-        newCreature = creature.Creature(startingGenome, self.speciesName, newCreatureId, newCreatureSpawnX,
-            newCreatureSpawnY, self, self.environment)
-        
+        newCreature = creature.Creature(
+            startingGenome,
+            self.speciesName,
+            newCreatureId,
+            newCreatureSpawnX,
+            newCreatureSpawnY,
+            self,
+            self.environment)
+
         self._creatures.append(newCreature)
 
     def massCreateMoreCreatures(self, numberOfCreatures):
@@ -112,7 +128,8 @@ class SpeciesManager:
         creatureToDelete = self._getCreatureFromId(creatureId)
 
         if creatureToDelete is None:
-            logging.info(f"There is no creature with id {creatureId} to delete")
+            logging.info(
+                f"There is no creature with id {creatureId} to delete")
         else:
             self._creatures.remove(creatureToDelete)
 
