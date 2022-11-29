@@ -73,7 +73,7 @@
     color:rgb(125, 125, 125);
 }
 
-#pauseStartButton {
+#simulationPauseStartButton {
     color:rgb(125, 125, 125);
     background-color: rgb(31, 31, 31);
     position: relative;
@@ -86,7 +86,7 @@
     font-size: 1vw;
     transition-duration: .4s;
 }
-#pauseStartButton:hover {
+#simulationPauseStartButton:hover {
     background-color: rgb(61, 61, 61);
     cursor: pointer;
 }
@@ -129,7 +129,7 @@
     border-radius: 40px;
     border:none;
     top:1vh;
-    font-size: 3vmax;
+    font-size: 2vmax;
     color:rgb(125, 125, 125);
     background-color: rgb(31, 31, 31);
     transition-duration: .4s;
@@ -146,7 +146,8 @@
     left:7.5%;
 }
 
-#simulationInformationButton {
+
+#simulationInformationButton, #simulationSaveButton, #simulationFillerButton {
 
     position: relative;
 
@@ -155,13 +156,21 @@
 
     width: 5vmin;
     height: 5vmin;
-    left: 55%;
+    left: 59%;
     top:1vh;
     color:rgb(125, 125, 125);
     border:none;
 }
 
-#simulationInformationButton:hover {
+#simulationSaveButton {
+    left:60%;
+}
+
+#simulationFillerButton {
+    left:61%;
+}
+
+#simulationInformationButton:hover, #simulationSaveButton:hover, #simulationFillerButton:hover {
     background-color: rgb(61, 61, 61);
     cursor:pointer;
 }
