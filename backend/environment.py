@@ -1,6 +1,7 @@
 import logging
 import math
 import creatures.genome
+import creatures.creature
 
 logging.basicConfig(
     level=logging.INFO,
@@ -89,4 +90,5 @@ class Environment:
         return EnvironmentInfo([], perceivableCreatures)
 
     def getRegisteredCreatures(self):
+        logging.info(f"Registry: {self.creatureRegistry}")
         return self.creatureRegistry

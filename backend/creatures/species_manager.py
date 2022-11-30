@@ -1,6 +1,6 @@
 import logging
 from enum import Enum
-import creature
+from . import creature
 import random
 import math
 

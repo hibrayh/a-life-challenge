@@ -13,6 +13,7 @@ class Animation extends React.Component {
         super(props)
 
         this.state = {
+            isSimStarted: false,
             creatureId: '',
             species: '',
             movement: 0,
@@ -25,6 +26,7 @@ class Animation extends React.Component {
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
         this.getCreatureInfo = this.getCreatureInfo.bind(this)
+        this.startSimulation = this.startSimulation.bind(this)
     }
 
     AnimateBirth(creatureId, locationX, locationY, color, shape) {
@@ -98,14 +100,108 @@ class Animation extends React.Component {
         })
     }
 
+    async startSimulation() {
+        // Start the simulation
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/start-simulation'
+        })
+
+        this.setState({isSimStarted: true})
+
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/create-new-species',
+            data: {
+                visibility: '0.5',
+                maxHealth: '0.5',
+                canSee: 'true',
+                canSmell: 'true',
+                canHear: 'true',
+                sightAbility: '0.5',
+                smellAbility: '0.5',
+                hearingAbility: '0.5',
+                sightRange: '0.5',
+                smellRange: '0.5',
+                hearingRange: '0.5',
+                reactionTime: '0.5',
+                intelligence: '0.5',
+                selfPreservation: '0.5',
+                mobility: '0.5',
+                reproductionType: 'sexual',
+                offspringAmount: '1',
+                motivation: '0.5',
+                maxEnergy: '0.5',
+                individualism: '0.5',
+                territorial: '0.5',
+                fightOrFlight: '0.5',
+                hostility: '0.5',
+                scent: '0.5',
+                stealth: '0.5',
+                lifeExpectancy: '0.5',
+                offensiveAbility: '0.5',
+                defensiveAbility: '0.5',
+                shape: 'circle',
+                color: 'red',
+                speciesName: 'Shlorpians'
+            }
+        })
+
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/create-new-creature',
+            data: {
+                visibility: '0.5',
+                maxHealth: '0.5',
+                canSee: 'true',
+                canSmell: 'true',
+                canHear: 'true',
+                sightAbility: '0.5',
+                smellAbility: '0.5',
+                hearingAbility: '0.5',
+                sightRange: '0.5',
+                smellRange: '0.5',
+                hearingRange: '0.5',
+                reactionTime: '0.5',
+                intelligence: '0.5',
+                selfPreservation: '0.5',
+                mobility: '0.5',
+                reproductionType: 'sexual',
+                offspringAmount: '1',
+                motivation: '0.5',
+                maxEnergy: '0.5',
+                individualism: '0.5',
+                territorial: '0.5',
+                fightOrFlight: '0.5',
+                hostility: '0.5',
+                scent: '0.5',
+                stealth: '0.5',
+                lifeExpectancy: '0.5',
+                offensiveAbility: '0.5',
+                defensiveAbility: '0.5',
+                shape: 'circle',
+                color: 'red',
+                speciesName: 'Shlorpians'
+            }
+        })
+
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/get-simulation-info'
+        }).then((response) => {
+            const res = response.data
+            console.log(res)
+        })
+    }
+
     render() {
-        if (this.state.creatureId === '') {
+        if (!this.state.isSimStarted) {
             return (
-                <button className="getButton" onClick={this.getCreatureInfo}>
+                <button className="getButton" onClick={this.startSimulation}>
                     Play
                 </button>
             )
-        } else if (this.state.birth === 1) {
+        } else {
             //call the animation for creating a creature element
             return (
                 <>

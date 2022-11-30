@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask_cors import CORS, cross_origin
+from flask import request
 import god
 import creatures.genome
 import creatures.species_manager
@@ -12,44 +13,50 @@ api.config["CORS_HEADERS"] = "Content-Type"
 GOD = None
 
 
-def _convertRequestToGenome(request):
+def _convertRequestToGenome(inputRequest):
     receptorsList = []
 
-    if request.form['canSee'] == 'true':
+    if inputRequest.json['canSee'] == 'true':
         receptorsList.append(creatures.genome.Receptors.VISION)
-    if request.form['canSmell'] == 'true':
+    if inputRequest.json['canSmell'] == 'true':
         receptorsList.append(creatures.genome.Receptors.SMELL)
-    if request.form['canHear'] == 'true':
+    if inputRequest.json['canHear'] == 'true':
         receptorsList.append(creatures.genome.Receptors.HEAR)
+    
+    reproType = None
+    if inputRequest.json['reproductionType'] == 'sexual':
+        reproType = creatures.genome.ReproductionType.SEXUAL
+    else:
+        reproType = creatures.genome.ReproductionType.ASEXUAL
 
-    inputGenome = creatures.genome.Genome(int(request.form['visibility']),
-                                          int(request.form['maxHealth']),
+    inputGenome = creatures.genome.Genome(float(inputRequest.json['visibility']),
+                                          float(inputRequest.json['maxHealth']),
                                           receptorsList,
-                                          int(request.form['sightAbility']),
-                                          int(request.form['smellAbility']),
-                                          int(request.form['hearingAbility']),
-                                          int(request.form['sightRange']),
-                                          int(request.form['smellRange']),
-                                          int(request.form['hearingRange']),
-                                          int(request.form['reactionTime']),
-                                          int(request.form['intelligence']),
-                                          int(request.form['selfPreservation']),
-                                          int(request.form['mobility']),
-                                          int(request.form['reproductionType']),
-                                          int(request.form['offspringAmount']),
-                                          int(request.form['motivation']),
-                                          int(request.form['maxEnergy']),
-                                          int(request.form['individualism']),
-                                          int(request.form['territorial']),
-                                          int(request.form['fightOrFlight']),
-                                          int(request.form['hostility']),
-                                          int(request.form['scent']),
-                                          int(request.form['stealth']),
-                                          int(request.form['lifeExpectancy']),
-                                          int(request.form['offensiveAbility']),
-                                          int(request.form['defensiveAbility']),
-                                          int(request.form['shape']),
-                                          int(request.form['color'])
+                                          float(inputRequest.json['sightAbility']),
+                                          float(inputRequest.json['smellAbility']),
+                                          float(inputRequest.json['hearingAbility']),
+                                          float(inputRequest.json['sightRange']),
+                                          float(inputRequest.json['smellRange']),
+                                          float(inputRequest.json['hearingRange']),
+                                          float(inputRequest.json['reactionTime']),
+                                          float(inputRequest.json['intelligence']),
+                                          float(inputRequest.json['selfPreservation']),
+                                          float(inputRequest.json['mobility']),
+                                          reproType,
+                                          float(inputRequest.json['offspringAmount']),
+                                          float(inputRequest.json['motivation']),
+                                          float(inputRequest.json['maxEnergy']),
+                                          float(inputRequest.json['individualism']),
+                                          float(inputRequest.json['territorial']),
+                                          float(inputRequest.json['fightOrFlight']),
+                                          float(inputRequest.json['hostility']),
+                                          float(inputRequest.json['scent']),
+                                          float(inputRequest.json['stealth']),
+                                          float(inputRequest.json['lifeExpectancy']),
+                                          float(inputRequest.json['offensiveAbility']),
+                                          float(inputRequest.json['defensiveAbility']),
+                                          inputRequest.json['shape'],
+                                          inputRequest.json['color']
                                           )
 
     return inputGenome
@@ -74,69 +81,88 @@ def return_dummy_info():
 
 @api.route('/start-simulation')
 def startSimulation():
+    global GOD
     GOD = god.God()
+    return "Success", 201
 
 
 @api.route('/create-new-species', methods=['POST'])
 @cross_origin()
 def createNewSpecies():
+    global GOD
     initialGenome = _convertRequestToGenome(request)
-    GOD.createNewSpecies(request.form['speciesName'], initialGenome)
+    GOD.createNewSpecies(request.json['speciesName'], initialGenome)
+    return "Success", 201
 
 
 @api.route('/delete-species', methods=['POST'])
 @cross_origin()
 def deleteSpecies():
-    GOD.deleteSpecies(request.form['speciesName'])
+    global GOD
+    GOD.deleteSpecies(request.json['speciesName'])
+    return "Success", 201
 
 
 @api.route('/create-new-creature', methods=['POST'])
 @cross_origin()
 def createNewCreature():
+    global GOD
     initialGenome = _convertRequestToGenome(request)
-    GOD.createNewCreature(request.form['speciesName'], initialGenome)
+    GOD.createNewCreature(request.json['speciesName'], initialGenome)
+    return "Success", 201
 
 
 @api.route('/delete-creature', methods=['POST'])
 @cross_origin()
 def deleteCreature():
-    GOD.deleteCreature(request.form['speciesName'], request.form['creatureId'])
+    global GOD
+    GOD.deleteCreature(request.json['speciesName'], request.json['creatureId'])
+    return "Success", 201
 
 
 @api.route('/edit-species-genome', methods=['POST'])
 @cross_origin()
 def editSpecies():
+    global GOD
     newGenome = _convertRequestToGenome(request)
-    GOD.editSpeciesGenome(request.form['speciesName'], newGenome)
+    GOD.editSpeciesGenome(request.json['speciesName'], newGenome)
+    return "Success", 201
 
 
 @api.route('/rename-species', methods=['POST'])
 @cross_origin()
 def renameSpecies():
+    global GOD
     GOD.renameSpecies(
-        request.form['originalSpeciesName'],
-        request.form['newSpeciesName'])
+        request.json['originalSpeciesName'],
+        request.json['newSpeciesName'])
+    return "Success", 201
 
 
 @api.route('/add-species-relationship', methods=['POST'])
 @cross_origin()
 def addSpeciesRelationship():
-    GOD.addSpeciesRelationship(request.form['speciesOfInterest'],
-                               request.form['newSpecies']
-                               creatures.species_manager.SpeciesRelationship(int(request.form['newRelationship'])))
+    global GOD
+    GOD.addSpeciesRelationship(request.json['speciesOfInterest'],
+                               request.json['newSpecies'],
+                               creatures.species_manager.SpeciesRelationship(int(request.json['newRelationship'])))
+    return "Success", 201
 
 
 @api.route('/editCreatureGenome', methods=['POST'])
 @cross_origin()
 def editCreatureGenome():
+    global GOD
     newGenome = _convertRequestToGenome(request)
     GOD.editCreatureGenome(
-        request.form['species'],
-        request.form['creatureId'],
+        request.json['species'],
+        request.json['creatureId'],
         newGenome)
+    return "Success", 201
 
 
 @api.route('/get-simulation-info')
 @cross_origin()
 def getSimulationInfo():
+    global GOD
     return jsonify(GOD.getSimulationInfo())
