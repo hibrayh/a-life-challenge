@@ -44,7 +44,11 @@ class God:
     def getSimulationInfo(self):
         pass
 
-    def getEnvironmentInfo(self, creatureRegistry, foodRegistry, regionTopography):
+    def getEnvironmentInfo(
+            self,
+            creatureRegistry,
+            foodRegistry,
+            regionTopography):
         logging.info("Creating new environment")
 
         self._environment.addToTopographyRegistry(self)

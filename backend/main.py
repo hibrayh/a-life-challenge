@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
-import god 
+import god
 import creatures.genome
 import environment
 
@@ -9,6 +9,7 @@ cors = CORS(api)
 api.config["CORS_HEADERS"] = "Content-Type"
 
 GOD = None
+
 
 @api.route('/main-menu')
 @api.route("/")
@@ -49,4 +50,7 @@ def startSimulation():
 
 @api.route('/environment')
 def environmentData():
-        return GOD.getEnvironmentInfo(creatureRegistry, foodRegistry, regionTopography)
+    return GOD.getEnvironmentInfo(
+        creatureRegistry,
+        foodRegistry,
+        regionTopography)
