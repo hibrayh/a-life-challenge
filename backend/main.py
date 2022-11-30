@@ -1,7 +1,9 @@
 from flask import Flask
+from flask import jsonify
 from flask_cors import CORS, cross_origin
 import god
 import creatures.genome
+import creatures.species_manager
 
 api = Flask(__name__)
 cors = CORS(api)
@@ -99,3 +101,37 @@ def createNewCreature():
 @cross_origin()
 def deleteCreature():
     GOD.deleteCreature(request.form['speciesName'], request.form['creatureId'])
+
+
+@api.route('/edit-species-genome', methods=['POST'])
+@cross_origin()
+def editSpecies():
+    newGenome = _convertRequestToGenome(request)
+    GOD.editSpeciesGenome(request.form['speciesName'], newGenome)
+
+
+@api.route('/rename-species', methods=['POST'])
+@cross_origin()
+def renameSpecies():
+    GOD.renameSpecies(request.form['originalSpeciesName'], request.form['newSpeciesName'])
+
+
+@api.route('/add-species-relationship', methods=['POST'])
+@cross_origin()
+def addSpeciesRelationship():
+    GOD.addSpeciesRelationship(request.form['speciesOfInterest'], 
+                                request.form['newSpecies']
+                                creatures.species_manager.SpeciesRelationship(int(request.form['newRelationship'])))
+
+
+@api.route('/editCreatureGenome', methods=['POST'])
+@cross_origin()
+def editCreatureGenome():
+    newGenome = _convertRequestToGenome(request)
+    GOD.editCreatureGenome(request.form['species'], request.form['creatureId'], newGenome)
+
+
+@api.route('/get-simulation-info')
+@cross_origin()
+def getSimulationInfo():
+    return jsonify(GOD.getSimulationInfo())

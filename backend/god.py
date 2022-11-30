@@ -103,4 +103,4 @@ class God:
         pass
 
     def getSimulationInfo(self):
-        pass
+        return self._environment.getRegisteredCreatures()

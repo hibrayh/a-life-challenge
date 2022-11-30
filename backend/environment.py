@@ -87,3 +87,6 @@ class Environment:
                     perceivableCreatures.append(creature)
 
         return EnvironmentInfo([], perceivableCreatures)
+    
+    def getRegisteredCreatures(self):
+        return self.creatureRegistry
