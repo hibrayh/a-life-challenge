@@ -9,7 +9,12 @@ logging.basicConfig(
 
 
 class EnvironmentInfo:
-    def __init__(self, perceivableFood, perceivableCreatures, regionTopography, lightVisibility):
+    def __init__(
+            self,
+            perceivableFood,
+            perceivableCreatures,
+            regionTopography,
+            lightVisibility):
         self.perceivableFood = perceivableFood
         self.perceivableCreatures = perceivableCreatures
         self.regionTopography = regionTopography
@@ -20,7 +25,7 @@ class Regions(Enum):
     GRASSLANDS = 1
     FOREST = 2
     MOUNTAINS = 3
-    DESERT = 4 
+    DESERT = 4
 
 
 class Environment:
