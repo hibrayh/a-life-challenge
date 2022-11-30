@@ -49,4 +49,4 @@ def startSimulation():
 
 @api.route('/environment')
 def environmentData():
-        return GOD.getEnvironmentInfo(creatureRegistry, foodRegistry, regionTopography)
+    return GOD.getEnvironmentInfo(creatureRegistry, foodRegistry, regionTopography)
