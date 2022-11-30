@@ -24,13 +24,11 @@ class Regions(Enum):
 
 
 class Environment:
-    def __init__(self, creatureRegistry, foodRegistry, regionTopography, xMax, yMax):
+    def __init__(self, creatureRegistry, foodRegistry, regionTopography):
         logging.info("Creating new environment")
         self.creatureRegistry = []
         self.foodRegistry = []
-        self.regionTopography = ['Grasslands']
-        self.xMax = 100
-        self.yMax = 100
+        self.regionTopography = regionTopography
 
     def addToTopographyRegistry(self, newTopography):
         logging.info(

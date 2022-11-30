@@ -8,6 +8,7 @@ api = Flask(__name__)
 cors = CORS(api)
 api.config["CORS_HEADERS"] = "Content-Type"
 
+GOD = None
 
 @api.route('/main-menu')
 @api.route("/")
@@ -39,3 +40,13 @@ def environment_info():
         "timeofSim": "Daytime",
     }
     return environment_details
+
+
+@api.route('/start-simulation')
+def startSimulation():
+    GOD = god.God()
+
+
+@api.route('/environment')
+def environmentData():
+        return GOD.getEnvironmentInfo(creatureRegistry, foodRegistry, regionTopography)

@@ -48,4 +48,5 @@ class God:
         logging.info("Creating new environment")
 
         self._environment.addToTopographyRegistry(self)
-
+        environmentData = self._environment([], [], 'Grasslands')
+        return environmentData
