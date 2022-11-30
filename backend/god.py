@@ -103,8 +103,14 @@ class God:
         pass
 
     def getSimulationInfo():
-        print (environment.Environment([], [], ['Grasslands'], True).getRegisteredEnvironment())
-        return environment.Environment([], [], ['Grasslands'], True).getRegisteredCreatures()
+        print(
+            environment.Environment(
+                [],
+                [],
+                ['Grasslands'],
+                True).getRegisteredEnvironment())
+        return environment.Environment(
+            [], [], ['Grasslands'], True).getRegisteredCreatures()
 
     def getEnvironmentInfo():
         logging.info("Gathering environment data")

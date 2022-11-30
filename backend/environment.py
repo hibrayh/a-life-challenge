@@ -9,7 +9,12 @@ logging.basicConfig(
 
 
 class EnvironmentInfo:
-    def __init__(self, perceivableFood, perceivableCreatures, regionTopography, lightVisibility):
+    def __init__(
+            self,
+            perceivableFood,
+            perceivableCreatures,
+            regionTopography,
+            lightVisibility):
         self.perceivableFood = perceivableFood
         self.perceivableCreatures = perceivableCreatures
         self.regionTopography = regionTopography
@@ -24,7 +29,12 @@ class Regions(Enum):
 
 
 class Environment:
-    def __init__(self, creatureRegistry, foodRegistry, topographyRegistry, lightVisibility):
+    def __init__(
+            self,
+            creatureRegistry,
+            foodRegistry,
+            topographyRegistry,
+            lightVisibility):
         logging.info("Initializing new environment")
         self.creatureRegistry = creatureRegistry
         self.foodRegistry = foodRegistry
@@ -37,7 +47,8 @@ class Environment:
         foodRegistry = []
         topographyRegistry = ['Grasslands']
         lightVisibility = True
-        return (f"Creatures: {creatureRegistry} Food Available: {foodRegistry} Topography: {topographyRegistry}  Contains Light: {lightVisibility}")
+        return (
+            f"Creatures: {creatureRegistry} Food Available: {foodRegistry} Topography: {topographyRegistry}  Contains Light: {lightVisibility}")
 
     def addTopographyToEnvironment(self, topographyRegistry):
         logging.info(
@@ -118,6 +129,7 @@ class Environment:
 
     def getRegisteredEnvironment(self):
         return self.topographyRegistry
+
 
 """ Uncomment to see return data of displayEnvironment, addTopographyToEnvironment,
     and getRegisteredEnvironment funcitons
