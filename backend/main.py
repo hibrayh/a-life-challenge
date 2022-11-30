@@ -54,4 +54,7 @@ def environmentData():
         creatureRegistry,
         foodRegistry,
         regionTopography)
-    return GOD.getEnvironmentInfo(creatureRegistry, foodRegistry, regionTopography)
+    return GOD.getEnvironmentInfo(
+        creatureRegistry,
+        foodRegistry,
+        regionTopography)
