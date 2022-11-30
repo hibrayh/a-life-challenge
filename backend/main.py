@@ -1,12 +1,15 @@
 from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
+import god 
+import creatures.genome
+import environment
 
 api = Flask(__name__)
 cors = CORS(api)
 api.config["CORS_HEADERS"] = "Content-Type"
 
 
-@api.route("/main-menu")
+@api.route('/main-menu')
 @api.route("/")
 def main_menu():
     return render_template("menu.html")

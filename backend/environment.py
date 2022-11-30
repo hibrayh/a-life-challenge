@@ -1,6 +1,7 @@
 import logging
 import math
 import creatures.genome
+from enum import Enum
 
 logging.basicConfig(
     level=logging.INFO,
@@ -8,18 +9,33 @@ logging.basicConfig(
 
 
 class EnvironmentInfo:
-    def __init__(self, perceivableFood, perceivableCreatures):
+    def __init__(self, perceivableFood, perceivableCreatures, regionTopography, lightVisibility):
         self.perceivableFood = perceivableFood
         self.perceivableCreatures = perceivableCreatures
+        self.regionTopography = regionTopography
+        self.lightVisibility = lightVisibility
+
+
+class Regions(Enum):
+    GRASSLANDS = 1
+    FOREST = 2
+    MOUNTAINS = 3
+    DESERT = 4 
 
 
 class Environment:
-    def __init__(self):
+    def __init__(self, creatureRegistry, foodRegistry, regionTopography, xMax, yMax):
         logging.info("Creating new environment")
         self.creatureRegistry = []
         self.foodRegistry = []
+        self.regionTopography = ['Grasslands']
         self.xMax = 100
         self.yMax = 100
+
+    def addToTopographyRegistry(self, newTopography):
+        logging.info(
+            f"Registering new region with topography of: {newTopography.id} into the environment")
+        self.regionTopography.append(newTopography)
 
     def addToCreatureRegistry(self, newCreature):
         logging.info(

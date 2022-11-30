@@ -1,5 +1,6 @@
 import logging
-import creatures.species_manager
+#import creatures.species_manager
+import environment
 
 logging.basicConfig(
     level=logging.INFO,
@@ -11,6 +12,7 @@ class God:
         logging.info("Initializing new God object")
 
         self._speciesManagers = []
+        self._environment = environment.Environment()
 
     def createNewSpecies(self, speciesName, startingGenome):
         pass
@@ -41,3 +43,9 @@ class God:
 
     def getSimulationInfo(self):
         pass
+
+    def getEnvironmentInfo(self, creatureRegistry, foodRegistry, regionTopography):
+        logging.info("Creating new environment")
+
+        self._environment.addToTopographyRegistry(self)
+
