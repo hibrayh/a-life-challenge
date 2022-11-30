@@ -1,6 +1,8 @@
 import logging
 from enum import Enum
 import creature
+import random
+import math
 
 logging.basicConfig(
     level=logging.INFO,
@@ -20,32 +22,116 @@ class SpeciesRelationship(Enum):
     RECEIVES_FOOD_FROM = 10
 
 
+def _sortCreaturesByInitiative(creature):
+    return creature.genome.reactionTime
+
+
 class SpeciesManager:
-    def __init__(self, speciesName, startingGenome, speciesRelationships):
+    def __init__(self, speciesName, startingGenome, environment):
         logging.info(f"Initializing new Species Manager for {speciesName}")
 
-        self._speciesName = speciesName
+        self.speciesName = speciesName
         self._startingGenome = startingGenome
         self._creatures = []
-        self._species_relations = speciesRelationships
+        self.speciesRelations = dict()
+        self.environment = environment
+        self._creatureIdIncrementer = 0
+        self._spawnPointXCoordinate = random.randrange(100)
+        self._spawnPointYCoordinate = random.randrange(100)
+
+    def _getCreatureFromId(self, creatureId):
+        desiredCreature = None
+
+        for creature in self._creatures:
+            if creature.id == creatureId:
+                desiredCreature = creature
+                break
+
+        return desiredCreature
 
     def createNewCreature(self, startingGenome):
-        pass
+        newCreatureId = f"{self.speciesName}{self._creatureIdIncrementer}"
+        self._creatureIdIncrementer += 1
+
+        randomDegreeOfOffset = math.radians(random.randrange(360))
+        randomOffsetMagnitude = random.randrange(-10, 10)
+        OffsetX = randomOffsetMagnitude * math.cos(randomDegreeOfOffset)
+        OffsetY = randomOffsetMagnitude * math.sin(randomDegreeOfOffset)
+        newCreatureSpawnX = self._spawnPointXCoordinate + OffsetX
+        newCreatureSpawnY = self._spawnPointYCoordinate + OffsetY
+
+        newCreature = creature.Creature(
+            startingGenome,
+            self.speciesName,
+            newCreatureId,
+            newCreatureSpawnX,
+            newCreatureSpawnY,
+            self,
+            self.environment)
+
+        self._creatures.append(newCreature)
+
+    def createNewChild(
+            self,
+            startingGenome,
+            parentXCoordinate,
+            parentYCoordinate):
+        newCreatureId = f"{self.speciesName}{self._creatureIdIncrementer}"
+        self._creatureIdIncrementer += 1
+
+        randomDegreeOfOffset = math.radians(random.randrange(360))
+        newCreatureSpawnX = parentXCoordinate + math.cos(randomDegreeOfOffset)
+        newCreatureSpawnY = parentYCoordinate + math.sin(randomDegreeOfOffset)
+
+        newCreature = creature.Creature(
+            startingGenome,
+            self.speciesName,
+            newCreatureId,
+            newCreatureSpawnX,
+            newCreatureSpawnY,
+            self,
+            self.environment)
+
+        self._creatures.append(newCreature)
 
     def massCreateMoreCreatures(self, numberOfCreatures):
-        pass
+        for i in range(numberOfCreatures):
+            self.createNewCreature(self._startingGenome)
+
+    def massCreateCreaturesFromGenome(self, numberOfCreatures, newGenome):
+        for i in range(numberOfCreatures):
+            self.createNewCreature(newGenome)
 
     def editSpeciesGenome(self, newGenome):
-        pass
+        self._startingGenome = newGenome
+
+        for creature in self._creatures:
+            creature.genome = newGenome
 
     def editCreatureGenome(self, creatureId, newGenome):
-        pass
+        creatureOfInterest = self._getCreatureFromId(creatureId)
+
+        if creatureOfInterest is None:
+            logging.info(f"There is no creature with id {creatureId} to edit")
+        else:
+            creatureOfInterest.genome = newGenome
 
     def renameSpecies(self, newSpeciesName):
-        pass
+        self.speciesName = newSpeciesName
+        self._creatureIdIncrementer = 0
+
+        for creature in self._creatures:
+            creature.id = f"{self.speciesName}{self._creatureIdIncrementer}"
+            self._creatureIdIncrementer += 1
 
     def deleteCreature(self, creatureId):
-        pass
+        creatureToDelete = self._getCreatureFromId(creatureId)
+
+        if creatureToDelete is None:
+            logging.info(
+                f"There is no creature with id {creatureId} to delete")
+        else:
+            self._creatures.remove(creatureToDelete)
 
     def getSpeciesInfo(self):
         pass
@@ -53,11 +139,8 @@ class SpeciesManager:
     def getCreatureInfo(self, creatureId):
         pass
 
-    def editSpeciesRelationships(self, newSpeciesRelationships):
-        pass
-
-    def addSpeciesRelationship(self, newSpeciesRelationship):
-        pass
+    def addSpeciesRelationship(self, newSpecies, newSpeciesRelationship):
+        self.speciesRelations[newSpecies] = newSpeciesRelationship
 
     def editSpeciesRelationship(self, speciesName, newRelationship):
-        pass
+        self.speciesRelations[speciesName] = newRelationship

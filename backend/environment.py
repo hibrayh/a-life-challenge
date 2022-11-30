@@ -9,12 +9,7 @@ logging.basicConfig(
 
 
 class EnvironmentInfo:
-    def __init__(
-            self,
-            perceivableFood,
-            perceivableCreatures,
-            regionTopography,
-            lightVisibility):
+    def __init__(self, perceivableFood, perceivableCreatures):
         self.perceivableFood = perceivableFood
         self.perceivableCreatures = perceivableCreatures
         self.regionTopography = regionTopography
@@ -33,7 +28,7 @@ class Environment:
         logging.info("Creating new environment")
         self.creatureRegistry = []
         self.foodRegistry = []
-        self.regionTopography = regionTopography
+        self.regionTopography = "Grasslands"
 
     def addToTopographyRegistry(self, newTopography):
         logging.info(
