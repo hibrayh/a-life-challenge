@@ -9,7 +9,7 @@ logging.basicConfig(
 
 
 class EnvironmentInfo:
-    def __init__(self, perceivableFood, perceivableCreatures):
+    def __init__(self, perceivableFood, perceivableCreatures, regionTopography, lightVisibility):
         self.perceivableFood = perceivableFood
         self.perceivableCreatures = perceivableCreatures
         self.regionTopography = regionTopography
@@ -24,16 +24,25 @@ class Regions(Enum):
 
 
 class Environment:
-    def __init__(self, creatureRegistry, foodRegistry, regionTopography):
-        logging.info("Creating new environment")
-        self.creatureRegistry = []
-        self.foodRegistry = []
-        self.regionTopography = "Grasslands"
+    def __init__(self, creatureRegistry, foodRegistry, topographyRegistry, lightVisibility):
+        logging.info("Initializing new environment")
+        self.creatureRegistry = creatureRegistry
+        self.foodRegistry = foodRegistry
+        self.topographyRegistry = topographyRegistry
+        self.lightVisibility = lightVisibility
 
-    def addToTopographyRegistry(self, newTopography):
+    def displayEnvironment():
+        #logging.info("Creating new environment")
+        creatureRegistry = []
+        foodRegistry = []
+        topographyRegistry = ['Grasslands']
+        lightVisibility = True
+        return (f"Creatures: {creatureRegistry} Food Available: {foodRegistry} Topography: {topographyRegistry}  Contains Light: {lightVisibility}")
+
+    def addTopographyToEnvironment(self, topographyRegistry):
         logging.info(
-            f"Registering new region with topography of: {newTopography.id} into the environment")
-        self.regionTopography.append(newTopography)
+            f"Registering {topographyRegistry} as a region in the Environment")
+        return self.topographyRegistry.append(topographyRegistry)
 
     def addToCreatureRegistry(self, newCreature):
         logging.info(
@@ -103,3 +112,19 @@ class Environment:
                     perceivableCreatures.append(creature)
 
         return EnvironmentInfo([], perceivableCreatures)
+
+    def getRegisteredCreatures(self):
+        return self.creatureRegistry
+
+    def getRegisteredEnvironment(self):
+        return self.topographyRegistry
+
+""" Uncomment to see return data of displayEnvironment, addTopographyToEnvironment,
+    and getRegisteredEnvironment funcitons
+if __name__ == "__main__":
+    Environment.displayEnvironment()
+    a = Environment([], [], ['Grasslands'], True)
+    a.addTopographyToEnvironment("Mountains")
+    a.addTopographyToEnvironment("Forest")
+    print(a.getRegisteredEnvironment())
+"""

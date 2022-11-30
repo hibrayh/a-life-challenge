@@ -24,3 +24,5 @@ frontend/yarn-error.log*
 
 # venv files
 backend/venv
+backend/__pycache__/environment.cpython-311.pyc
+backend/creatures/__pycache__/genome.cpython-311.pyc

@@ -1,8 +1,6 @@
 import logging
 #import creatures.species_manager
 import environment
-import environment
-import creatures.species_manager
 
 logging.basicConfig(
     level=logging.INFO,
@@ -14,7 +12,6 @@ class God:
         logging.info("Initializing new God object")
 
         self._speciesManagers = []
-        self._environment = environment.Environment()
         self._environment = environment.Environment()
 
     def _getSpeciesManagerFromName(self, speciesName):
@@ -105,16 +102,18 @@ class God:
     def getCreatureInfo(self, creatureId):
         pass
 
-    def getSimulationInfo(self):
-        pass
+    def getSimulationInfo():
+        print (environment.Environment([], [], ['Grasslands'], True).getRegisteredEnvironment())
+        return environment.Environment([], [], ['Grasslands'], True).getRegisteredCreatures()
 
-    def getEnvironmentInfo(
-            self,
-            creatureRegistry,
-            foodRegistry,
-            regionTopography):
-        logging.info("Creating new environment")
+    def getEnvironmentInfo():
+        logging.info("Gathering environment data")
+        displayEnvironmentData = environment.Environment
+        return displayEnvironmentData.displayEnvironment()
 
-        self._environment.addToTopographyRegistry(self)
-        environmentData = self._environment([], [], 'Grasslands')
-        return environmentData
+
+""" Uncomment to see return data of getEnvironmentInfo and getSimulationInfo functions
+if __name__ == "__main__":
+    print (God.getEnvironmentInfo())
+    print (God.getSimulationInfo())
+"""

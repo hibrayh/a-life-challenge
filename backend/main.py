@@ -11,12 +11,6 @@ api.config["CORS_HEADERS"] = "Content-Type"
 GOD = None
 
 
-@api.route('/main-menu')
-@api.route("/")
-def main_menu():
-    return render_template("menu.html")
-
-
 @api.route('/get-info')
 @cross_origin()
 def return_dummy_info():
