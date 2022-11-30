@@ -53,11 +53,9 @@ function App() {
     }
 
     const SimulationNavBar = () => {
-        return(
+        return (
             <>
-            
                 <div id="simulationNavBar">
-
                     <button id="simulationPauseStartButton">P</button>
                     <span id="simulationTime">2022-11-28 01:02 pm</span>
                     <span id="simulationSpeed">5.3 min/sec</span>
@@ -66,10 +64,7 @@ function App() {
                     <button id="simulationInformationButton">I</button>
                     <button id="simulationSaveButton">II</button>
                     <button id="simulationFillerButton">III</button>
-
                 </div>
-
-                
             </>
         )
     }

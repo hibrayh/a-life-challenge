@@ -59,7 +59,7 @@ class Creature:
     def __del__(self):
         logging.info(f"Unregistering {self.id} from the Environment")
         self.environment.removeFromCreatureRegistry(self)
-    
+
     def serialize(self):
         return {
             'creatureId': self.id,

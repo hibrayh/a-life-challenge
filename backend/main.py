@@ -22,7 +22,7 @@ def _convertRequestToGenome(inputRequest):
         receptorsList.append(creatures.genome.Receptors.SMELL)
     if inputRequest.json['canHear'] == 'true':
         receptorsList.append(creatures.genome.Receptors.HEAR)
-    
+
     reproType = None
     if inputRequest.json['reproductionType'] == 'sexual':
         reproType = creatures.genome.ReproductionType.SEXUAL
@@ -143,9 +143,12 @@ def renameSpecies():
 @cross_origin()
 def addSpeciesRelationship():
     global GOD
-    GOD.addSpeciesRelationship(request.json['speciesOfInterest'],
-                               request.json['newSpecies'],
-                               creatures.species_manager.SpeciesRelationship(int(request.json['newRelationship'])))
+    GOD.addSpeciesRelationship(
+        request.json['speciesOfInterest'],
+        request.json['newSpecies'],
+        creatures.species_manager.SpeciesRelationship(
+            int(
+                request.json['newRelationship'])))
     return "Success", 201
 
 

@@ -104,10 +104,10 @@ class Animation extends React.Component {
         // Start the simulation
         await axios({
             method: 'GET',
-            url: 'http://localhost:5000/start-simulation'
+            url: 'http://localhost:5000/start-simulation',
         })
 
-        this.setState({isSimStarted: true})
+        this.setState({ isSimStarted: true })
 
         await axios({
             method: 'POST',
@@ -143,8 +143,8 @@ class Animation extends React.Component {
                 defensiveAbility: '0.5',
                 shape: 'circle',
                 color: 'red',
-                speciesName: 'Shlorpians'
-            }
+                speciesName: 'Shlorpians',
+            },
         })
 
         await axios({
@@ -181,13 +181,13 @@ class Animation extends React.Component {
                 defensiveAbility: '0.5',
                 shape: 'circle',
                 color: 'red',
-                speciesName: 'Shlorpians'
-            }
+                speciesName: 'Shlorpians',
+            },
         })
 
         await axios({
             method: 'GET',
-            url: 'http://localhost:5000/get-simulation-info'
+            url: 'http://localhost:5000/get-simulation-info',
         }).then((response) => {
             const res = response.data
             console.log(res)

@@ -10,7 +10,8 @@ def installDependencies():
     os.chdir("frontend/")
     reactDepProcess = 0
     if os.name == 'nt':
-        reactDepProcess = subprocess.Popen(["npm", "install", "--force"], shell=True)
+        reactDepProcess = subprocess.Popen(
+            ["npm", "install", "--force"], shell=True)
     else:
         reactDepProcess = subprocess.Popen(["npm", "install", "--force"])
 
