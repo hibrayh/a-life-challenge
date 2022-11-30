@@ -113,22 +113,27 @@ def editSpecies():
 @api.route('/rename-species', methods=['POST'])
 @cross_origin()
 def renameSpecies():
-    GOD.renameSpecies(request.form['originalSpeciesName'], request.form['newSpeciesName'])
+    GOD.renameSpecies(
+        request.form['originalSpeciesName'],
+        request.form['newSpeciesName'])
 
 
 @api.route('/add-species-relationship', methods=['POST'])
 @cross_origin()
 def addSpeciesRelationship():
-    GOD.addSpeciesRelationship(request.form['speciesOfInterest'], 
-                                request.form['newSpecies']
-                                creatures.species_manager.SpeciesRelationship(int(request.form['newRelationship'])))
+    GOD.addSpeciesRelationship(request.form['speciesOfInterest'],
+                               request.form['newSpecies']
+                               creatures.species_manager.SpeciesRelationship(int(request.form['newRelationship'])))
 
 
 @api.route('/editCreatureGenome', methods=['POST'])
 @cross_origin()
 def editCreatureGenome():
     newGenome = _convertRequestToGenome(request)
-    GOD.editCreatureGenome(request.form['species'], request.form['creatureId'], newGenome)
+    GOD.editCreatureGenome(
+        request.form['species'],
+        request.form['creatureId'],
+        newGenome)
 
 
 @api.route('/get-simulation-info')
