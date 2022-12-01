@@ -6,6 +6,7 @@ import god
 import creatures.genome
 import creatures.species_manager
 
+
 api = Flask(__name__)
 cors = CORS(api)
 api.config["CORS_HEADERS"] = "Content-Type"

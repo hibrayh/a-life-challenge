@@ -13,12 +13,10 @@ function App() {
                 <header className="menu">
                     <h1>A-Life Challenge</h1>
                 </header>
-                {/*
-                ***************** Uncomment this block to see an example backend-connection component ******************
                 <div>
                     <DummyConnection />
                 </div>
-                */}
+
                 <div class="menu">
                     <div>
                         <button

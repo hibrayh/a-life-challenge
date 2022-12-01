@@ -1,7 +1,9 @@
 import logging
 import math
 import creatures.genome
+from enum import Enum
 import creatures.creature
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -9,9 +11,23 @@ logging.basicConfig(
 
 
 class EnvironmentInfo:
-    def __init__(self, perceivableFood, perceivableCreatures):
+    def __init__(
+            self,
+            perceivableFood,
+            perceivableCreatures,
+            regionTopography,
+            lightVisibility):
         self.perceivableFood = perceivableFood
         self.perceivableCreatures = perceivableCreatures
+        self.regionTopography = regionTopography
+        self.lightVisibility = lightVisibility
+
+
+class Regions(Enum):
+    GRASSLANDS = 1
+    FOREST = 2
+    MOUNTAINS = 3
+    DESERT = 4
 
 
 class Environment:
@@ -19,6 +35,24 @@ class Environment:
         logging.info("Creating new environment")
         self.creatureRegistry = []
         self.foodRegistry = []
+        self.topographyRegistry = []
+        self.lightVisibility = []
+
+    """
+    def displayEnvironment():
+        #logging.info("Creating new environment")
+        creatureRegistry = []
+        foodRegistry = []
+        topographyRegistry = ['Grasslands']
+        lightVisibility = True
+        return (
+            f"Creatures: {creatureRegistry} Food Available: {foodRegistry} Topography: {topographyRegistry}  Contains Light: {lightVisibility}")
+    """
+
+    def addTopographyToEnvironment(self, topography):
+        logging.info(
+            f"Registering {topography} as a region in the Environment")
+        return self.topographyRegistry.append(topography)
 
     def addToCreatureRegistry(self, newCreature):
         logging.info(
@@ -98,3 +132,17 @@ class Environment:
         return {
             "creatureRegistry": creatureList
         }
+
+    def getTopographies(self):
+        return self.topographyRegistry
+
+
+""" Uncomment to see return data of displayEnvironment, addTopographyToEnvironment,
+    and getRegisteredEnvironment funcitons
+if __name__ == "__main__":
+    Environment.displayEnvironment()
+    a = Environment([], [], ['Grasslands'], True)
+    a.addTopographyToEnvironment("Mountains")
+    a.addTopographyToEnvironment("Forest")
+    print(a.getRegisteredEnvironment())
+"""

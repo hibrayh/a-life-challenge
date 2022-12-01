@@ -102,5 +102,27 @@ class God:
     def getCreatureInfo(self, creatureId):
         pass
 
-    def getSimulationInfo(self):
+     def getSimulationInfo(self):
         return self._environment.getRegisteredCreatures()
+
+
+""" Uncomment to see return data of getEnvironmentInfo and getSimulationInfo functions
+    def getSimulationInfo():
+        print(
+            environment.Environment(
+                [],
+                [],
+                ['Grasslands'],
+                True).getRegisteredEnvironment())
+        return environment.Environment(
+            [], [], ['Grasslands'], True).getRegisteredCreatures()
+
+    def getEnvironmentInfo():
+        logging.info("Gathering environment data")
+        displayEnvironmentData = environment.Environment
+        return displayEnvironmentData.displayEnvironment()
+
+if __name__ == "__main__":
+    print (God.getEnvironmentInfo())
+    print (God.getSimulationInfo())
+"""
