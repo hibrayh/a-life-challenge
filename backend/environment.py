@@ -121,7 +121,7 @@ class Environment:
                         f"{creature.id} within the {radiusOfHearingPerception} hearing range of {creatureOfInterest.id}")
                     perceivableCreatures.append(creature)
 
-        return EnvironmentInfo([], perceivableCreatures)
+        return EnvironmentInfo([], perceivableCreatures, [], [])
 
     def getRegisteredCreatures(self):
         creatureList = []

@@ -102,7 +102,7 @@ class God:
     def getCreatureInfo(self, creatureId):
         pass
 
-     def getSimulationInfo(self):
+    def getSimulationInfo(self):
         return self._environment.getRegisteredCreatures()
 
 
