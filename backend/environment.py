@@ -2,6 +2,8 @@ import logging
 import math
 import creatures.genome
 from enum import Enum
+import creatures.creature
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -29,18 +31,14 @@ class Regions(Enum):
 
 
 class Environment:
-    def __init__(
-            self,
-            creatureRegistry,
-            foodRegistry,
-            topographyRegistry,
-            lightVisibility):
-        logging.info("Initializing new environment")
-        self.creatureRegistry = creatureRegistry
-        self.foodRegistry = foodRegistry
-        self.topographyRegistry = topographyRegistry
-        self.lightVisibility = lightVisibility
-
+    def __init__(self):
+        logging.info("Creating new environment")
+        self.creatureRegistry = []
+        self.foodRegistry = []
+        self.topographyRegistry = []
+        self.lightVisibility = []
+    
+    """
     def displayEnvironment():
         #logging.info("Creating new environment")
         creatureRegistry = []
@@ -49,11 +47,12 @@ class Environment:
         lightVisibility = True
         return (
             f"Creatures: {creatureRegistry} Food Available: {foodRegistry} Topography: {topographyRegistry}  Contains Light: {lightVisibility}")
+    """
 
-    def addTopographyToEnvironment(self, topographyRegistry):
+    def addTopographyToEnvironment(self, topography):
         logging.info(
-            f"Registering {topographyRegistry} as a region in the Environment")
-        return self.topographyRegistry.append(topographyRegistry)
+            f"Registering {topography} as a region in the Environment")
+        return self.topographyRegistry.append(topography)
 
     def addToCreatureRegistry(self, newCreature):
         logging.info(
@@ -125,9 +124,16 @@ class Environment:
         return EnvironmentInfo([], perceivableCreatures)
 
     def getRegisteredCreatures(self):
-        return self.creatureRegistry
+        creatureList = []
 
-    def getRegisteredEnvironment(self):
+        for creature in self.creatureRegistry:
+            creatureList.append(creature.serialize())
+
+        return {
+            "creatureRegistry": creatureList
+        }
+
+    def getTopographies(self):
         return self.topographyRegistry
 
 

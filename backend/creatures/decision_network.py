@@ -2,8 +2,7 @@ import logging
 from abc import ABCMeta, abstractmethod
 from enum import Enum
 import math
-import species_manager
-import genome
+from . import species_manager
 
 logging.basicConfig(
     level=logging.INFO,

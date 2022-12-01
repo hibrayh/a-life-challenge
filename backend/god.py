@@ -1,6 +1,6 @@
 import logging
-#import creatures.species_manager
 import environment
+import creatures.species_manager
 
 logging.basicConfig(
     level=logging.INFO,
@@ -17,7 +17,7 @@ class God:
     def _getSpeciesManagerFromName(self, speciesName):
         speciesManagerOfInterest = None
 
-        for speciesManager in speciesManagerOfInterest:
+        for speciesManager in self._speciesManagers:
             if speciesManager.speciesName == speciesName:
                 speciesManagerOfInterest = speciesManager
                 break
@@ -28,7 +28,7 @@ class God:
         logging.info(f"Creating new species: {speciesName}")
 
         newSpecies = creatures.species_manager.SpeciesManager(
-            speciesName, startingGenome)
+            speciesName, startingGenome, self._environment)
         self._speciesManagers.append(newSpecies)
 
     def deleteSpecies(self, speciesName):
@@ -101,7 +101,12 @@ class God:
 
     def getCreatureInfo(self, creatureId):
         pass
+    
+     def getSimulationInfo(self):
+        return self._environment.getRegisteredCreatures()
 
+
+""" Uncomment to see return data of getEnvironmentInfo and getSimulationInfo functions
     def getSimulationInfo():
         print(
             environment.Environment(
@@ -117,8 +122,6 @@ class God:
         displayEnvironmentData = environment.Environment
         return displayEnvironmentData.displayEnvironment()
 
-
-""" Uncomment to see return data of getEnvironmentInfo and getSimulationInfo functions
 if __name__ == "__main__":
     print (God.getEnvironmentInfo())
     print (God.getSimulationInfo())

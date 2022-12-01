@@ -1,10 +1,9 @@
 import logging
 import copy
 import math
-import genome
-import decision_network
-import species_manager
+from . import decision_network, species_manager, genome
 import random
+import json
 
 logging.basicConfig(
     level=logging.INFO,
@@ -45,12 +44,21 @@ class Creature:
 
         self.reactionTime = inputGenome.reactionTime * 100
 
-        logging.info(f"Registering {self.id} to the Environment")
         self.environment.addToCreatureRegistry(self)
 
     def __del__(self):
         logging.info(f"Unregistering {self.id} from the Environment")
         self.environment.removeFromCreatureRegistry(self)
+
+    def serialize(self):
+        return {
+            'creatureId': self.id,
+            'species': self.species,
+            'locationX': self.xCoordinate,
+            'locationY': self.yCoordinate,
+            'color': self.genome.color,
+            'shape': self.genome.shape
+        }
 
     def speciesRelationship(self, species):
         return self.speciesManager.speciesRelations[species]

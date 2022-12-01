@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import DummyConnection from './DummyConnection'
+import Animation from './Animation'
 
 function App() {
     const [showMenu, setShowMenu] = useState(true)
@@ -41,8 +42,27 @@ function App() {
         return (
             <>
                 <header className="menu">
-                    <h1>New page</h1>
+                    <h1>Simulation Page</h1>
                 </header>
+                <Animation />
+                <SimulationNavBar />
+            </>
+        )
+    }
+
+    const SimulationNavBar = () => {
+        return (
+            <>
+                <div id="simulationNavBar">
+                    <button id="simulationPauseStartButton">P</button>
+                    <span id="simulationTime">2022-11-28 01:02 pm</span>
+                    <span id="simulationSpeed">5.3 min/sec</span>
+                    <button id="simulationSlowDownButton">-</button>
+                    <button id="simulationSpeedUpButton">+</button>
+                    <button id="simulationInformationButton">I</button>
+                    <button id="simulationSaveButton">II</button>
+                    <button id="simulationFillerButton">III</button>
+                </div>
             </>
         )
     }
