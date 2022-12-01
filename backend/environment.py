@@ -37,7 +37,7 @@ class Environment:
         self.foodRegistry = []
         self.topographyRegistry = []
         self.lightVisibility = []
-    
+
     """
     def displayEnvironment():
         #logging.info("Creating new environment")
