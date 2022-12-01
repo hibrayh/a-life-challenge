@@ -22,6 +22,7 @@ class Animation extends React.Component {
             locationY: 0,
             shape: '',
             color: '',
+            creaturesToAnimate: []
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
@@ -107,8 +108,6 @@ class Animation extends React.Component {
             url: 'http://localhost:5000/start-simulation',
         })
 
-        this.setState({ isSimStarted: true })
-
         await axios({
             method: 'POST',
             url: 'http://localhost:5000/create-new-species',
@@ -190,7 +189,10 @@ class Animation extends React.Component {
             url: 'http://localhost:5000/get-simulation-info',
         }).then((response) => {
             const res = response.data
-            console.log(res)
+            this.setState({
+                isSimStarted: true,
+                creatures: res.creatureRegistry
+            })
         })
     }
 
@@ -202,16 +204,16 @@ class Animation extends React.Component {
                 </button>
             )
         } else {
-            //call the animation for creating a creature element
+            let creature = this.state.creatures[0]
             return (
                 <>
                     <div>
                         {this.AnimateBirth(
-                            this.state.creatureId,
-                            this.state.locationX,
-                            this.state.locationY,
-                            this.state.color,
-                            this.state.shape
+                            creature.creatureId,
+                            creature.locationX,
+                            creature.locationY,
+                            creature.color,
+                            creature.shape
                         )}
                     </div>
                 </>

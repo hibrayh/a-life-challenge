@@ -12,16 +12,6 @@ logging.basicConfig(
 MAX_MOVEMENT = 8
 
 
-class CreatureEncoder(json.JSONEncoder):
-    def default(self, obj):
-        return {
-            'creatureId': obj.id,
-            'species': obj.species,
-            'locationX': obj.xCoordinate,
-            'locationY': obj.yCoordinate
-        }
-
-
 class Creature:
     def __init__(
             self,
@@ -65,7 +55,9 @@ class Creature:
             'creatureId': self.id,
             'species': self.species,
             'locationX': self.xCoordinate,
-            'locationY': self.yCoordinate
+            'locationY': self.yCoordinate,
+            'color': self.genome.color,
+            'shape': self.genome.shape
         }
 
     def speciesRelationship(self, species):

@@ -90,5 +90,11 @@ class Environment:
         return EnvironmentInfo([], perceivableCreatures)
 
     def getRegisteredCreatures(self):
-        logging.info(f"Registry: {self.creatureRegistry}")
-        return self.creatureRegistry
+        creatureList = []
+
+        for creature in self.creatureRegistry:
+            creatureList.append(creature.serialize())
+        
+        return {
+            "creatureRegistry": creatureList
+        }
