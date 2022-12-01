@@ -94,7 +94,7 @@ class Environment:
 
         for creature in self.creatureRegistry:
             creatureList.append(creature.serialize())
-        
+
         return {
             "creatureRegistry": creatureList
         }

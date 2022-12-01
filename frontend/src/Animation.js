@@ -22,7 +22,7 @@ class Animation extends React.Component {
             locationY: 0,
             shape: '',
             color: '',
-            creaturesToAnimate: []
+            creaturesToAnimate: [],
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
@@ -191,7 +191,7 @@ class Animation extends React.Component {
             const res = response.data
             this.setState({
                 isSimStarted: true,
-                creatures: res.creatureRegistry
+                creatures: res.creatureRegistry,
             })
         })
     }
