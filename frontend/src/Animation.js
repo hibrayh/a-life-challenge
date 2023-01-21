@@ -76,7 +76,6 @@ class Animation extends React.Component {
                             easing: 'easeInOutElastic(8, 1)',
                         },
                     ]}></Anime>
-
             </>
         )
     }
@@ -90,13 +89,16 @@ class Animation extends React.Component {
                         {
                             targets: '#' + creatureId,
                             keyframes: [
-                                {translateX: '+=5', easing: 'easeInOutElastic(9, .5)', duration: 750},
-                                {opacity: '0'},
-                              ],
+                                {
+                                    translateX: '+=5',
+                                    easing: 'easeInOutElastic(9, .5)',
+                                    duration: 750,
+                                },
+                                { opacity: '0' },
+                            ],
                             easing: 'linear',
                         },
                     ]}></Anime>
-
             </>
         )
     }
@@ -110,17 +112,15 @@ class Animation extends React.Component {
                         {
                             targets: '#' + creatureId,
                             keyframes: [
-                                {opacity: '0.5', duration: 750},
-                                {opacity: '0', delay: 2000},
-                              ],
+                                { opacity: '0.5', duration: 750 },
+                                { opacity: '0', delay: 2000 },
+                            ],
                             easing: 'linear',
                         },
                     ]}></Anime>
-
             </>
         )
     }
-
 
     AnimateMovement(creatureId, locationX, locationY) {
         // Takes the creature ID and moves to to the specified X and Y location
@@ -158,7 +158,7 @@ class Animation extends React.Component {
                         borderBottomWidth: '13.0px',
                         borderRightWidth: '7.5px',
 
-                        borderTopColor: 'transparent', 
+                        borderTopColor: 'transparent',
                         borderRightColor: 'transparent',
                         borderBottomColor: color,
                         borderLeftColor: 'transparent',
@@ -190,7 +190,6 @@ class Animation extends React.Component {
                             easing: 'linear',
                         },
                     ]}></Anime>
-
             </>
         )
     }
@@ -322,7 +321,6 @@ class Animation extends React.Component {
             let creature = this.state.creatures[0]
             return (
                 <>
-
                     <div>
                         {this.AnimateBirth(
                             creature.creatureId,
@@ -332,7 +330,6 @@ class Animation extends React.Component {
                             creature.shape
                         )}
                     </div>
-                 
                 </>
             )
         }
