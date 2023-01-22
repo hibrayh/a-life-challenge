@@ -63,6 +63,65 @@ class Animation extends React.Component {
         )
     }
 
+    AnimateStarved(creatureId) {
+        // Takes the creature ID and performs the "creature starved" animation
+        return (
+            <>
+                <Anime
+                    initial={[
+                        {
+                            targets: '#' + creatureId,
+                            opacity: '0',
+                            duration: 3000,
+                            easing: 'easeInOutElastic(8, 1)',
+                        },
+                    ]}></Anime>
+            </>
+        )
+    }
+
+    AnimateKilled(creatureId) {
+        // Takes the creature ID and performs the "creature killed" animation
+        return (
+            <>
+                <Anime
+                    initial={[
+                        {
+                            targets: '#' + creatureId,
+                            keyframes: [
+                                {
+                                    translateX: '+=5',
+                                    easing: 'easeInOutElastic(9, .5)',
+                                    duration: 750,
+                                },
+                                { opacity: '0' },
+                            ],
+                            easing: 'linear',
+                        },
+                    ]}></Anime>
+            </>
+        )
+    }
+
+    AnimateOldAge(creatureId) {
+        // Takes the creature ID and performs the "creature starved" animation
+        return (
+            <>
+                <Anime
+                    initial={[
+                        {
+                            targets: '#' + creatureId,
+                            keyframes: [
+                                { opacity: '0.5', duration: 750 },
+                                { opacity: '0', delay: 2000 },
+                            ],
+                            easing: 'linear',
+                        },
+                    ]}></Anime>
+            </>
+        )
+    }
+
     AnimateMovement(creatureId, locationX, locationY) {
         // Takes the creature ID and moves to to the specified X and Y location
         return (
@@ -73,6 +132,61 @@ class Animation extends React.Component {
                             targets: '#' + creatureId,
                             left: `${locationX}px`,
                             top: `${locationY}px`,
+                            easing: 'linear',
+                        },
+                    ]}></Anime>
+            </>
+        )
+    }
+
+    AnimateResourceSpawn(resourceId, locationX, locationY, color) {
+        // Takes the resource ID, its location x and y, and color to create an element with specific animation
+        return (
+            <>
+                <div
+                    id={resourceId}
+                    style={{
+                        position: 'absolute',
+                        left: `${locationX}px`,
+                        top: `${locationY}px`,
+                        width: '0px',
+                        height: '0px',
+
+                        borderStyle: 'solid',
+                        borderTopWidth: '0px',
+                        borderLeftWidth: '7.5px',
+                        borderBottomWidth: '13.0px',
+                        borderRightWidth: '7.5px',
+
+                        borderTopColor: 'transparent',
+                        borderRightColor: 'transparent',
+                        borderBottomColor: color,
+                        borderLeftColor: 'transparent',
+                    }}
+                />
+                <Anime
+                    initial={[
+                        {
+                            targets: '#' + resourceId,
+                            scale: [0, 1],
+                            rotate: 360,
+                            easing: 'linear',
+                        },
+                    ]}></Anime>
+            </>
+        )
+    }
+
+    AnimateResourceConsumption(resourceId) {
+        // Takes the resource ID and performs the "resourcce consumed" animation
+        return (
+            <>
+                <Anime
+                    initial={[
+                        {
+                            targets: '#' + resourceId,
+                            scale: [1, 0],
+                            rotate: 360,
                             easing: 'linear',
                         },
                     ]}></Anime>
