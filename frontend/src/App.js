@@ -4,7 +4,6 @@ import DummyConnection from './DummyConnection'
 import Animation from './Animation'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
 
-
 function App() {
     const [showMenu, setShowMenu] = useState(true)
     const [showSimulation, setShowSimulation] = useState(false)
@@ -47,7 +46,6 @@ function App() {
             </>
         )
     }
-
 
     return (
         <>
