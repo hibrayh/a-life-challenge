@@ -23,3 +23,12 @@
     font-size: 6vmin;
 }
 
+/*
+I only added this to prevent my eyes from dying from the super white
+background. Feel free to change it to whatever you'd like!
+*/
+html{
+    width:100%;
+    height:100%;
+    background-color: rgb(172, 172, 172);
+}
