@@ -8,39 +8,36 @@
     color: rgb(125, 125, 125);
 }
 
-.navButton{
-    position:relative;
+.navButton {
+    position: relative;
 
     width: 5vmin;
     height: 5vmin;
     border-radius: 40px;
     border: none;
-    
+
     top: 1vh;
     font-size: 1.2vmax;
     line-height: 5.5vmin;
 
     background-color: rgb(31, 31, 31);
     color: rgb(125, 125, 125);
-    
+
     transition-duration: 0.4s;
 }
 
-.navButton:hover{
+.navButton:hover {
     background-color: rgb(61, 61, 61);
     cursor: pointer;
 }
 
-
 #pausePlayButton {
-    
     width: 6vmin;
     height: 6vmin;
     top: 0.5vh;
     left: 1%;
     line-height: 2vmin;
 }
-
 
 #currentTime {
     text-align: center;
@@ -80,9 +77,9 @@
 }
 
 #addNewCreatureOrSpeciesButton {
-    left:40%;
+    left: 40%;
 }
 
-#topographyButton{
-    left:41%; 
+#topographyButton {
+    left: 41%;
 }
