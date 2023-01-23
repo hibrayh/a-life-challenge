@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "prettier": "2.7.1"
+  },
+  "dependencies": {
+    "react-icons": "^4.7.1"
   }
 }
