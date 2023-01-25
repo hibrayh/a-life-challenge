@@ -3,6 +3,7 @@ import math
 import creatures.genome
 from enum import Enum
 import creatures.creature
+import random
 
 
 logging.basicConfig(
@@ -23,11 +24,23 @@ class EnvironmentInfo:
         self.lightVisibility = lightVisibility
 
 
-class Regions(Enum):
-    GRASSLANDS = 1
-    FOREST = 2
-    MOUNTAINS = 3
-    DESERT = 4
+class Food:
+        def __init__(self,
+                        name, 
+                        energyReplenishment, 
+                        rarity, 
+                        shape, 
+                        color, 
+                        xCoordinate, 
+                        yCoordinate):
+            logging.info("Creating food object")
+            self.name = name
+            self.energyReplenishment = energyReplenishment
+            self.rarity = rarity
+            self.shape = shape
+            self.color = color
+            self.xCoordinate = xCoordinate
+            self.yCoordinate = yCoordinate
 
 
 class Environment:
@@ -37,22 +50,17 @@ class Environment:
         self.foodRegistry = []
         self.topographyRegistry = []
         self.lightVisibility = []
-
-    """
-    def displayEnvironment():
-        #logging.info("Creating new environment")
-        creatureRegistry = []
-        foodRegistry = []
-        topographyRegistry = ['Grasslands']
-        lightVisibility = True
-        return (
-            f"Creatures: {creatureRegistry} Food Available: {foodRegistry} Topography: {topographyRegistry}  Contains Light: {lightVisibility}")
-    """
-
-    def addTopographyToEnvironment(self, topography):
+     
+    
+    def addFoodToEnvironment(self, newFood):
         logging.info(
-            f"Registering {topography} as a region in the Environment")
-        return self.topographyRegistry.append(topography)
+            f"Registering {newFood.name} to the environment")
+        return self.foodRegistry.append(newFood)
+
+    def addTopographyToEnvironment(self, newTopography):
+        logging.info(
+            f"Registering {newTopography} as a region in the environment")
+        return self.topographyRegistry.append(newTopography)
 
     def addToCreatureRegistry(self, newCreature):
         logging.info(
@@ -133,16 +141,42 @@ class Environment:
             "creatureRegistry": creatureList
         }
 
-    def getTopographies(self):
+    def getTopographyRegistry(self):
         return self.topographyRegistry
 
+    def getFoodRegistry(self):
+        return self.foodRegistry
 
-""" Uncomment to see return data of displayEnvironment, addTopographyToEnvironment,
-    and getRegisteredEnvironment funcitons
-if __name__ == "__main__":
-    Environment.displayEnvironment()
-    a = Environment([], [], ['Grasslands'], True)
-    a.addTopographyToEnvironment("Mountains")
-    a.addTopographyToEnvironment("Forest")
-    print(a.getRegisteredEnvironment())
-"""
+
+## Defining coordinates for hard coded food types
+xGrass = random.randint(0, 800)
+yGrass = random.randint(0, 600)
+xBerries = 100 
+yBerries = 50
+xFish = 50
+yFish = 550
+
+## Defining the food types based on their tuple attributes
+grass = ("Grass", 1, "Very Common", "Square", "Green", xGrass, yGrass)
+berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
+fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
+
+## Creating instances of the Food class using the tuple attributes
+grass = Food(*grass)
+berries = Food(*berries)
+fish = Food(*fish)
+
+## Create instance of Environment class and add food types to foodRegistry list
+myEnv = Environment()
+myEnv.addFoodToEnvironment(grass)
+myEnv.addFoodToEnvironment(berries)
+myEnv.addFoodToEnvironment(fish)
+
+## Example output of the food type object's attributes
+print ("Food Registry: \n", myEnv.getFoodRegistry())
+for i in myEnv.foodRegistry:
+    print(f"Food Name: {i.name}")
+    print(f"Replenishment Factor: {i.energyReplenishment}")
+    print(f"X Coord: {i.xCoordinate}")
+    print(f"Y Coord: {i.yCoordinate}")
+    print(f"Rarity: {i.rarity}")
