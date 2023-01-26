@@ -143,14 +143,12 @@ class Environment:
         logging.info("Simulating all creature actions")
 
         for creature in self.creatureRegistry.registry:
-            if creature.wasBornThisTurn:
-                creature.wasBornThisTurn = False
+            if creature.hasPerformedActionThisTurn:
+                creature.hasPerformedActionThisTurn = False
 
         for creature in self.creatureRegistry.registry:
-            if creature.wasBornThisTurn:
-                creature.wasBornThisTurn = False
-            elif creature.hasReproducedThisTurn:
-                creature.hasReproducedThisTurn = False
+            if creature.hasPerformedActionThisTurn:
+                continue
             else:
                 creature.performAction()
 

@@ -31,8 +31,7 @@ class Creature:
         self.yCoordinate = yCoordinate
         self.environment = environment
         self.lastAction = decision_network.CreatureAction.BIRTHED
-        self.hasReproducedThisTurn = False
-        self.wasBornThisTurn = True
+        self.hasPerformedActionThisTurn = True
 
         if self.genome.reproductionType == genome.ReproductionType.ASEXUAL:
             self._decisionNetwork = decision_network.DecisionNetworkAsexual()
@@ -81,7 +80,7 @@ class Creature:
     
     def notificationOfReproduction(self):
         self.lastAction = decision_network.CreatureAction.REPRODUCE
-        self.hasReproducedThisTurn = True
+        self.hasPerformedActionThisTurn = True
 
     def moveCreature(self, degreeOfMovement, distance):
         xMovement = distance * math.cos(degreeOfMovement)
@@ -238,3 +237,5 @@ class Creature:
             self.chasePrey(perceivablePrey)
         else:
             logging.info(f"{self.id} has decided to do nothing")
+        
+        self.hasPerformedActionThisTurn = True

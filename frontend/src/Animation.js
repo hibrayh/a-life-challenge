@@ -23,6 +23,7 @@ class Animation extends React.Component {
             shape: '',
             color: '',
             creaturesToAnimate: [],
+            creatures: [],
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
