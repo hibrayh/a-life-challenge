@@ -262,40 +262,16 @@ class Animation extends React.Component {
 
         await axios({
             method: 'POST',
-            url: 'http://localhost:5000/create-new-creature',
+            url: 'http://localhost:5000/mass-create-more-creatures',
             data: {
-                visibility: '0.5',
-                maxHealth: '0.5',
-                canSee: 'true',
-                canSmell: 'true',
-                canHear: 'true',
-                sightAbility: '0.5',
-                smellAbility: '0.5',
-                hearingAbility: '0.5',
-                sightRange: '0.5',
-                smellRange: '0.5',
-                hearingRange: '0.5',
-                reactionTime: '0.5',
-                intelligence: '0.5',
-                selfPreservation: '0.5',
-                mobility: '0.5',
-                reproductionType: 'sexual',
-                offspringAmount: '1',
-                motivation: '0.5',
-                maxEnergy: '0.5',
-                individualism: '0.5',
-                territorial: '0.5',
-                fightOrFlight: '0.5',
-                hostility: '0.5',
-                scent: '0.5',
-                stealth: '0.5',
-                lifeExpectancy: '0.5',
-                offensiveAbility: '0.5',
-                defensiveAbility: '0.5',
-                shape: 'circle',
-                color: 'red',
                 speciesName: 'Shlorpians',
+                numberOfNewCreatures: '2',
             },
+        })
+
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/advance-simulation',
         })
 
         await axios({

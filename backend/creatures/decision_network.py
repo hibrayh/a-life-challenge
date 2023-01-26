@@ -26,6 +26,7 @@ class CreatureAction(Enum):
     AVOID_HAZARD = 14
     SCAN_AREA = 15
     NURTURE_CREATURE = 16
+    BIRTHED = 17
 
 
 def _skew_positive(traitValue, environmentalFavorability, midPoint):
@@ -85,10 +86,11 @@ class SexualReproductionPerceptron(ActionPerceptron):
         energyWeight = .1
         immediateMatesWeight = .8
         perceivableMatesWeight = 0
-        perceivablePredatorsWeight = -1
+        perceivablePredatorsWeight = -.8
         perceivablePreyWeight = 0
         total = healthWeight + energyWeight + \
             immediateMatesWeight + perceivablePredatorsWeight
+        logging.info(f"DEBUG: total = {total}")
 
         return max(((healthWeight *
                      health) +
@@ -292,8 +294,8 @@ class DecisionNetwork(metaclass=ABCMeta):
     @abstractmethod
     def determineMostFavorableCreatureAction(
             self, creatureOfInterest, perceivableEnvironment):
-        health = creatureOfInterest.health / creatureOfInterest.maxHealth
-        energy = creatureOfInterest.energy / creatureOfInterest.maxEnergy
+        health = creatureOfInterest.currentHealth / creatureOfInterest.maxHealth
+        energy = creatureOfInterest.currentEnergy / creatureOfInterest.maxEnergy
         immediateMates = 0
         perceivableMates = 0
         perceivablePredators = 0

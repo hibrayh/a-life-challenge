@@ -1,6 +1,8 @@
 import logging
 import math
 import creatures.genome
+import creatures.decision_network
+import registry
 from enum import Enum
 import creatures.creature
 
@@ -33,7 +35,7 @@ class Regions(Enum):
 class Environment:
     def __init__(self):
         logging.info("Creating new environment")
-        self.creatureRegistry = []
+        self.creatureRegistry = registry.Registry()
         self.foodRegistry = []
         self.topographyRegistry = []
         self.lightVisibility = []
@@ -57,12 +59,12 @@ class Environment:
     def addToCreatureRegistry(self, newCreature):
         logging.info(
             f"Registering new creature with id: {newCreature.id} to the environment")
-        self.creatureRegistry.append(newCreature)
+        self.creatureRegistry.registerNewCreature(newCreature)
 
     def removeFromCreatureRegistry(self, deadCreature):
         logging.info(
             f"Removing dead creature with id: {deadCreature.id} from the environment")
-        self.creatureRegistry.remove(deadCreature)
+        self.creatureRegistry.unregisterDeadCreature(deadCreature)
 
     def returnCreaturesPerceivableEnvironment(self, creatureOfInterest):
         logging.info(
@@ -74,13 +76,13 @@ class Environment:
             radiusOfSightPerception = int(
                 creatureOfInterest.genome.sightRange * 100)
 
-            for creature in self.creatureRegistry:
+            for creature in self.creatureRegistry.registry:
                 distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
                                                        creatureOfInterest.xCoordinate) ** 2) +
                                                   (abs(creature.yCoordinate -
                                                        creatureOfInterest.yCoordinate) ** 2)))
 
-                if ((distanceFromCreature <= radiusOfSightPerception and distanceFromCreature > 0) and (
+                if ((distanceFromCreature <= radiusOfSightPerception and creature != creatureOfInterest) and (
                         creatureOfInterest.genome.sightAbility >= (1 - creature.genome.visibility))):
 
                     logging.info(
@@ -91,13 +93,13 @@ class Environment:
             radiusOfSmellPerception = int(
                 creatureOfInterest.genome.smellRange * 100)
 
-            for creature in self.creatureRegistry:
+            for creature in self.creatureRegistry.registry:
                 distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
                                                        creatureOfInterest.xCoordinate) ** 2) +
                                                   (abs(creature.yCoordinate -
                                                        creatureOfInterest.yCoordinate) ** 2)))
 
-                if ((distanceFromCreature <= radiusOfSmellPerception and distanceFromCreature > 0)
+                if ((distanceFromCreature <= radiusOfSmellPerception and creature != creatureOfInterest)
                     and (creatureOfInterest.genome.smellAbility >= (1 - creature.genome.scent))
                         and (creature not in perceivableCreatures)):
 
@@ -109,11 +111,11 @@ class Environment:
             radiusOfHearingPerception = int(
                 1 * (creatureOfInterest.genome.hearingRange * 100))
 
-            for creature in self.creatureRegistry:
+            for creature in self.creatureRegistry.registry:
                 distanceFromCreature = int(
                     creatureOfInterest.genome.hearingAbility * 100)
 
-                if ((distanceFromCreature <= radiusOfHearingPerception and distanceFromCreature > 0)
+                if ((distanceFromCreature <= radiusOfHearingPerception and creature != creatureOfInterest)
                     and (creatureOfInterest.genome.hearingAbility >= creature.genome.stealth)
                         and (creature not in perceivableCreatures)):
 
@@ -126,7 +128,7 @@ class Environment:
     def getRegisteredCreatures(self):
         creatureList = []
 
-        for creature in self.creatureRegistry:
+        for creature in self.creatureRegistry.registry:
             creatureList.append(creature.serialize())
 
         return {
@@ -135,10 +137,26 @@ class Environment:
 
     def getTopographies(self):
         return self.topographyRegistry
+    
+    def simulateCreatureBehavior(self):
+        # Go through each creature, in order of reaction time, and let them decide and perform their actions
+        logging.info("Simulating all creature actions")
+
+        for creature in self.creatureRegistry.registry:
+            if creature.wasBornThisTurn:
+                creature.wasBornThisTurn = False
+
+        for creature in self.creatureRegistry.registry:
+            if creature.wasBornThisTurn:
+                creature.wasBornThisTurn = False
+            elif creature.hasReproducedThisTurn:
+                creature.hasReproducedThisTurn = False
+            else:
+                creature.performAction()
 
 
 """ Uncomment to see return data of displayEnvironment, addTopographyToEnvironment,
-    and getRegisteredEnvironment funcitons
+    and getRegisteredEnvironment functions
 if __name__ == "__main__":
     Environment.displayEnvironment()
     a = Environment([], [], ['Grasslands'], True)
