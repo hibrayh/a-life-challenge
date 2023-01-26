@@ -80,8 +80,10 @@ class SpeciesManager:
         self._creatureIdIncrementer += 1
 
         randomDegreeOfOffset = math.radians(random.randrange(360))
-        newCreatureSpawnX = parentXCoordinate + (math.cos(randomDegreeOfOffset) * 25)
-        newCreatureSpawnY = parentYCoordinate + (math.sin(randomDegreeOfOffset) * 25)
+        newCreatureSpawnX = parentXCoordinate + \
+            (math.cos(randomDegreeOfOffset) * 25)
+        newCreatureSpawnY = parentYCoordinate + \
+            (math.sin(randomDegreeOfOffset) * 25)
 
         newCreature = creature.Creature(
             startingGenome,
@@ -95,7 +97,8 @@ class SpeciesManager:
         self._creatures.append(newCreature)
 
     def massCreateMoreCreatures(self, numberOfCreatures):
-        logging.info(f"Mass creating {numberOfCreatures} new {self.speciesName} creatures")
+        logging.info(
+            f"Mass creating {numberOfCreatures} new {self.speciesName} creatures")
 
         for i in range(numberOfCreatures):
             self.createNewCreature(self._startingGenome)

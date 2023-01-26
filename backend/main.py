@@ -117,7 +117,9 @@ def createNewCreature():
 @cross_origin()
 def massCreateMoreCreatures():
     global GOD
-    GOD.massCreateCreatures(request.json['speciesName'], int(request.json['numberOfNewCreatures']))
+    GOD.massCreateCreatures(
+        request.json['speciesName'], int(
+            request.json['numberOfNewCreatures']))
     return "Success", 201
 
 

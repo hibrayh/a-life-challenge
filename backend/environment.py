@@ -137,9 +137,10 @@ class Environment:
 
     def getTopographies(self):
         return self.topographyRegistry
-    
+
     def simulateCreatureBehavior(self):
-        # Go through each creature, in order of reaction time, and let them decide and perform their actions
+        # Go through each creature, in order of reaction time, and let them
+        # decide and perform their actions
         logging.info("Simulating all creature actions")
 
         for creature in self.creatureRegistry.registry:

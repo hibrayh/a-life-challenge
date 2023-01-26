@@ -68,16 +68,18 @@ class Creature:
     def reproduceAsexual(self):
         logging.info(f"{self.id} reproducing asexually")
         childGenome = genome.createNewGenomeAsexual(self.genome)
-        self.speciesManager.createNewChild(childGenome, self.xCoordinate, self.yCoordinate)
+        self.speciesManager.createNewChild(
+            childGenome, self.xCoordinate, self.yCoordinate)
         self.lastAction = decision_network.CreatureAction.REPRODUCE
 
     def reproduceSexual(self, otherParent):
         logging.info(f"{self.id} reproducing sexually with {otherParent.id}")
         childGenome = genome.createNewGenomeSexual(
             self.genome, otherParent.genome)
-        self.speciesManager.createNewChild(childGenome, self.xCoordinate, self.yCoordinate)
+        self.speciesManager.createNewChild(
+            childGenome, self.xCoordinate, self.yCoordinate)
         self.lastAction = decision_network.CreatureAction.REPRODUCE
-    
+
     def notificationOfReproduction(self):
         self.lastAction = decision_network.CreatureAction.REPRODUCE
         self.hasPerformedActionThisTurn = True
@@ -123,7 +125,7 @@ class Creature:
 
             logging.info(f"{self.id} moving towards potential mate")
             self.moveCreature(degreeOfMovement, movementLength)
-        
+
         self.lastAction = decision_network.CreatureAction.SEARCH_FOR_MATE
 
     def fleeFromPredator(self, perceivablePredators):
@@ -152,7 +154,7 @@ class Creature:
             movementLength = self.genome.mobility * MAX_MOVEMENT
             logging.info(f"{self.id} fleeing from predator")
             self.moveCreature(degreeOfMovement, movementLength)
-        
+
         self.lastAction = decision_network.CreatureAction.FLEE_FROM_CREATURE
 
     def chasePrey(self, perceivablePrey):
@@ -180,7 +182,7 @@ class Creature:
                 closestPreyDistance - 1)
             logging.info(f"{self.id} chasing prey")
             self.moveCreature(degreeOfMovement, movementLength)
-        
+
         self.lastAction = decision_network.CreatureAction.CHASE_A_CREATURE
 
     def performAction(self):
@@ -197,15 +199,17 @@ class Creature:
             else:
                 distances = []
                 for creature in perceivableEnvironment.perceivableCreatures:
-                    if (creature.species == self.species) and (creature.lastAction != decision_network.CreatureAction.REPRODUCE):
+                    if (creature.species == self.species) and (
+                            creature.lastAction != decision_network.CreatureAction.REPRODUCE):
                         distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
                                                                self.xCoordinate) ** 2) +
                                                           (abs(creature.yCoordinate -
                                                                self.yCoordinate) ** 2)))
                         distances.append(distanceFromCreature)
-                
+
                 if len(distances) == 0:
-                    logging.info("No creature nearby to reproduce with (REMOVE THIS FUNCTIONALITY AFTER DECISION NETWORK IS FULLY IMPLEMENTED)")
+                    logging.info(
+                        "No creature nearby to reproduce with (REMOVE THIS FUNCTIONALITY AFTER DECISION NETWORK IS FULLY IMPLEMENTED)")
                 else:
                     self.reproduceSexual(
                         perceivableEnvironment.perceivableCreatures[distances.index(min(distances))])
@@ -237,5 +241,5 @@ class Creature:
             self.chasePrey(perceivablePrey)
         else:
             logging.info(f"{self.id} has decided to do nothing")
-        
+
         self.hasPerformedActionThisTurn = True

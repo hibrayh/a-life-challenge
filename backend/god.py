@@ -79,14 +79,15 @@ class God:
             logging.info("Could not find species to add creature to")
         else:
             speciesManagerOfInterest.createNewCreature(startingGenome)
-    
+
     def massCreateCreatures(self, speciesName, numberOfNewCreatures):
         speciesManagerOfInterest = self._getSpeciesManagerFromName(speciesName)
 
         if speciesManagerOfInterest is None:
             logging.info("Could not find species to mass spawn creatures")
         else:
-            speciesManagerOfInterest.massCreateMoreCreatures(numberOfNewCreatures)
+            speciesManagerOfInterest.massCreateMoreCreatures(
+                numberOfNewCreatures)
 
     def deleteCreature(self, speciesName, creatureId):
         speciesManagerOfInterest = self._getSpeciesManagerFromName(speciesName)
@@ -112,7 +113,7 @@ class God:
 
     def getSimulationInfo(self):
         return self._environment.getRegisteredCreatures()
-    
+
     def advanceSimulation(self):
         logging.info("Advancing simulation by a tick")
         self._environment.simulateCreatureBehavior()

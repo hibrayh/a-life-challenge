@@ -20,18 +20,20 @@ class Registry:
                 break
             else:
                 i += 1
-        
-        logging.info(f"Adding new creature with id {newCreature.id} to registry at index {i}")
-        
+
+        logging.info(
+            f"Adding new creature with id {newCreature.id} to registry at index {i}")
+
         if (i + 1) >= len(self.registry):
             self.registry.append(newCreature)
         else:
             self.registry.insert(i, newCreature)
-    
+
     def unregisterDeadCreature(self, deadCreature):
-        logging.info(f"Removing creature with id {deadCreature.id} from registry")
+        logging.info(
+            f"Removing creature with id {deadCreature.id} from registry")
         self.registry.remove(deadCreature)
-    
+
     def getCreatureAt(self, index):
         if index >= len(self.registry):
             raise Exception("Index out of bounds")
