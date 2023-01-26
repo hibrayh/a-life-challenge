@@ -42,8 +42,9 @@ class Food:
         self.xCoordinate = xCoordinate
         self.yCoordinate = yCoordinate
 
-    ## This is almost identical to Brendens serialize function in creatures file.
-    ## I assume that the foodRegistry will need to be displayed under simulation info as well. 
+    # This is almost identical to Brendens serialize function in creatures file.
+    # I assume that the foodRegistry will need to be displayed under
+    # simulation info as well.
     def logFoodObject(self):
         return {
             'foodName': self.name,
@@ -52,11 +53,23 @@ class Food:
             'locationY': self.yCoordinate,
             'color': self.color,
             'shape': self.shape,
-            'energyReplenishment' : self.energyReplenishment
+            'energyReplenishment': self.energyReplenishment
         }
 
+
 # The 3 hard coded food types to be displayed in the environment
-grass = ("Grass", 1, "Very Common", "Square", "Green", random.randint(0,50), random.randint(0,50))
+grass = (
+    "Grass",
+    1,
+    "Very Common",
+    "Square",
+    "Green",
+    random.randint(
+        0,
+        50),
+    random.randint(
+        0,
+        50))
 berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
 fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
 
@@ -166,9 +179,10 @@ class Environment:
         for food in self.foodRegistry:
             foodList.append(food.logFoodObject())
 
-        return { 
+        return {
             "foodRegistry": foodList
         }
+
 
 """
 # Creating instances of the Food class using the tuple attributes
