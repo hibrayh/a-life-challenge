@@ -113,6 +113,16 @@ def createNewCreature():
     return "Success", 201
 
 
+@api.route('/mass-create-more-creatures', methods=['POST'])
+@cross_origin()
+def massCreateMoreCreatures():
+    global GOD
+    GOD.massCreateCreatures(
+        request.json['speciesName'], int(
+            request.json['numberOfNewCreatures']))
+    return "Success", 201
+
+
 @api.route('/delete-creature', methods=['POST'])
 @cross_origin()
 def deleteCreature():
@@ -153,7 +163,7 @@ def addSpeciesRelationship():
     return "Success", 201
 
 
-@api.route('/editCreatureGenome', methods=['POST'])
+@api.route('/edit-creature-genome', methods=['POST'])
 @cross_origin()
 def editCreatureGenome():
     global GOD
@@ -170,3 +180,11 @@ def editCreatureGenome():
 def getSimulationInfo():
     global GOD
     return jsonify(GOD.getSimulationInfo())
+
+
+@api.route('/advance-simulation')
+@cross_origin()
+def advanceSimulation():
+    global GOD
+    GOD.advanceSimulation()
+    return "Success", 201
