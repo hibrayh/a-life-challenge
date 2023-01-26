@@ -3,7 +3,7 @@ import React from 'react'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
 
-function NewCreatureForm(props){
+function NewSpeciesForm(props){
 
     const [visibility, setVisibility] = useState(.5)
     const [maxHealth, setMaxHealth] = useState(.5)
@@ -41,7 +41,7 @@ function NewCreatureForm(props){
         return(
             <div id="newCreatureForm">
                 <button onClick={props.toggleNewCreatureForm} className="formExitButton"><FaTimes /></button>
-                <h3 id="createCreatureTitle">Create New Creature</h3>
+                <h3 id="createCreatureTitle">Create New Species</h3>
 
                 <form id="newCreatureData">
 
@@ -298,7 +298,8 @@ function NewCreatureForm(props){
 
         function handleCancel(event){
             event.preventDefault()
-            props.toggleNewCreatureForm()
+            props.toggleNewSpeciesForm()
+            console.log("ahh")
         }
 
     }
@@ -307,29 +308,5 @@ function NewCreatureForm(props){
 }
 
 
-function NewCreatureOrSpeciesForm(props){
 
-
-    if(props.show){
-        return(
-            <div id="newCreatureOrSpeciesForm">
-                <h1 id="creatureOrSpeciesFormTitle">I would you like to...</h1>
-                <button onClick={props.toggleCreatureOrSpeciesForm} className="formExitButton"><FaTimes /></button>
-                <button onClick={() => {
-                    props.toggleNewCreatureForm();
-                    props.toggleCreatureOrSpeciesForm();
-                }} 
-                className="creatureSpeciesFormButton" id="createNewCreatureButton">Create New Creature</button>
-                <button onClick={() => {
-                    props.toggleNewSpeciesForm();
-                    props.toggleCreatureOrSpeciesForm();
-                }}
-                className="creatureSpeciesFormButton" id="createNewSpeciesButton">Create New Species</button>
-            </div>
-        )
-    }
-
-}
-
-
-export {NewCreatureForm, NewCreatureOrSpeciesForm}
+export default NewSpeciesForm

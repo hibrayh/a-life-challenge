@@ -62,14 +62,18 @@
 }
 
 #newCreatureForm{
+    z-index: 5;
     position:absolute;
     width:60vmin;
-    height:90vmin;
-
+    
+    height:fit-content;
+    min-height:750px;
     background-color: rgb(31, 31, 31);
 
     left:calc(50% - 30vmin);
-    top:calc(50% - 49vmin);
+    top:calc(50% - 49vmin)
+    
+    
     
 }
 
@@ -77,29 +81,84 @@
     font-size: 1.5vmax;
     color: rgb(238, 238, 238);
     text-align: center;
+    position:relative;
+    bottom:10px;
 }
 
 #newCreatureData{
+    
     position:relative;
-    left:15px;
-    display:inline;
+    bottom:10px;
+    
+    
 }
 
 .dataTitle{
     color:rgb(238,238,238);
-    font-size:.9vmax;
-    margin-right:3vmin;
+    font-size:.7vmax;
+    padding-left:15px;
 }
 
 .dataSlider{
     width:12vmin;
+    position:absolute;
+    left:17vmin;
+    height:-10px;
 }
 
 .dataText{
+    position:absolute;
+    left:32vmin;
     width:4vmin;
     font-size: .6vmax;
 }
 
 .dropDownOption{
-    width:150px;
+    position:absolute;
+    left:17vmin;
+    width:12vmin;
+    font-size: .7vmax;
 }
+
+.dataCheckbox{
+    position:absolute;
+    left:17vmin;
+}
+
+.attributeHolder{
+    
+    width:100%;
+    
+    
+    
+    padding-top:2px;
+    padding-bottom:2px;
+}
+
+.formButton{
+    border-radius:20px;
+    border:none;
+    height:3vmin;
+    width:7vmin;
+}
+
+.formButton:hover{
+    opacity:60%;
+}
+
+#buttonContainer{
+    position:relative;
+    left:calc(50% - 7vmin);
+    margin-top:5px;
+}
+
+#submitButton{
+    background-color: rgb(0, 209, 0);
+    margin-right:8px;
+}
+
+#cancelButton{
+    background-color: rgb(255, 0, 0);
+    margin-left:8px;
+}
+

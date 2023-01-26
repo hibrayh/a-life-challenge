@@ -12,22 +12,30 @@ import { FaFileAlt } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
 import {NewCreatureForm} from './NewCreatureForm.js'
 import {NewCreatureOrSpeciesForm} from './NewCreatureForm.js'
+import NewSpeciesForm from './NewSpeciesForm.js'
+
 
 function SimulationNavBar() {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] = useState(false)
     const [showNewCreatureForm, setShowNewCreatureForm] = useState(false)
-
+    const [showNewSpeciesForm, setShowNewSpeciesForm] = useState(false)
 
     return (
         <div>
             <NewCreatureOrSpeciesForm 
                 toggleNewCreatureForm={toggleNewCreatureForm} 
+                toggleNewSpeciesForm={toggleNewSpeciesForm}
                 toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm} 
                 show={showCreatureOrSpeciesForm}
             />
             <NewCreatureForm 
                 show={showNewCreatureForm} 
                 toggleNewCreatureForm={toggleNewCreatureForm} 
+            />
+
+            <NewSpeciesForm 
+                show={showNewSpeciesForm}
+                toggleNewSpeciesForm={toggleNewSpeciesForm}
             />
 
             <div id="simulationNavBar">
@@ -44,7 +52,9 @@ function SimulationNavBar() {
 
                 <AddNewCreatureOrSpeciesButton 
                     toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm} 
-                    closeNewCreatureForm={closeNewCreatureForm} 
+                    closeNewCreatureForm={closeNewCreatureForm}
+                    toggleNewSpeciesForm={toggleNewSpeciesForm}
+                    closeNewSpeciesForm={closeNewSpeciesForm} 
                 />
 
                 <TopographyButton />
@@ -63,6 +73,15 @@ function SimulationNavBar() {
 
     function closeNewCreatureForm(){
         setShowNewCreatureForm(false)
+    }
+
+
+    function toggleNewSpeciesForm(){
+        setShowNewSpeciesForm(!showNewSpeciesForm)
+    }
+
+    function closeNewSpeciesForm(){
+        setShowNewSpeciesForm(false)
     }
 }
 
@@ -101,6 +120,11 @@ function PausePlayButton(props) {
 
     function handleClick() {
         setShowPlayButton(!showPlayButton)
+
+        // if the play button has been pressed, start the simulation
+        if(!showPlayButton){
+            //props.startSimulation()
+        }
     }
 
     if (showPlayButton) {
