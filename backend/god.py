@@ -103,4 +103,7 @@ class God:
         pass
 
     def getSimulationInfo(self):
-        return self._environment.getRegisteredCreatures()
+        return (self._environment.getRegisteredCreatures())
+
+    def getEnvironmentInfo(self):
+        return (self._environment.getFoodRegistry())

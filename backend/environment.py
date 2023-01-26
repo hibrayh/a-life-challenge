@@ -42,6 +42,24 @@ class Food:
         self.xCoordinate = xCoordinate
         self.yCoordinate = yCoordinate
 
+    ## This is almost identical to Brendens serialize function in creatures file.
+    ## I assume that the foodRegistry will need to be displayed under simulation info as well. 
+    def logFoodObject(self):
+        return {
+            'foodName': self.name,
+            'rarity': self.rarity,
+            'locationX': self.xCoordinate,
+            'locationY': self.yCoordinate,
+            'color': self.color,
+            'shape': self.shape,
+            'energyReplenishment' : self.energyReplenishment
+        }
+
+# The 3 hard coded food types to be displayed in the environment
+grass = ("Grass", 1, "Very Common", "Square", "Green", random.randint(0,50), random.randint(0,50))
+berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
+fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
+
 
 class Environment:
     def __init__(self):
@@ -51,12 +69,12 @@ class Environment:
         self.topographyRegistry = []
         self.lightVisibility = []
 
-    def addFoodToEnvironment(self, newFood):
+    def addToFoodRegistry(self, newFood):
         logging.info(
             f"Registering {newFood.name} to the environment")
         return self.foodRegistry.append(newFood)
 
-    def addTopographyToEnvironment(self, newTopography):
+    def addToTopographyRegistry(self, newTopography):
         logging.info(
             f"Registering {newTopography} as a region in the environment")
         return self.topographyRegistry.append(newTopography)
@@ -144,38 +162,25 @@ class Environment:
         return self.topographyRegistry
 
     def getFoodRegistry(self):
-        return self.foodRegistry
+        foodList = []
+        for food in self.foodRegistry:
+            foodList.append(food.logFoodObject())
 
+        return { 
+            "foodRegistry": foodList
+        }
 
-# Defining coordinates for hard coded food types
-xGrass = random.randint(0, 800)
-yGrass = random.randint(0, 600)
-xBerries = 100
-yBerries = 50
-xFish = 50
-yFish = 550
-
-# Defining the food types based on their tuple attributes
-grass = ("Grass", 1, "Very Common", "Square", "Green", xGrass, yGrass)
-berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
-fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
-
+"""
 # Creating instances of the Food class using the tuple attributes
 grass = Food(*grass)
 berries = Food(*berries)
 fish = Food(*fish)
 
 # Create instance of Environment class and add food types to foodRegistry list
+# Test to see if food types are added into registry
 myEnv = Environment()
-myEnv.addFoodToEnvironment(grass)
-myEnv.addFoodToEnvironment(berries)
-myEnv.addFoodToEnvironment(fish)
-
-# Example output of the food type object's attributes
-print("Food Registry: \n", myEnv.getFoodRegistry())
-for i in myEnv.foodRegistry:
-    print(f"Food Name: {i.name}")
-    print(f"Replenishment Factor: {i.energyReplenishment}")
-    print(f"X Coord: {i.xCoordinate}")
-    print(f"Y Coord: {i.yCoordinate}")
-    print(f"Rarity: {i.rarity}")
+myEnv.addToFoodRegistry(grass)
+myEnv.addToFoodRegistry(berries)
+myEnv.addToFoodRegistry(fish)
+print(myEnv.getFoodRegistry())
+"""
