@@ -10,6 +10,8 @@ import { FaFastBackward } from 'react-icons/fa'
 import { FaTree } from 'react-icons/fa'
 import { FaFileAlt } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
+import {NewCreatureForm} from './NewCreatureForm.js'
+import {NewCreatureOrSpeciesForm} from './NewCreatureForm.js'
 
 function SimulationNavBar() {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] = useState(false)
@@ -64,38 +66,7 @@ function SimulationNavBar() {
     }
 }
 
-function NewCreatureForm(props){
 
-
-    if(props.show){
-        return(
-            <div id="newCreatureForm">
-
-            </div>
-        )
-    }
-}
-
-
-function NewCreatureOrSpeciesForm(props){
-
-
-    if(props.show){
-        return(
-            <div id="newCreatureOrSpeciesForm">
-                <h1 id="creatureOrSpeciesFormTitle">I would you like to...</h1>
-                <button onClick={props.toggleCreatureOrSpeciesForm} className="formExitButton"><FaTimes /></button>
-                <button onClick={() => {
-                    props.toggleNewCreatureForm();
-                    props.toggleCreatureOrSpeciesForm();
-                    }} 
-                className="creatureSpeciesFormButton" id="createNewCreatureButton">Create New Creature</button>
-                <button className="creatureSpeciesFormButton" id="createNewSpeciesButton">Create New Species</button>
-            </div>
-        )
-    }
-
-}
 
 function TopographyButton(props) {
     return (

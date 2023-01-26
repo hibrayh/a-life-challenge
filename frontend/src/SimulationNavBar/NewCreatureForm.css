@@ -1,0 +1,105 @@
+#newCreatureOrSpeciesForm {
+    position:relative;
+    background-color: rgb(36, 36, 36);
+    width:60vmin;
+    height:25vmin;
+    left:calc(50% - 30vmin);
+    top:10vmin;
+    
+}
+
+.creatureSpeciesFormButton {
+    position:relative;
+
+    background-color: rgb(31, 31, 31);
+    color: rgb(125, 125, 125);
+    border-radius:10px;
+    border:1px solid rgb(61, 61, 61);
+
+    width:20vmin;
+    height:10vmin;
+
+    top:calc(50% - 9vmin);
+    left:calc(50% - 23.5vmin);
+
+    font-size: 1.2vmax;
+    
+
+    transition-duration: 0.4s;
+}
+
+#createNewCreatureButton{
+    margin-right:6vmin;
+}
+
+#creatureOrSpeciesFormTitle {
+    color:white;
+    position:relative;
+    top:20px;
+    
+    font-size: 1.5vmax;
+    color: rgb(216, 215, 215);
+   
+    text-align: center;
+}
+
+.formExitButton {
+    width:3.5vmin;
+    height:2.5vmin;
+    line-height: 2.7vmin;
+    font-size: .8vmax;
+
+    background-color: rgb(31, 31, 31);
+    color: rgb(125, 125, 125);
+    border:none;
+    
+
+    position:absolute;
+    right:7px;
+    top:7px;
+    
+    
+}
+
+#newCreatureForm{
+    position:absolute;
+    width:60vmin;
+    height:90vmin;
+
+    background-color: rgb(31, 31, 31);
+
+    left:calc(50% - 30vmin);
+    top:calc(50% - 49vmin);
+    
+}
+
+#createCreatureTitle{
+    font-size: 1.5vmax;
+    color: rgb(238, 238, 238);
+    text-align: center;
+}
+
+#newCreatureData{
+    position:relative;
+    left:15px;
+    display:inline;
+}
+
+.dataTitle{
+    color:rgb(238,238,238);
+    font-size:.9vmax;
+    margin-right:3vmin;
+}
+
+.dataSlider{
+    width:12vmin;
+}
+
+.dataText{
+    width:4vmin;
+    font-size: .6vmax;
+}
+
+.dropDownOption{
+    width:150px;
+}
