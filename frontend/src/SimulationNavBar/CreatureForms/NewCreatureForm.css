@@ -61,7 +61,7 @@
     
 }
 
-#newCreatureForm{
+.newCreatureOrSpeciesForm{
     z-index: 5;
     position:absolute;
     width:60vmin;
@@ -77,7 +77,7 @@
     
 }
 
-#createCreatureTitle{
+.createCreatureOrSpeciesTitle{
     font-size: 1.5vmax;
     color: rgb(238, 238, 238);
     text-align: center;
@@ -85,7 +85,7 @@
     bottom:10px;
 }
 
-#newCreatureData{
+.newCreatureOrSpeciesData{
     
     position:relative;
     bottom:10px;
@@ -162,3 +162,9 @@
     margin-left:8px;
 }
 
+.dataTextBox{
+    position:absolute;
+    left:17vmin;
+    width:12vmin;
+    font-size: .7vmax;
+}

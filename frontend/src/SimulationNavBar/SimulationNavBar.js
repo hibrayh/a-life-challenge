@@ -10,9 +10,10 @@ import { FaFastBackward } from 'react-icons/fa'
 import { FaTree } from 'react-icons/fa'
 import { FaFileAlt } from 'react-icons/fa'
 import { FaTimes } from 'react-icons/fa'
-import {NewCreatureForm} from './NewCreatureForm.js'
-import {NewCreatureOrSpeciesForm} from './NewCreatureForm.js'
-import NewSpeciesForm from './NewSpeciesForm.js'
+import { FaSave } from 'react-icons/fa'
+import {NewCreatureForm} from './CreatureForms/NewCreatureForm.js'
+import {NewCreatureOrSpeciesForm} from './CreatureForms/NewCreatureForm.js'
+import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 
 
 function SimulationNavBar() {
@@ -59,6 +60,10 @@ function SimulationNavBar() {
 
                 <TopographyButton />
 
+                <StatsButton />
+
+                <SaveButton />
+
             </div>
         </div>
     )
@@ -86,13 +91,27 @@ function SimulationNavBar() {
 }
 
 
+function StatsButton(props){
+
+    return(
+        <button id="statsButton" className="navButton" title="Stats Page"><FaFileAlt /></button>
+    )
+}
+
+function SaveButton(props){
+
+    return(
+        <button id="saveButton" className="navButton" title="Save"><FaSave /></button>
+    )
+}
 
 function TopographyButton(props) {
     return (
         <button
             onClick={handleClick}
             id="topographyButton"
-            className="navButton">
+            className="navButton"
+            title="Topography">
             <FaTree />
         </button>
     )
@@ -106,9 +125,11 @@ function AddNewCreatureOrSpeciesButton(props) {
             onClick={() => {
                 props.toggleCreatureOrSpeciesForm();
                 props.closeNewCreatureForm();
+                props.closeNewSpeciesForm();
             }}
             id="addNewCreatureOrSpeciesButton"
-            className="navButton">
+            className="navButton"
+            title="Create New Creature/Species">
             <FaPlus />
         </button>
     )
@@ -158,7 +179,7 @@ function CurrentSpeed(props) {
 
 function SpeedUpButton(props) {
     return (
-        <button onClick={handleClick} id="speedUpButton" className="navButton">
+        <button onClick={handleClick} id="speedUpButton" className="navButton" title="Speed Up">
             <FaFastForward />
         </button>
     )
@@ -168,7 +189,7 @@ function SpeedUpButton(props) {
 
 function SlowDownButton(props) {
     return (
-        <button onClick={handleClick} id="slowDownButton" className="navButton">
+        <button onClick={handleClick} id="slowDownButton" className="navButton" title="Slow Down">
             <FaFastBackward />
         </button>
     )

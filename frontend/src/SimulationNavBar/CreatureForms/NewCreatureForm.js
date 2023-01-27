@@ -3,7 +3,9 @@ import React from 'react'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
 
-function NewSpeciesForm(props){
+
+
+function NewCreatureForm(props){
 
     const [visibility, setVisibility] = useState(.5)
     const [maxHealth, setMaxHealth] = useState(.5)
@@ -39,11 +41,11 @@ function NewSpeciesForm(props){
 
     if(props.show){
         return(
-            <div id="newCreatureForm">
+            <div className="newCreatureOrSpeciesForm">
                 <button onClick={props.toggleNewCreatureForm} className="formExitButton"><FaTimes /></button>
-                <h3 id="createCreatureTitle">Create New Species</h3>
+                <h3 className="createCreatureOrSpeciesTitle">Create New Creature</h3>
 
-                <form id="newCreatureData">
+                <form className="newCreatureOrSpeciesData">
 
                     <div className="attributeHolder">
 
@@ -289,17 +291,17 @@ function NewSpeciesForm(props){
             </div>
         )
 
+
+        // When the user clicks the "Create" button, this function will run
+        // Has access to all variables entered in form
         function handleSubmit(event){
             event.preventDefault()
-
-
             
         }
 
         function handleCancel(event){
             event.preventDefault()
-            props.toggleNewSpeciesForm()
-            console.log("ahh")
+            props.toggleNewCreatureForm()
         }
 
     }
@@ -308,5 +310,29 @@ function NewSpeciesForm(props){
 }
 
 
+function NewCreatureOrSpeciesForm(props){
 
-export default NewSpeciesForm
+
+    if(props.show){
+        return(
+            <div id="newCreatureOrSpeciesForm">
+                <h1 id="creatureOrSpeciesFormTitle">I would you like to...</h1>
+                <button onClick={props.toggleCreatureOrSpeciesForm} className="formExitButton"><FaTimes /></button>
+                <button onClick={() => {
+                    props.toggleNewCreatureForm();
+                    props.toggleCreatureOrSpeciesForm();
+                }} 
+                className="creatureSpeciesFormButton" id="createNewCreatureButton">Create New Creature</button>
+                <button onClick={() => {
+                    props.toggleNewSpeciesForm();
+                    props.toggleCreatureOrSpeciesForm();
+                }}
+                className="creatureSpeciesFormButton" id="createNewSpeciesButton">Create New Species</button>
+            </div>
+        )
+    }
+
+}
+
+
+export {NewCreatureForm, NewCreatureOrSpeciesForm}
