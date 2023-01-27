@@ -23,7 +23,6 @@ class Animation extends React.Component {
             shape: '',
             color: '',
             creaturesToAnimate: [],
-            creatures: [],
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
@@ -31,21 +30,21 @@ class Animation extends React.Component {
         this.startSimulation = this.startSimulation.bind(this)
     }
 
-    AnimateBirth(creatureId, locationX, locationY, color, shape) {
+    AnimateBirth(creature) {
         // Takes the creature ID, their location x and y, color, and shape, to create an element with specific animation
         let roundness = '0%'
-        if (shape === 'circle') {
+        if (creature.shape === 'circle') {
             roundness = '50%'
         }
         return (
             <>
                 <div
-                    id={creatureId}
+                    id={creature.creatureId}
                     style={{
                         position: 'absolute',
-                        left: `${locationX}px`,
-                        top: `${locationY}px`,
-                        background: color,
+                        left: `${creature.locationX}px`,
+                        top: `${creature.locationY}px`,
+                        background: creature.color,
                         borderRadius: roundness,
                         height: grown,
                         width: grown,
@@ -54,7 +53,7 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creatureId,
+                            targets: '#' + creature.creatureId,
                             scale: [0, 1],
                             rotate: 180,
                             easing: 'linear',
@@ -64,75 +63,75 @@ class Animation extends React.Component {
         )
     }
 
-    AnimateStarved(creatureId) {
+    AnimateStarved(creature) {
         // Takes the creature ID and performs the "creature starved" animation
         return (
             <>
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creatureId,
+                            targets: '#' + creature.creatureId,
                             opacity: '0',
                             duration: 3000,
                             easing: 'easeInOutElastic(8, 1)',
                         },
                     ]}></Anime>
+
             </>
         )
     }
 
-    AnimateKilled(creatureId) {
+    AnimateKilled(creature) {
         // Takes the creature ID and performs the "creature killed" animation
         return (
             <>
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creatureId,
+                            targets: '#' + creature.creatureId,
                             keyframes: [
-                                {
-                                    translateX: '+=5',
-                                    easing: 'easeInOutElastic(9, .5)',
-                                    duration: 750,
-                                },
-                                { opacity: '0' },
-                            ],
+                                {translateX: '+=5', easing: 'easeInOutElastic(9, .5)', duration: 750},
+                                {opacity: '0'},
+                              ],
                             easing: 'linear',
                         },
                     ]}></Anime>
+
             </>
         )
     }
 
-    AnimateOldAge(creatureId) {
+    AnimateOldAge(creature) {
         // Takes the creature ID and performs the "creature starved" animation
         return (
             <>
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creatureId,
+                            targets: '#' + creature.creatureId,
                             keyframes: [
-                                { opacity: '0.5', duration: 750 },
-                                { opacity: '0', delay: 2000 },
-                            ],
+                                {opacity: '0.5', duration: 750},
+                                {opacity: '0', delay: 2000},
+                              ],
                             easing: 'linear',
                         },
                     ]}></Anime>
+
             </>
         )
     }
 
-    AnimateMovement(creatureId, locationX, locationY) {
+
+    AnimateMovement(creature) {
         // Takes the creature ID and moves to to the specified X and Y location
         return (
             <>
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creatureId,
-                            left: `${locationX}px`,
-                            top: `${locationY}px`,
+                            targets: '#' + creature.creatureId,
+                            left: `${creature.locationX}px`,
+                            top: `${creature.locationY}px`,
                             easing: 'linear',
                         },
                     ]}></Anime>
@@ -140,16 +139,16 @@ class Animation extends React.Component {
         )
     }
 
-    AnimateResourceSpawn(resourceId, locationX, locationY, color) {
+    AnimateResourceSpawn(resource) {
         // Takes the resource ID, its location x and y, and color to create an element with specific animation
         return (
             <>
                 <div
-                    id={resourceId}
+                    id={resource.resourceId}
                     style={{
                         position: 'absolute',
-                        left: `${locationX}px`,
-                        top: `${locationY}px`,
+                        left: `${resource.locationX}px`,
+                        top: `${resource.locationY}px`,
                         width: '0px',
                         height: '0px',
 
@@ -159,16 +158,16 @@ class Animation extends React.Component {
                         borderBottomWidth: '13.0px',
                         borderRightWidth: '7.5px',
 
-                        borderTopColor: 'transparent',
+                        borderTopColor: 'transparent', 
                         borderRightColor: 'transparent',
-                        borderBottomColor: color,
+                        borderBottomColor: resource.color,
                         borderLeftColor: 'transparent',
                     }}
                 />
                 <Anime
                     initial={[
                         {
-                            targets: '#' + resourceId,
+                            targets: '#' + resource.resourceId,
                             scale: [0, 1],
                             rotate: 360,
                             easing: 'linear',
@@ -178,19 +177,20 @@ class Animation extends React.Component {
         )
     }
 
-    AnimateResourceConsumption(resourceId) {
+    AnimateResourceConsumption(resource) {
         // Takes the resource ID and performs the "resourcce consumed" animation
         return (
             <>
                 <Anime
                     initial={[
                         {
-                            targets: '#' + resourceId,
+                            targets: '#' + resource.resourceId,
                             scale: [1, 0],
                             rotate: 360,
                             easing: 'linear',
                         },
                     ]}></Anime>
+
             </>
         )
     }
@@ -263,16 +263,40 @@ class Animation extends React.Component {
 
         await axios({
             method: 'POST',
-            url: 'http://localhost:5000/mass-create-more-creatures',
+            url: 'http://localhost:5000/create-new-creature',
             data: {
+                visibility: '0.5',
+                maxHealth: '0.5',
+                canSee: 'true',
+                canSmell: 'true',
+                canHear: 'true',
+                sightAbility: '0.5',
+                smellAbility: '0.5',
+                hearingAbility: '0.5',
+                sightRange: '0.5',
+                smellRange: '0.5',
+                hearingRange: '0.5',
+                reactionTime: '0.5',
+                intelligence: '0.5',
+                selfPreservation: '0.5',
+                mobility: '0.5',
+                reproductionType: 'sexual',
+                offspringAmount: '1',
+                motivation: '0.5',
+                maxEnergy: '0.5',
+                individualism: '0.5',
+                territorial: '0.5',
+                fightOrFlight: '0.5',
+                hostility: '0.5',
+                scent: '0.5',
+                stealth: '0.5',
+                lifeExpectancy: '0.5',
+                offensiveAbility: '0.5',
+                defensiveAbility: '0.5',
+                shape: 'circle',
+                color: 'red',
                 speciesName: 'Shlorpians',
-                numberOfNewCreatures: '2',
             },
-        })
-
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/advance-simulation',
         })
 
         await axios({
@@ -298,15 +322,11 @@ class Animation extends React.Component {
             let creature = this.state.creatures[0]
             return (
                 <>
+
                     <div>
-                        {this.AnimateBirth(
-                            creature.creatureId,
-                            creature.locationX,
-                            creature.locationY,
-                            creature.color,
-                            creature.shape
-                        )}
+                        {this.AnimateBirth(creature)}
                     </div>
+                 
                 </>
             )
         }

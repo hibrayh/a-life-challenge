@@ -13,6 +13,12 @@ function App() {
                 <header className="menu">
                     <h1>A-Life Challenge</h1>
                 </header>
+                {/*
+                ***************** Uncomment this block to see an example backend-connection component ******************
+                <div>
+                    <DummyConnection />
+                </div>
+                */}
                 <div class="menu">
                     <div>
                         <button
@@ -68,8 +74,8 @@ function App() {
             {
                 //Apparently this is how you comment in react, need to have the {}
                 /* This is a multi-line comment, also needs the {} 
-        if showMenu = true, display the menu. If showSimulation = true, show the simulation.
-        */
+                if showMenu = true, display the menu. If showSimulation = true, show the simulation.
+                */
             }
             {showMenu ? <Menu /> : null}
             {showSimulation ? <Simulation /> : null}
