@@ -61,10 +61,10 @@ class Environment:
             f"Registering new creature with id: {newCreature.id} to the environment")
         self.creatureRegistry.registerNewCreature(newCreature)
 
-    def removeFromCreatureRegistry(self, deadCreature):
+    def removeFromCreatureRegistry(self, creature):
         logging.info(
-            f"Removing dead creature with id: {deadCreature.id} from the environment")
-        self.creatureRegistry.unregisterDeadCreature(deadCreature)
+            f"Removing creature with id: {creature.id} from the environment")
+        self.creatureRegistry.unregisterCreature(creature)
 
     def returnCreaturesPerceivableEnvironment(self, creatureOfInterest):
         logging.info(
@@ -139,18 +139,21 @@ class Environment:
         return self.topographyRegistry
 
     def simulateCreatureBehavior(self):
+        logging.info("Removing dead creatures from environment")
+        for creature in self.creatureRegistry.registry:
+            if creature.lastAction is creatures.decision_network.CreatureAction.DEAD:
+                self.creatureRegistry.unregisterDeadCreature(creature)
+
+        # Mark each creature to indicate that they have not performed an action
+        # this turn
+        for creature in self.creatureRegistry.registry:
+            creature.hasPerformedActionThisTurn = False
+
         # Go through each creature, in order of reaction time, and let them
         # decide and perform their actions
         logging.info("Simulating all creature actions")
-
         for creature in self.creatureRegistry.registry:
-            if creature.hasPerformedActionThisTurn:
-                creature.hasPerformedActionThisTurn = False
-
-        for creature in self.creatureRegistry.registry:
-            if creature.hasPerformedActionThisTurn:
-                continue
-            else:
+            if not creature.hasPerformedActionThisTurn:
                 creature.performAction()
 
 

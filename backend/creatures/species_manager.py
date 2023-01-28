@@ -136,7 +136,11 @@ class SpeciesManager:
             logging.info(
                 f"There is no creature with id {creatureId} to delete")
         else:
+            creatureToDelete.unregisterFromEnvironment()
             self._creatures.remove(creatureToDelete)
+
+    def unregisterCreature(self, creature):
+        self._creatures.remove(creature)
 
     def getSpeciesInfo(self):
         pass

@@ -48,9 +48,13 @@ class Creature:
 
         self.environment.addToCreatureRegistry(self)
 
-    def __del__(self):
+    def unregisterFromEnvironment(self):
         logging.info(f"Unregistering {self.id} from the Environment")
         self.environment.removeFromCreatureRegistry(self)
+
+    def unregisterFromSpeciesManager(self):
+        logging.info(f"Unregistering {self.id} from its Species Manager")
+        self.speciesManager.unregisterCreature(self)
 
     def serialize(self):
         return {
@@ -59,7 +63,8 @@ class Creature:
             'locationX': self.xCoordinate,
             'locationY': self.yCoordinate,
             'color': self.genome.color,
-            'shape': self.genome.shape
+            'shape': self.genome.shape,
+            'lastAction': self.lastAction
         }
 
     def speciesRelationship(self, species):
