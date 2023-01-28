@@ -144,7 +144,8 @@ class Environment:
             if creature.lastAction is creatures.decision_network.CreatureAction.DEAD:
                 self.creatureRegistry.unregisterDeadCreature(creature)
 
-        # Mark each creature to indicate that they have not performed an action this turn
+        # Mark each creature to indicate that they have not performed an action
+        # this turn
         for creature in self.creatureRegistry.registry:
             creature.hasPerformedActionThisTurn = False
 

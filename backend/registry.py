@@ -28,7 +28,7 @@ class Registry:
             self.registry.append(newCreature)
         else:
             self.registry.insert(i, newCreature)
-    
+
     def unregisterCreature(self, creature):
         logging.info(f"Removing creature with id {creature.id} from registry")
         self.registry.remove(creature)

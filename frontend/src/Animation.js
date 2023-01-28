@@ -38,7 +38,7 @@ class Animation extends React.Component {
             roundness = '50%'
         }
         return (
-            <div id={{creatureId} + "-birth-wrapper"}>
+            <div id={{ creatureId } + '-birth-wrapper'}>
                 <div
                     id={creatureId}
                     style={{
@@ -52,7 +52,7 @@ class Animation extends React.Component {
                     }}
                 />
                 <Anime
-                    id={{creatureId} + "-animation-panel"}
+                    id={{ creatureId } + '-animation-panel'}
                     initial={[
                         {
                             targets: '#' + creatureId,
@@ -68,9 +68,9 @@ class Animation extends React.Component {
     AnimateStarved(creatureId) {
         // Takes the creature ID and performs the "creature starved" animation
         return (
-            <div id={{creatureId} + "-killed-wrapper"}>
+            <div id={{ creatureId } + '-killed-wrapper'}>
                 <Anime
-                    id={{creatureId} + "-animation-panel"}
+                    id={{ creatureId } + '-animation-panel'}
                     initial={[
                         {
                             targets: '#' + creatureId,

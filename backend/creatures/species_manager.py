@@ -138,7 +138,7 @@ class SpeciesManager:
         else:
             creatureToDelete.unregisterFromEnvironment()
             self._creatures.remove(creatureToDelete)
-    
+
     def unregisterCreature(self, creature):
         self._creatures.remove(creature)
 
