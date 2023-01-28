@@ -318,40 +318,20 @@ class Animation extends React.Component {
                 let creature = this.state.creatures[i]
                 console.log(creature)
                 if (creature.lastAction === 'BIRTHED') {
+                    jsx.push(<div key={i}>{this.AnimateBirth(creature)}</div>)
+                } else if (creature.lastAction === 'DEATH') {
+                    jsx.push(<div key={i}>{this.AnimateKilled(creature)}</div>)
+                } else if (creature.lastAction === 'REPRODUCE') {
                     jsx.push(
-                        <div key={i}>
-                            {this.AnimateBirth(creature)}
-                        </div>
+                        <div key={i}>{this.AnimateMovement(creature)}</div>
                     )
-                }
-                else if (creature.lastAction === 'DEATH') {
+                } else {
                     jsx.push(
-                        <div key={i}>
-                            {this.AnimateKilled(creature)}
-                        </div>
-                    )
-                }
-                else if (creature.lastAction === 'REPRODUCE') {
-                    jsx.push(
-                        <div key={i}>
-                            {this.AnimateMovement(creature)}
-                        </div>
-                    )
-                }
-                else {
-                    jsx.push(
-                        <div key={i}>
-                            {this.AnimateMovement(creature)}
-                        </div>
+                        <div key={i}>{this.AnimateMovement(creature)}</div>
                     )
                 }
             }
-            return (
-                <div id="animation-wrapper">
-                    {jsx}
-                </div>
-            )
-            
+            return <div id="animation-wrapper">{jsx}</div>
         }
     }
 }
