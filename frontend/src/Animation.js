@@ -38,7 +38,7 @@ class Animation extends React.Component {
             roundness = '50%'
         }
         return (
-            <>
+            <div id={{creatureId} + "-birth-wrapper"}>
                 <div
                     id={creatureId}
                     style={{
@@ -52,6 +52,7 @@ class Animation extends React.Component {
                     }}
                 />
                 <Anime
+                    id={{creatureId} + "-animation-panel"}
                     initial={[
                         {
                             targets: '#' + creatureId,
@@ -60,15 +61,16 @@ class Animation extends React.Component {
                             easing: 'linear',
                         },
                     ]}></Anime>
-            </>
+            </div>
         )
     }
 
     AnimateStarved(creatureId) {
         // Takes the creature ID and performs the "creature starved" animation
         return (
-            <>
+            <div id={{creatureId} + "-killed-wrapper"}>
                 <Anime
+                    id={{creatureId} + "-animation-panel"}
                     initial={[
                         {
                             targets: '#' + creatureId,
@@ -77,7 +79,7 @@ class Animation extends React.Component {
                             easing: 'easeInOutElastic(8, 1)',
                         },
                     ]}></Anime>
-            </>
+            </div>
         )
     }
 
@@ -309,6 +311,44 @@ class Animation extends React.Component {
                     </div>
                 </>
             )
+
+            // Example of looping through all creatures and animating
+            /*
+            let jsx = []
+
+            for (let i = 0; i < this.state.creatures.length; i++) {
+                let creature = this.state.creatures[i]
+
+                if (creature.lastAction == 'BIRTHED') {
+                    jsx.push(
+                        <div id={"animate" + {i}}>
+                            {this.AnimateBirth(
+                                creature.creatureId,
+                                creature.locationX,
+                                creature.locationY,
+                                creature.color,
+                                creature.shape
+                            )}
+                        </div>
+                    )
+                }
+                else if (creature.lastAction == 'DEAD') {
+                    jsx.push(
+                        <div id={"animate" + {i}}>
+                            {this.AnimateKilled(
+                                creature.creatureId
+                            )}
+                        </div>
+                    )
+                }
+            }
+
+            return (
+                <div id="animation-wrapper">
+                    {jsx}
+                </div>
+            )
+            */
         }
     }
 }
