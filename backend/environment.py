@@ -42,7 +42,7 @@ class Food:
         self.xCoordinate = xCoordinate
         self.yCoordinate = yCoordinate
 
-    # This is almost identical to Brendens serialize function in creatures file.
+    # This is similar to serialize function in creatures file.
     # I assume that the foodRegistry will need to be displayed under
     # simulation info as well.
     def logFoodObject(self):
@@ -125,6 +125,14 @@ class Environment:
                         f"{creature.id} within the {radiusOfSightPerception} sight range of {creatureOfInterest.id}")
                     perceivableCreatures.append(creature)
 
+            # Check if food is within the creature's sight range
+            for food in self.foodRegistry:
+                distanceFromFood = (math.sqrt((abs(food.xCoordinate - creatureOfInterest.xCoordinate) ** 2) +
+                                              (abs(food.yCoordinate - creatureOfInterest.yCoordinate) ** 2)))
+                if distanceFromFood <= radiusOfSightPerception:
+                    logging.info(f"Food within the {radiusOfSightPerception} sight range of {creatureOfInterest.id}")
+                    perceivableFood.append(food)
+
         if creatures.genome.Receptors.SMELL in creatureOfInterest.genome.receptors:
             radiusOfSmellPerception = int(
                 creatureOfInterest.genome.smellRange * 100)
@@ -143,6 +151,18 @@ class Environment:
                         f"{creature.id} within the {radiusOfSmellPerception} smell range of {creatureOfInterest.id}")
                     perceivableCreatures.append(creature)
 
+            # Check if food is within the creature's smell range
+            for food in self.foodRegistry:
+                distanceFromFood = (math.sqrt((abs(food.xCoordinate - creatureOfInterest.xCoordinate) ** 2) +
+                                              (abs(food.yCoordinate - creatureOfInterest.yCoordinate) ** 2)))
+
+                if ((distanceFromFood <= radiusOfSmellPerception and distanceFromFood > 0) and 
+                        (creatureOfInterest.genome.smellAbility >= (1 - creature.genome.scent)) and 
+                        (food not in perceivableFood)):
+                    logging.info(
+                        f"{creature.id} within the {radiusOfSmellPerception} smell range of {creatureOfInterest.id}")
+                    perceivableFood.append(food)
+
         if creatures.genome.Receptors.HEAR in creatureOfInterest.genome.receptors:
             radiusOfHearingPerception = int(
                 1 * (creatureOfInterest.genome.hearingRange * 100))
@@ -159,7 +179,7 @@ class Environment:
                         f"{creature.id} within the {radiusOfHearingPerception} hearing range of {creatureOfInterest.id}")
                     perceivableCreatures.append(creature)
 
-        return EnvironmentInfo([], perceivableCreatures, [], [])
+        return EnvironmentInfo(perceivableFood, perceivableCreatures, [], [])
 
     def getRegisteredCreatures(self):
         creatureList = []
