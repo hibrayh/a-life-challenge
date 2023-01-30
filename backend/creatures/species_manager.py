@@ -142,9 +142,6 @@ class SpeciesManager:
     def unregisterCreature(self, creature):
         self._creatures.remove(creature)
 
-    def unregisterCreature(self, creature):
-        self._creatures.remove(creature)
-
     def getSpeciesInfo(self):
         pass
 

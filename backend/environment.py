@@ -222,25 +222,6 @@ class Environment:
             if not creature.hasPerformedActionThisTurn:
                 creature.performAction()
 
-    
-    def simulateCreatureBehavior(self):
-        logging.info("Removing dead creatures from environment")
-        for creature in self.creatureRegistry.registry:
-            if creature.lastAction is creatures.decision_network.CreatureAction.DEAD:
-                self.creatureRegistry.unregisterDeadCreature(creature)
-
-        # Mark each creature to indicate that they have not performed an action
-        # this turn
-        for creature in self.creatureRegistry.registry:
-            creature.hasPerformedActionThisTurn = False
-
-        # Go through each creature, in order of reaction time, and let them
-        # decide and perform their actions
-        logging.info("Simulating all creature actions")
-        for creature in self.creatureRegistry.registry:
-            if not creature.hasPerformedActionThisTurn:
-                creature.performAction()
-
     # Displays each food object currently registered in the environment
     def getFoodRegistry(self):
         foodList = []
@@ -252,6 +233,8 @@ class Environment:
             "foodRegistry": foodList
         }
 
+    # Gets x and y coordinates of each food object in the environment and
+    # stores in a list
     def getFoodLocations(self):
         foodLocations = []
         for food in self.foodRegistry:

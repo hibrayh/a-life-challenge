@@ -56,10 +56,6 @@ class Creature:
         logging.info(f"Unregistering {self.id} from its Species Manager")
         self.speciesManager.unregisterCreature(self)
 
-    def unregisterFromSpeciesManager(self):
-        logging.info(f"Unregistering {self.id} from its Species Manager")
-        self.speciesManager.unregisterCreature(self)
-
     def serialize(self):
         return {
             'creatureId': self.id,
