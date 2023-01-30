@@ -195,4 +195,3 @@ def advanceSimulation():
 def getEnvironmentInfo():
     global GOD
     return jsonify(GOD.getEnvironmentInfo())
-
