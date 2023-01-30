@@ -196,10 +196,3 @@ def getEnvironmentInfo():
     global GOD
     return jsonify(GOD.getEnvironmentInfo())
 
-
-@api.route('/advance-simulation')
-@cross_origin()
-def advanceSimulation():
-    global GOD
-    GOD.advanceSimulation()
-    return "Success", 201
