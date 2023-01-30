@@ -1,8 +1,5 @@
 import logging
 import environment
-import random
-from environment import Food
-from environment import Environment
 import creatures.species_manager
 
 logging.basicConfig(
@@ -83,6 +80,15 @@ class God:
         else:
             speciesManagerOfInterest.createNewCreature(startingGenome)
 
+    def massCreateCreatures(self, speciesName, numberOfNewCreatures):
+        speciesManagerOfInterest = self._getSpeciesManagerFromName(speciesName)
+
+        if speciesManagerOfInterest is None:
+            logging.info("Could not find species to mass spawn creatures")
+        else:
+            speciesManagerOfInterest.massCreateMoreCreatures(
+                numberOfNewCreatures)
+
     def deleteCreature(self, speciesName, creatureId):
         speciesManagerOfInterest = self._getSpeciesManagerFromName(speciesName)
 
@@ -107,6 +113,10 @@ class God:
 
     def getSimulationInfo(self):
         return (self._environment.getRegisteredCreatures())
+
+    def advanceSimulation(self):
+        logging.info("Advancing simulation by a tick")
+        self._environment.simulateCreatureBehavior()
 
     # Currently gets food data
     def getEnvironmentInfo(self):
