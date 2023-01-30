@@ -170,3 +170,10 @@ def editCreatureGenome():
 def getSimulationInfo():
     global GOD
     return jsonify(GOD.getSimulationInfo())
+
+
+@api.route('/get-environment-info')
+@cross_origin()
+def getEnvironmentInfo():
+    global GOD
+    return jsonify(GOD.getEnvironmentInfo())

@@ -33,7 +33,7 @@ class Food:
                  color,
                  xCoordinate,
                  yCoordinate):
-        logging.info("Creating food object")
+        logging.info("Creating a new food resource")
         self.name = name
         self.energyReplenishment = energyReplenishment
         self.rarity = rarity
@@ -48,19 +48,19 @@ class Food:
     def logFoodObject(self):
         return {
             'foodName': self.name,
+            'energyReplenishment': self.energyReplenishment,
             'rarity': self.rarity,
+            'shape': self.shape,
+            'color': self.color,
             'locationX': self.xCoordinate,
             'locationY': self.yCoordinate,
-            'color': self.color,
-            'shape': self.shape,
-            'energyReplenishment': self.energyReplenishment
         }
 
 
 # The 3 hard coded food types to be displayed in the environment
 grass = (
     "Grass",
-    1,
+        1,
     "Very Common",
     "Square",
     "Green",
@@ -85,12 +85,12 @@ class Environment:
     def addToFoodRegistry(self, newFood):
         logging.info(
             f"Registering {newFood.name} to the environment")
-        return self.foodRegistry.append(newFood)
+        self.foodRegistry.append(newFood)
 
     def addToTopographyRegistry(self, newTopography):
         logging.info(
             f"Registering {newTopography} as a region in the environment")
-        return self.topographyRegistry.append(newTopography)
+        self.topographyRegistry.append(newTopography)
 
     def addToCreatureRegistry(self, newCreature):
         logging.info(
@@ -196,17 +196,27 @@ class Environment:
             "creatureRegistry": creatureList
         }
 
+    # Displays each topography currently registered in the environment
     def getTopographyRegistry(self):
         return self.topographyRegistry
 
+    # Displays each food object currently registered in the environment 
     def getFoodRegistry(self):
         foodList = []
+        
         for food in self.foodRegistry:
             foodList.append(food.logFoodObject())
 
         return {
             "foodRegistry": foodList
         }
+    
+    # Gets x and y coordinates of each food object in the environment and stores in a list
+    def getFoodLocations(self):
+        foodLocations = []
+        for food in self.foodRegistry:
+            foodLocations.append((food.xCoordinate, food.yCoordinate))
+        return foodLocations
 
 
 """
@@ -215,11 +225,13 @@ grass = Food(*grass)
 berries = Food(*berries)
 fish = Food(*fish)
 
+myEnv = Environment()
 # Create instance of Environment class and add food types to foodRegistry list
 # Test to see if food types are added into registry
-myEnv = Environment()
 myEnv.addToFoodRegistry(grass)
-myEnv.addToFoodRegistry(berries)
 myEnv.addToFoodRegistry(fish)
+myEnv.addToFoodRegistry(berries)
+
 print(myEnv.getFoodRegistry())
+print("Food locations: ", myEnv.getFoodLocations())
 """
