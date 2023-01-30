@@ -30,6 +30,8 @@ class Creature:
         self.xCoordinate = xCoordinate
         self.yCoordinate = yCoordinate
         self.environment = environment
+        self.lastAction = decision_network.CreatureAction.BIRTHED
+        self.hasPerformedActionThisTurn = True
 
         if self.genome.reproductionType == genome.ReproductionType.ASEXUAL:
             self._decisionNetwork = decision_network.DecisionNetworkAsexual()
@@ -46,9 +48,13 @@ class Creature:
 
         self.environment.addToCreatureRegistry(self)
 
-    def __del__(self):
+    def unregisterFromEnvironment(self):
         logging.info(f"Unregistering {self.id} from the Environment")
         self.environment.removeFromCreatureRegistry(self)
+    
+    def unregisterFromSpeciesManager(self):
+        logging.info(f"Unregistering {self.id} from its Species Manager")
+        self.speciesManager.unregisterCreature(self)
 
     def serialize(self):
         return {
@@ -57,7 +63,8 @@ class Creature:
             'locationX': self.xCoordinate,
             'locationY': self.yCoordinate,
             'color': self.genome.color,
-            'shape': self.genome.shape
+            'shape': self.genome.shape,
+            'lastAction': self.lastAction
         }
 
     def speciesRelationship(self, species):
@@ -66,13 +73,21 @@ class Creature:
     def reproduceAsexual(self):
         logging.info(f"{self.id} reproducing asexually")
         childGenome = genome.createNewGenomeAsexual(self.genome)
-        self.speciesManager.createNewCreature(childGenome)
+        self.speciesManager.createNewChild(
+            childGenome, self.xCoordinate, self.yCoordinate)
+        self.lastAction = decision_network.CreatureAction.REPRODUCE
 
     def reproduceSexual(self, otherParent):
         logging.info(f"{self.id} reproducing sexually with {otherParent.id}")
         childGenome = genome.createNewGenomeSexual(
             self.genome, otherParent.genome)
-        self.speciesManager.createNewCreature(childGenome)
+        self.speciesManager.createNewChild(
+            childGenome, self.xCoordinate, self.yCoordinate)
+        self.lastAction = decision_network.CreatureAction.REPRODUCE
+
+    def notificationOfReproduction(self):
+        self.lastAction = decision_network.CreatureAction.REPRODUCE
+        self.hasPerformedActionThisTurn = True
 
     def moveCreature(self, degreeOfMovement, distance):
         xMovement = distance * math.cos(degreeOfMovement)
@@ -116,6 +131,8 @@ class Creature:
             logging.info(f"{self.id} moving towards potential mate")
             self.moveCreature(degreeOfMovement, movementLength)
 
+        self.lastAction = decision_network.CreatureAction.SEARCH_FOR_MATE
+
     def fleeFromPredator(self, perceivablePredators):
         if perceivablePredators == []:
             self.moveRandom()
@@ -143,6 +160,8 @@ class Creature:
             logging.info(f"{self.id} fleeing from predator")
             self.moveCreature(degreeOfMovement, movementLength)
 
+        self.lastAction = decision_network.CreatureAction.FLEE_FROM_CREATURE
+
     def chasePrey(self, perceivablePrey):
         if perceivablePrey == []:
             self.moveRandom()
@@ -169,6 +188,8 @@ class Creature:
             logging.info(f"{self.id} chasing prey")
             self.moveCreature(degreeOfMovement, movementLength)
 
+        self.lastAction = decision_network.CreatureAction.CHASE_A_CREATURE
+
     def performAction(self):
         logging.info(f"{self.id} determining its next action")
         perceivableEnvironment = self.environment.returnCreaturesPerceivableEnvironment(
@@ -183,14 +204,20 @@ class Creature:
             else:
                 distances = []
                 for creature in perceivableEnvironment.perceivableCreatures:
-                    if creature.species == self.species:
+                    if (creature.species == self.species) and (
+                            creature.lastAction != decision_network.CreatureAction.REPRODUCE):
                         distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
                                                                self.xCoordinate) ** 2) +
                                                           (abs(creature.yCoordinate -
                                                                self.yCoordinate) ** 2)))
                         distances.append(distanceFromCreature)
-                self.reproduceSexual(
-                    perceivableEnvironment.perceivableCreatures[distances.index(min(distances))])
+
+                if len(distances) == 0:
+                    logging.info(
+                        "No creature nearby to reproduce with (REMOVE THIS FUNCTIONALITY AFTER DECISION NETWORK IS FULLY IMPLEMENTED)")
+                else:
+                    self.reproduceSexual(
+                        perceivableEnvironment.perceivableCreatures[distances.index(min(distances))])
         elif actionToPerform == decision_network.CreatureAction.SEARCH_FOR_MATE:
             logging.info(f"{self.id} has decided to search for a mate")
             possibleMates = []
@@ -219,3 +246,5 @@ class Creature:
             self.chasePrey(perceivablePrey)
         else:
             logging.info(f"{self.id} has decided to do nothing")
+
+        self.hasPerformedActionThisTurn = True

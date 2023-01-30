@@ -36,8 +36,8 @@ class SpeciesManager:
         self.speciesRelations = dict()
         self.environment = environment
         self._creatureIdIncrementer = 0
-        self._spawnPointXCoordinate = random.randrange(100)
-        self._spawnPointYCoordinate = random.randrange(100)
+        self._spawnPointXCoordinate = random.randrange(1000)
+        self._spawnPointYCoordinate = random.randrange(1000)
 
     def _getCreatureFromId(self, creatureId):
         desiredCreature = None
@@ -54,7 +54,7 @@ class SpeciesManager:
         self._creatureIdIncrementer += 1
 
         randomDegreeOfOffset = math.radians(random.randrange(360))
-        randomOffsetMagnitude = random.randrange(-10, 10)
+        randomOffsetMagnitude = random.randrange(-10 * 25, 10 * 25)
         OffsetX = randomOffsetMagnitude * math.cos(randomDegreeOfOffset)
         OffsetY = randomOffsetMagnitude * math.sin(randomDegreeOfOffset)
         newCreatureSpawnX = self._spawnPointXCoordinate + OffsetX
@@ -80,8 +80,10 @@ class SpeciesManager:
         self._creatureIdIncrementer += 1
 
         randomDegreeOfOffset = math.radians(random.randrange(360))
-        newCreatureSpawnX = parentXCoordinate + math.cos(randomDegreeOfOffset)
-        newCreatureSpawnY = parentYCoordinate + math.sin(randomDegreeOfOffset)
+        newCreatureSpawnX = parentXCoordinate + \
+            (math.cos(randomDegreeOfOffset) * 25)
+        newCreatureSpawnY = parentYCoordinate + \
+            (math.sin(randomDegreeOfOffset) * 25)
 
         newCreature = creature.Creature(
             startingGenome,
@@ -95,6 +97,9 @@ class SpeciesManager:
         self._creatures.append(newCreature)
 
     def massCreateMoreCreatures(self, numberOfCreatures):
+        logging.info(
+            f"Mass creating {numberOfCreatures} new {self.speciesName} creatures")
+
         for i in range(numberOfCreatures):
             self.createNewCreature(self._startingGenome)
 
@@ -131,7 +136,11 @@ class SpeciesManager:
             logging.info(
                 f"There is no creature with id {creatureId} to delete")
         else:
+            creatureToDelete.unregisterFromEnvironment()
             self._creatures.remove(creatureToDelete)
+    
+    def unregisterCreature(self, creature):
+        self._creatures.remove(creature)
 
     def getSpeciesInfo(self):
         pass

@@ -23,6 +23,7 @@ class Animation extends React.Component {
             shape: '',
             color: '',
             creaturesToAnimate: [],
+            creatures: [],
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
@@ -30,10 +31,10 @@ class Animation extends React.Component {
         this.startSimulation = this.startSimulation.bind(this)
     }
 
-    AnimateBirth(creatureId, locationX, locationY, color, shape) {
+    AnimateBirth(creature) {
         // Takes the creature ID, their location x and y, color, and shape, to create an element with specific animation
         let roundness = '0%'
-        if (shape === 'circle') {
+        if (creature.shape === 'circle') {
             roundness = '50%'
         }
         return (
@@ -44,7 +45,7 @@ class Animation extends React.Component {
                         position: 'absolute',
                         left: `${locationX}px`,
                         top: `${locationY}px`,
-                        background: color,
+                        background: creature.color,
                         borderRadius: roundness,
                         height: grown,
                         width: grown,
@@ -53,7 +54,7 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creatureId,
+                            targets: '#' + creature.creatureId,
                             scale: [0, 1],
                             rotate: 180,
                             easing: 'linear',
@@ -66,7 +67,7 @@ class Animation extends React.Component {
     AnimateStarved(creatureId) {
         // Takes the creature ID and performs the "creature starved" animation
         return (
-            <>
+            <div id={{ creatureId } + '-killed-wrapper'}>
                 <Anime
                     initial={[
                         {
@@ -76,7 +77,7 @@ class Animation extends React.Component {
                             easing: 'easeInOutElastic(8, 1)',
                         },
                     ]}></Anime>
-            </>
+            </div>
         )
     }
 
@@ -122,16 +123,32 @@ class Animation extends React.Component {
         )
     }
 
-    AnimateMovement(creatureId, locationX, locationY) {
+    AnimateMovement(creature) {
         // Takes the creature ID and moves to to the specified X and Y location
+        let roundness = '0%'
+        if (creature.shape === 'circle') {
+            roundness = '50%'
+        }
         return (
             <>
+                <div
+                    id={creature.creatureId}
+                    style={{
+                        position: 'absolute',
+                        left: `${creature.locationX}px`,
+                        top: `${creature.locationY}px`,
+                        background: creature.color,
+                        borderRadius: '50%',
+                        height: grown,
+                        width: grown,
+                    }}
+                />
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creatureId,
-                            left: `${locationX}px`,
-                            top: `${locationY}px`,
+                            targets: '#' + creature.creatureId,
+                            left: `${creature.locationX}px`,
+                            top: `${creature.locationY}px`,
                             easing: 'linear',
                         },
                     ]}></Anime>
@@ -178,7 +195,7 @@ class Animation extends React.Component {
     }
 
     AnimateResourceConsumption(resourceId) {
-        // Takes the resource ID and performs the "resource consumed" animation
+        // Takes the resource ID and performs the "resourcce consumed" animation
         return (
             <>
                 <Anime
@@ -262,41 +279,18 @@ class Animation extends React.Component {
 
         await axios({
             method: 'POST',
-            url: 'http://localhost:5000/create-new-creature',
+            url: 'http://localhost:5000/mass-create-more-creatures',
             data: {
-                visibility: '0.5',
-                maxHealth: '0.5',
-                canSee: 'true',
-                canSmell: 'true',
-                canHear: 'true',
-                sightAbility: '0.5',
-                smellAbility: '0.5',
-                hearingAbility: '0.5',
-                sightRange: '0.5',
-                smellRange: '0.5',
-                hearingRange: '0.5',
-                reactionTime: '0.5',
-                intelligence: '0.5',
-                selfPreservation: '0.5',
-                mobility: '0.5',
-                reproductionType: 'sexual',
-                offspringAmount: '1',
-                motivation: '0.5',
-                maxEnergy: '0.5',
-                individualism: '0.5',
-                territorial: '0.5',
-                fightOrFlight: '0.5',
-                hostility: '0.5',
-                scent: '0.5',
-                stealth: '0.5',
-                lifeExpectancy: '0.5',
-                offensiveAbility: '0.5',
-                defensiveAbility: '0.5',
-                shape: 'circle',
-                color: 'red',
                 speciesName: 'Shlorpians',
+                numberOfNewCreatures: '2',
             },
         })
+
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/advance-simulation',
+        })
+
 
         await axios({
             method: 'GET',
@@ -329,20 +323,26 @@ class Animation extends React.Component {
                 </button>
             )
         } else {
-            let creature = this.state.creatures[0]
-            return (
-                <>
-                    <div>
-                        {this.AnimateBirth(
-                            creature.creatureId,
-                            creature.locationX,
-                            creature.locationY,
-                            creature.color,
-                            creature.shape
-                        )}
-                    </div>
-                </>
-            )
+            // Example of looping through all creatures and animating
+            let jsx = []
+            for (let i = 0; i < this.state.creatures.length; i++) {
+                let creature = this.state.creatures[i]
+                console.log(creature)
+                if (creature.lastAction === 'BIRTHED') {
+                    jsx.push(<div key={i}>{this.AnimateBirth(creature)}</div>)
+                } else if (creature.lastAction === 'DEATH') {
+                    jsx.push(<div key={i}>{this.AnimateKilled(creature)}</div>)
+                } else if (creature.lastAction === 'REPRODUCE') {
+                    jsx.push(
+                        <div key={i}>{this.AnimateMovement(creature)}</div>
+                    )
+                } else {
+                    jsx.push(
+                        <div key={i}>{this.AnimateMovement(creature)}</div>
+                    )
+                }
+            }
+            return <div id="animation-wrapper">{jsx}</div>
         }
     }
 }

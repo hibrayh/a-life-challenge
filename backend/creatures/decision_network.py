@@ -9,23 +9,25 @@ logging.basicConfig(
     format='%(levelname)s %(asctime)s - %(message)s')
 
 
-class CreatureAction(Enum):
-    REPRODUCE = 1
-    SEARCH_FOR_FOOD = 2
-    CONSUME_FOOD = 3
-    SEARCH_FOR_MATE = 4
-    HIDE_FROM_CREATURE = 5
-    FLEE_FROM_CREATURE = 6
-    CHASE_A_CREATURE = 7
-    ATTACK_A_CREATURE = 8
-    LEAD_OTHER_CREATURES = 9
-    FOLLOW_A_CREATURE = 10
-    LEECH_OFF_CREATURE = 11
-    WORK_WITH_CREATURE = 12
-    PROTECT_CREATURE = 13
-    AVOID_HAZARD = 14
-    SCAN_AREA = 15
-    NURTURE_CREATURE = 16
+class CreatureAction(str, Enum):
+    REPRODUCE = 'REPRODUCE'
+    SEARCH_FOR_FOOD = 'SEARCH_FOR_FOOD'
+    CONSUME_FOOD = 'CONSUME_FOOD'
+    SEARCH_FOR_MATE = 'SEARCH_FOR_MATE'
+    HIDE_FROM_CREATURE = 'HIDE_FROM_CREATURE'
+    FLEE_FROM_CREATURE = 'FLEE_FROM_CREATURE'
+    CHASE_A_CREATURE = 'CHASE_A_CREATURE'
+    ATTACK_A_CREATURE = 'ATTACK_A_CREATURE'
+    LEAD_OTHER_CREATURES = 'LEAD_OTHER_CREATURES'
+    FOLLOW_A_CREATURE = 'FOLLOW_A_CREATURE'
+    LEECH_OFF_CREATURE = 'LEECH_OFF_CREATURE'
+    WORK_WITH_CREATURE = 'WORK_WITH_CREATURE'
+    PROTECT_CREATURE = 'PROTECT_CREATURE'
+    AVOID_HAZARD = 'AVOID_HAZARD'
+    SCAN_AREA = 'SCAN_AREA'
+    NURTURE_CREATURE = 'NURTURE_CREATURE'
+    BIRTHED = 'BIRTHED'
+    DEAD = 'DEAD'
 
 
 def _skew_positive(traitValue, environmentalFavorability, midPoint):
@@ -85,10 +87,11 @@ class SexualReproductionPerceptron(ActionPerceptron):
         energyWeight = .1
         immediateMatesWeight = .8
         perceivableMatesWeight = 0
-        perceivablePredatorsWeight = -1
+        perceivablePredatorsWeight = -.8
         perceivablePreyWeight = 0
         total = healthWeight + energyWeight + \
             immediateMatesWeight + perceivablePredatorsWeight
+        logging.info(f"DEBUG: total = {total}")
 
         return max(((healthWeight *
                      health) +
@@ -292,8 +295,8 @@ class DecisionNetwork(metaclass=ABCMeta):
     @abstractmethod
     def determineMostFavorableCreatureAction(
             self, creatureOfInterest, perceivableEnvironment):
-        health = creatureOfInterest.health / creatureOfInterest.maxHealth
-        energy = creatureOfInterest.energy / creatureOfInterest.maxEnergy
+        health = creatureOfInterest.currentHealth / creatureOfInterest.maxHealth
+        energy = creatureOfInterest.currentEnergy / creatureOfInterest.maxEnergy
         immediateMates = 0
         perceivableMates = 0
         perceivablePredators = 0
