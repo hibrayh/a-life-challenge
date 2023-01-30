@@ -131,22 +131,21 @@ class God:
         berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
         fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
 
-        # Creating instances of the Food class using the tuple attributes
+        # Creating instances of the food types and adding to foodRegistry
         grass = Food(*grass)
-        berries = Food(*berries)
-        fish = Food(*fish)
-
-        # Add food types to foodRegistry list
         self._environment.addToFoodRegistry(grass)
-        self._environment.addToFoodRegistry(fish)
+        berries = Food(*berries)
         self._environment.addToFoodRegistry(berries)
+        fish = Food(*fish)
+        self._environment.addToFoodRegistry(fish)
+
         print(
             f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}")
         foodRegistry = self._environment.getFoodRegistry()
         return foodRegistry
 
 
-""" Testing getEnvironmentInfo() function
+"""
 myG = God()
 print("Environment Info:\n", myG.getEnvironmentInfo())
 """
