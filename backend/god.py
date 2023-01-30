@@ -111,13 +111,14 @@ class God:
     # Currently gets food data
     def getEnvironmentInfo(self):
 
-        # Added hardcoded food types here since I was having an issue getting 
+        # Added hardcoded food types here since I was having an issue getting
         # the values from environment.py and getting the foodRegistry populated
         # One issue with this method is that whenever it gets called, it will duplicate those values
-        # Since this works for now I am sending as is, but will be refactored later.
+        # Since this works for now I am sending as is, but will be refactored
+        # later.
         grass = (
             "Grass",
-                1,
+            1,
             "Very Common",
             "Square",
             "Green",
@@ -129,7 +130,7 @@ class God:
                 50))
         berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
         fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
-        
+
         # Creating instances of the Food class using the tuple attributes
         grass = Food(*grass)
         berries = Food(*berries)
@@ -139,11 +140,13 @@ class God:
         self._environment.addToFoodRegistry(grass)
         self._environment.addToFoodRegistry(fish)
         self._environment.addToFoodRegistry(berries)
-        print (f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}")
+        print(
+            f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}")
         foodRegistry = self._environment.getFoodRegistry()
         return foodRegistry
 
-""" Testing getEnvironmentInfo() function 
+
+""" Testing getEnvironmentInfo() function
 myG = God()
 print("Environment Info:\n", myG.getEnvironmentInfo())
 """

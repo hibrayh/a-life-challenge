@@ -60,7 +60,7 @@ class Food:
 # The 3 hard coded food types to be displayed in the environment
 grass = (
     "Grass",
-        1,
+    1,
     "Very Common",
     "Square",
     "Green",
@@ -200,18 +200,19 @@ class Environment:
     def getTopographyRegistry(self):
         return self.topographyRegistry
 
-    # Displays each food object currently registered in the environment 
+    # Displays each food object currently registered in the environment
     def getFoodRegistry(self):
         foodList = []
-        
+
         for food in self.foodRegistry:
             foodList.append(food.logFoodObject())
 
         return {
             "foodRegistry": foodList
         }
-    
-    # Gets x and y coordinates of each food object in the environment and stores in a list
+
+    # Gets x and y coordinates of each food object in the environment and
+    # stores in a list
     def getFoodLocations(self):
         foodLocations = []
         for food in self.foodRegistry:
