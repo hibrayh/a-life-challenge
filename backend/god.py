@@ -1,6 +1,9 @@
 import logging
 import environment
 import creatures.species_manager
+import random
+from environment import Food
+from environment import Environment
 
 logging.basicConfig(
     level=logging.INFO,
