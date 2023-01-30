@@ -291,7 +291,6 @@ class Animation extends React.Component {
             url: 'http://localhost:5000/advance-simulation',
         })
 
-
         await axios({
             method: 'GET',
             url: 'http://localhost:5000/get-simulation-info',

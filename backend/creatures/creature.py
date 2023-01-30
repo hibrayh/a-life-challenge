@@ -51,7 +51,7 @@ class Creature:
     def unregisterFromEnvironment(self):
         logging.info(f"Unregistering {self.id} from the Environment")
         self.environment.removeFromCreatureRegistry(self)
-    
+
     def unregisterFromSpeciesManager(self):
         logging.info(f"Unregistering {self.id} from its Species Manager")
         self.speciesManager.unregisterCreature(self)
