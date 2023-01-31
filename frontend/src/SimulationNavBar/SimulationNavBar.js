@@ -9,20 +9,37 @@ import { FaFastForward } from 'react-icons/fa'
 import { FaFastBackward } from 'react-icons/fa'
 import { FaTree } from 'react-icons/fa'
 import { FaFileAlt } from 'react-icons/fa'
-import { FaTimes } from 'react-icons/fa'
 import { FaSave } from 'react-icons/fa'
 import {NewCreatureForm} from './CreatureForms/NewCreatureForm.js'
 import {NewCreatureOrSpeciesForm} from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
+import StatsPage from './StatsPage/StatsPage.js'
+import TopographyPage from './Topography/Topography.js'
 
 
 function SimulationNavBar() {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] = useState(false)
     const [showNewCreatureForm, setShowNewCreatureForm] = useState(false)
     const [showNewSpeciesForm, setShowNewSpeciesForm] = useState(false)
+    const [showStatsPage, setShowStatsPage] = useState(false)
+    const [showTopographyPage, setShowTopographyPage] = useState(false)
 
     return (
         <div>
+           
+
+            <StatsPage 
+                show={showStatsPage}
+                closeStatsPage={closeStatsPage}
+            />
+
+            <TopographyPage 
+                show={showTopographyPage}
+                closeTopographyPage={closeTopographyPage}
+            />
+            
+
+
             <NewCreatureOrSpeciesForm 
                 toggleNewCreatureForm={toggleNewCreatureForm} 
                 toggleNewSpeciesForm={toggleNewSpeciesForm}
@@ -58,9 +75,13 @@ function SimulationNavBar() {
                     closeNewSpeciesForm={closeNewSpeciesForm} 
                 />
 
-                <TopographyButton />
+                <TopographyButton 
+                    toggleTopographyPage={toggleTopographyPage}
+                />
 
-                <StatsButton />
+                <StatsButton 
+                    toggleStatsPage={toggleStatsPage}
+                />
 
                 <SaveButton />
 
@@ -68,6 +89,8 @@ function SimulationNavBar() {
         </div>
     )
 
+
+    // functions for all creature/species related forms 
     function toggleCreatureOrSpeciesForm(){
         setShowCreatureOrSpeciesForm(!showCreatureOrSpeciesForm)
     }
@@ -88,14 +111,39 @@ function SimulationNavBar() {
     function closeNewSpeciesForm(){
         setShowNewSpeciesForm(false)
     }
+
+
+    // functions for stats page
+    function closeStatsPage(){
+        setShowStatsPage(false)
+    }
+
+    function toggleStatsPage(){
+        setShowStatsPage(!showStatsPage)
+    }
+
+    
+    // functions for topography page
+    function closeTopographyPage(){
+        setShowTopographyPage(false)
+    }
+
+    function toggleTopographyPage(){
+        setShowTopographyPage(!showTopographyPage)
+    }
+
 }
 
 
 function StatsButton(props){
 
     return(
-        <button id="statsButton" className="navButton" title="Stats Page"><FaFileAlt /></button>
+        <button onClick={handleClick} id="statsButton" className="navButton" title="Stats Page"><FaFileAlt /></button>
     )
+
+    function handleClick(){
+        props.toggleStatsPage()
+    }
 }
 
 function SaveButton(props){
@@ -108,15 +156,13 @@ function SaveButton(props){
 function TopographyButton(props) {
     return (
         <button
-            onClick={handleClick}
+            onClick={props.toggleTopographyPage}
             id="topographyButton"
             className="navButton"
             title="Topography">
             <FaTree />
         </button>
     )
-
-    function handleClick() {}
 }
 
 function AddNewCreatureOrSpeciesButton(props) {

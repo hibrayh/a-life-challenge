@@ -38,6 +38,7 @@ function NewCreatureForm(props){
     const [shape, setShape] = useState("")
     const [color, setColor] = useState("")
     const [speciesName, setSpeciesName] = useState("")
+    const [numberToSpawn, setNumberToSpawn] = useState(1)
 
     if(props.show){
         return(
@@ -282,11 +283,22 @@ function NewCreatureForm(props){
                         
                     </div>
                     
+
+                    <div className="attributeHolder">
+                        <span className="dataTitle">Number to Spawn In</span>
+                        <input onChange={(event) => setNumberToSpawn(event.target.value)} className="dataSlider" type="range" min="0" max="20" step="1" value={numberToSpawn}></input>
+                        <input onChange={(event) => setNumberToSpawn(event.target.value)} className="dataText" type="number" min="0" max="20" step="1" value={numberToSpawn}></input><br></br>
+                        
+                    </div>
+
                     <div id="buttonContainer">
 
                         <button className="formButton" id="submitButton" onClick={handleSubmit}>Create</button>
                         <button className="formButton" id="cancelButton" onClick={handleCancel}>Cancel</button>
                     </div>
+
+
+
                 </form>
             </div>
         )

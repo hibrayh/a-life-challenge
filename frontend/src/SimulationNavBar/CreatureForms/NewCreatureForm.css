@@ -64,13 +64,13 @@
 .newCreatureOrSpeciesForm{
     z-index: 5;
     position:absolute;
-    width:60vmin;
+    width:45vmin;
     
     height:fit-content;
     min-height:750px;
     background-color: rgb(31, 31, 31);
 
-    left:calc(50% - 30vmin);
+    left:calc(50% - 22.5vmin);
     top:calc(50% - 49vmin)
     
     
@@ -89,6 +89,7 @@
     
     position:relative;
     bottom:10px;
+    left:calc(50% - 19.5vmin)
     
     
 }
@@ -148,7 +149,7 @@
 
 #buttonContainer{
     position:relative;
-    left:calc(50% - 7vmin);
+    left:calc(50% - 9vmin);
     margin-top:5px;
 }
 
