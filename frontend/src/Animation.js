@@ -302,6 +302,17 @@ class Animation extends React.Component {
                 creatures: res.creatureRegistry,
             })
         })
+
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/get-environment-info',
+        }).then((response) => {
+            const res = response.data
+            this.setState({
+                isSimStarted: true,
+                foodObjects: res.foodRegistry,
+            })
+        })
     }
 
     render() {

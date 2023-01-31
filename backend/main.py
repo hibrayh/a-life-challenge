@@ -188,3 +188,10 @@ def advanceSimulation():
     global GOD
     GOD.advanceSimulation()
     return "Success", 201
+
+
+@api.route('/get-environment-info')
+@cross_origin()
+def getEnvironmentInfo():
+    global GOD
+    return jsonify(GOD.getEnvironmentInfo())
