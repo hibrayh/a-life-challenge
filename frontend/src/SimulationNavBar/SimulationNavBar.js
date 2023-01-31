@@ -18,7 +18,8 @@ import TopographyPage from './Topography/Topography.js'
 
 
 function SimulationNavBar() {
-    const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] = useState(false)
+    const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
+        useState(false)
     const [showNewCreatureForm, setShowNewCreatureForm] = useState(false)
     const [showNewSpeciesForm, setShowNewSpeciesForm] = useState(false)
     const [showStatsPage, setShowStatsPage] = useState(false)
@@ -46,9 +47,9 @@ function SimulationNavBar() {
                 toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm} 
                 show={showCreatureOrSpeciesForm}
             />
-            <NewCreatureForm 
-                show={showNewCreatureForm} 
-                toggleNewCreatureForm={toggleNewCreatureForm} 
+            <NewCreatureForm
+                show={showNewCreatureForm}
+                toggleNewCreatureForm={toggleNewCreatureForm}
             />
 
             <NewSpeciesForm 
@@ -57,7 +58,6 @@ function SimulationNavBar() {
             />
 
             <div id="simulationNavBar">
-
                 <PausePlayButton />
 
                 <CurrentTime />
@@ -95,11 +95,11 @@ function SimulationNavBar() {
         setShowCreatureOrSpeciesForm(!showCreatureOrSpeciesForm)
     }
 
-    function toggleNewCreatureForm(){
+    function toggleNewCreatureForm() {
         setShowNewCreatureForm(!showNewCreatureForm)
     }
 
-    function closeNewCreatureForm(){
+    function closeNewCreatureForm() {
         setShowNewCreatureForm(false)
     }
 
@@ -179,7 +179,6 @@ function AddNewCreatureOrSpeciesButton(props) {
             <FaPlus />
         </button>
     )
-
 }
 
 function PausePlayButton(props) {
