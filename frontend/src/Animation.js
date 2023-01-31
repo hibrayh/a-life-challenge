@@ -43,8 +43,8 @@ class Animation extends React.Component {
                     id={creature.creatureId}
                     style={{
                         position: 'absolute',
-                        left: `${locationX}px`,
-                        top: `${locationY}px`,
+                        left: `${creature.locationX}px`,
+                        top: `${creature.locationY}px`,
                         background: creature.color,
                         borderRadius: roundness,
                         height: grown,
