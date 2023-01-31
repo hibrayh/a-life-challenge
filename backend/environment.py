@@ -135,7 +135,7 @@ class Environment:
                                                    creatureOfInterest.yCoordinate) ** 2)))
                 if distanceFromFood <= radiusOfSightPerception:
                     logging.info(
-                        f"Food within the {radiusOfSightPerception} sight range of {creatureOfInterest.id}")
+                        f"{Food.name} within the {radiusOfSightPerception} sight range of {creatureOfInterest.id}")
                     perceivableFood.append(food)
 
         if creatures.genome.Receptors.SMELL in creatureOfInterest.genome.receptors:
@@ -167,7 +167,7 @@ class Environment:
                         (creatureOfInterest.genome.smellAbility >= (1 - creature.genome.scent)) and
                         (food not in perceivableFood)):
                     logging.info(
-                        f"{creature.id} within the {radiusOfSmellPerception} smell range of {creatureOfInterest.id}")
+                        f"{Food.name} within the {radiusOfSmellPerception} smell range of {creatureOfInterest.id}")
                     perceivableFood.append(food)
 
         if creatures.genome.Receptors.HEAR in creatureOfInterest.genome.receptors:
