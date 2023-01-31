@@ -1,6 +1,9 @@
 import logging
 import environment
 import creatures.species_manager
+import random
+from environment import Food
+from environment import Environment
 
 logging.basicConfig(
     level=logging.INFO,
@@ -112,30 +115,50 @@ class God:
         pass
 
     def getSimulationInfo(self):
-        return self._environment.getRegisteredCreatures()
+        return (self._environment.getRegisteredCreatures())
 
     def advanceSimulation(self):
         logging.info("Advancing simulation by a tick")
         self._environment.simulateCreatureBehavior()
 
+    # Currently gets food data
+    def getEnvironmentInfo(self):
 
-""" Uncomment to see return data of getEnvironmentInfo and getSimulationInfo functions
-    def getSimulationInfo():
+        # Added hardcoded food types here since I was having an issue getting
+        # the values from environment.py and getting the foodRegistry populated
+        # One issue with this method is that whenever it gets called, it will duplicate those values
+        # Since this works for now I am sending as is, but will be refactored
+        # later.
+        grass = (
+            "Grass",
+            1,
+            "Very Common",
+            "Square",
+            "Green",
+            random.randint(
+                0,
+                50),
+            random.randint(
+                0,
+                50))
+        berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
+        fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
+
+        # Creating instances of the food types and adding to foodRegistry
+        grass = Food(*grass)
+        self._environment.addToFoodRegistry(grass)
+        berries = Food(*berries)
+        self._environment.addToFoodRegistry(berries)
+        fish = Food(*fish)
+        self._environment.addToFoodRegistry(fish)
+
         print(
-            environment.Environment(
-                [],
-                [],
-                ['Grasslands'],
-                True).getRegisteredEnvironment())
-        return environment.Environment(
-            [], [], ['Grasslands'], True).getRegisteredCreatures()
+            f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}")
+        foodRegistry = self._environment.getFoodRegistry()
+        return foodRegistry
 
-    def getEnvironmentInfo():
-        logging.info("Gathering environment data")
-        displayEnvironmentData = environment.Environment
-        return displayEnvironmentData.displayEnvironment()
 
-if __name__ == "__main__":
-    print (God.getEnvironmentInfo())
-    print (God.getSimulationInfo())
+"""
+myG = God()
+print("Environment Info:\n", myG.getEnvironmentInfo())
 """
