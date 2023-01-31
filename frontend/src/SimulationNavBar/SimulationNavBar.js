@@ -10,12 +10,11 @@ import { FaFastBackward } from 'react-icons/fa'
 import { FaTree } from 'react-icons/fa'
 import { FaFileAlt } from 'react-icons/fa'
 import { FaSave } from 'react-icons/fa'
-import {NewCreatureForm} from './CreatureForms/NewCreatureForm.js'
-import {NewCreatureOrSpeciesForm} from './CreatureForms/NewCreatureForm.js'
+import { NewCreatureForm } from './CreatureForms/NewCreatureForm.js'
+import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 import StatsPage from './StatsPage/StatsPage.js'
 import TopographyPage from './Topography/Topography.js'
-
 
 function SimulationNavBar() {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
@@ -27,24 +26,17 @@ function SimulationNavBar() {
 
     return (
         <div>
-           
+            <StatsPage show={showStatsPage} closeStatsPage={closeStatsPage} />
 
-            <StatsPage 
-                show={showStatsPage}
-                closeStatsPage={closeStatsPage}
-            />
-
-            <TopographyPage 
+            <TopographyPage
                 show={showTopographyPage}
                 closeTopographyPage={closeTopographyPage}
             />
-            
 
-
-            <NewCreatureOrSpeciesForm 
-                toggleNewCreatureForm={toggleNewCreatureForm} 
+            <NewCreatureOrSpeciesForm
+                toggleNewCreatureForm={toggleNewCreatureForm}
                 toggleNewSpeciesForm={toggleNewSpeciesForm}
-                toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm} 
+                toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm}
                 show={showCreatureOrSpeciesForm}
             />
             <NewCreatureForm
@@ -52,7 +44,7 @@ function SimulationNavBar() {
                 toggleNewCreatureForm={toggleNewCreatureForm}
             />
 
-            <NewSpeciesForm 
+            <NewSpeciesForm
                 show={showNewSpeciesForm}
                 toggleNewSpeciesForm={toggleNewSpeciesForm}
             />
@@ -68,30 +60,24 @@ function SimulationNavBar() {
 
                 <SpeedUpButton />
 
-                <AddNewCreatureOrSpeciesButton 
-                    toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm} 
+                <AddNewCreatureOrSpeciesButton
+                    toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm}
                     closeNewCreatureForm={closeNewCreatureForm}
                     toggleNewSpeciesForm={toggleNewSpeciesForm}
-                    closeNewSpeciesForm={closeNewSpeciesForm} 
+                    closeNewSpeciesForm={closeNewSpeciesForm}
                 />
 
-                <TopographyButton 
-                    toggleTopographyPage={toggleTopographyPage}
-                />
+                <TopographyButton toggleTopographyPage={toggleTopographyPage} />
 
-                <StatsButton 
-                    toggleStatsPage={toggleStatsPage}
-                />
+                <StatsButton toggleStatsPage={toggleStatsPage} />
 
                 <SaveButton />
-
             </div>
         </div>
     )
 
-
-    // functions for all creature/species related forms 
-    function toggleCreatureOrSpeciesForm(){
+    // functions for all creature/species related forms
+    function toggleCreatureOrSpeciesForm() {
         setShowCreatureOrSpeciesForm(!showCreatureOrSpeciesForm)
     }
 
@@ -103,53 +89,54 @@ function SimulationNavBar() {
         setShowNewCreatureForm(false)
     }
 
-
-    function toggleNewSpeciesForm(){
+    function toggleNewSpeciesForm() {
         setShowNewSpeciesForm(!showNewSpeciesForm)
     }
 
-    function closeNewSpeciesForm(){
+    function closeNewSpeciesForm() {
         setShowNewSpeciesForm(false)
     }
 
-
     // functions for stats page
-    function closeStatsPage(){
+    function closeStatsPage() {
         setShowStatsPage(false)
     }
 
-    function toggleStatsPage(){
+    function toggleStatsPage() {
         setShowStatsPage(!showStatsPage)
     }
 
-    
     // functions for topography page
-    function closeTopographyPage(){
+    function closeTopographyPage() {
         setShowTopographyPage(false)
     }
 
-    function toggleTopographyPage(){
+    function toggleTopographyPage() {
         setShowTopographyPage(!showTopographyPage)
     }
-
 }
 
-
-function StatsButton(props){
-
-    return(
-        <button onClick={handleClick} id="statsButton" className="navButton" title="Stats Page"><FaFileAlt /></button>
+function StatsButton(props) {
+    return (
+        <button
+            onClick={handleClick}
+            id="statsButton"
+            className="navButton"
+            title="Stats Page">
+            <FaFileAlt />
+        </button>
     )
 
-    function handleClick(){
+    function handleClick() {
         props.toggleStatsPage()
     }
 }
 
-function SaveButton(props){
-
-    return(
-        <button id="saveButton" className="navButton" title="Save"><FaSave /></button>
+function SaveButton(props) {
+    return (
+        <button id="saveButton" className="navButton" title="Save">
+            <FaSave />
+        </button>
     )
 }
 
@@ -169,9 +156,9 @@ function AddNewCreatureOrSpeciesButton(props) {
     return (
         <button
             onClick={() => {
-                props.toggleCreatureOrSpeciesForm();
-                props.closeNewCreatureForm();
-                props.closeNewSpeciesForm();
+                props.toggleCreatureOrSpeciesForm()
+                props.closeNewCreatureForm()
+                props.closeNewSpeciesForm()
             }}
             id="addNewCreatureOrSpeciesButton"
             className="navButton"
@@ -188,7 +175,7 @@ function PausePlayButton(props) {
         setShowPlayButton(!showPlayButton)
 
         // if the play button has been pressed, start the simulation
-        if(!showPlayButton){
+        if (!showPlayButton) {
             //props.startSimulation()
         }
     }
@@ -224,7 +211,11 @@ function CurrentSpeed(props) {
 
 function SpeedUpButton(props) {
     return (
-        <button onClick={handleClick} id="speedUpButton" className="navButton" title="Speed Up">
+        <button
+            onClick={handleClick}
+            id="speedUpButton"
+            className="navButton"
+            title="Speed Up">
             <FaFastForward />
         </button>
     )
@@ -234,7 +225,11 @@ function SpeedUpButton(props) {
 
 function SlowDownButton(props) {
     return (
-        <button onClick={handleClick} id="slowDownButton" className="navButton" title="Slow Down">
+        <button
+            onClick={handleClick}
+            id="slowDownButton"
+            className="navButton"
+            title="Slow Down">
             <FaFastBackward />
         </button>
     )

@@ -1,171 +1,157 @@
 #newCreatureOrSpeciesForm {
-    position:relative;
+    position: relative;
     background-color: rgb(36, 36, 36);
-    width:60vmin;
-    height:25vmin;
-    left:calc(50% - 30vmin);
-    top:10vmin;
-    
+    width: 60vmin;
+    height: 25vmin;
+    left: calc(50% - 30vmin);
+    top: 10vmin;
 }
 
 .creatureSpeciesFormButton {
-    position:relative;
+    position: relative;
 
     background-color: rgb(31, 31, 31);
     color: rgb(125, 125, 125);
-    border-radius:10px;
-    border:1px solid rgb(61, 61, 61);
+    border-radius: 10px;
+    border: 1px solid rgb(61, 61, 61);
 
-    width:20vmin;
-    height:10vmin;
+    width: 20vmin;
+    height: 10vmin;
 
-    top:calc(50% - 9vmin);
-    left:calc(50% - 23.5vmin);
+    top: calc(50% - 9vmin);
+    left: calc(50% - 23.5vmin);
 
     font-size: 1.2vmax;
-    
 
     transition-duration: 0.4s;
 }
 
-#createNewCreatureButton{
-    margin-right:6vmin;
+#createNewCreatureButton {
+    margin-right: 6vmin;
 }
 
 #creatureOrSpeciesFormTitle {
-    color:white;
-    position:relative;
-    top:20px;
-    
+    color: white;
+    position: relative;
+    top: 20px;
+
     font-size: 1.5vmax;
     color: rgb(216, 215, 215);
-   
+
     text-align: center;
 }
 
 .formExitButton {
-    width:3.5vmin;
-    height:2.5vmin;
+    width: 3.5vmin;
+    height: 2.5vmin;
     line-height: 2.7vmin;
-    font-size: .8vmax;
+    font-size: 0.8vmax;
 
     background-color: rgb(31, 31, 31);
     color: rgb(125, 125, 125);
-    border:none;
-    
+    border: none;
 
-    position:absolute;
-    right:7px;
-    top:7px;
-    
-    
+    position: absolute;
+    right: 7px;
+    top: 7px;
 }
 
-.newCreatureOrSpeciesForm{
+.newCreatureOrSpeciesForm {
     z-index: 5;
-    position:absolute;
-    width:45vmin;
-    
-    height:fit-content;
-    min-height:750px;
+    position: absolute;
+    width: 45vmin;
+
+    height: fit-content;
+    min-height: 750px;
     background-color: rgb(31, 31, 31);
 
-    left:calc(50% - 22.5vmin);
-    top:calc(50% - 49vmin)
-    
-    
-    
+    left: calc(50% - 22.5vmin);
+    top: calc(50% - 49vmin);
 }
 
-.createCreatureOrSpeciesTitle{
+.createCreatureOrSpeciesTitle {
     font-size: 1.5vmax;
     color: rgb(238, 238, 238);
     text-align: center;
-    position:relative;
-    bottom:10px;
+    position: relative;
+    bottom: 10px;
 }
 
-.newCreatureOrSpeciesData{
-    
-    position:relative;
-    bottom:10px;
-    left:calc(50% - 19.5vmin)
-    
-    
+.newCreatureOrSpeciesData {
+    position: relative;
+    bottom: 10px;
+    left: calc(50% - 19.5vmin);
 }
 
-.dataTitle{
-    color:rgb(238,238,238);
-    font-size:.7vmax;
-    padding-left:15px;
+.dataTitle {
+    color: rgb(238, 238, 238);
+    font-size: 0.7vmax;
+    padding-left: 15px;
 }
 
-.dataSlider{
-    width:12vmin;
-    position:absolute;
-    left:17vmin;
-    height:-10px;
+.dataSlider {
+    width: 12vmin;
+    position: absolute;
+    left: 17vmin;
+    height: -10px;
 }
 
-.dataText{
-    position:absolute;
-    left:32vmin;
-    width:4vmin;
-    font-size: .6vmax;
+.dataText {
+    position: absolute;
+    left: 32vmin;
+    width: 4vmin;
+    font-size: 0.6vmax;
 }
 
-.dropDownOption{
-    position:absolute;
-    left:17vmin;
-    width:12vmin;
-    font-size: .7vmax;
+.dropDownOption {
+    position: absolute;
+    left: 17vmin;
+    width: 12vmin;
+    font-size: 0.7vmax;
 }
 
-.dataCheckbox{
-    position:absolute;
-    left:17vmin;
+.dataCheckbox {
+    position: absolute;
+    left: 17vmin;
 }
 
-.attributeHolder{
-    
-    width:100%;
-    
-    
-    
-    padding-top:2px;
-    padding-bottom:2px;
+.attributeHolder {
+    width: 100%;
+
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
-.formButton{
-    border-radius:20px;
-    border:none;
-    height:3vmin;
-    width:7vmin;
+.formButton {
+    border-radius: 20px;
+    border: none;
+    height: 3vmin;
+    width: 7vmin;
 }
 
-.formButton:hover{
-    opacity:60%;
+.formButton:hover {
+    opacity: 60%;
 }
 
-#buttonContainer{
-    position:relative;
-    left:calc(50% - 9vmin);
-    margin-top:5px;
+#buttonContainer {
+    position: relative;
+    left: calc(50% - 9vmin);
+    margin-top: 5px;
 }
 
-#submitButton{
+#submitButton {
     background-color: rgb(0, 209, 0);
-    margin-right:8px;
+    margin-right: 8px;
 }
 
-#cancelButton{
+#cancelButton {
     background-color: rgb(255, 0, 0);
-    margin-left:8px;
+    margin-left: 8px;
 }
 
-.dataTextBox{
-    position:absolute;
-    left:17vmin;
-    width:12vmin;
-    font-size: .7vmax;
+.dataTextBox {
+    position: absolute;
+    left: 17vmin;
+    width: 12vmin;
+    font-size: 0.7vmax;
 }

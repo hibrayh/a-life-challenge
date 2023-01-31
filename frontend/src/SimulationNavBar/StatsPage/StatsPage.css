@@ -1,27 +1,24 @@
-#statsPageContainer{
-    position:absolute;
-    height:calc(100% - 7vmin);
-    width:40vmin;
+#statsPageContainer {
+    position: absolute;
+    height: calc(100% - 7vmin);
+    width: 40vmin;
     background-color: rgb(80, 80, 80);
-    right:0px;
-    top:0px;
+    right: 0px;
+    top: 0px;
     text-align: center;
 }
 
 .formExitButton {
-    width:3.5vmin;
-    height:2.5vmin;
+    width: 3.5vmin;
+    height: 2.5vmin;
     line-height: 2.7vmin;
-    font-size: .8vmax;
+    font-size: 0.8vmax;
 
     background-color: rgb(65, 65, 65);
     color: rgb(125, 125, 125);
-    border:none;
-    
+    border: none;
 
-    position:absolute;
-    right:7px;
-    top:7px;
-    
-    
+    position: absolute;
+    right: 7px;
+    top: 7px;
 }

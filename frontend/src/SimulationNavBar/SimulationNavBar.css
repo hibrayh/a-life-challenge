@@ -86,15 +86,11 @@
     left: 41%;
 }
 
-#saveButton{
-    position:absolute;
-    right:15px;
+#saveButton {
+    position: absolute;
+    right: 15px;
 }
 
-#statsButton{
-    left:42%;
+#statsButton {
+    left: 42%;
 }
-
-
-
-
