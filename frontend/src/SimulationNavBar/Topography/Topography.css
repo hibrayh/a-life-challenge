@@ -1,0 +1,14 @@
+#topographyContainer {
+    width: 35vmin;
+    height: 50vmin;
+    background-color: rgb(80, 80, 80);
+    position: absolute;
+
+    top: calc(50% - 40vmin);
+    text-align: center;
+}
+
+#topographyForm {
+    text-align: left;
+    margin-top: 5vmin;
+}
