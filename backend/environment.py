@@ -25,6 +25,7 @@ class EnvironmentInfo:
         self.regionTopography = regionTopography
         self.lightVisibility = lightVisibility
 
+
 class Food:
     def __init__(self,
                  name,
@@ -258,12 +259,13 @@ class Environment:
             foodLocations.append((food.xCoordinate, food.yCoordinate))
         return foodLocations
 
+
 class Topography(Environment):
-    def __init__(self, 
-                 name, 
-                 elevation, 
-                 climate, 
-                 xCoordinate, 
+    def __init__(self,
+                 name,
+                 elevation,
+                 climate,
+                 xCoordinate,
                  yCoordinate,
                  width,
                  height):
@@ -275,6 +277,7 @@ class Topography(Environment):
         self.yCoordinate = yCoordinate
         self.width = width
         self.height = height
+
 
 mountains = ("Mountains", 1000, "cold", 400, 300, 100, 100)
 forest = ("Forest", 200, "temperate", 500, 300, 100, 100)
