@@ -169,7 +169,7 @@ class God:
         self._environment.addToTopographyRegistry(desert)
 
 
-        # Display the location of the food types in the environment, along with the 
+        # Display the location of the food types in the environment, along with the
         # currently registered food and topographies in the environment
         print(
             f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}", "\n")
