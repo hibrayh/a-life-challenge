@@ -169,13 +169,14 @@ class God:
                     0,
                     800))
 
+        # Creating instances of the food types and adding to foodRegistry
+        # Creating instances of the topography types and adding to topographyRegistry
         grass = Food(*grass)
         self._environment.addToFoodRegistry(grass)
         berries = Food(*berries)
         self._environment.addToFoodRegistry(berries)
         fish = Food(*fish)
         self._environment.addToFoodRegistry(fish)
-
         foodRegistry = self._environment.getFoodRegistry()
         return foodRegistry
 
