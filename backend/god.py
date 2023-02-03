@@ -177,6 +177,7 @@ class God:
         self._environment.addToFoodRegistry(berries)
         fish = Food(*fish)
         self._environment.addToFoodRegistry(fish)
+    
         foodRegistry = self._environment.getFoodRegistry()
         return foodRegistry
 
