@@ -4,6 +4,7 @@ import creatures.species_manager
 import random
 from environment import Food
 from environment import Environment
+from environment import Topography
 
 logging.basicConfig(
     level=logging.INFO,
@@ -162,18 +163,37 @@ class God:
         berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
         fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
 
+        mountains = ("Mountains", 1000, "cold", 400, 300, 100, 100)
+        forest = ("Forest", 200, "temperate", 500, 300, 100, 100)
+        plains = ("Plains", 50, "temperate", 700, 300, 50, 50)
+        desert = ("Desert", 0, "hot", 600, 400, 150, 150)
+
+
         # Creating instances of the food types and adding to foodRegistry
+        # Creating instances of the topography types and adding to topographyRegistry
         grass = Food(*grass)
         self._environment.addToFoodRegistry(grass)
         berries = Food(*berries)
         self._environment.addToFoodRegistry(berries)
         fish = Food(*fish)
         self._environment.addToFoodRegistry(fish)
+        mountains = Topography(*mountains)
+        self._environment.addToTopographyRegistry(mountains)
+        forest = Topography(*forest)
+        self._environment.addToTopographyRegistry(forest)
+        plains = Topography(*plains)
+        self._environment.addToTopographyRegistry(plains)
+        desert = Topography(*desert)
+        self._environment.addToTopographyRegistry(desert)
 
+
+        # Display the location of the food types in the environment, along with the 
+        # currently registered food and topographies in the environment
         print(
-            f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}")
+            f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}", "\n")
         foodRegistry = self._environment.getFoodRegistry()
-        return foodRegistry
+        topographyRegistry = self._environment.getTopographyRegistry()
+        return foodRegistry, topographyRegistry
 
 
 """
