@@ -150,9 +150,9 @@ class God:
         plains = ("Plains", 50, "temperate", 700, 300, 50, 50)
         desert = ("Desert", 0, "hot", 600, 400, 150, 150)
 
-
         # Creating instances of the food types and adding to foodRegistry
-        # Creating instances of the topography types and adding to topographyRegistry
+        # Creating instances of the topography types and adding to
+        # topographyRegistry
         grass = Food(*grass)
         self._environment.addToFoodRegistry(grass)
         berries = Food(*berries)
@@ -168,11 +168,11 @@ class God:
         desert = Topography(*desert)
         self._environment.addToTopographyRegistry(desert)
 
-
-        # Display the location of the food types in the environment, along with the 
+        # Display the location of the food types in the environment, along with the
         # currently registered food and topographies in the environment
         print(
-            f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}", "\n")
+            f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}",
+            "\n")
         foodRegistry = self._environment.getFoodRegistry()
         topographyRegistry = self._environment.getTopographyRegistry()
         return foodRegistry, topographyRegistry
