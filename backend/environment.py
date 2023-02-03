@@ -25,7 +25,6 @@ class EnvironmentInfo:
         self.regionTopography = regionTopography
         self.lightVisibility = lightVisibility
 
-
 class Food:
     def __init__(self,
                  name,
@@ -91,7 +90,7 @@ class Environment:
 
     def addToTopographyRegistry(self, newTopography):
         logging.info(
-            f"Registering {newTopography} as a region in the environment")
+            f"Registering {newTopography.name} as a region in the environment")
         self.topographyRegistry.append(newTopography)
 
     def addToCreatureRegistry(self, newCreature):
@@ -198,9 +197,27 @@ class Environment:
             "creatureRegistry": creatureList
         }
 
+    def logTopography(self):
+        return {
+            'topographyName': self.name,
+            'elevation': self.elevation,
+            'climate': self.climate,
+            'locationX': self.xCoordinate,
+            'locationY': self.yCoordinate,
+            'width': self.width,
+            'height': self.height,
+        }
+
     # Displays each topography currently registered in the environment
     def getTopographyRegistry(self):
-        return self.topographyRegistry
+        topographyList = []
+
+        for topography in self.topographyRegistry:
+            topographyList.append(topography.logTopography())
+
+        return {
+            "topographyRegistry": topographyList
+        }
 
     def simulateCreatureBehavior(self):
         logging.info("Removing dead creatures from environment")
@@ -241,12 +258,39 @@ class Environment:
             foodLocations.append((food.xCoordinate, food.yCoordinate))
         return foodLocations
 
+class Topography(Environment):
+    def __init__(self, 
+                 name, 
+                 elevation, 
+                 climate, 
+                 xCoordinate, 
+                 yCoordinate,
+                 width,
+                 height):
+        logging.info("Creating new topography in the environment")
+        self.name = name
+        self.elevation = elevation
+        self.climate = climate
+        self.xCoordinate = xCoordinate
+        self.yCoordinate = yCoordinate
+        self.width = width
+        self.height = height
+
+mountains = ("Mountains", 1000, "cold", 400, 300, 100, 100)
+forest = ("Forest", 200, "temperate", 500, 300, 100, 100)
+plains = ("Plains", 50, "temperate", 700, 300, 50, 50)
+desert = ("Desert", 0, "hot", 600, 400, 150, 150)
+
 
 """
 # Creating instances of the Food class using the tuple attributes
 grass = Food(*grass)
 berries = Food(*berries)
 fish = Food(*fish)
+mountains = Topography(*mountains)
+forest = Topography(*forest)
+plains = Topography(*plains)
+desert = Topography(*desert)
 
 myEnv = Environment()
 # Create instance of Environment class and add food types to foodRegistry list
@@ -255,6 +299,13 @@ myEnv.addToFoodRegistry(grass)
 myEnv.addToFoodRegistry(fish)
 myEnv.addToFoodRegistry(berries)
 
-print(myEnv.getFoodRegistry())
-print("Food locations: ", myEnv.getFoodLocations())
+# Test to see if topography types are added into registry
+myEnv.addToTopographyRegistry(mountains)
+myEnv.addToTopographyRegistry(forest)
+myEnv.addToTopographyRegistry(plains)
+myEnv.addToTopographyRegistry(desert)
+
+print(myEnv.getFoodRegistry(),"\n")
+print("Food locations: ", myEnv.getFoodLocations(),"\n")
+print(myEnv.getTopographyRegistry())
 """
