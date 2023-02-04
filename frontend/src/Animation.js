@@ -64,58 +64,100 @@ class Animation extends React.Component {
         )
     }
 
-    AnimateStarved(creatureId) {
+    AnimateKilled(creature) {
         // Takes the creature ID and performs the "creature starved" animation
+        let roundness = '0%'
+        if (creature.shape === 'circle') {
+            roundness = '50%'
+        }
         return (
-            <div id={{ creatureId } + '-killed-wrapper'}>
+            <>
+                <div
+                    id={creature.creatureId}
+                    style={{
+                        position: 'absolute',
+                        left: `${creature.locationX}px`,
+                        top: `${creature.locationY}px`,
+                        background: creature.color,
+                        borderRadius: roundness,
+                        height: grown,
+                        width: grown,
+                    }}
+                />
                 <Anime
-                    id={{ creatureId } + '-animation-panel'}
                     initial={[
                         {
-                            targets: '#' + creatureId,
+                            targets: '#' + creature.creatureId,
                             opacity: '0',
                             duration: 3000,
                             easing: 'easeInOutElastic(8, 1)',
-                        },
-                    ]}></Anime>
-            </div>
-        )
-    }
-
-    AnimateKilled(creatureId) {
-        // Takes the creature ID and performs the "creature killed" animation
-        return (
-            <>
-                <Anime
-                    initial={[
-                        {
-                            targets: '#' + creatureId,
-                            keyframes: [
-                                {
-                                    translateX: '+=5',
-                                    easing: 'easeInOutElastic(9, .5)',
-                                    duration: 750,
-                                },
-                                { opacity: '0' },
-                            ],
-                            easing: 'linear',
                         },
                     ]}></Anime>
             </>
         )
     }
 
-    AnimateOldAge(creatureId) {
-        // Takes the creature ID and performs the "creature starved" animation
+    AnimateReproduce(creature) {
+        // Takes the creature ID and performs the "creature killed" animation
+        let roundness = '0%'
+        if (creature.shape === 'circle') {
+            roundness = '50%'
+        }
         return (
             <>
+                <div
+                    id={creature.creatureId}
+                    style={{
+                        position: 'absolute',
+                        left: `${creature.locationX}px`,
+                        top: `${creature.locationY}px`,
+                        background: creature.color,
+                        borderRadius: roundness,
+                        height: grown,
+                        width: grown,
+                    }}
+                />
+
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creatureId,
+                            targets: '#' + creature.creatureId,
+                            translateY: '+=5',
+                            easing: 'easeInOutElastic(9, .5)',
+                            duration: 750,
+                        },
+                    ]}></Anime>
+            </>
+        )
+    }
+
+    AnimateHide(creature) {
+        // Takes the creature ID and performs the "creature starved" animation
+        let roundness = '0%'
+        if (creature.shape === 'circle') {
+            roundness = '50%'
+        }
+        return (
+            <>
+                <div
+                    id={creature.creatureId}
+                    style={{
+                        position: 'absolute',
+                        left: `${creature.locationX}px`,
+                        top: `${creature.locationY}px`,
+                        background: creature.color,
+                        borderRadius: roundness,
+                        height: grown,
+                        width: grown,
+                    }}
+                />
+                <Anime
+                    initial={[
+                        {
+                            targets: '#' + creature.creatureId,
                             keyframes: [
                                 { opacity: '0.5', duration: 750 },
-                                { opacity: '0', delay: 2000 },
+                                { opacity: '1', delay: 2000 },
                             ],
                             easing: 'linear',
                         },
@@ -139,7 +181,7 @@ class Animation extends React.Component {
                         left: `${creature.locationX}px`,
                         top: `${creature.locationY}px`,
                         background: creature.color,
-                        borderRadius: '50%',
+                        borderRadius: roundness,
                         height: grown,
                         width: grown,
                     }}
@@ -334,7 +376,11 @@ class Animation extends React.Component {
                     jsx.push(<div key={i}>{this.AnimateKilled(creature)}</div>)
                 } else if (creature.lastAction === 'REPRODUCE') {
                     jsx.push(
-                        <div key={i}>{this.AnimateMovement(creature)}</div>
+                        <div key={i}>{this.AnimateReproduce(creature)}</div>
+                    )
+                } else if (creature.lastAction === 'HIDE_FROM_CREATURE') {
+                    jsx.push(
+                        <div key={i}>{this.AnimateHide(creature)}</div>
                     )
                 } else {
                     jsx.push(
