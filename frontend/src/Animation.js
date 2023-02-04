@@ -379,9 +379,7 @@ class Animation extends React.Component {
                         <div key={i}>{this.AnimateReproduce(creature)}</div>
                     )
                 } else if (creature.lastAction === 'HIDE_FROM_CREATURE') {
-                    jsx.push(
-                        <div key={i}>{this.AnimateHide(creature)}</div>
-                    )
+                    jsx.push(<div key={i}>{this.AnimateHide(creature)}</div>)
                 } else {
                     jsx.push(
                         <div key={i}>{this.AnimateMovement(creature)}</div>
