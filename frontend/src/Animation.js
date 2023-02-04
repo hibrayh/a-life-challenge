@@ -31,26 +31,63 @@ class Animation extends React.Component {
         this.startSimulation = this.startSimulation.bind(this)
     }
 
-    AnimateBirth(creature) {
-        // Takes the creature ID, their location x and y, color, and shape, to create an element with specific animation
+    CreateCreature(creature){
+        //creates the elements for creatures
         let roundness = '0%'
         if (creature.shape === 'circle') {
             roundness = '50%'
         }
-        return (
-            <>
+
+        if(creature.shape === 'triangle'){
+            return(
                 <div
                     id={creature.creatureId}
                     style={{
                         position: 'absolute',
                         left: `${creature.locationX}px`,
                         top: `${creature.locationY}px`,
-                        background: creature.color,
-                        borderRadius: roundness,
-                        height: grown,
-                        width: grown,
-                    }}
-                />
+                        width: '0px',
+                        height: '0px',
+
+                        borderStyle: 'solid',
+                        borderTopWidth: '0px',
+                        borderLeftWidth: '7.5px',
+                        borderBottomWidth: '13.0px',
+                        borderRightWidth: '7.5px',
+
+                        borderTopColor: 'transparent',
+                        borderRightColor: 'transparent',
+                        borderBottomColor: creature.color,
+                        borderLeftColor: 'transparent',
+                    }}>
+                </div>
+            )
+        }
+        else{ //return the circle or square
+            return (
+                <>
+                    <div
+                        id={creature.creatureId}
+                        style={{
+                            position: 'absolute',
+                            left: `${creature.locationX}px`,
+                            top: `${creature.locationY}px`,
+                            background: creature.color,
+                            borderRadius: roundness,
+                            height: grown,
+                            width: grown,
+                        }}
+                    />
+                </>
+            )
+        }
+    }
+
+    AnimateBirth(creature) {
+        // Takes the creature to create an element with specific animation
+        return (
+            <>
+                {this.CreateCreature(creature)}
                 <Anime
                     initial={[
                         {
@@ -66,24 +103,9 @@ class Animation extends React.Component {
 
     AnimateKilled(creature) {
         // Takes the creature ID and performs the "creature starved" animation
-        let roundness = '0%'
-        if (creature.shape === 'circle') {
-            roundness = '50%'
-        }
         return (
             <>
-                <div
-                    id={creature.creatureId}
-                    style={{
-                        position: 'absolute',
-                        left: `${creature.locationX}px`,
-                        top: `${creature.locationY}px`,
-                        background: creature.color,
-                        borderRadius: roundness,
-                        height: grown,
-                        width: grown,
-                    }}
-                />
+                {this.CreateCreature(creature)}
                 <Anime
                     initial={[
                         {
@@ -99,25 +121,9 @@ class Animation extends React.Component {
 
     AnimateReproduce(creature) {
         // Takes the creature ID and performs the "creature killed" animation
-        let roundness = '0%'
-        if (creature.shape === 'circle') {
-            roundness = '50%'
-        }
         return (
             <>
-                <div
-                    id={creature.creatureId}
-                    style={{
-                        position: 'absolute',
-                        left: `${creature.locationX}px`,
-                        top: `${creature.locationY}px`,
-                        background: creature.color,
-                        borderRadius: roundness,
-                        height: grown,
-                        width: grown,
-                    }}
-                />
-
+                {this.CreateCreature(creature)}
                 <Anime
                     initial={[
                         {
@@ -133,24 +139,9 @@ class Animation extends React.Component {
 
     AnimateHide(creature) {
         // Takes the creature ID and performs the "creature starved" animation
-        let roundness = '0%'
-        if (creature.shape === 'circle') {
-            roundness = '50%'
-        }
         return (
             <>
-                <div
-                    id={creature.creatureId}
-                    style={{
-                        position: 'absolute',
-                        left: `${creature.locationX}px`,
-                        top: `${creature.locationY}px`,
-                        background: creature.color,
-                        borderRadius: roundness,
-                        height: grown,
-                        width: grown,
-                    }}
-                />
+                {this.CreateCreature(creature)}
                 <Anime
                     initial={[
                         {
@@ -168,24 +159,9 @@ class Animation extends React.Component {
 
     AnimateMovement(creature) {
         // Takes the creature ID and moves to to the specified X and Y location
-        let roundness = '0%'
-        if (creature.shape === 'circle') {
-            roundness = '50%'
-        }
         return (
             <>
-                <div
-                    id={creature.creatureId}
-                    style={{
-                        position: 'absolute',
-                        left: `${creature.locationX}px`,
-                        top: `${creature.locationY}px`,
-                        background: creature.color,
-                        borderRadius: roundness,
-                        height: grown,
-                        width: grown,
-                    }}
-                />
+                {this.CreateCreature(creature)}
                 <Anime
                     initial={[
                         {
@@ -199,16 +175,16 @@ class Animation extends React.Component {
         )
     }
 
-    AnimateResourceSpawn(resourceId, locationX, locationY, color) {
+    AnimateResourceSpawn(resource) {
         // Takes the resource ID, its location x and y, and color to create an element with specific animation
         return (
             <>
                 <div
-                    id={resourceId}
+                    id={resource.resourceId}
                     style={{
                         position: 'absolute',
-                        left: `${locationX}px`,
-                        top: `${locationY}px`,
+                        left: `${resource.locationX}px`,
+                        top: `${resource.locationY}px`,
                         width: '0px',
                         height: '0px',
 
@@ -220,14 +196,14 @@ class Animation extends React.Component {
 
                         borderTopColor: 'transparent',
                         borderRightColor: 'transparent',
-                        borderBottomColor: color,
+                        borderBottomColor: resource.color,
                         borderLeftColor: 'transparent',
                     }}
                 />
                 <Anime
                     initial={[
                         {
-                            targets: '#' + resourceId,
+                            targets: '#' + resource.resourceId,
                             scale: [0, 1],
                             rotate: 360,
                             easing: 'linear',
