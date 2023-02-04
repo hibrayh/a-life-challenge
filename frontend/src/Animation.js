@@ -31,15 +31,15 @@ class Animation extends React.Component {
         this.startSimulation = this.startSimulation.bind(this)
     }
 
-    CreateCreature(creature){
+    CreateCreature(creature) {
         //creates the elements for creatures
         let roundness = '0%'
         if (creature.shape === 'circle') {
             roundness = '50%'
         }
 
-        if(creature.shape === 'triangle'){
-            return(
+        if (creature.shape === 'triangle') {
+            return (
                 <div
                     id={creature.creatureId}
                     style={{
@@ -59,11 +59,10 @@ class Animation extends React.Component {
                         borderRightColor: 'transparent',
                         borderBottomColor: creature.color,
                         borderLeftColor: 'transparent',
-                    }}>
-                </div>
+                    }}></div>
             )
-        }
-        else{ //return the circle or square
+        } else {
+            //return the circle or square
             return (
                 <>
                     <div
