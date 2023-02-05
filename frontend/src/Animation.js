@@ -7,28 +7,17 @@ const { Anime } = ReactAnime
 //const used to define the creature element size
 const grown = '25px'
 
-// Dummy backend connection component. For reference purposes
 class Animation extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
             isSimStarted: false,
-            creatureId: '',
-            species: '',
-            movement: 0,
-            birth: 0,
-            locationX: 0,
-            locationY: 0,
-            shape: '',
-            color: '',
-            creaturesToAnimate: [],
-            creatures: [],
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
         this.getCreatureInfo = this.getCreatureInfo.bind(this)
-        this.startSimulation = this.startSimulation.bind(this)
+        //this.startSimulation = this.startSimulation.bind(this)
     }
 
     CreateCreature(creature) {
@@ -250,6 +239,7 @@ class Animation extends React.Component {
         })
     }
 
+    /*
     async startSimulation() {
         // Start the simulation
         await axios({
@@ -331,6 +321,7 @@ class Animation extends React.Component {
             })
         })
     }
+    */
 
     render() {
         if (!this.state.isSimStarted) {
@@ -361,8 +352,8 @@ class Animation extends React.Component {
                     )
                 }
             }
-            return <div id="animation-wrapper">{jsx}</div>
         }
+        return <div id="animation-wrapper">{jsx}</div>
     }
 }
 

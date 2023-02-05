@@ -16,7 +16,12 @@ import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 import StatsPage from './StatsPage/StatsPage.js'
 import TopographyPage from './Topography/Topography.js'
 
-function SimulationNavBar() {
+function SimulationNavBar({
+    playOrPauseSimulationCallback,
+    speedUpSimulationCallback,
+    slowDownSimulationCallback,
+    ticksPerSecond,
+}) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
         useState(false)
     const [showNewCreatureForm, setShowNewCreatureForm] = useState(false)
@@ -50,15 +55,17 @@ function SimulationNavBar() {
             />
 
             <div id="simulationNavBar">
-                <PausePlayButton />
+                <PausePlayButton
+                    pausePlayCallback={playOrPauseSimulationCallback}
+                />
 
                 <CurrentTime />
 
-                <CurrentSpeed />
+                <CurrentSpeed ticks={ticksPerSecond} />
 
-                <SlowDownButton />
+                <SlowDownButton slowDownCall={slowDownSimulationCallback} />
 
-                <SpeedUpButton />
+                <SpeedUpButton speedUpCall={speedUpSimulationCallback} />
 
                 <AddNewCreatureOrSpeciesButton
                     toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm}
@@ -168,16 +175,13 @@ function AddNewCreatureOrSpeciesButton(props) {
     )
 }
 
-function PausePlayButton(props) {
+function PausePlayButton({ pausePlayCallback }) {
     const [showPlayButton, setShowPlayButton] = useState(true)
 
     function handleClick() {
         setShowPlayButton(!showPlayButton)
 
-        // if the play button has been pressed, start the simulation
-        if (!showPlayButton) {
-            //props.startSimulation()
-        }
+        pausePlayCallback()
     }
 
     if (showPlayButton) {
@@ -205,11 +209,11 @@ function CurrentTime(props) {
     return <span id="currentTime">2022-11-28 01:02 pm</span>
 }
 
-function CurrentSpeed(props) {
-    return <span id="currentSpeed">5.3 min/sec</span>
+function CurrentSpeed({ ticks }) {
+    return <span id="currentSpeed">{ticks} ticks/sec</span>
 }
 
-function SpeedUpButton(props) {
+function SpeedUpButton({ speedUpCall }) {
     return (
         <button
             onClick={handleClick}
@@ -220,10 +224,12 @@ function SpeedUpButton(props) {
         </button>
     )
 
-    function handleClick() {}
+    function handleClick() {
+        speedUpCall()
+    }
 }
 
-function SlowDownButton(props) {
+function SlowDownButton({ slowDownCall }) {
     return (
         <button
             onClick={handleClick}
@@ -234,7 +240,9 @@ function SlowDownButton(props) {
         </button>
     )
 
-    function handleClick() {}
+    function handleClick() {
+        slowDownCall()
+    }
 }
 
 export default SimulationNavBar
