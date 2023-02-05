@@ -13,7 +13,7 @@ class Animation extends React.Component {
 
         this.state = {
             isSimStarted: false,
-            creaturesToAnimate: []
+            creaturesToAnimate: [],
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
