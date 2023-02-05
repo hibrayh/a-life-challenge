@@ -7,28 +7,17 @@ const { Anime } = ReactAnime
 //const used to define the creature element size
 const grown = '25px'
 
-// Dummy backend connection component. For reference purposes
 class Animation extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
             isSimStarted: false,
-            creatureId: '',
-            species: '',
-            movement: 0,
-            birth: 0,
-            locationX: 0,
-            locationY: 0,
-            shape: '',
-            color: '',
-            creaturesToAnimate: [],
-            creatures: [],
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
         this.getCreatureInfo = this.getCreatureInfo.bind(this)
-        this.startSimulation = this.startSimulation.bind(this)
+        //this.startSimulation = this.startSimulation.bind(this)
     }
 
     AnimateBirth(creature) {
@@ -233,6 +222,7 @@ class Animation extends React.Component {
         })
     }
 
+    /*
     async startSimulation() {
         // Start the simulation
         await axios({
@@ -314,36 +304,29 @@ class Animation extends React.Component {
             })
         })
     }
+    */
 
     render() {
-        if (!this.state.isSimStarted) {
-            return (
-                <button className="getButton" onClick={this.startSimulation}>
-                    Play
-                </button>
-            )
-        } else {
-            // Example of looping through all creatures and animating
-            let jsx = []
-            for (let i = 0; i < this.state.creatures.length; i++) {
-                let creature = this.state.creatures[i]
-                console.log(creature)
-                if (creature.lastAction === 'BIRTHED') {
-                    jsx.push(<div key={i}>{this.AnimateBirth(creature)}</div>)
-                } else if (creature.lastAction === 'DEATH') {
-                    jsx.push(<div key={i}>{this.AnimateKilled(creature)}</div>)
-                } else if (creature.lastAction === 'REPRODUCE') {
-                    jsx.push(
-                        <div key={i}>{this.AnimateMovement(creature)}</div>
-                    )
-                } else {
-                    jsx.push(
-                        <div key={i}>{this.AnimateMovement(creature)}</div>
-                    )
-                }
+        // Example of looping through all creatures and animating
+        let jsx = []
+        for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
+            let creature = this.props.creaturesToAnimate[i]
+            console.log(creature)
+            if (creature.lastAction === 'BIRTHED') {
+                jsx.push(<div key={i}>{this.AnimateBirth(creature)}</div>)
+            } else if (creature.lastAction === 'DEATH') {
+                jsx.push(<div key={i}>{this.AnimateKilled(creature)}</div>)
+            } else if (creature.lastAction === 'REPRODUCE') {
+                jsx.push(
+                    <div key={i}>{this.AnimateMovement(creature)}</div>
+                )
+            } else {
+                jsx.push(
+                    <div key={i}>{this.AnimateMovement(creature)}</div>
+                )
             }
-            return <div id="animation-wrapper">{jsx}</div>
         }
+        return <div id="animation-wrapper">{jsx}</div>
     }
 }
 
