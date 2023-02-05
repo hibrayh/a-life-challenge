@@ -10,7 +10,8 @@ function App() {
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
     const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
-    const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] = useState(0)
+    const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
+        useState(0)
     const [creatureList, setCreatureList] = useState([])
 
     const startSimulation = async () => {
@@ -70,17 +71,15 @@ function App() {
         })
     }
 
-    const playPauseSimulation = async() => {
+    const playPauseSimulation = async () => {
         if (isSimulationRunning) {
             setSimulationSpeedBeforePause(simulationTicksPerSecond)
             setSimulationTicksPerSecond(0)
             setIsSimulationRunning(false)
-        }
-        else {
+        } else {
             if (hasSimulationStarted) {
                 setSimulationTicksPerSecond(simulationSpeedBeforePause)
-            }
-            else {
+            } else {
                 await startSimulation()
             }
 
@@ -102,16 +101,18 @@ function App() {
         setSimulationTicksPerSecond(simulationTicksPerSecond + 1)
 
         // Use simulationTicksPerSecond + 1 as the variable will not be updated until after this function exits
-        setIsSimulationRunning((simulationTicksPerSecond + 1 > 0))
+        setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
     }
 
     const decrementTicksPerSecond = () => {
-        setSimulationTicksPerSecond((simulationTicksPerSecond > 0) ? (simulationTicksPerSecond - 1) : 0)
+        setSimulationTicksPerSecond(
+            simulationTicksPerSecond > 0 ? simulationTicksPerSecond - 1 : 0
+        )
 
-        setIsSimulationRunning((simulationTicksPerSecond > 0))
+        setIsSimulationRunning(simulationTicksPerSecond > 0)
     }
 
-    const getSimulationInfo = async() => {
+    const getSimulationInfo = async () => {
         await axios({
             method: 'GET',
             url: 'http://localhost:5000/get-simulation-info',
@@ -122,11 +123,16 @@ function App() {
     }
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (simulationTicksPerSecond > 0 && isSimulationRunning) {
-                progressSimulationTimeByOneTick()
-            }
-        }, (simulationTicksPerSecond > 0) ? (1000 / simulationTicksPerSecond) : (1000))
+        const interval = setInterval(
+            () => {
+                if (simulationTicksPerSecond > 0 && isSimulationRunning) {
+                    progressSimulationTimeByOneTick()
+                }
+            },
+            simulationTicksPerSecond > 0
+                ? 1000 / simulationTicksPerSecond
+                : 1000
+        )
 
         return () => clearInterval(interval)
     }, [isSimulationRunning, simulationTicksPerSecond])
@@ -164,10 +170,8 @@ function App() {
                 <header className="menu">
                     <h1>Simulation Page</h1>
                 </header>
-                <Animation 
-                    creaturesToAnimate={creatureList}
-                />
-                <SimulationNavBar 
+                <Animation creaturesToAnimate={creatureList} />
+                <SimulationNavBar
                     playOrPauseSimulationCallback={playPauseSimulation}
                     speedUpSimulationCallback={incrementTicksPerSecond}
                     slowDownSimulationCallback={decrementTicksPerSecond}

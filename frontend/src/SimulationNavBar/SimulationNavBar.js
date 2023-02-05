@@ -16,7 +16,12 @@ import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 import StatsPage from './StatsPage/StatsPage.js'
 import TopographyPage from './Topography/Topography.js'
 
-function SimulationNavBar({ playOrPauseSimulationCallback, speedUpSimulationCallback, slowDownSimulationCallback, ticksPerSecond }) {
+function SimulationNavBar({
+    playOrPauseSimulationCallback,
+    speedUpSimulationCallback,
+    slowDownSimulationCallback,
+    ticksPerSecond,
+}) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
         useState(false)
     const [showNewCreatureForm, setShowNewCreatureForm] = useState(false)
@@ -50,23 +55,17 @@ function SimulationNavBar({ playOrPauseSimulationCallback, speedUpSimulationCall
             />
 
             <div id="simulationNavBar">
-                <PausePlayButton 
+                <PausePlayButton
                     pausePlayCallback={playOrPauseSimulationCallback}
                 />
 
                 <CurrentTime />
 
-                <CurrentSpeed 
-                    ticks={ticksPerSecond}
-                />
+                <CurrentSpeed ticks={ticksPerSecond} />
 
-                <SlowDownButton 
-                    slowDownCall={slowDownSimulationCallback}
-                />
+                <SlowDownButton slowDownCall={slowDownSimulationCallback} />
 
-                <SpeedUpButton 
-                    speedUpCall={speedUpSimulationCallback}
-                />
+                <SpeedUpButton speedUpCall={speedUpSimulationCallback} />
 
                 <AddNewCreatureOrSpeciesButton
                     toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm}
