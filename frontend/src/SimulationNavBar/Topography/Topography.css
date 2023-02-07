@@ -11,4 +11,40 @@
 #topographyForm {
     text-align: left;
     margin-top: 5vmin;
+    
 }
+
+
+#mainGrid {
+    background-color: black;
+    display:flex;
+    flex-wrap:wrap;
+    flex-direction:column;
+    width:100%;
+    height:calc(100% - 7vmin);
+    position:absolute;
+    left:0px;
+    top:0px;
+    opacity:50%;
+    z-index: -1;
+}
+
+.node{
+    box-sizing: border-box;
+    height:calc(100% / 25);
+    width:calc(100% / 50);
+    background-color: rgb(172, 172, 172);
+    border: 1px solid black;
+   
+    
+}
+
+.selected{
+    box-sizing: border-box;
+   
+    height:calc(100% / 25);
+    width:calc(100% / 50);
+    background-color: purple;
+    border: 1px solid black;
+}
+

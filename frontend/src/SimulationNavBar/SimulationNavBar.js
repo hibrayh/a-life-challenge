@@ -14,7 +14,7 @@ import { NewCreatureForm } from './CreatureForms/NewCreatureForm.js'
 import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 import StatsPage from './StatsPage/StatsPage.js'
-import TopographyPage from './Topography/Topography.js'
+import {TopographyPage} from './Topography/Topography.js'
 
 function SimulationNavBar({
     playOrPauseSimulationCallback,
