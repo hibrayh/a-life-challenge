@@ -128,13 +128,13 @@ class God:
     def advanceSimulation(self):
         logging.info("Advancing simulation by a tick")
         self._environment.simulateCreatureBehavior()
-    
+
     def getListOfSpecies(self):
         speciesNames = []
 
         for species in self._speciesManagers:
             speciesNames.append(species.speciesName)
-        
+
         return {
             "speciesNames": speciesNames
         }

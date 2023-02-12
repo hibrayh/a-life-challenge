@@ -81,7 +81,7 @@ class Genome:
         self.defensiveAbility = defensiveAbility
         self.shape = shape
         self.color = color
-    
+
     def serialize(self):
         canSee = Receptors.VISION in self.receptors
         canSmell = Receptors.SMELL in self.receptors

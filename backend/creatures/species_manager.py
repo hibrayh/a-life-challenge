@@ -153,6 +153,6 @@ class SpeciesManager:
 
     def editSpeciesRelationship(self, speciesName, newRelationship):
         self.speciesRelations[speciesName] = newRelationship
-    
+
     def getSpeciesGenome(self):
         return self._startingGenome.serialize()

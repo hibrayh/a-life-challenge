@@ -20,7 +20,7 @@ function NewCreatureForm(props) {
     const [intelligence, setIntelligence] = useState(0.5)
     const [selfPreservation, setSelfPreservation] = useState(0.5)
     const [mobility, setMobility] = useState(0.5)
-    const [reproductionType, setReproductionType] = useState('sexual')          // Set default
+    const [reproductionType, setReproductionType] = useState('sexual') // Set default
     const [offSpringAmount, setOffSpringAmount] = useState(0.5)
     const [motivation, setMotivation] = useState(0.5)
     const [maxEnergy, setMaxEnergy] = useState(0.5)
@@ -33,8 +33,8 @@ function NewCreatureForm(props) {
     const [lifeExpectancy, setLifeExpectancy] = useState(0.5)
     const [offensiveAbility, setOffensiveAbility] = useState(0.5)
     const [defensiveAbility, setDefensiveAbility] = useState(0.5)
-    const [shape, setShape] = useState('circle')                                // Set default
-    const [color, setColor] = useState('red')                                   // Set default
+    const [shape, setShape] = useState('circle') // Set default
+    const [color, setColor] = useState('red') // Set default
     const [speciesName, setSpeciesName] = useState('')
     const [numberToSpawn, setNumberToSpawn] = useState(1)
 
@@ -99,10 +99,15 @@ function NewCreatureForm(props) {
         let options = []
         if (availableSpecies.length < 1) {
             getSpeciesList()
-        }
-        else {
+        } else {
             for (let i = 0; i < availableSpecies.length; i++) {
-                options.push(<option key={"speciesOption-" + availableSpecies[i]} value={availableSpecies[i]}>{availableSpecies[i]}</option>)
+                options.push(
+                    <option
+                        key={'speciesOption-' + availableSpecies[i]}
+                        value={availableSpecies[i]}>
+                        {availableSpecies[i]}
+                    </option>
+                )
             }
         }
 
