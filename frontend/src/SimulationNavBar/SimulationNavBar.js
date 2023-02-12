@@ -15,6 +15,8 @@ import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 import StatsPage from './StatsPage/StatsPage.js'
 import {TopographyPage} from './Topography/Topography.js'
+import {Grid} from './Topography/Topography.js'
+
 
 function SimulationNavBar({
     playOrPauseSimulationCallback,
@@ -28,14 +30,16 @@ function SimulationNavBar({
     const [showNewSpeciesForm, setShowNewSpeciesForm] = useState(false)
     const [showStatsPage, setShowStatsPage] = useState(false)
     const [showTopographyPage, setShowTopographyPage] = useState(false)
-
+    const [showGridBorder, setShowGridBorder] = useState(false)
     return (
-        <div>
+        <>
+            
             <StatsPage show={showStatsPage} closeStatsPage={closeStatsPage} />
 
             <TopographyPage
                 show={showTopographyPage}
                 closeTopographyPage={closeTopographyPage}
+                showGridBorder={showGridBorder}
             />
 
             <NewCreatureOrSpeciesForm
@@ -74,13 +78,16 @@ function SimulationNavBar({
                     closeNewSpeciesForm={closeNewSpeciesForm}
                 />
 
-                <TopographyButton toggleTopographyPage={toggleTopographyPage} />
+                <TopographyButton 
+                    toggleTopographyPage={toggleTopographyPage} 
+                    toggleShowGridBorder={toggleShowGridBorder}
+                />
 
                 <StatsButton toggleStatsPage={toggleStatsPage} />
 
                 <SaveButton />
             </div>
-        </div>
+        </>
     )
 
     // functions for all creature/species related forms
@@ -121,6 +128,11 @@ function SimulationNavBar({
     function toggleTopographyPage() {
         setShowTopographyPage(!showTopographyPage)
     }
+
+
+    function toggleShowGridBorder(){
+        setShowGridBorder(!showGridBorder)
+    }
 }
 
 function StatsButton(props) {
@@ -150,7 +162,10 @@ function SaveButton(props) {
 function TopographyButton(props) {
     return (
         <button
-            onClick={props.toggleTopographyPage}
+            onClick={() => {
+                props.toggleTopographyPage()
+                props.toggleShowGridBorder()
+            }}
             id="topographyButton"
             className="navButton"
             title="Topography">

@@ -13,6 +13,7 @@ function App() {
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
     const [creatureList, setCreatureList] = useState([])
+    const [showLoad, setShowLoad] = useState(false)
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
@@ -156,6 +157,15 @@ function App() {
                     </div>
 
                     <div>
+                        <button
+                        id="menuButtonLoad"
+                        onClick={() => {
+                            setShowLoad(true)
+                        }}>
+                        Load Simulation</button>
+                    </div>
+
+                    <div>
                         <button id="menuButtonQuit">Quit</button>
                     </div>
                 </div>
@@ -181,6 +191,16 @@ function App() {
         )
     }
 
+
+    const LoadPage = () => {
+
+
+        return(
+            <h1>test</h1>
+        )
+    }
+
+    
     return (
         <>
             {
@@ -191,6 +211,7 @@ function App() {
             }
             {showMenu ? <Menu /> : null}
             {showSimulation ? <Simulation /> : null}
+            {showLoad ? <LoadPage /> : null}
         </>
     )
 }

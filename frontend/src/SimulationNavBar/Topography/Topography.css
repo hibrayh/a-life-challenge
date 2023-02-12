@@ -16,7 +16,7 @@
 
 
 #mainGrid {
-    background-color: black;
+    
     display:flex;
     flex-wrap:wrap;
     flex-direction:column;
@@ -34,17 +34,18 @@
     height:calc(100% / 25);
     width:calc(100% / 50);
     background-color: rgb(172, 172, 172);
-    border: 1px solid black;
-   
     
 }
 
-.selected{
+.selectedNode{
     box-sizing: border-box;
    
     height:calc(100% / 25);
     width:calc(100% / 50);
     background-color: purple;
-    border: 1px solid black;
+    
 }
 
+.gridBorder{
+    border:1px solid black;
+}

@@ -9,7 +9,7 @@
     background-color: rgb(30, 235, 3);
     border: none;
     position: relative;
-    bottom: -45vh;
+    bottom: -35vh;
     font-size: 6vmin;
 }
 
@@ -17,10 +17,21 @@
     height: 10vmin;
     width: 30vmin;
     background-color: rgb(235, 3, 3);
-    bottom: -50vh;
+    bottom: -45vh;
     position: relative;
     border: none;
     font-size: 6vmin;
+}
+
+#menuButtonLoad {
+    height: 10vmin;
+    width: 30vmin;
+    background-color: rgb(47, 32, 255);
+    bottom: -40vh;
+    position: relative;
+    border: none;
+    font-size: 4vmin;
+    font-weight: bolder;
 }
 
 /*
