@@ -259,15 +259,16 @@ class Environment:
             foodLocations.append((food.xCoordinate, food.yCoordinate))
         return foodLocations
 
+
 class Topography(Environment):
     def __init__(self,
-                name,
-                elevation,
-                climate,
-                xCoordinate,
-                yCoordinate,
-                width,
-                height):
+                 name,
+                 elevation,
+                 climate,
+                 xCoordinate,
+                 yCoordinate,
+                 width,
+                 height):
         logging.info("Creating new topography in the environment")
         self.name = name
         self.elevation = elevation
