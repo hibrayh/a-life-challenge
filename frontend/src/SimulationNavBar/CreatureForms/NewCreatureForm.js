@@ -2,6 +2,7 @@ import './NewCreatureForm.css'
 import React from 'react'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
+import axios from 'axios'
 
 function NewCreatureForm(props) {
     const [visibility, setVisibility] = useState(0.5)
@@ -19,25 +20,92 @@ function NewCreatureForm(props) {
     const [intelligence, setIntelligence] = useState(0.5)
     const [selfPreservation, setSelfPreservation] = useState(0.5)
     const [mobility, setMobility] = useState(0.5)
-    const [reproductionType, setReproductionType] = useState('')
+    const [reproductionType, setReproductionType] = useState('sexual')          // Set default
     const [offSpringAmount, setOffSpringAmount] = useState(0.5)
     const [motivation, setMotivation] = useState(0.5)
     const [maxEnergy, setMaxEnergy] = useState(0.5)
     const [individualism, setIndividualism] = useState(0.5)
     const [territorial, setTerritorial] = useState(0.5)
     const [fightOrFlight, setFightOrFlight] = useState(0.5)
-    const [hositlity, setHositlity] = useState(0.5)
+    const [hostility, setHostlity] = useState(0.5)
     const [scent, setScent] = useState(0.5)
     const [stealth, setStealth] = useState(0.5)
     const [lifeExpectancy, setLifeExpectancy] = useState(0.5)
     const [offensiveAbility, setOffensiveAbility] = useState(0.5)
     const [defensiveAbility, setDefensiveAbility] = useState(0.5)
-    const [shape, setShape] = useState('')
-    const [color, setColor] = useState('')
+    const [shape, setShape] = useState('circle')                                // Set default
+    const [color, setColor] = useState('red')                                   // Set default
     const [speciesName, setSpeciesName] = useState('')
     const [numberToSpawn, setNumberToSpawn] = useState(1)
 
+    const [availableSpecies, setAvailableSpecies] = useState([])
+
+    const getSpeciesList = async () => {
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/get-list-of-species',
+        }).then((response) => {
+            const res = response.data
+            setAvailableSpecies(res.speciesNames)
+            setSpeciesName(res.speciesNames[0])
+        })
+    }
+
+    const getSpeciesDefaults = async (speciesOfInterest) => {
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/get-species-genome',
+            data: {
+                speciesOfInterest: speciesOfInterest,
+            },
+        }).then((response) => {
+            const res = response.data
+
+            setVisibility(res.visibility)
+            setMaxHealth(res.maxHealth)
+            setCanSee(res.canSee)
+            setCanSmell(res.canSmell)
+            setCanHear(res.canHear)
+            setSightAbility(res.sightAbility)
+            setSmellAbility(res.smellAbility)
+            setHearingAbility(res.hearingAbility)
+            setSightRange(res.sightRange)
+            setSmellRange(res.smellRange)
+            setHearingRange(res.hearingRange)
+            setReactionTime(res.reactionTime)
+            setIntelligence(res.intelligence)
+            setSelfPreservation(res.selfPreservation)
+            setMobility(res.mobility)
+            setReproductionType(res.reproductionType)
+            setOffSpringAmount(res.offSpringAmount)
+            setMotivation(res.motivation)
+            setMaxEnergy(res.maxEnergy)
+            setIndividualism(res.individualism)
+            setTerritorial(res.territorial)
+            setFightOrFlight(res.fightOrFlight)
+            setHostlity(res.hostility)
+            setScent(res.scent)
+            setStealth(res.stealth)
+            setLifeExpectancy(res.lifeExpectancy)
+            setOffensiveAbility(res.offensiveAbility)
+            setDefensiveAbility(res.defensiveAbility)
+            setShape(res.shape)
+            setColor(res.color)
+            setSpeciesName(speciesOfInterest)
+        })
+    }
+
     if (props.show) {
+        let options = []
+        if (availableSpecies.length < 1) {
+            getSpeciesList()
+        }
+        else {
+            for (let i = 0; i < availableSpecies.length; i++) {
+                options.push(<option key={"speciesOption-" + availableSpecies[i]} value={availableSpecies[i]}>{availableSpecies[i]}</option>)
+            }
+        }
+
         return (
             <div className="newCreatureOrSpeciesForm">
                 <button
@@ -54,12 +122,11 @@ function NewCreatureForm(props) {
                         <label className="dataTitle">Species Name</label>
                         <select
                             onChange={(event) =>
-                                setSpeciesName(event.target.value)
+                                getSpeciesDefaults(event.target.value)
                             }
                             className="dropDownOption"
                             name="reproduction">
-                            <option value="OoogaBooga">OoogaBooga</option>
-                            <option value="BoogaOoga">BoogaOoga</option>
+                            {options}
                         </select>
                         <br></br>
                     </div>
@@ -119,7 +186,8 @@ function NewCreatureForm(props) {
                         <input
                             onChange={(event) => setCanSee(event.target.value)}
                             className="dataCheckbox"
-                            type="checkbox"></input>
+                            type="checkbox"
+                            checked={canSee}></input>
                         <br></br>
                     </div>
 
@@ -130,7 +198,8 @@ function NewCreatureForm(props) {
                                 setCanSmell(event.target.value)
                             }
                             className="dataCheckbox"
-                            type="checkbox"></input>
+                            type="checkbox"
+                            checked={canSmell}></input>
                         <br></br>
                     </div>
 
@@ -139,7 +208,8 @@ function NewCreatureForm(props) {
                         <input
                             onChange={(event) => setCanHear(event.target.value)}
                             className="dataCheckbox"
-                            type="checkbox"></input>
+                            type="checkbox"
+                            checked={canHear}></input>
                         <br></br>
                     </div>
 
@@ -400,7 +470,8 @@ function NewCreatureForm(props) {
                                 setReproductionType(event.target.value)
                             }
                             className="dropDownOption"
-                            name="reproduction">
+                            name="reproduction"
+                            value={reproductionType}>
                             <option value="sexual">Sexual</option>
                             <option value="Asexual">Asexual</option>
                         </select>
@@ -561,24 +632,24 @@ function NewCreatureForm(props) {
                         <span className="dataTitle">Hostility</span>
                         <input
                             onChange={(event) =>
-                                setHositlity(event.target.value)
+                                setHostlity(event.target.value)
                             }
                             className="dataSlider"
                             type="range"
                             min="0"
                             max="1"
                             step=".01"
-                            value={hositlity}></input>
+                            value={hostility}></input>
                         <input
                             onChange={(event) =>
-                                setHositlity(event.target.value)
+                                setHostlity(event.target.value)
                             }
                             className="dataText"
                             type="number"
                             min="0"
                             max="1"
                             step=".01"
-                            value={hositlity}></input>
+                            value={hostility}></input>
                         <br></br>
                     </div>
 
@@ -704,7 +775,8 @@ function NewCreatureForm(props) {
                         <select
                             onChange={(event) => setColor(event.target.value)}
                             className="dropDownOption"
-                            name="reproduction">
+                            name="reproduction"
+                            value={color}>
                             <option value="red">Red</option>
                             <option value="blue">Blue</option>
                             <option value="green">Green</option>
@@ -717,7 +789,8 @@ function NewCreatureForm(props) {
                         <select
                             onChange={(event) => setShape(event.target.value)}
                             className="dropDownOption"
-                            name="reproduction">
+                            name="reproduction"
+                            value={shape}>
                             <option value="circle">Circle</option>
                             <option value="triangle">Triangle</option>
                             <option value="square">Square</option>
@@ -770,8 +843,55 @@ function NewCreatureForm(props) {
 
         // When the user clicks the "Create" button, this function will run
         // Has access to all variables entered in form
-        function handleSubmit(event) {
+        async function handleSubmit(event) {
             event.preventDefault()
+
+            console.log(speciesName)
+
+            // Define new species
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/create-new-creature',
+                data: {
+                    visibility: visibility,
+                    maxHealth: maxHealth,
+                    canSee: canSee,
+                    canSmell: canSmell,
+                    canHear: canHear,
+                    sightAbility: sightAbility,
+                    smellAbility: smellAbility,
+                    hearingAbility: hearingAbility,
+                    sightRange: sightRange,
+                    smellRange: smellRange,
+                    hearingRange: hearingRange,
+                    reactionTime: reactionTime,
+                    intelligence: intelligence,
+                    selfPreservation: selfPreservation,
+                    mobility: mobility,
+                    reproductionType: reproductionType,
+                    offspringAmount: offSpringAmount,
+                    motivation: motivation,
+                    maxEnergy: maxEnergy,
+                    individualism: individualism,
+                    territorial: territorial,
+                    fightOrFlight: fightOrFlight,
+                    hostility: hostility,
+                    scent: scent,
+                    stealth: stealth,
+                    lifeExpectancy: lifeExpectancy,
+                    offensiveAbility: offensiveAbility,
+                    defensiveAbility: defensiveAbility,
+                    shape: shape,
+                    color: color,
+                    speciesName: speciesName,
+                },
+            })
+
+            // Fetch new info from simulation
+            await props.updateSimulationCallback()
+
+            // Hide creatures form
+            props.toggleNewCreatureForm()
         }
 
         function handleCancel(event) {

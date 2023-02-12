@@ -111,6 +111,14 @@ class God:
     def getSpeciesInfo(self, speciesName):
         pass
 
+    def getSpeciesGenome(self, speciesName):
+        speciesManagerOfInterest = self._getSpeciesManagerFromName(speciesName)
+
+        if speciesManagerOfInterest is None:
+            logging.info("Could not find requested species")
+        else:
+            return speciesManagerOfInterest.getSpeciesGenome()
+
     def getCreatureInfo(self, creatureId):
         pass
 
@@ -120,6 +128,16 @@ class God:
     def advanceSimulation(self):
         logging.info("Advancing simulation by a tick")
         self._environment.simulateCreatureBehavior()
+    
+    def getListOfSpecies(self):
+        speciesNames = []
+
+        for species in self._speciesManagers:
+            speciesNames.append(species.speciesName)
+        
+        return {
+            "speciesNames": speciesNames
+        }
 
     # Currently gets food data
     def getEnvironmentInfo(self):

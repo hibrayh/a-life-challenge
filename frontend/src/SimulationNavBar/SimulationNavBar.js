@@ -50,6 +50,7 @@ function SimulationNavBar({
             <NewCreatureForm
                 show={showNewCreatureForm}
                 toggleNewCreatureForm={toggleNewCreatureForm}
+                updateSimulationCallback={updateSimulationCallback}
             />
 
             <NewSpeciesForm

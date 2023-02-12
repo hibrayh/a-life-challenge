@@ -770,8 +770,6 @@ function NewSpeciesForm(props) {
         // Has access to all variables entered in form
         async function handleSubmit(event) {
             event.preventDefault()
-            console.log(color)
-            console.log(shape)
 
             // Check if simulation has started. If not, start it.
             if (!props.hasSimulationStarted) {

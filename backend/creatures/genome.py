@@ -81,6 +81,45 @@ class Genome:
         self.defensiveAbility = defensiveAbility
         self.shape = shape
         self.color = color
+    
+    def serialize(self):
+        canSee = Receptors.VISION in self.receptors
+        canSmell = Receptors.SMELL in self.receptors
+        canHear = Receptors.HEAR in self.receptors
+        reproType = 'Sexual' if self.reproductionType == ReproductionType.SEXUAL else 'Asexual'
+
+        return {
+            'visibility': self.visibility,
+            'maxHealth': self.maxHealth,
+            'canSee': canSee,
+            'canSmell': canSmell,
+            'canHear': canHear,
+            'sightAbility': self.sightAbility,
+            'smellAbility': self.smellAbility,
+            'hearingAbility': self.hearingAbility,
+            'sightRange': self.sightRange,
+            'smellRange': self.smellRange,
+            'hearingRange': self.hearingRange,
+            'reactionTime': self.reactionTime,
+            'intelligence': self.intelligence,
+            'selfPreservation': self.selfPreservation,
+            'mobility': self.mobility,
+            'reproductionType': reproType,
+            'offspringAmount': self.offspringAmount,
+            'motivation': self.motivation,
+            'maxEnergy': self.maxEnergy,
+            'individualism': self.individualism,
+            'territorial': self.territorial,
+            'fightOrFlight': self.fightOrFlight,
+            'hostility': self.hostility,
+            'scent': self.scent,
+            'stealth': self.stealth,
+            'lifeExpectancy': self.lifeExpectancy,
+            'offensiveAbility': self.offensiveAbility,
+            'defensiveAbility': self.defensiveAbility,
+            'shape': self.shape,
+            'color': self.color,
+        }
 
 
 def _generateTraitValue(valA, valB):
