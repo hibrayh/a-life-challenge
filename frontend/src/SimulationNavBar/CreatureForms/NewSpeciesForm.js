@@ -2,6 +2,7 @@ import './NewCreatureForm.css'
 import React from 'react'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
+import axios from 'axios'
 
 function NewSpeciesForm(props) {
     const [visibility, setVisibility] = useState(0.5)
@@ -19,7 +20,7 @@ function NewSpeciesForm(props) {
     const [intelligence, setIntelligence] = useState(0.5)
     const [selfPreservation, setSelfPreservation] = useState(0.5)
     const [mobility, setMobility] = useState(0.5)
-    const [reproductionType, setReproductionType] = useState('')
+    const [reproductionType, setReproductionType] = useState('sexual')      // Set default
     const [offSpringAmount, setOffSpringAmount] = useState(0.5)
     const [motivation, setMotivation] = useState(0.5)
     const [maxEnergy, setMaxEnergy] = useState(0.5)
@@ -32,8 +33,8 @@ function NewSpeciesForm(props) {
     const [lifeExpectancy, setLifeExpectancy] = useState(0.5)
     const [offensiveAbility, setOffensiveAbility] = useState(0.5)
     const [defensiveAbility, setDefensiveAbility] = useState(0.5)
-    const [shape, setShape] = useState('')
-    const [color, setColor] = useState('')
+    const [shape, setShape] = useState('circle')                            // Set default
+    const [color, setColor] = useState('red')                               // Set default
     const [speciesName, setSpeciesName] = useState('')
     const [numberToSpawn, setNumberToSpawn] = useState(1)
 
@@ -767,8 +768,70 @@ function NewSpeciesForm(props) {
 
         // When the user clicks the "Create" button, this function will run
         // Has access to all variables entered in form
-        function handleSubmit(event) {
+        async function handleSubmit(event) {
             event.preventDefault()
+            console.log(color)
+            console.log(shape)
+
+            // Check if simulation has started. If not, start it.
+            if (!props.hasSimulationStarted) {
+                await props.startSimulationCallback()
+            }
+
+            // Define new species
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/create-new-species',
+                data: {
+                    visibility: visibility,
+                    maxHealth: maxHealth,
+                    canSee: canSee,
+                    canSmell: canSmell,
+                    canHear: canHear,
+                    sightAbility: sightAbility,
+                    smellAbility: smellAbility,
+                    hearingAbility: hearingAbility,
+                    sightRange: sightRange,
+                    smellRange: smellRange,
+                    hearingRange: hearingRange,
+                    reactionTime: reactionTime,
+                    intelligence: intelligence,
+                    selfPreservation: selfPreservation,
+                    mobility: mobility,
+                    reproductionType: reproductionType,
+                    offspringAmount: offSpringAmount,
+                    motivation: motivation,
+                    maxEnergy: maxEnergy,
+                    individualism: individualism,
+                    territorial: territorial,
+                    fightOrFlight: fightOrFlight,
+                    hostility: hositlity,
+                    scent: scent,
+                    stealth: stealth,
+                    lifeExpectancy: lifeExpectancy,
+                    offensiveAbility: offensiveAbility,
+                    defensiveAbility: defensiveAbility,
+                    shape: shape,
+                    color: color,
+                    speciesName: speciesName,
+                },
+            })
+
+            // Spawn in initial creatures for this species
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/mass-create-more-creatures',
+                data: {
+                    speciesName: speciesName,
+                    numberOfNewCreatures: numberToSpawn,
+                },
+            })
+
+            // Fetch new info from simulation
+            await props.updateSimulationCallback()
+
+            // Hide species form
+            props.toggleNewSpeciesForm()
         }
 
         function handleCancel(event) {

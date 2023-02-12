@@ -20,7 +20,10 @@ function SimulationNavBar({
     playOrPauseSimulationCallback,
     speedUpSimulationCallback,
     slowDownSimulationCallback,
+    updateSimulationCallback,
+    startSimulationCallback,
     ticksPerSecond,
+    hasSimulationStarted,
 }) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
         useState(false)
@@ -52,6 +55,9 @@ function SimulationNavBar({
             <NewSpeciesForm
                 show={showNewSpeciesForm}
                 toggleNewSpeciesForm={toggleNewSpeciesForm}
+                updateSimulationCallback={updateSimulationCallback}
+                hasSimulationStarted={hasSimulationStarted}
+                startSimulationCallback={startSimulationCallback}
             />
 
             <div id="simulationNavBar">
