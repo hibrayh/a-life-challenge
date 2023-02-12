@@ -233,6 +233,27 @@ class Animation extends React.Component {
         })
     }
 
+    getEnvironmentInfo() {
+        // Use axios to retrieve info from the backend
+        axios({
+            method: 'GET',
+            url: 'http://localhost:5000/get-environment-info',
+        }).then((response) => {
+            const res = response.data
+            // change the state variable to trigger a re-render
+            this.setState({
+                foodName: res.foodName,
+                energyReplenishment: res.energyReplenishment,
+                rarity: res.rarity,
+                shape: res.shape,
+                color: res.color,
+                locationX: res.locationX,
+                locationY: res.locationY,
+            })
+            console.log(res)
+        })
+    }
+
     async startSimulation() {
         // Start the simulation
         await axios({
