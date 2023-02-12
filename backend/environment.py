@@ -73,7 +73,7 @@ grass = (
         0,
         50))
 berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
-fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
+fish = ("Fish", 25, "Rare", "Rectangle", "Blue", 50, 550)
 
 
 class Environment:
@@ -259,16 +259,15 @@ class Environment:
             foodLocations.append((food.xCoordinate, food.yCoordinate))
         return foodLocations
 
-
 class Topography(Environment):
     def __init__(self,
-                 name,
-                 elevation,
-                 climate,
-                 xCoordinate,
-                 yCoordinate,
-                 width,
-                 height):
+                name,
+                elevation,
+                climate,
+                xCoordinate,
+                yCoordinate,
+                width,
+                height):
         logging.info("Creating new topography in the environment")
         self.name = name
         self.elevation = elevation
@@ -284,7 +283,6 @@ forest = ("Forest", 200, "temperate", 500, 300, 100, 100)
 plains = ("Plains", 50, "temperate", 700, 300, 50, 50)
 desert = ("Desert", 0, "hot", 600, 400, 150, 150)
 
-
 """
 # Creating instances of the Food class using the tuple attributes
 grass = Food(*grass)
@@ -294,7 +292,6 @@ mountains = Topography(*mountains)
 forest = Topography(*forest)
 plains = Topography(*plains)
 desert = Topography(*desert)
-
 myEnv = Environment()
 # Create instance of Environment class and add food types to foodRegistry list
 # Test to see if food types are added into registry
@@ -302,6 +299,8 @@ myEnv.addToFoodRegistry(grass)
 myEnv.addToFoodRegistry(fish)
 myEnv.addToFoodRegistry(berries)
 
+print(myEnv.getFoodRegistry())
+print("Food locations: ", myEnv.getFoodLocations())
 # Test to see if topography types are added into registry
 myEnv.addToTopographyRegistry(mountains)
 myEnv.addToTopographyRegistry(forest)
