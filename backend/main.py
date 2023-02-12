@@ -17,11 +17,11 @@ GOD = None
 def _convertRequestToGenome(inputRequest):
     receptorsList = []
 
-    if inputRequest.json['canSee'] == 'true':
+    if inputRequest.json['canSee'] == 'on':
         receptorsList.append(creatures.genome.Receptors.VISION)
-    if inputRequest.json['canSmell'] == 'true':
+    if inputRequest.json['canSmell'] == 'on':
         receptorsList.append(creatures.genome.Receptors.SMELL)
-    if inputRequest.json['canHear'] == 'true':
+    if inputRequest.json['canHear'] == 'on':
         receptorsList.append(creatures.genome.Receptors.HEAR)
 
     reproType = None
@@ -195,3 +195,17 @@ def advanceSimulation():
 def getEnvironmentInfo():
     global GOD
     return jsonify(GOD.getEnvironmentInfo())
+
+
+@api.route('/get-list-of-species')
+@cross_origin()
+def getListOfSpecies():
+    global GOD
+    return jsonify(GOD.getListOfSpecies())
+
+
+@api.route('/get-species-genome', methods=['POST'])
+@cross_origin()
+def getSpeciesGenome():
+    global GOD
+    return jsonify(GOD.getSpeciesGenome(request.json['speciesOfInterest']))
