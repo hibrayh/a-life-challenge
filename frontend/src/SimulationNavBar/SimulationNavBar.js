@@ -15,7 +15,7 @@ import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 import StatsPage from './StatsPage/StatsPage.js'
 import {TopographyPage} from './Topography/Topography.js'
-import {Grid} from './Topography/Topography.js'
+import SavePage from './SavePage/SavePage.js'
 
 
 function SimulationNavBar({
@@ -34,9 +34,15 @@ function SimulationNavBar({
     const [showStatsPage, setShowStatsPage] = useState(false)
     const [showTopographyPage, setShowTopographyPage] = useState(false)
     const [showGridBorder, setShowGridBorder] = useState(false)
+    const [showSavePage, setShowSavePage] = useState(false)
+
     return (
         <>
-            
+            <SavePage 
+                show={showSavePage}
+                toggleSavePage={toggleSavePage} 
+            />
+
             <StatsPage show={showStatsPage} closeStatsPage={closeStatsPage} />
 
             <TopographyPage
@@ -92,7 +98,7 @@ function SimulationNavBar({
 
                 <StatsButton toggleStatsPage={toggleStatsPage} />
 
-                <SaveButton />
+                <SaveButton toggleSavePage={toggleSavePage} />
             </div>
         </>
     )
@@ -141,6 +147,10 @@ function SimulationNavBar({
     function toggleShowGridBorder(){
         setShowGridBorder(!showGridBorder)
     }
+
+    function toggleSavePage(){
+        setShowSavePage(!showSavePage)
+    }
 }
 
 function StatsButton(props) {
@@ -161,7 +171,7 @@ function StatsButton(props) {
 
 function SaveButton(props) {
     return (
-        <button id="saveButton" className="navButton" title="Save">
+        <button onClick={props.toggleSavePage} id="saveButton" className="navButton" title="Save">
             <FaSave />
         </button>
     )
