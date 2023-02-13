@@ -154,31 +154,28 @@ class God:
             random.randint(
                 0,
                 800))
-        berries = ("Berries", 5, "common", "circle", "purple",
-                   random.randint(
-                       0,
-                       800),
-                   random.randint(
-                       0,
-                       800))
-        fish = ("Fish", 25, "rare", "diamond", "blue",
+        berries = ("Berries", 5, "common", "circle", "purple", 
+            random.randint(
+                0,
+                800),  
+            random.randint(
+                0,
+                800))
+        fish = ("Fish", 25, "rare", "diamond", "blue",  
+            random.randint(
+                0,
+                150),  
                 random.randint(
-                    0,
-                    150),
-                random.randint(
-                    0,
-                    800))
+                0,
+                800))
 
-        # Creating instances of the food types and adding to foodRegistry
-        # Creating instances of the topography types and adding to
-        # topographyRegistry
         grass = Food(*grass)
         self._environment.addToFoodRegistry(grass)
         berries = Food(*berries)
         self._environment.addToFoodRegistry(berries)
         fish = Food(*fish)
         self._environment.addToFoodRegistry(fish)
-    
+
         foodRegistry = self._environment.getFoodRegistry()
         return foodRegistry
 
@@ -204,6 +201,8 @@ class God:
         desert = Topography(*desert)
         self._environment.addToTopographyRegistry(desert)
 
+        topographyRegistry = self._environment.getTopographyRegistry()
+        return topographyRegistry
 
 """
 myG = God()
