@@ -141,42 +141,57 @@ class God:
         }
 
     # Currently gets food data
-    def getEnvironmentInfo(self):
-
-        # Added hardcoded food types here since I was having an issue getting
-        # the values from environment.py and getting the foodRegistry populated
-        # One issue with this method is that whenever it gets called, it will duplicate those values
-        # Since this works for now I am sending as is, but will be refactored
-        # later.
+    def getFoodInfo(self):
         grass = (
             "Grass",
             1,
-            "Very Common",
-            "Square",
-            "Green",
+            "very common",
+            "square",
+            "green",
             random.randint(
                 0,
-                50),
+                500),
             random.randint(
                 0,
-                50))
-        berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
-        fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
+                800))
+        berries = ("Berries", 5, "common", "circle", "purple", 
+            random.randint(
+                0,
+                800),  
+            random.randint(
+                0,
+                800))
+        fish = ("Fish", 25, "rare", "diamond", "blue",  
+            random.randint(
+                0,
+                150),  
+                random.randint(
+                0,
+                800))
 
-        mountains = ("Mountains", 1000, "cold", 400, 300, 100, 100)
-        forest = ("Forest", 200, "temperate", 500, 300, 100, 100)
-        plains = ("Plains", 50, "temperate", 700, 300, 50, 50)
-        desert = ("Desert", 0, "hot", 600, 400, 150, 150)
-
-        # Creating instances of the food types and adding to foodRegistry
-        # Creating instances of the topography types and adding to
-        # topographyRegistry
         grass = Food(*grass)
         self._environment.addToFoodRegistry(grass)
         berries = Food(*berries)
         self._environment.addToFoodRegistry(berries)
         fish = Food(*fish)
         self._environment.addToFoodRegistry(fish)
+
+        foodRegistry = self._environment.getFoodRegistry()
+        return foodRegistry
+
+    def getFoodLocations(self):
+        foodLocations = self._environment.getFoodLocations()
+        print(
+            f"Food locations in the environment(x, y): {foodLocations}",
+            "\n")
+        return foodLocations
+
+    def getTopographyInfo(self):
+        mountains = ("Mountains", 1000, "cold", 400, 300, 100, 100)
+        forest = ("Forest", 200, "temperate", 500, 300, 100, 100)
+        plains = ("Plains", 50, "temperate", 700, 300, 50, 50)
+        desert = ("Desert", 0, "hot", 600, 400, 150, 150)
+
         mountains = Topography(*mountains)
         self._environment.addToTopographyRegistry(mountains)
         forest = Topography(*forest)
@@ -186,17 +201,12 @@ class God:
         desert = Topography(*desert)
         self._environment.addToTopographyRegistry(desert)
 
-        # Display the location of the food types in the environment, along with the
-        # currently registered food and topographies in the environment
-        print(
-            f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}",
-            "\n")
-        foodRegistry = self._environment.getFoodRegistry()
         topographyRegistry = self._environment.getTopographyRegistry()
-        return foodRegistry, topographyRegistry
-
+        return topographyRegistry
 
 """
 myG = God()
-print("Environment Info:\n", myG.getEnvironmentInfo())
+print("Food Info:\n", myG.getFoodInfo())
+print("Topography Info:\n", myG.getTopographyInfo())
+print("Food Loc Info(x,y):\n", myG.getFoodLocations())
 """
