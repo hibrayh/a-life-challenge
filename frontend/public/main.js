@@ -3,12 +3,13 @@ const { app, BrowserWindow } = require('electron')
 function createWindow() {
     // Create the browser window.
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        show: false,
         webPreferences: {
             nodeIntegration: true,
         },
     })
+    win.maximize()
+    win.show()
 
     //load the index.html from a url (React apps use port 3000 as default)
     win.loadURL('http://localhost:3000')

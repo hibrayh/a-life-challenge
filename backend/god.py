@@ -2,7 +2,6 @@ import logging
 import environment
 import creatures.species_manager
 import random
-from environment import Food
 from environment import Environment
 
 logging.basicConfig(
@@ -11,11 +10,13 @@ logging.basicConfig(
 
 
 class God:
-    def __init__(self):
+    def __init__(self, simulationWidth, simulationHeight):
         logging.info("Initializing new God object")
 
         self._speciesManagers = []
-        self._environment = environment.Environment()
+        self._environment = environment.Environment(simulationWidth, simulationHeight)
+        self._simulationWidth = simulationWidth
+        self._simulationHeight = simulationHeight
 
     def _getSpeciesManagerFromName(self, speciesName):
         speciesManagerOfInterest = None
@@ -31,7 +32,7 @@ class God:
         logging.info(f"Creating new species: {speciesName}")
 
         newSpecies = creatures.species_manager.SpeciesManager(
-            speciesName, startingGenome, self._environment)
+            speciesName, startingGenome, self._simulationWidth, self._simulationHeight, self._environment)
         self._speciesManagers.append(newSpecies)
 
     def deleteSpecies(self, speciesName):
@@ -123,7 +124,11 @@ class God:
         pass
 
     def getSimulationInfo(self):
-        return (self._environment.getRegisteredCreatures())
+        return {
+            'creatureRegistry': self._environment.getRegisteredCreatures(),
+            'resourceRegistry': self._environment.getRegisteredResources(),
+            'topographyRegistry': self._environment.getRegisteredTopography(),
+        }
 
     def advanceSimulation(self):
         logging.info("Advancing simulation by a tick")
@@ -138,45 +143,3 @@ class God:
         return {
             "speciesNames": speciesNames
         }
-
-    # Currently gets food data
-    def getEnvironmentInfo(self):
-
-        # Added hardcoded food types here since I was having an issue getting
-        # the values from environment.py and getting the foodRegistry populated
-        # One issue with this method is that whenever it gets called, it will duplicate those values
-        # Since this works for now I am sending as is, but will be refactored
-        # later.
-        grass = (
-            "Grass",
-            1,
-            "Very Common",
-            "Square",
-            "Green",
-            random.randint(
-                0,
-                50),
-            random.randint(
-                0,
-                50))
-        berries = ("Berries", 5, "Common", "Circle", "Red", 100, 50)
-        fish = ("Fish", 25, "Rare", "Circle", "Blue", 50, 550)
-
-        # Creating instances of the food types and adding to foodRegistry
-        grass = Food(*grass)
-        self._environment.addToFoodRegistry(grass)
-        berries = Food(*berries)
-        self._environment.addToFoodRegistry(berries)
-        fish = Food(*fish)
-        self._environment.addToFoodRegistry(fish)
-
-        print(
-            f"The food locations of each food in the environment is (x, y): {self._environment.getFoodLocations()}")
-        foodRegistry = self._environment.getFoodRegistry()
-        return foodRegistry
-
-
-"""
-myG = God()
-print("Environment Info:\n", myG.getEnvironmentInfo())
-"""

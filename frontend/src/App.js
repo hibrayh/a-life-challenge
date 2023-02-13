@@ -15,12 +15,17 @@ function App() {
         useState(0)
     const [creatureList, setCreatureList] = useState([])
     const [showLoad, setShowLoad] = useState(false)
+    const [resourceList, setResourceList] = useState([])
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
         await axios({
-            method: 'GET',
+            method: 'POST',
             url: 'http://localhost:5000/start-simulation',
+            data: {
+                simulationWidth: window.innerWidth,
+                simulationHeight: window.innerHeight,
+            },
         })
         setHasSimulationStarted(true)
     }
@@ -73,6 +78,7 @@ function App() {
         }).then((response) => {
             const res = response.data
             setCreatureList(res.creatureRegistry)
+            setResourceList(res.resourceRegistry)
         })
     }
 
@@ -134,7 +140,7 @@ function App() {
                 <header className="menu">
                     <h1>Simulation Page</h1>
                 </header>
-                <Animation creaturesToAnimate={creatureList} />
+                <Animation creaturesToAnimate={creatureList} resourcesToAnimate={resourceList} />
                 <SimulationNavBar
                     playOrPauseSimulationCallback={playPauseSimulation}
                     speedUpSimulationCallback={incrementTicksPerSecond}

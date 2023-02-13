@@ -27,17 +27,19 @@ def _sortCreaturesByInitiative(creature):
 
 
 class SpeciesManager:
-    def __init__(self, speciesName, startingGenome, environment):
+    def __init__(self, speciesName, startingGenome, simulationWidth, simulationHeight, environment):
         logging.info(f"Initializing new Species Manager for {speciesName}")
 
         self.speciesName = speciesName
         self._startingGenome = startingGenome
         self._creatures = []
         self.speciesRelations = dict()
+        self.simulationWidth = simulationWidth
+        self.simulationHeight = simulationHeight
         self.environment = environment
         self._creatureIdIncrementer = 0
-        self._spawnPointXCoordinate = random.randrange(1000)
-        self._spawnPointYCoordinate = random.randrange(1000)
+        self._spawnPointXCoordinate = random.randrange(self.simulationWidth)
+        self._spawnPointYCoordinate = random.randrange(self.simulationHeight)
 
     def _getCreatureFromId(self, creatureId):
         desiredCreature = None
