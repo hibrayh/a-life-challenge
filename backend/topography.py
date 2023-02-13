@@ -23,8 +23,16 @@ class TemplateTopography(Enum):
 
 
 class Region:
-    def __init__(self, topLeftXCoordinate, topLeftYCoordinate, topRightXCoordinate, topRightYCoordinate,
-                 bottomLeftXCoordinate, bottomLeftYCoordinate, bottomRightXCoordinate, bottomRightYCoordinate):
+    def __init__(
+            self,
+            topLeftXCoordinate,
+            topLeftYCoordinate,
+            topRightXCoordinate,
+            topRightYCoordinate,
+            bottomLeftXCoordinate,
+            bottomLeftYCoordinate,
+            bottomRightXCoordinate,
+            bottomRightYCoordinate):
         logging.info("Initializing new region")
         self.topLeftXCoordinate = topLeftXCoordinate
         self.topLeftYCoordinate = topLeftYCoordinate
@@ -37,17 +45,34 @@ class Region:
 
 
 class Topography:
-    def __init__(self, topLeftXCoordinate, topLeftYCoordinate, topRightXCoordinate, topRightYCoordinate,
-                 bottomLeftXCoordinate, bottomLeftYCoordinate, bottomRightXCoordinate, bottomRightYCoordinate,
-                 id, topographyType, environment):
+    def __init__(
+            self,
+            topLeftXCoordinate,
+            topLeftYCoordinate,
+            topRightXCoordinate,
+            topRightYCoordinate,
+            bottomLeftXCoordinate,
+            bottomLeftYCoordinate,
+            bottomRightXCoordinate,
+            bottomRightYCoordinate,
+            id,
+            topographyType,
+            environment):
         logging.info(f"Creating new topography with id {id}")
         self.id = id
         self.type = topographyType
-        self.region = Region(topLeftXCoordinate, topLeftYCoordinate, topRightXCoordinate, topRightYCoordinate,
-                             bottomLeftXCoordinate, bottomLeftYCoordinate, bottomRightXCoordinate, bottomRightYCoordinate)
-        self.shape = (topLeftYCoordinate - bottomLeftYCoordinate, 
+        self.region = Region(
+            topLeftXCoordinate,
+            topLeftYCoordinate,
+            topRightXCoordinate,
+            topRightYCoordinate,
+            bottomLeftXCoordinate,
+            bottomLeftYCoordinate,
+            bottomRightXCoordinate,
+            bottomRightYCoordinate)
+        self.shape = (topLeftYCoordinate - bottomLeftYCoordinate,
                       topRightXCoordinate - topLeftXCoordinate)
-        
+
         # Initialize random geography based on topography type
         self.generateRandomGeography()
 
@@ -65,8 +90,9 @@ class Topography:
             'topLeftYCoordinate': self.region.topLeftYCoordinate,
             'geography': self.geography.tolist(),
         }
-    
-    # Using perlin-noise to create random geography (https://en.wikipedia.org/wiki/Perlin_noise)
+
+    # Using perlin-noise to create random geography
+    # (https://en.wikipedia.org/wiki/Perlin_noise)
     def generateRandomGeography(self):
         scale = 100.0
         octaves = 6
@@ -96,9 +122,9 @@ class Topography:
                                                 repeatx=self.shape[0],
                                                 repeaty=self.shape[1],
                                                 base=0)
-        
+
         self.geography = np.floor((geography + .5) * 255).astype(np.uint8)
-    
+
     def generateResources(self):
         rarity = 0.0
         replenishment = 0.0
@@ -127,20 +153,33 @@ class Topography:
             shape = 'circle'
         else:
             logging.info("Unknown topography type encountered")
-        
+
         # Determine how many resources could fit into this area
-        totalResourcesPossible = (self.shape[0] * self.shape[1]) / (THRESHOLD ** 2)
-        # Now determine, using the rarity, how many resources will actually be in this area
+        totalResourcesPossible = (
+            self.shape[0] * self.shape[1]) / (THRESHOLD ** 2)
+        # Now determine, using the rarity, how many resources will actually be
+        # in this area
         resourcesToCreate = rarity * totalResourcesPossible
 
         # Randomly spawn in resources
         while resourcesToCreate > 0:
-            randomX = random.randrange(self.region.topLeftXCoordinate, self.region.topRightXCoordinate)
-            randomY = random.randrange(self.region.bottomLeftYCoordinate, self.region.topLeftYCoordinate)
-            Resource(f"{self.id}{resourcesToCreate}", replenishment, randomX, randomY, color, shape, self.environment)
+            randomX = random.randrange(
+                self.region.topLeftXCoordinate,
+                self.region.topRightXCoordinate)
+            randomY = random.randrange(
+                self.region.bottomLeftYCoordinate,
+                self.region.topLeftYCoordinate)
+            Resource(
+                f"{self.id}{resourcesToCreate}",
+                replenishment,
+                randomX,
+                randomY,
+                color,
+                shape,
+                self.environment)
 
             resourcesToCreate -= 1
-        
+
 
 """
 if __name__ == '__main__':
@@ -162,7 +201,7 @@ if __name__ == '__main__':
                                             repeatx=1024,
                                             repeaty=1024,
                                             base=0)
-    
+
     img = np.floor((geography + .5) * 255).astype(np.uint8)
     Image.fromarray(img, mode='L').save(f'./sample.jpg')
 """

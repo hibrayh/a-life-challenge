@@ -14,7 +14,8 @@ class God:
         logging.info("Initializing new God object")
 
         self._speciesManagers = []
-        self._environment = environment.Environment(simulationWidth, simulationHeight)
+        self._environment = environment.Environment(
+            simulationWidth, simulationHeight)
         self._simulationWidth = simulationWidth
         self._simulationHeight = simulationHeight
 
@@ -32,7 +33,11 @@ class God:
         logging.info(f"Creating new species: {speciesName}")
 
         newSpecies = creatures.species_manager.SpeciesManager(
-            speciesName, startingGenome, self._simulationWidth, self._simulationHeight, self._environment)
+            speciesName,
+            startingGenome,
+            self._simulationWidth,
+            self._simulationHeight,
+            self._environment)
         self._speciesManagers.append(newSpecies)
 
     def deleteSpecies(self, speciesName):

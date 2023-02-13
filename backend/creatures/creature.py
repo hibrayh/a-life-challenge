@@ -67,13 +67,14 @@ class Creature:
             'shape': self.genome.shape,
             'lastAction': self.lastAction
         }
-    
+
     def canReproduce(self):
-        return (self.reproductionCoolDown == 0) and (not self.hasPerformedActionThisTurn)
+        return (self.reproductionCoolDown == 0) and (
+            not self.hasPerformedActionThisTurn)
 
     def speciesRelationship(self, species):
         return species_manager.SpeciesRelationship.WORKS_WITH
-        #return self.speciesManager.speciesRelations[species]
+        # return self.speciesManager.speciesRelations[species]
 
     def reproduceAsexual(self):
         if self.canReproduce():
@@ -87,7 +88,8 @@ class Creature:
 
     def reproduceSexual(self, otherParent):
         if self.canReproduce() and otherParent.canReproduce():
-            logging.info(f"{self.id} reproducing sexually with {otherParent.id}")
+            logging.info(
+                f"{self.id} reproducing sexually with {otherParent.id}")
             childGenome = genome.createNewGenomeSexual(
                 self.genome, otherParent.genome)
             self.speciesManager.createNewChild(
@@ -95,10 +97,12 @@ class Creature:
             self.lastAction = decision_network.CreatureAction.REPRODUCE
             self.reproductionCoolDown = 10
             self.currentEnergy = .5 * self.maxEnergy
-    
+
     def consumeResource(self, resource):
         logging.info(f"{self.id} consuming resource {resource.id}")
-        self.currentEnergy = min((1 + resource.replenishment) * self.currentEnergy, self.maxEnergy)
+        self.currentEnergy = min(
+            (1 + resource.replenishment) * self.currentEnergy,
+            self.maxEnergy)
         resource.noticeOfConsumption()
         self.lastAction = decision_network.CreatureAction.CONSUME_FOOD
 
@@ -153,30 +157,35 @@ class Creature:
             self.moveCreature(degreeOfMovement, movementLength)
 
         self.lastAction = decision_network.CreatureAction.SEARCH_FOR_MATE
-    
+
     def searchForResource(self, perceivableResources):
         if perceivableResources == []:
             self.moveRandom()
         else:
             distances = []
             for resource in perceivableResources:
-                distanceFromResource = (math.sqrt((abs(resource.xCoordinate - self.xCoordinate) ** 2) 
+                distanceFromResource = (math.sqrt((abs(resource.xCoordinate - self.xCoordinate) ** 2)
                                         + (abs(resource.yCoordinate - self.yCoordinate) ** 2)))
                 distances.append(distanceFromResource)
-            
+
             closestResourceDistance = min(distances)
-            closestResource = perceivableResources[distances.index(closestResourceDistance)]
+            closestResource = perceivableResources[distances.index(
+                closestResourceDistance)]
             degreeOfMovement = math.acos(
-                (closestResource.xCoordinate - self.xCoordinate) / closestResourceDistance)
-            
+                (closestResource.xCoordinate -
+                 self.xCoordinate) /
+                closestResourceDistance)
+
             if closestResource.yCoordinate - self.yCoordinate < 0:
                 degreeOfMovement = -1 * degreeOfMovement
-            
-            movementLength = min(self.genome.mobility * MAX_MOVEMENT, closestResourceDistance - 1)
+
+            movementLength = min(
+                self.genome.mobility * MAX_MOVEMENT,
+                closestResourceDistance - 1)
 
             logging.info(f"{self.id} moving towards resource")
             self.moveCreature(degreeOfMovement, movementLength)
-        
+
         self.lastAction = decision_network.CreatureAction.SEARCH_FOR_FOOD
 
     def fleeFromPredator(self, perceivablePredators):
@@ -268,15 +277,16 @@ class Creature:
             logging.info(f"{self.id} has decided to consume")
             distances = []
             for resource in perceivableEnvironment.perceivableResources:
-                distanceFromResource = (math.sqrt((abs(resource.xCoordinate - self.xCoordinate) ** 2) 
+                distanceFromResource = (math.sqrt((abs(resource.xCoordinate - self.xCoordinate) ** 2)
                                         + (abs(resource.yCoordinate - self.yCoordinate) ** 2)))
                 distances.append(distanceFromResource)
-            
+
             if len(distances) == 0:
                 logging.info("No nearby food to consume")
             else:
                 if min(distances) <= 10:
-                    self.consumeResource(perceivableEnvironment.perceivableResources[distances.index(min(distances))])
+                    self.consumeResource(
+                        perceivableEnvironment.perceivableResources[distances.index(min(distances))])
                 else:
                     logging.info("No nearby food to consume")
         elif actionToPerform == decision_network.CreatureAction.SEARCH_FOR_FOOD:
@@ -286,7 +296,8 @@ class Creature:
             logging.info(f"{self.id} has decided to search for a mate")
             possibleMates = []
             for creature in perceivableEnvironment.perceivableCreatures:
-                if (creature.species == self.species) and (creature.canReproduce()):
+                if (creature.species == self.species) and (
+                        creature.canReproduce()):
                     possibleMates.append(creature)
 
             self.searchForMate(possibleMates)
@@ -312,6 +323,8 @@ class Creature:
             logging.info(f"{self.id} has decided to do nothing")
 
         self.hasPerformedActionThisTurn = True
-        self.reproductionCoolDown = self.reproductionCoolDown - 1 if self.reproductionCoolDown > 0 else 0
+        self.reproductionCoolDown = self.reproductionCoolDown - \
+            1 if self.reproductionCoolDown > 0 else 0
 
-        logging.info(f"Creature {self.id} now has {(self.currentEnergy / self.maxEnergy) * 100}% energy remaining")
+        logging.info(
+            f"Creature {self.id} now has {(self.currentEnergy / self.maxEnergy) * 100}% energy remaining")

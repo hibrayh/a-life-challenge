@@ -28,7 +28,8 @@ class EnvironmentInfo:
 
 class Environment:
     def __init__(self, widthInPx, heightInPx):
-        logging.info(f"Creating new environment of width {widthInPx} and height {heightInPx}")
+        logging.info(
+            f"Creating new environment of width {widthInPx} and height {heightInPx}")
         self.creatureRegistry = registry.Registry()
         self.resourceRegistry = []
         self.topographyRegistry = []
@@ -47,48 +48,56 @@ class Environment:
         self.creatureRegistry.unregisterCreature(creature)
 
     def addToResourceRegistry(self, newResource):
-        logging.info(f"Adding new resource with id {newResource.id} to the environment")
+        logging.info(
+            f"Adding new resource with id {newResource.id} to the environment")
         self.resourceRegistry.append(newResource)
-    
+
     def removeFromResourceRegistry(self, resourceToRemove):
-        logging.info(f"Removing depleted resource with id {resourceToRemove.id} from the environment")
+        logging.info(
+            f"Removing depleted resource with id {resourceToRemove.id} from the environment")
         self.resourceRegistry.remove(resourceToRemove)
-    
+
     def addToTopographyRegistry(self, newTopography):
-        logging.info(f"Adding new topography with id {newTopography.id} to the environment")
+        logging.info(
+            f"Adding new topography with id {newTopography.id} to the environment")
         self.topographyRegistry.append(newTopography)
-    
+
     def removeFromTopographyRegistry(self, topographyToRemove):
-        logging.info(f"Removing topography with id {topographyToRemove.id} from the environment")
+        logging.info(
+            f"Removing topography with id {topographyToRemove.id} from the environment")
         self.topographyRegistry.remove(topographyToRemove)
 
-    def _getVisionPerceivableCreatures(self, creatureOfInterest, perceivableCreatures):
+    def _getVisionPerceivableCreatures(
+            self, creatureOfInterest, perceivableCreatures):
         radiusOfSightPerception = int(
             creatureOfInterest.genome.sightRange * 200)
 
         for creature in self.creatureRegistry.registry:
             distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                    creatureOfInterest.xCoordinate) ** 2) +
-                                                (abs(creature.yCoordinate -
-                                                    creatureOfInterest.yCoordinate) ** 2)))
+                                                   creatureOfInterest.xCoordinate) ** 2) +
+                                              (abs(creature.yCoordinate -
+                                                   creatureOfInterest.yCoordinate) ** 2)))
 
             if ((distanceFromCreature <= radiusOfSightPerception and creature != creatureOfInterest) and (
                     creatureOfInterest.genome.sightAbility >= (1 - creature.genome.visibility))
-                        and (creature not in perceivableCreatures)):
+                    and (creature not in perceivableCreatures)):
 
                 logging.info(
                     f"{creature.id} within the {radiusOfSightPerception} sight range of {creatureOfInterest.id}")
                 perceivableCreatures.append(creature)
-    
-    def _getSmellPerceivableCreatures(self, creatureOfInterest, perceivableCreatures):
+
+    def _getSmellPerceivableCreatures(
+            self,
+            creatureOfInterest,
+            perceivableCreatures):
         radiusOfSmellPerception = int(
             creatureOfInterest.genome.smellRange * 200)
 
         for creature in self.creatureRegistry.registry:
             distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                    creatureOfInterest.xCoordinate) ** 2) +
-                                                (abs(creature.yCoordinate -
-                                                    creatureOfInterest.yCoordinate) ** 2)))
+                                                   creatureOfInterest.xCoordinate) ** 2) +
+                                              (abs(creature.yCoordinate -
+                                                   creatureOfInterest.yCoordinate) ** 2)))
 
             if ((distanceFromCreature <= radiusOfSmellPerception and creature != creatureOfInterest)
                 and (creatureOfInterest.genome.smellAbility >= (1 - creature.genome.scent))
@@ -97,16 +106,17 @@ class Environment:
                 logging.info(
                     f"{creature.id} within the {radiusOfSmellPerception} smell range of {creatureOfInterest.id}")
                 perceivableCreatures.append(creature)
-    
-    def _getAuditoryPerceivableCreatures(self, creatureOfInterest, perceivableCreatures):
+
+    def _getAuditoryPerceivableCreatures(
+            self, creatureOfInterest, perceivableCreatures):
         radiusOfHearingPerception = int(
             creatureOfInterest.genome.hearingRange * 200)
 
         for creature in self.creatureRegistry.registry:
             distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                    creatureOfInterest.xCoordinate) ** 2) +
-                                                (abs(creature.yCoordinate -
-                                                    creatureOfInterest.yCoordinate) ** 2)))
+                                                   creatureOfInterest.xCoordinate) ** 2) +
+                                              (abs(creature.yCoordinate -
+                                                   creatureOfInterest.yCoordinate) ** 2)))
 
             if ((distanceFromCreature <= radiusOfHearingPerception and creature != creatureOfInterest)
                 and (creatureOfInterest.genome.hearingAbility >= creature.genome.stealth)
@@ -115,47 +125,58 @@ class Environment:
                 logging.info(
                     f"{creature.id} within the {radiusOfHearingPerception} hearing range of {creatureOfInterest.id}")
                 perceivableCreatures.append(creature)
-    
-    def _getVisionPerceivableResources(self, creatureOfInterest, perceivableResources):
+
+    def _getVisionPerceivableResources(
+            self, creatureOfInterest, perceivableResources):
         radiusOfSightPerception = int(
             creatureOfInterest.genome.sightRange * 200)
-        
+
         for resource in self.resourceRegistry:
-            distanceFromCreature= (math.sqrt((abs(resource.xCoordinate -
-                                                creatureOfInterest.xCoordinate) ** 2) +
-                                            (abs(resource.yCoordinate -
-                                                creatureOfInterest.yCoordinate) ** 2)))
-            
-            if (distanceFromCreature <= radiusOfSightPerception) and (resource not in perceivableResources):
-                logging.info(f"{resource.id} within the {radiusOfSightPerception} sight range of {creatureOfInterest.id}")
+            distanceFromCreature = (math.sqrt((abs(resource.xCoordinate -
+                                                   creatureOfInterest.xCoordinate) ** 2) +
+                                              (abs(resource.yCoordinate -
+                                                   creatureOfInterest.yCoordinate) ** 2)))
+
+            if (distanceFromCreature <= radiusOfSightPerception) and (
+                    resource not in perceivableResources):
+                logging.info(
+                    f"{resource.id} within the {radiusOfSightPerception} sight range of {creatureOfInterest.id}")
             perceivableResources.append(resource)
-    
-    def _getSmellPerceivableResources(self, creatureOfInterest, perceivableResources):
+
+    def _getSmellPerceivableResources(
+            self,
+            creatureOfInterest,
+            perceivableResources):
         radiusOfSmellPerception = int(
             creatureOfInterest.genome.smellRange * 200)
-        
+
         for resource in self.resourceRegistry:
-            distanceFromCreature= (math.sqrt((abs(resource.xCoordinate -
-                                                creatureOfInterest.xCoordinate) ** 2) +
-                                            (abs(resource.yCoordinate -
-                                                creatureOfInterest.yCoordinate) ** 2)))
-            
-            if (distanceFromCreature <= radiusOfSmellPerception) and (resource not in perceivableResources):
-                logging.info(f"{resource.id} within the {radiusOfSmellPerception} smell range of {creatureOfInterest.id}")
+            distanceFromCreature = (math.sqrt((abs(resource.xCoordinate -
+                                                   creatureOfInterest.xCoordinate) ** 2) +
+                                              (abs(resource.yCoordinate -
+                                                   creatureOfInterest.yCoordinate) ** 2)))
+
+            if (distanceFromCreature <= radiusOfSmellPerception) and (
+                    resource not in perceivableResources):
+                logging.info(
+                    f"{resource.id} within the {radiusOfSmellPerception} smell range of {creatureOfInterest.id}")
             perceivableResources.append(resource)
-    
-    def _getAuditoryPerceivableResources(self, creatureOfInterest, perceivableResources):
+
+    def _getAuditoryPerceivableResources(
+            self, creatureOfInterest, perceivableResources):
         radiusOfHearingPerception = int(
             creatureOfInterest.genome.hearingRange * 200)
-        
+
         for resource in self.resourceRegistry:
-            distanceFromCreature= (math.sqrt((abs(resource.xCoordinate -
-                                                creatureOfInterest.xCoordinate) ** 2) +
-                                            (abs(resource.yCoordinate -
-                                                creatureOfInterest.yCoordinate) ** 2)))
-            
-            if (distanceFromCreature <= radiusOfHearingPerception) and (resource not in perceivableResources):
-                logging.info(f"{resource.id} within the {radiusOfHearingPerception} smell range of {creatureOfInterest.id}")
+            distanceFromCreature = (math.sqrt((abs(resource.xCoordinate -
+                                                   creatureOfInterest.xCoordinate) ** 2) +
+                                              (abs(resource.yCoordinate -
+                                                   creatureOfInterest.yCoordinate) ** 2)))
+
+            if (distanceFromCreature <= radiusOfHearingPerception) and (
+                    resource not in perceivableResources):
+                logging.info(
+                    f"{resource.id} within the {radiusOfHearingPerception} smell range of {creatureOfInterest.id}")
             perceivableResources.append(resource)
 
     def returnCreaturesPerceivableEnvironment(self, creatureOfInterest):
@@ -165,18 +186,28 @@ class Environment:
         perceivableCreatures = []
 
         if creatures.genome.Receptors.VISION in creatureOfInterest.genome.receptors:
-            self._getVisionPerceivableCreatures(creatureOfInterest, perceivableCreatures)
-            self._getVisionPerceivableResources(creatureOfInterest, perceivableResources)
+            self._getVisionPerceivableCreatures(
+                creatureOfInterest, perceivableCreatures)
+            self._getVisionPerceivableResources(
+                creatureOfInterest, perceivableResources)
 
         if creatures.genome.Receptors.SMELL in creatureOfInterest.genome.receptors:
-            self._getSmellPerceivableCreatures(creatureOfInterest, perceivableCreatures)
-            self._getSmellPerceivableResources(creatureOfInterest, perceivableResources)
+            self._getSmellPerceivableCreatures(
+                creatureOfInterest, perceivableCreatures)
+            self._getSmellPerceivableResources(
+                creatureOfInterest, perceivableResources)
 
         if creatures.genome.Receptors.HEAR in creatureOfInterest.genome.receptors:
-            self._getAuditoryPerceivableCreatures(creatureOfInterest, perceivableCreatures)
-            self._getAuditoryPerceivableResources(creatureOfInterest, perceivableResources)
+            self._getAuditoryPerceivableCreatures(
+                creatureOfInterest, perceivableCreatures)
+            self._getAuditoryPerceivableResources(
+                creatureOfInterest, perceivableResources)
 
-        return EnvironmentInfo(perceivableResources, perceivableCreatures, [], [])
+        return EnvironmentInfo(
+            perceivableResources,
+            perceivableCreatures,
+            [],
+            [])
 
     def getRegisteredCreatures(self):
         creatureList = []
@@ -185,13 +216,13 @@ class Environment:
             creatureList.append(creature.serialize())
 
         return creatureList
-    
+
     def getRegisteredResources(self):
         resourceList = []
 
         for resource in self.resourceRegistry:
             resourceList.append(resource.serialize())
-        
+
         return resourceList
 
     def getRegisteredTopography(self):
@@ -199,7 +230,7 @@ class Environment:
 
         for topography in self.topographyRegistry:
             topographyList.append(topography.serialize())
-        
+
         return topographyList
 
     def simulateCreatureBehavior(self):

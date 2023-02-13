@@ -109,7 +109,7 @@ class SexualReproductionPerceptron(ActionPerceptron):
                     (perceivablePredatorsWeight *
                      perceivablePredators) +
                     (perceivablePreyWeight *
-                     perceivablePrey) + 
+                     perceivablePrey) +
                     (immediateResourcesWeight * immediateResources)
                     + (perceivableResourcesWeight * perceivableResources)) /
                    total, 0)
@@ -155,9 +155,9 @@ class AsexualReproductionPerceptron(ActionPerceptron):
                     (perceivablePredatorsWeight *
                      perceivablePredators) +
                     (perceivablePreyWeight *
-                     perceivablePrey)+ 
+                     perceivablePrey) +
                     (immediateResourcesWeight * immediateResources)
-                    + (perceivableResourcesWeight * perceivableResources))  /
+                    + (perceivableResourcesWeight * perceivableResources)) /
                    total, 0)
 
     def determineActivation(self, environmentalFavorability, creatureGenome):
@@ -201,9 +201,9 @@ class SearchForMatePerceptron(ActionPerceptron):
                     (perceivablePredatorsWeight *
                      perceivablePredators) +
                     (perceivablePreyWeight *
-                     perceivablePrey) + 
+                     perceivablePrey) +
                     (immediateResourcesWeight * immediateResources)
-                    + (perceivableResourcesWeight * perceivableResources))  /
+                    + (perceivableResourcesWeight * perceivableResources)) /
                    total, 0)
 
     def determineActivation(self, environmentalFavorability, creatureGenome):
@@ -247,9 +247,9 @@ class FleeFromCreaturePerceptron(ActionPerceptron):
                     (perceivablePredatorsWeight *
                      perceivablePredators) +
                     (perceivablePreyWeight *
-                     perceivablePrey) + 
+                     perceivablePrey) +
                     (immediateResourcesWeight * immediateResources)
-                    + (perceivableResourcesWeight * perceivableResources))  /
+                    + (perceivableResourcesWeight * perceivableResources)) /
                    total, 0)
 
     def determineActivation(self, environmentalFavorability, creatureGenome):
@@ -299,9 +299,9 @@ class ChaseACreaturePerceptron(ActionPerceptron):
                     (perceivablePredatorsWeight *
                      perceivablePredators) +
                     (perceivablePreyWeight *
-                     perceivablePrey) + 
+                     perceivablePrey) +
                     (immediateResourcesWeight * immediateResources)
-                    + (perceivableResourcesWeight * perceivableResources))  /
+                    + (perceivableResourcesWeight * perceivableResources)) /
                    total, 0)
 
     def determineActivation(self, environmentalFavorability, creatureGenome):
@@ -351,13 +351,16 @@ class SearchForResourcesPerceptron(ActionPerceptron):
                     (perceivablePredatorsWeight *
                      perceivablePredators) +
                     (perceivablePreyWeight *
-                     perceivablePrey) + 
+                     perceivablePrey) +
                     (immediateResourcesWeight * immediateResources)
-                    + (perceivableResourcesWeight * perceivableResources))  /
+                    + (perceivableResourcesWeight * perceivableResources)) /
                    total, 0)
-    
+
     def determineActivation(self, environmentalFavorability, creatureGenome):
-        activation = _skew_positive(creatureGenome.selfPreservation, environmentalFavorability, 0.5)
+        activation = _skew_positive(
+            creatureGenome.selfPreservation,
+            environmentalFavorability,
+            0.5)
         activation = _skew_positive(creatureGenome.motivation, activation, 0.5)
 
         return activation
@@ -395,13 +398,16 @@ class ConsumeResourcesPerceptron(ActionPerceptron):
                     (perceivablePredatorsWeight *
                      perceivablePredators) +
                     (perceivablePreyWeight *
-                     perceivablePrey) + 
+                     perceivablePrey) +
                     (immediateResourcesWeight * immediateResources)
-                    + (perceivableResourcesWeight * perceivableResources))  /
+                    + (perceivableResourcesWeight * perceivableResources)) /
                    total, 0)
-    
+
     def determineActivation(self, environmentalFavorability, creatureGenome):
-        activation = _skew_positive(creatureGenome.selfPreservation, environmentalFavorability, 0.5)
+        activation = _skew_positive(
+            creatureGenome.selfPreservation,
+            environmentalFavorability,
+            0.5)
         activation = _skew_positive(creatureGenome.motivation, activation, 0.5)
 
         return activation
@@ -438,11 +444,13 @@ class DecisionNetwork(metaclass=ABCMeta):
                 perceivablePredators += 1
             elif creatureOfInterest.speciesRelationship(creature.species) == species_manager.SpeciesRelationship.HUNTS:
                 perceivablePrey += 1
-        
+
         for resource in perceivableEnvironment.perceivableResources:
-            distanceFromResource = (math.sqrt((abs(resource.xCoordinate - creatureOfInterest.xCoordinate) ** 2)
-                                    + (abs(resource.yCoordinate - creatureOfInterest.yCoordinate) ** 2)))
-            
+            distanceFromResource = (math.sqrt((abs(resource.xCoordinate -
+                                                   creatureOfInterest.xCoordinate) ** 2) +
+                                              (abs(resource.yCoordinate -
+                                                   creatureOfInterest.yCoordinate) ** 2)))
+
             if distanceFromResource <= 10:
                 immediateResources += 1
             else:
@@ -456,8 +464,10 @@ class DecisionNetwork(metaclass=ABCMeta):
             perceivablePredators)
         perceivablePreySignal = _determine_creature_perception_impact(
             perceivablePrey)
-        immediateResourcesSignal = _determine_creature_perception_impact(immediateResources)
-        perceivableResourcesSignal = _determine_creature_perception_impact(perceivableResources)
+        immediateResourcesSignal = _determine_creature_perception_impact(
+            immediateResources)
+        perceivableResourcesSignal = _determine_creature_perception_impact(
+            perceivableResources)
 
         activationValues = []
 

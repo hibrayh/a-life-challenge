@@ -7,7 +7,15 @@ logging.basicConfig(
 
 
 class Resource:
-    def __init__(self, resourceId, replenishment, xCoordinate, yCoordinate, color, shape, environment):
+    def __init__(
+            self,
+            resourceId,
+            replenishment,
+            xCoordinate,
+            yCoordinate,
+            color,
+            shape,
+            environment):
         logging.info(f"Creating new resource with id {resourceId}")
         self.id = resourceId
         self.replenishment = replenishment
@@ -18,7 +26,7 @@ class Resource:
         self.environment = environment
 
         self.environment.addToResourceRegistry(self)
-    
+
     def noticeOfConsumption(self):
         logging.info(f"Destroying resource with id {self.resourceId}")
         self.environment.removeFromResourceRegistry(self)

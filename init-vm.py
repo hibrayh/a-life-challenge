@@ -27,7 +27,8 @@ def initVM():
         flaskCorProcess = subprocess.Popen(
             ["pip.exe", "install", "flask-cors"], shell=True)
         flaskCorProcess.wait()
-        perlinNoiseProcess = subprocess.Popen(["pip.exe", "install", "noise"], shell=True)
+        perlinNoiseProcess = subprocess.Popen(
+            ["pip.exe", "install", "noise"], shell=True)
         perlinNoiseProcess.wait()
     else:
         os.chdir("venv/bin/")

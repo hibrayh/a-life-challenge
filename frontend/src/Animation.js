@@ -261,7 +261,16 @@ class Animation extends React.Component {
 
         for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
             let resource = this.props.resourcesToAnimate[i]
-            jsx.push(<div key={'res' + {i}}>{this.AnimateResourceSpawn(resource.resourceId, resource.locationX, resource.locationY, resource.color)}</div>)
+            jsx.push(
+                <div key={'res' + { i }}>
+                    {this.AnimateResourceSpawn(
+                        resource.resourceId,
+                        resource.locationX,
+                        resource.locationY,
+                        resource.color
+                    )}
+                </div>
+            )
         }
 
         return <div id="animation-wrapper">{jsx}</div>

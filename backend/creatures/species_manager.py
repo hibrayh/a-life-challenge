@@ -27,7 +27,13 @@ def _sortCreaturesByInitiative(creature):
 
 
 class SpeciesManager:
-    def __init__(self, speciesName, startingGenome, simulationWidth, simulationHeight, environment):
+    def __init__(
+            self,
+            speciesName,
+            startingGenome,
+            simulationWidth,
+            simulationHeight,
+            environment):
         logging.info(f"Initializing new Species Manager for {speciesName}")
 
         self.speciesName = speciesName

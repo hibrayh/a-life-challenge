@@ -140,7 +140,10 @@ function App() {
                 <header className="menu">
                     <h1>Simulation Page</h1>
                 </header>
-                <Animation creaturesToAnimate={creatureList} resourcesToAnimate={resourceList} />
+                <Animation
+                    creaturesToAnimate={creatureList}
+                    resourcesToAnimate={resourceList}
+                />
                 <SimulationNavBar
                     playOrPauseSimulationCallback={playPauseSimulation}
                     speedUpSimulationCallback={incrementTicksPerSecond}

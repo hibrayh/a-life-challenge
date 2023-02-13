@@ -83,7 +83,9 @@ def return_dummy_info():
 @api.route('/start-simulation', methods=['POST'])
 def startSimulation():
     global GOD
-    GOD = god.God(request.json['simulationWidth'], request.json['simulationHeight'])
+    GOD = god.God(
+        request.json['simulationWidth'],
+        request.json['simulationHeight'])
     return "Success", 201
 
 
