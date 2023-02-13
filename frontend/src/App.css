@@ -43,3 +43,63 @@ html {
     height: 100%;
     background-color: rgb(172, 172, 172);
 }
+
+
+
+#loadContainer{
+    width:100vmin;
+    height:60vmin;
+    background-color: rgb(31, 31, 31);
+    position:absolute;
+    left:calc(50% - 50vmin);
+    top:calc(50% - 30vmin);
+    text-align: center;
+    color: rgb(125, 125, 125);
+}
+
+.loadTitle{
+    font-size: 2vmax;
+}
+
+#simulationsContainer{
+    position:relative;
+    width:90%;
+    height:80%;
+    background-color: rgb(31, 31, 31);
+    left:5%;
+    
+    overflow-y:scroll;
+    
+}
+#simulationsContainer::-webkit-scrollbar {
+    background-color:rgb(26, 26, 26) ;
+    width:1.2vmin;
+}
+#simulationsContainer::-webkit-scrollbar-thumb{
+    background-color: rgb(73, 73, 73);
+    
+}
+
+.simulationItem{
+    width:calc(100% - 1.2vmin);
+    height:15vmin;
+    border: 1px solid rgb(49, 49, 49);
+    text-align: left;
+    padding-left:10px;
+    font-size: 1.5vmax;
+    transition-duration: 0.4s;
+}
+
+.simulationItem:hover{
+    background-color: rgb(61, 61, 61);
+    cursor: pointer;
+}
+
+.simulationItemTitle{
+    line-height:7.5vmin;
+}
+
+.removeLater{
+    font-size: 1.4vmin;
+    margin-left:6vmin;
+}

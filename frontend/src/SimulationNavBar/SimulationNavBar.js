@@ -130,6 +130,7 @@ function SimulationNavBar({
     // functions for topography page
     function closeTopographyPage() {
         setShowTopographyPage(false)
+        setShowGridBorder(false)
     }
 
     function toggleTopographyPage() {

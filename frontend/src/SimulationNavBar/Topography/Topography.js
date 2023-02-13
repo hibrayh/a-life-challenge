@@ -4,7 +4,13 @@ import { useState, useEffect } from 'react'
 import { FaTimes } from 'react-icons/fa'
 
 function TopographyPage(props) {
+    const [checkedValue, setCheckedValue] = useState()
+    const [grassland, setGrass] = useState(true)
+    const [rocky, setRocky] = useState(false)
+    const [snowy, setSnowy] = useState(false)
+    const [wet, setWet] = useState(false)
     
+
     if (props.show) {
         return (
 
@@ -20,28 +26,30 @@ function TopographyPage(props) {
 
                     <form id="topographyForm">
                         <div className="attributeHolder">
-                            <label className="dataTitle">Grassland</label>
-                            <input type="checkbox"></input>
+                            <label className="dataTitle">Grass</label>
+                            <input onChange={(event) => setGrass(event.target.value)} type="checkbox" value="Grass"></input>
+                            <br></br>
+                        </div>
+                        
+                        <div className="attributeHolder">
+                            <label className="dataTitle">Rocky</label>
+                            <input onChange={(event) => setRocky(event.target.value)} type="checkbox" value="Rocky"></input>
                             <br></br>
                         </div>
 
-                        <div className="attributeHolder">
-                            <label className="dataTitle">Rocky</label>
-                            <input type="checkbox"></input>
-                            <br></br>
-                        </div>
 
                         <div className="attributeHolder">
                             <label className="dataTitle">Snowy</label>
-                            <input type="checkbox"></input>
+                            <input onChange={(event) => setSnowy(event.target.value)} type="checkbox" value="Snowy"></input>
                             <br></br>
                         </div>
 
                         <div className="attributeHolder">
                             <label className="dataTitle">Wet</label>
-                            <input type="checkbox"></input>
+                            <input onChange={(event) => setWet(event.target.value)} type="checkbox" value="Wet"></input>
                             <br></br>
                         </div>
+                        
                     </form>
                 </div>
 
@@ -54,17 +62,21 @@ function TopographyPage(props) {
             <Grid showGridBorder={props.showGridBorder} />
         )
     }
+   
 }
 
 
-// <Node showGridBorder={props.showGridBorder} row={0} col={0} />
+// class Coordinate {
 
-// {gridArray.map(node => (
-//     <Node showGridBorder={props.showGridBorder} row={node[0]} col={node[1]}/>
-// ))}
-
-let gridSystem
-
+    //     constructor(x,y){
+        //         this.x
+        //     }
+        
+        // }
+        
+        // class Box {
+            
+// }
 
 let gridArray = []
 
@@ -75,26 +87,8 @@ function initialize(){
             gridArray.push({selected: false, row: i, col:j})
         }
     }
-
-
-    
-
     console.log("constructor")
-    
 }
-
-// class Coordinate {
-
-//     constructor(x,y){
-//         this.x
-//     }
-
-// }
-
-// class Box {
-    
-// }
-
 
 const useConstructor = (callBack = () => {}) => {
     const [hasBeenCalled, setHasBeenCalled] = useState(false);
@@ -104,52 +98,25 @@ const useConstructor = (callBack = () => {}) => {
 }
 
 
-
-
-
-
-
-
-
-
 function Grid(props){
     const [grid, setGrid] = useState(gridArray)
     
     useConstructor(() => {
         initialize()
         setGrid(gridArray)
-
-        console.log("constructor")
     });
 
-    
-    
-    console.log("grid")
-    //console.log(grid[0])
     let jsx = []
     
     for( let i = 0; i < 1250; i++){
         jsx.push(<Node id={grid[i]} toggleSelected={toggleSelected} selected={grid[i].selected} showGridBorder={props.showGridBorder} row={grid[i].row} col={grid[i].col} />)
     }
-    //console.log(grid[0])
-
-    // grid.map(node => (
-        //     <Node showGridBorder={node[0]} row={node[1]} col={node[2]} />
-        // ))
-        
-    console.log("in grid")
-
+    
     return(
         <div>
             <div id="mainGrid">
-            
-
-                {jsx}
-                
-
+                {jsx}    
             </div>
-
-            
         </div>
     )
 
@@ -162,13 +129,9 @@ function Grid(props){
             }
         })
 
-        console.log("before Temp", temp[index])
         temp[index].selected = !temp[index].selected
-        console.log("after Temp", temp[index])
-        //console.log(temp[index])
-        console.log("before", grid[index])
         setGrid(temp)
-        console.log("after", grid[index])
+       
     }
 
 
@@ -180,9 +143,6 @@ let gridBorder = ""
 
 
 function Node(props){
-    
-    const [selected, setSelected] = useState(false)
-
     
     
     if(props.showGridBorder){
@@ -199,12 +159,14 @@ function Node(props){
     else{
         currentClass = "node"
     }
+
+
     function handleClick(){
-        props.toggleSelected(props.row, props.col, props.selected)
-        setSelected(!selected)
-        console.log("props.selected", props.selected)
-        
-        console.log("Node Clicked")
+        if(props.showGridBorder){
+
+            props.toggleSelected(props.row, props.col, props.selected)
+       
+        }
        
     }
 

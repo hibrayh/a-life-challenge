@@ -3,6 +3,7 @@ import axios from 'axios'
 import './App.css'
 import Animation from './Animation'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
+import { FaTimes } from 'react-icons/fa'
 
 function App() {
     const [showMenu, setShowMenu] = useState(true)
@@ -149,10 +150,40 @@ function App() {
 
     const LoadPage = () => {
 
-
+       
         return(
-            <h1>test</h1>
+            <div id="loadContainer">
+                <button
+                    onClick={() => {
+                        setShowLoad(false)}
+                    }
+
+                    className="formExitButton">
+                    <FaTimes />
+                </button>
+                <h1 className="loadTitle">Load Simulation</h1>
+
+                <div id="simulationsContainer">
+                    <div className="simulationItem">
+                        <h2 className="simulationItemTitle">Simulation 1 <span className="removeLater">This should be some basic info about the saved simulation</span></h2>
+                    </div>
+
+                    <div className="simulationItem">
+                        <h2 className="simulationItemTitle">Simulation 2</h2>
+                    </div>
+
+                    <div className="simulationItem">
+                        <h2 className="simulationItemTitle">Simulation 3</h2>
+                    </div>
+
+                    <div className="simulationItem">
+                        <h2 className="simulationItemTitle">Simulation 4</h2>
+                    </div>
+                </div>
+            </div>
         )
+
+        
     }
 
     
@@ -166,7 +197,7 @@ function App() {
             }
             {showMenu ? <Menu /> : null}
             {showSimulation ? <Simulation /> : null}
-            {showLoad ? <LoadPage /> : null}
+            {showLoad ? <LoadPage show={showLoad} /> : null}
         </>
     )
 }

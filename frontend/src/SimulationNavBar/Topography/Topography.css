@@ -1,9 +1,9 @@
 #topographyContainer {
     width: 35vmin;
     height: 50vmin;
-    background-color: rgb(80, 80, 80);
+    background-color: rgb(36, 36, 36);
     position: absolute;
-
+    color:rgb(148, 147, 147);
     top: calc(50% - 40vmin);
     text-align: center;
 }
@@ -42,7 +42,7 @@
    
     height:calc(100% / 25);
     width:calc(100% / 50);
-    background-color: purple;
+    background-color: rgb(28, 177, 78);
     
 }
 

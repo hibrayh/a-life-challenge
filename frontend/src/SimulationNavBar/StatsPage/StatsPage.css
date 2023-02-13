@@ -2,23 +2,41 @@
     position: absolute;
     height: calc(100% - 7vmin);
     width: 40vmin;
-    background-color: rgb(80, 80, 80);
+    background-color: rgb(36, 36, 36);
     right: 0px;
     top: 0px;
     text-align: center;
+    color: rgb(125, 125, 125);
 }
 
-.formExitButton {
-    width: 3.5vmin;
-    height: 2.5vmin;
-    line-height: 2.7vmin;
-    font-size: 0.8vmax;
+#statsPageInfoContainer{
 
-    background-color: rgb(65, 65, 65);
-    color: rgb(125, 125, 125);
-    border: none;
 
-    position: absolute;
-    right: 7px;
-    top: 7px;
+    width:90%;
+    height:90%;
+    
+    left:5%;
+    position:relative;
+    overflow-y: scroll;
+}
+
+#statsPageInfoContainer::-webkit-scrollbar {
+    background-color: rgb(73, 73, 73);
+    width:1.2vmin;
+}
+#statsPageInfoContainer::-webkit-scrollbar-thumb{
+    background-color:rgb(26, 26, 26) ;
+}
+
+.statsItem{
+    width:calc(100% - 1.2vmin);
+    text-align: left;
+    border: 1px solid rgb(80, 80, 80);
+    padding-left:10px;
+    transition-duration: 0.4s;
+}
+
+.statsItem:hover{
+    background-color: rgb(61, 61, 61);
+    cursor: pointer;
 }
