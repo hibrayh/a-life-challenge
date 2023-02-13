@@ -190,8 +190,14 @@ def advanceSimulation():
     return "Success", 201
 
 
-@api.route('/get-environment-info')
+@api.route('/get-food-info')
 @cross_origin()
-def getEnvironmentInfo():
+def getFoodInfo():
     global GOD
-    return jsonify(GOD.getEnvironmentInfo())
+    return jsonify(GOD.getFoodInfo())
+
+@api.route('/get-topography-info')
+@cross_origin()
+def getTopographyInfo():
+    global GOD
+    return jsonify(GOD.getTopographyInfo())

@@ -24,11 +24,14 @@ class Animation extends React.Component {
             color: '',
             creaturesToAnimate: [],
             creatures: [],
+            food: [],
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
         this.getCreatureInfo = this.getCreatureInfo.bind(this)
         this.startSimulation = this.startSimulation.bind(this)
+        this.getFoodInfo = this.getFoodInfo.bind(this)
+        this.AnimateResourceSpawn = this.AnimateResourceSpawn.bind(this)
     }
 
     AnimateBirth(creature) {
@@ -157,18 +160,28 @@ class Animation extends React.Component {
         )
     }
 
-    AnimateResourceSpawn(resourceId, locationX, locationY, color) {
-        // Takes the resource ID, its location x and y, and color to create an element with specific animation
+    AnimateResourceSpawn(food) {
+        let roundness = ''
+        if (food.shape === 'square') {
+            roundness = '0%'
+        } else if (food.shape === 'circle'){
+            roundness = '50%'
+        }else if (food.shape === 'oval'){
+            roundness = '75% / 50%'
+            }
+            
         return (
             <>
                 <div
-                    id={resourceId}
+                    id={food.foodName}
                     style={{
                         position: 'absolute',
-                        left: `${locationX}px`,
-                        top: `${locationY}px`,
-                        width: '0px',
-                        height: '0px',
+                        left: `${food.locationX}px`,
+                        top: `${food.locationY}px`,
+                        background: food.color,
+                        borderRadius: roundness,
+                        width: grown,
+                        height: grown,
 
                         borderStyle: 'solid',
                         borderTopWidth: '0px',
@@ -178,14 +191,14 @@ class Animation extends React.Component {
 
                         borderTopColor: 'transparent',
                         borderRightColor: 'transparent',
-                        borderBottomColor: color,
+                        borderBottomColor: food.color,
                         borderLeftColor: 'transparent',
                     }}
                 />
                 <Anime
                     initial={[
                         {
-                            targets: '#' + resourceId,
+                            targets: '#' + food.foodName,
                             scale: [0, 1],
                             rotate: 360,
                             easing: 'linear',
@@ -195,14 +208,14 @@ class Animation extends React.Component {
         )
     }
 
-    AnimateResourceConsumption(resourceId) {
-        // Takes the resource ID and performs the "resourcce consumed" animation
+    AnimateResourceConsumption(food) {
+        // Takes the resource ID and performs the "resource consumed" animation
         return (
             <>
                 <Anime
                     initial={[
                         {
-                            targets: '#' + resourceId,
+                            targets: '#' + food.foodName,
                             scale: [1, 0],
                             rotate: 360,
                             easing: 'linear',
@@ -233,13 +246,14 @@ class Animation extends React.Component {
         })
     }
 
-    getEnvironmentInfo() {
+    getFoodInfo() {
         // Use axios to retrieve info from the backend
         axios({
             method: 'GET',
-            url: 'http://localhost:5000/get-environment-info',
+            url: 'http://localhost:5000/get-food-info',
         }).then((response) => {
             const res = response.data
+            console.log(res)
             // change the state variable to trigger a re-render
             this.setState({
                 foodName: res.foodName,
@@ -250,7 +264,6 @@ class Animation extends React.Component {
                 locationX: res.locationX,
                 locationY: res.locationY,
             })
-            console.log(res)
         })
     }
 
@@ -326,12 +339,12 @@ class Animation extends React.Component {
 
         await axios({
             method: 'GET',
-            url: 'http://localhost:5000/get-environment-info',
+            url: 'http://localhost:5000/get-food-info',
         }).then((response) => {
             const res = response.data
             this.setState({
                 isSimStarted: true,
-                foodObjects: res.foodRegistry,
+                food: res.foodRegistry,
             })
         })
     }
@@ -345,25 +358,40 @@ class Animation extends React.Component {
             )
         } else {
             // Example of looping through all creatures and animating
-            let jsx = []
+            let creatureJsx = []
             for (let i = 0; i < this.state.creatures.length; i++) {
                 let creature = this.state.creatures[i]
                 console.log(creature)
                 if (creature.lastAction === 'BIRTHED') {
-                    jsx.push(<div key={i}>{this.AnimateBirth(creature)}</div>)
+                    creatureJsx.push(<div key={i}>{this.AnimateBirth(creature)}</div>)
                 } else if (creature.lastAction === 'DEATH') {
-                    jsx.push(<div key={i}>{this.AnimateKilled(creature)}</div>)
+                    creatureJsx.push(<div key={i}>{this.AnimateKilled(creature)}</div>)
                 } else if (creature.lastAction === 'REPRODUCE') {
-                    jsx.push(
+                    creatureJsx.push(
                         <div key={i}>{this.AnimateMovement(creature)}</div>
                     )
                 } else {
-                    jsx.push(
+                    creatureJsx.push(
                         <div key={i}>{this.AnimateMovement(creature)}</div>
                     )
                 }
             }
-            return <div id="animation-wrapper">{jsx}</div>
+            let foodJsx = []
+            for (let i = 0; i < this.state.food.length; i++) {
+                let food = this.state.food[i]
+                console.log(food)
+                foodJsx.push(
+                    <div key={i}>
+                        {this.AnimateResourceSpawn(food)}
+                        </div>
+                        );
+            }
+            return (
+                <div id="animation-wrapper">
+                    {creatureJsx}
+                    {foodJsx}
+                </div>
+            )
         }
     }
 }
