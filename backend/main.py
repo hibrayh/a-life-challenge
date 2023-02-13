@@ -196,6 +196,7 @@ def getFoodInfo():
     global GOD
     return jsonify(GOD.getFoodInfo())
 
+
 @api.route('/get-topography-info')
 @cross_origin()
 def getTopographyInfo():

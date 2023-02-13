@@ -164,12 +164,12 @@ class Animation extends React.Component {
         let roundness = ''
         if (food.shape === 'square') {
             roundness = '0%'
-        } else if (food.shape === 'circle'){
+        } else if (food.shape === 'circle') {
             roundness = '50%'
-        }else if (food.shape === 'oval'){
+        } else if (food.shape === 'oval') {
             roundness = '75% / 50%'
-            }
-            
+        }
+
         return (
             <>
                 <div
@@ -363,9 +363,13 @@ class Animation extends React.Component {
                 let creature = this.state.creatures[i]
                 console.log(creature)
                 if (creature.lastAction === 'BIRTHED') {
-                    creatureJsx.push(<div key={i}>{this.AnimateBirth(creature)}</div>)
+                    creatureJsx.push(
+                        <div key={i}>{this.AnimateBirth(creature)}</div>
+                    )
                 } else if (creature.lastAction === 'DEATH') {
-                    creatureJsx.push(<div key={i}>{this.AnimateKilled(creature)}</div>)
+                    creatureJsx.push(
+                        <div key={i}>{this.AnimateKilled(creature)}</div>
+                    )
                 } else if (creature.lastAction === 'REPRODUCE') {
                     creatureJsx.push(
                         <div key={i}>{this.AnimateMovement(creature)}</div>
@@ -381,10 +385,8 @@ class Animation extends React.Component {
                 let food = this.state.food[i]
                 console.log(food)
                 foodJsx.push(
-                    <div key={i}>
-                        {this.AnimateResourceSpawn(food)}
-                        </div>
-                        );
+                    <div key={i}>{this.AnimateResourceSpawn(food)}</div>
+                )
             }
             return (
                 <div id="animation-wrapper">
