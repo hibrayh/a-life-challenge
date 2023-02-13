@@ -111,11 +111,12 @@ function App() {
 
                     <div>
                         <button
-                        id="menuButtonLoad"
-                        onClick={() => {
-                            setShowLoad(true)
-                        }}>
-                        Load Simulation</button>
+                            id="menuButtonLoad"
+                            onClick={() => {
+                                setShowLoad(true)
+                            }}>
+                            Load Simulation
+                        </button>
                     </div>
 
                     <div>
@@ -147,17 +148,13 @@ function App() {
         )
     }
 
-
     const LoadPage = () => {
-
-       
-        return(
+        return (
             <div id="loadContainer">
                 <button
                     onClick={() => {
-                        setShowLoad(false)}
-                    }
-
+                        setShowLoad(false)
+                    }}
                     className="formExitButton">
                     <FaTimes />
                 </button>
@@ -165,7 +162,13 @@ function App() {
 
                 <div id="simulationsContainer">
                     <div className="simulationItem">
-                        <h2 className="simulationItemTitle">Simulation 1 <span className="removeLater">This should be some basic info about the saved simulation</span></h2>
+                        <h2 className="simulationItemTitle">
+                            Simulation 1{' '}
+                            <span className="removeLater">
+                                This should be some basic info about the saved
+                                simulation
+                            </span>
+                        </h2>
                     </div>
 
                     <div className="simulationItem">
@@ -182,11 +185,8 @@ function App() {
                 </div>
             </div>
         )
-
-        
     }
 
-    
     return (
         <>
             {

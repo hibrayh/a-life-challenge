@@ -1,56 +1,50 @@
-
-
-#savePageContainer{
-    width:33vmin;
-    height:32vmin;
-    position:relative;
+#savePageContainer {
+    width: 33vmin;
+    height: 32vmin;
+    position: relative;
     background-color: rgb(36, 36, 36);
-    left:calc(50% - 16.5vmin);
-    top:calc(50% - 17.5vmin);
+    left: calc(50% - 16.5vmin);
+    top: calc(50% - 17.5vmin);
     color: rgb(148, 147, 147);
-    
 }
-#saveTitle{
-    padding-top:10px;
+#saveTitle {
+    padding-top: 10px;
     text-align: center;
 }
 
-#saveForm{
-   
+#saveForm {
     position: relative;
-    left:3.5vmin;
-    padding-top:4vmin;
-    
+    left: 3.5vmin;
+    padding-top: 4vmin;
 }
-.saveLabel{
-    margin-right:10px;
+.saveLabel {
+    margin-right: 10px;
     font-size: larger;
 }
 
-.saveFormButton{
-    width:10vmin;
-    height:6vmin;
+.saveFormButton {
+    width: 10vmin;
+    height: 6vmin;
     background-color: rgb(31, 31, 31);
     color: rgb(125, 125, 125);
     border: 1px solid rgb(61, 61, 61);
-    border-radius:20px;
-    bottom:10vmin;
-    left:10vmin;
+    border-radius: 20px;
+    bottom: 10vmin;
+    left: 10vmin;
     transition-duration: 0.4s;
 }
 
-.saveFormButton:hover{
+.saveFormButton:hover {
     background-color: rgb(61, 61, 61);
     cursor: pointer;
 }
 
-#saveAcceptButton{
-    margin-right:3vmin;
+#saveAcceptButton {
+    margin-right: 3vmin;
 }
 
-#saveButtonContainer{
-   
-    position:absolute;
-    left:calc(50% - 11.5vmin);
-    bottom:5vmin;
+#saveButtonContainer {
+    position: absolute;
+    left: calc(50% - 11.5vmin);
+    bottom: 5vmin;
 }
