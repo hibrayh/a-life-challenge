@@ -3,6 +3,7 @@ import axios from 'axios'
 import './App.css'
 import Animation from './Animation'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
+import { FaTimes } from 'react-icons/fa'
 
 function App() {
     const [showMenu, setShowMenu] = useState(true)
@@ -13,6 +14,7 @@ function App() {
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
     const [creatureList, setCreatureList] = useState([])
+    const [showLoad, setShowLoad] = useState(false)
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
@@ -108,6 +110,16 @@ function App() {
                     </div>
 
                     <div>
+                        <button
+                            id="menuButtonLoad"
+                            onClick={() => {
+                                setShowLoad(true)
+                            }}>
+                            Load Simulation
+                        </button>
+                    </div>
+
+                    <div>
                         <button id="menuButtonQuit">Quit</button>
                     </div>
                 </div>
@@ -136,6 +148,45 @@ function App() {
         )
     }
 
+    const LoadPage = () => {
+        return (
+            <div id="loadContainer">
+                <button
+                    onClick={() => {
+                        setShowLoad(false)
+                    }}
+                    className="formExitButton">
+                    <FaTimes />
+                </button>
+                <h1 className="loadTitle">Load Simulation</h1>
+
+                <div id="simulationsContainer">
+                    <div className="simulationItem">
+                        <h2 className="simulationItemTitle">
+                            Simulation 1{' '}
+                            <span className="removeLater">
+                                This should be some basic info about the saved
+                                simulation
+                            </span>
+                        </h2>
+                    </div>
+
+                    <div className="simulationItem">
+                        <h2 className="simulationItemTitle">Simulation 2</h2>
+                    </div>
+
+                    <div className="simulationItem">
+                        <h2 className="simulationItemTitle">Simulation 3</h2>
+                    </div>
+
+                    <div className="simulationItem">
+                        <h2 className="simulationItemTitle">Simulation 4</h2>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <>
             {
@@ -146,6 +197,7 @@ function App() {
             }
             {showMenu ? <Menu /> : null}
             {showSimulation ? <Simulation /> : null}
+            {showLoad ? <LoadPage show={showLoad} /> : null}
         </>
     )
 }
