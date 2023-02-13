@@ -403,7 +403,6 @@ class Animation extends React.Component {
                 </div>
             )
         }
-        return <div id="animation-wrapper">{jsx}</div>
     }
 }
 
