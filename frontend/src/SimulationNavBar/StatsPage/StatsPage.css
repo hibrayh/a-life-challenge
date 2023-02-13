@@ -9,34 +9,32 @@
     color: rgb(125, 125, 125);
 }
 
-#statsPageInfoContainer{
+#statsPageInfoContainer {
+    width: 90%;
+    height: 90%;
 
-
-    width:90%;
-    height:90%;
-    
-    left:5%;
-    position:relative;
+    left: 5%;
+    position: relative;
     overflow-y: scroll;
 }
 
 #statsPageInfoContainer::-webkit-scrollbar {
     background-color: rgb(73, 73, 73);
-    width:1.2vmin;
+    width: 1.2vmin;
 }
-#statsPageInfoContainer::-webkit-scrollbar-thumb{
-    background-color:rgb(26, 26, 26) ;
+#statsPageInfoContainer::-webkit-scrollbar-thumb {
+    background-color: rgb(26, 26, 26);
 }
 
-.statsItem{
-    width:calc(100% - 1.2vmin);
+.statsItem {
+    width: calc(100% - 1.2vmin);
     text-align: left;
     border: 1px solid rgb(80, 80, 80);
-    padding-left:10px;
+    padding-left: 10px;
     transition-duration: 0.4s;
 }
 
-.statsItem:hover{
+.statsItem:hover {
     background-color: rgb(61, 61, 61);
     cursor: pointer;
 }

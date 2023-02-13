@@ -15,12 +15,17 @@ function App() {
         useState(0)
     const [creatureList, setCreatureList] = useState([])
     const [showLoad, setShowLoad] = useState(false)
+    const [resourceList, setResourceList] = useState([])
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
         await axios({
-            method: 'GET',
+            method: 'POST',
             url: 'http://localhost:5000/start-simulation',
+            data: {
+                simulationWidth: window.innerWidth,
+                simulationHeight: window.innerHeight,
+            },
         })
         setHasSimulationStarted(true)
     }
@@ -73,6 +78,7 @@ function App() {
         }).then((response) => {
             const res = response.data
             setCreatureList(res.creatureRegistry)
+            setResourceList(res.resourceRegistry)
         })
     }
 
@@ -111,11 +117,12 @@ function App() {
 
                     <div>
                         <button
-                        id="menuButtonLoad"
-                        onClick={() => {
-                            setShowLoad(true)
-                        }}>
-                        Load Simulation</button>
+                            id="menuButtonLoad"
+                            onClick={() => {
+                                setShowLoad(true)
+                            }}>
+                            Load Simulation
+                        </button>
                     </div>
 
                     <div>
@@ -133,7 +140,10 @@ function App() {
                 <header className="menu">
                     <h1>Simulation Page</h1>
                 </header>
-                <Animation creaturesToAnimate={creatureList} />
+                <Animation
+                    creaturesToAnimate={creatureList}
+                    resourcesToAnimate={resourceList}
+                />
                 <SimulationNavBar
                     playOrPauseSimulationCallback={playPauseSimulation}
                     speedUpSimulationCallback={incrementTicksPerSecond}
@@ -147,17 +157,13 @@ function App() {
         )
     }
 
-
     const LoadPage = () => {
-
-       
-        return(
+        return (
             <div id="loadContainer">
                 <button
                     onClick={() => {
-                        setShowLoad(false)}
-                    }
-
+                        setShowLoad(false)
+                    }}
                     className="formExitButton">
                     <FaTimes />
                 </button>
@@ -165,7 +171,13 @@ function App() {
 
                 <div id="simulationsContainer">
                     <div className="simulationItem">
-                        <h2 className="simulationItemTitle">Simulation 1 <span className="removeLater">This should be some basic info about the saved simulation</span></h2>
+                        <h2 className="simulationItemTitle">
+                            Simulation 1{' '}
+                            <span className="removeLater">
+                                This should be some basic info about the saved
+                                simulation
+                            </span>
+                        </h2>
                     </div>
 
                     <div className="simulationItem">
@@ -182,11 +194,8 @@ function App() {
                 </div>
             </div>
         )
-
-        
     }
 
-    
     return (
         <>
             {

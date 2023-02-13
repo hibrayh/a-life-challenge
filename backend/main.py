@@ -80,10 +80,12 @@ def return_dummy_info():
     return response_body
 
 
-@api.route('/start-simulation')
+@api.route('/start-simulation', methods=['POST'])
 def startSimulation():
     global GOD
-    GOD = god.God()
+    GOD = god.God(
+        request.json['simulationWidth'],
+        request.json['simulationHeight'])
     return "Success", 201
 
 
@@ -188,13 +190,6 @@ def advanceSimulation():
     global GOD
     GOD.advanceSimulation()
     return "Success", 201
-
-
-@api.route('/get-environment-info')
-@cross_origin()
-def getEnvironmentInfo():
-    global GOD
-    return jsonify(GOD.getEnvironmentInfo())
 
 
 @api.route('/get-list-of-species')

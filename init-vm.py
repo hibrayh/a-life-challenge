@@ -27,12 +27,17 @@ def initVM():
         flaskCorProcess = subprocess.Popen(
             ["pip.exe", "install", "flask-cors"], shell=True)
         flaskCorProcess.wait()
+        perlinNoiseProcess = subprocess.Popen(
+            ["pip.exe", "install", "noise"], shell=True)
+        perlinNoiseProcess.wait()
     else:
         os.chdir("venv/bin/")
         flaskProcess = subprocess.Popen(["./pip", "install", "Flask"])
         flaskProcess.wait()
         flaskCorProcess = subprocess.Popen(["./pip", "install", "flask-cors"])
         flaskCorProcess.wait()
+        perlinNoiseProcess = subprocess.Popen(["./pip", "install", "noise"])
+        perlinNoiseProcess.wait()
 
     print("Completed installation")
 

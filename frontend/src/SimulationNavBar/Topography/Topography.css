@@ -3,7 +3,7 @@
     height: 50vmin;
     background-color: rgb(36, 36, 36);
     position: absolute;
-    color:rgb(148, 147, 147);
+    color: rgb(148, 147, 147);
     top: calc(50% - 40vmin);
     text-align: center;
 }
@@ -11,41 +11,36 @@
 #topographyForm {
     text-align: left;
     margin-top: 5vmin;
-    
 }
 
-
 #mainGrid {
-    
-    display:flex;
-    flex-wrap:wrap;
-    flex-direction:column;
-    width:100%;
-    height:calc(100% - 7vmin);
-    position:absolute;
-    left:0px;
-    top:0px;
-    opacity:50%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100% - 7vmin);
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    opacity: 50%;
     z-index: -1;
 }
 
-.node{
+.node {
     box-sizing: border-box;
-    height:calc(100% / 25);
-    width:calc(100% / 50);
+    height: calc(100% / 25);
+    width: calc(100% / 50);
     background-color: rgb(172, 172, 172);
-    
 }
 
-.selectedNode{
+.selectedNode {
     box-sizing: border-box;
-   
-    height:calc(100% / 25);
-    width:calc(100% / 50);
+
+    height: calc(100% / 25);
+    width: calc(100% / 50);
     background-color: rgb(28, 177, 78);
-    
 }
 
-.gridBorder{
-    border:1px solid black;
+.gridBorder {
+    border: 1px solid black;
 }

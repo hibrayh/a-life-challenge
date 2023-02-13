@@ -14,9 +14,8 @@ import { NewCreatureForm } from './CreatureForms/NewCreatureForm.js'
 import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 import StatsPage from './StatsPage/StatsPage.js'
-import {TopographyPage} from './Topography/Topography.js'
+import { TopographyPage } from './Topography/Topography.js'
 import SavePage from './SavePage/SavePage.js'
-
 
 function SimulationNavBar({
     playOrPauseSimulationCallback,
@@ -38,10 +37,7 @@ function SimulationNavBar({
 
     return (
         <>
-            <SavePage 
-                show={showSavePage}
-                toggleSavePage={toggleSavePage} 
-            />
+            <SavePage show={showSavePage} toggleSavePage={toggleSavePage} />
 
             <StatsPage show={showStatsPage} closeStatsPage={closeStatsPage} />
 
@@ -91,8 +87,8 @@ function SimulationNavBar({
                     closeNewSpeciesForm={closeNewSpeciesForm}
                 />
 
-                <TopographyButton 
-                    toggleTopographyPage={toggleTopographyPage} 
+                <TopographyButton
+                    toggleTopographyPage={toggleTopographyPage}
                     toggleShowGridBorder={toggleShowGridBorder}
                 />
 
@@ -143,12 +139,11 @@ function SimulationNavBar({
         setShowTopographyPage(!showTopographyPage)
     }
 
-
-    function toggleShowGridBorder(){
+    function toggleShowGridBorder() {
         setShowGridBorder(!showGridBorder)
     }
 
-    function toggleSavePage(){
+    function toggleSavePage() {
         setShowSavePage(!showSavePage)
     }
 }
@@ -171,7 +166,11 @@ function StatsButton(props) {
 
 function SaveButton(props) {
     return (
-        <button onClick={props.toggleSavePage} id="saveButton" className="navButton" title="Save">
+        <button
+            onClick={props.toggleSavePage}
+            id="saveButton"
+            className="navButton"
+            title="Save">
             <FaSave />
         </button>
     )
