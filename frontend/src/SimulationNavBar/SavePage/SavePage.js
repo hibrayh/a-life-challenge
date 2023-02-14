@@ -2,6 +2,7 @@ import React from 'react'
 import './SavePage.css'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
+import axios from 'axios'
 
 function SavePage(props) {
     const [saveName, setSaveName] = useState('')
@@ -46,8 +47,15 @@ function SavePage(props) {
         props.toggleSavePage()
     }
 
-    function handleAccept() {
+    async function handleAccept() {
         //save simulation to backend
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000//save-simulation',
+            data: {
+                filename: saveName,
+            },
+        })
     }
 }
 

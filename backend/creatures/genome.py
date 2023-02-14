@@ -15,9 +15,9 @@ class Receptors(Enum):
     HEAR = 3
 
 
-class ReproductionType(Enum):
-    ASEXUAL = 1
-    SEXUAL = 2
+class ReproductionType(str, Enum):
+    ASEXUAL = 'Asexual'
+    SEXUAL = 'Sexual'
 
 
 class Genome:
