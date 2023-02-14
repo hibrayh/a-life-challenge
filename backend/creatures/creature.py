@@ -21,33 +21,96 @@ class Creature:
             xCoordinate,
             yCoordinate,
             speciesManager,
-            environment):
-        logging.info(f"Initializing new creature with id {id}")
-        self.genome = inputGenome
-        self.species = species
-        self.id = id
-        self.speciesManager = speciesManager
-        self.xCoordinate = xCoordinate
-        self.yCoordinate = yCoordinate
-        self.environment = environment
-        self.lastAction = decision_network.CreatureAction.BIRTHED
-        self.reproductionCoolDown = 10
-        self.hasPerformedActionThisTurn = True
+            environment,
+            loadExistingSave=False, 
+            saveData=None):
+        if not loadExistingSave:
+            logging.info(f"Initializing new creature with id {id}")
+            self.genome = inputGenome
+            self.species = species
+            self.id = id
+            self.speciesManager = speciesManager
+            self.xCoordinate = xCoordinate
+            self.yCoordinate = yCoordinate
+            self.environment = environment
+            self.lastAction = decision_network.CreatureAction.BIRTHED
+            self.reproductionCoolDown = 10
+            self.hasPerformedActionThisTurn = True
 
-        if self.genome.reproductionType == genome.ReproductionType.ASEXUAL:
-            self._decisionNetwork = decision_network.DecisionNetworkAsexual()
+            if self.genome.reproductionType == genome.ReproductionType.ASEXUAL:
+                self._decisionNetwork = decision_network.DecisionNetworkAsexual()
+            else:
+                self._decisionNetwork = decision_network.DecisionNetworkSexual()
+
+            self.maxHealth = inputGenome.maxHealth * 100
+            self.currentHealth = copy.deepcopy(self.maxHealth)
+
+            self.maxEnergy = inputGenome.maxEnergy * 100
+            self.currentEnergy = copy.deepcopy(self.maxEnergy)
+
+            self.reactionTime = inputGenome.reactionTime * 100
+
+            self.environment.addToCreatureRegistry(self)
         else:
-            self._decisionNetwork = decision_network.DecisionNetworkSexual()
+            logging.info(f"Loading existing creature")
 
-        self.maxHealth = inputGenome.maxHealth * 100
-        self.currentHealth = copy.deepcopy(self.maxHealth)
+            receptors = []
+            if saveData.genome.canSee:
+                receptors.append(genome.Receptors.VISION)
+            if saveData.genome.canSmell:
+                receptors.append(genome.Receptors.SMELL)
+            if saveData.genome.canHear:
+                receptors.append(genome.Receptors.HEAR)
+            self.genome = genome.Genome(saveData.genome.visibility, 
+                                                    saveData.genome.maxHealth, 
+                                                    receptors,
+                                                    saveData.genome.sightAbility,
+                                                    saveData.genome.smellAbility,
+                                                    saveData.genome.hearingAbility,
+                                                    saveData.genome.sightRange,
+                                                    saveData.genome.smellRange,
+                                                    saveData.genome.hearingRange,
+                                                    saveData.genome.reactionTime,
+                                                    saveData.genome.intelligence,
+                                                    saveData.genome.selfPreservation,
+                                                    saveData.genome.mobility,
+                                                    genome.ReproductionType(saveData.genome.reproductionType),
+                                                    saveData.genome.offspringAmount,
+                                                    saveData.genome.motivation,
+                                                    saveData.genome.maxEnergy,
+                                                    saveData.genome.individualism,
+                                                    saveData.genome.territorial,
+                                                    saveData.genome.fightOrFlight,
+                                                    saveData.genome.hostility,
+                                                    saveData.genome.scent,
+                                                    saveData.genome.stealth,
+                                                    saveData.genome.lifeExpectancy,
+                                                    saveData.genome.offensiveAbility,
+                                                    saveData.genome.defensiveAbility,
+                                                    saveData.genome.shape,
+                                                    saveData.genome.color)
+            
+            self.species = saveData.species
+            self.id = saveData.id
+            self.speciesManager = speciesManager
+            self.xCoordinate = saveData.xCoordinate
+            self.yCoordinate = saveData.yCoordinate
+            self.lastAction = decision_network.CreatureAction(saveData.lastAction)
+            self.reproductionCoolDown = saveData.reproductionCoolDown
+            self.currentHealth = saveData.currentHealth
+            self.maxHealth = self.genome.maxHealth * 100
+            self.currentEnergy = saveData.currentEnergy
+            self.maxEnergy = self.genome.maxEnergy * 100
+            self.hasPerformedActionThisTurn = False
+            self.environment = environment
+            self.reactionTime = self.genome.reactionTime * 100
 
-        self.maxEnergy = inputGenome.maxEnergy * 100
-        self.currentEnergy = copy.deepcopy(self.maxEnergy)
-
-        self.reactionTime = inputGenome.reactionTime * 100
-
-        self.environment.addToCreatureRegistry(self)
+            if self.genome.reproductionType == genome.ReproductionType.ASEXUAL:
+                self._decisionNetwork = decision_network.DecisionNetworkAsexual()
+            else:
+                self._decisionNetwork = decision_network.DecisionNetworkSexual()
+            
+            self.environment.addToCreatureRegistry(self)
 
     def unregisterFromEnvironment(self):
         logging.info(f"Unregistering {self.id} from the Environment")
@@ -66,6 +129,20 @@ class Creature:
             'color': self.genome.color,
             'shape': self.genome.shape,
             'lastAction': self.lastAction
+        }
+    
+    def save(self):
+        logging.info(f"Saving creature {self.id}")
+        return {
+            'genome': self.genome.serialize(),
+            'species': self.species,
+            'id': self.id,
+            'xCoordinate': self.xCoordinate,
+            'yCoordinate': self.yCoordinate,
+            'lastAction': self.lastAction,
+            'reproductionCoolDown': self.reproductionCoolDown,
+            'currentHealth': self.currentHealth,
+            'currentEnergy': self.currentEnergy,
         }
 
     def canReproduce(self):

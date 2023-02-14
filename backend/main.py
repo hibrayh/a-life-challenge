@@ -2,9 +2,17 @@ from flask import Flask
 from flask import jsonify
 from flask_cors import CORS, cross_origin
 from flask import request
+import logging
+import json
 import god
 import creatures.genome
 import creatures.species_manager
+import os.path
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(levelname)s %(asctime)s - %(message)s')
 
 
 api = Flask(__name__)
@@ -204,3 +212,35 @@ def getListOfSpecies():
 def getSpeciesGenome():
     global GOD
     return jsonify(GOD.getSpeciesGenome(request.json['speciesOfInterest']))
+
+
+@api.route('/save-simulation', methods=['POST'])
+@cross_origin()
+def saveSimulation():
+    global GOD
+    logging.info(f"Saving simulation state to {request.json['filename'] + '.json'}")
+    save = json.dumps(GOD.save(), indent=4)
+    
+    with open(request.json['filename'] + '.json', "w") as savefile:
+        savefile.write(save)
+    
+    return "Success", 201
+
+
+@api.route('/load-simulation', methods=['POST'])
+@cross_origin
+def loadSimulation():
+    global GOD
+    filename = request.json['filename'] + '.json'
+    logging.info(f"Loading simulation state from {filename}")
+    saveData = None
+
+    if os.path.isfile(filename):
+        with open(filename, "r") as savefile:
+            saveData = json.load(savefile)
+    
+        GOD = god.God(0, 0, loadExistingSave=True, saveData=saveData)
+    else:
+        logging.info(f"No file of name {filename} was found to load from")
+
+    return "Success", 201

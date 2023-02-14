@@ -10,14 +10,39 @@ logging.basicConfig(
 
 
 class God:
-    def __init__(self, simulationWidth, simulationHeight):
-        logging.info("Initializing new God object")
+    def __init__(self, simulationWidth, simulationHeight, loadExistingSave=False, saveData=None):
+        if not loadExistingSave:
+            logging.info("Initializing new God object")
 
-        self._speciesManagers = []
-        self._environment = environment.Environment(
-            simulationWidth, simulationHeight)
-        self._simulationWidth = simulationWidth
-        self._simulationHeight = simulationHeight
+            self._speciesManagers = []
+            self._environment = environment.Environment(
+                simulationWidth, simulationHeight)
+            self._simulationWidth = simulationWidth
+            self._simulationHeight = simulationHeight
+        else:
+            logging.info("Loading existing God object")
+            self._simulationWidth = saveData._simulationWidth
+            self._simulationHeight = saveData._simulationHeight
+            # Initialize environment
+            self._environment = environment.Environment(0, 0, loadExistingSave=True, saveData=saveData._environment)
+            # Initialize species managers
+            self._speciesManagers = []
+            for savedSpecies in saveData._speciesManagers:
+                self._speciesManagers.append(creatures.species_manager.SpeciesManager(None, None, self._simulationWidth,
+                                                self._simulationHeight, self._environment, loadExistingSave=True, saveData=savedSpecies))
+    
+    def save(self):
+        logging.info("Saving God object")
+        speciesList = []
+        for speciesManager in self._speciesManagers:
+            speciesList.append(speciesManager.save())
+        
+        return {
+            '_speciesManagers': speciesList,
+            '_environment': self._environment.save(),
+            '_simulationWidth': self._simulationWidth,
+            '_simulationHeight': self._simulationHeight,
+        }
 
     def _getSpeciesManagerFromName(self, speciesName):
         speciesManagerOfInterest = None

@@ -5,6 +5,8 @@ import creatures.decision_network
 import registry
 from enum import Enum
 import creatures.creature
+import resources
+import topography
 import random
 
 
@@ -27,15 +29,50 @@ class EnvironmentInfo:
 
 
 class Environment:
-    def __init__(self, widthInPx, heightInPx):
-        logging.info(
-            f"Creating new environment of width {widthInPx} and height {heightInPx}")
-        self.creatureRegistry = registry.Registry()
-        self.resourceRegistry = []
-        self.topographyRegistry = []
-        self.lightVisibility = []
-        self.width = widthInPx
-        self.height = heightInPx
+    def __init__(self, widthInPx, heightInPx, loadExistingSave=False, saveData=None):
+        if not loadExistingSave:
+            logging.info(
+                f"Creating new environment of width {widthInPx} and height {heightInPx}")
+            self.creatureRegistry = registry.Registry()
+            self.resourceRegistry = []
+            self.topographyRegistry = []
+            self.lightVisibility = []
+            self.width = widthInPx
+            self.height = heightInPx
+        else:
+            logging.info("Loading existing environment")
+            self.creatureRegistry = []
+            # Load resources
+            self.resourceRegistry = []
+            for resource in saveData.resourceRegistry:
+                resources.Resource(resource.id, resource.replenishment, resource.xCoordinate, resource.yCoordinate,
+                                    resource.color, resource.shape, self)
+            # Load topography
+            self.topographyRegistry = []
+            for topographyRegion in saveData.topographyRegistry:
+                topography.Topography(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, self, loadExistingSave=True, saveData=topographyRegion)
+            self.lightVisibility = []
+            # Load dimensions
+            self.width = saveData.width
+            self.height = saveData.height
+    
+    def save(self):
+        logging.info("Saving current state of the environment")
+
+        resourceList = []
+        for resource in self.resourceRegistry:
+            resourceList.append(resource.save())
+        
+        topographyList = []
+        for topography in self.topographyRegistry:
+            topographyList.append(topography.save())
+        
+        return {
+            'resourceRegistry': resourceList,
+            'topographyRegistry': topographyList,
+            'width': self.width,
+            'height': self.height,
+        }
 
     def addToCreatureRegistry(self, newCreature):
         logging.info(
