@@ -39,7 +39,7 @@ class Resource:
             'color': self.color,
             'shape': self.shape
         }
-    
+
     def save(self):
         logging.info(f"Saving resource {self.id}")
         return {

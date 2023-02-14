@@ -22,7 +22,7 @@ class Creature:
             yCoordinate,
             speciesManager,
             environment,
-            loadExistingSave=False, 
+            loadExistingSave=False,
             saveData=None):
         if not loadExistingSave:
             logging.info(f"Initializing new creature with id {id}")
@@ -61,41 +61,44 @@ class Creature:
                 receptors.append(genome.Receptors.SMELL)
             if saveData.genome.canHear:
                 receptors.append(genome.Receptors.HEAR)
-            self.genome = genome.Genome(saveData.genome.visibility, 
-                                                    saveData.genome.maxHealth, 
-                                                    receptors,
-                                                    saveData.genome.sightAbility,
-                                                    saveData.genome.smellAbility,
-                                                    saveData.genome.hearingAbility,
-                                                    saveData.genome.sightRange,
-                                                    saveData.genome.smellRange,
-                                                    saveData.genome.hearingRange,
-                                                    saveData.genome.reactionTime,
-                                                    saveData.genome.intelligence,
-                                                    saveData.genome.selfPreservation,
-                                                    saveData.genome.mobility,
-                                                    genome.ReproductionType(saveData.genome.reproductionType),
-                                                    saveData.genome.offspringAmount,
-                                                    saveData.genome.motivation,
-                                                    saveData.genome.maxEnergy,
-                                                    saveData.genome.individualism,
-                                                    saveData.genome.territorial,
-                                                    saveData.genome.fightOrFlight,
-                                                    saveData.genome.hostility,
-                                                    saveData.genome.scent,
-                                                    saveData.genome.stealth,
-                                                    saveData.genome.lifeExpectancy,
-                                                    saveData.genome.offensiveAbility,
-                                                    saveData.genome.defensiveAbility,
-                                                    saveData.genome.shape,
-                                                    saveData.genome.color)
-            
+            self.genome = genome.Genome(
+                saveData.genome.visibility,
+                saveData.genome.maxHealth,
+                receptors,
+                saveData.genome.sightAbility,
+                saveData.genome.smellAbility,
+                saveData.genome.hearingAbility,
+                saveData.genome.sightRange,
+                saveData.genome.smellRange,
+                saveData.genome.hearingRange,
+                saveData.genome.reactionTime,
+                saveData.genome.intelligence,
+                saveData.genome.selfPreservation,
+                saveData.genome.mobility,
+                genome.ReproductionType(
+                    saveData.genome.reproductionType),
+                saveData.genome.offspringAmount,
+                saveData.genome.motivation,
+                saveData.genome.maxEnergy,
+                saveData.genome.individualism,
+                saveData.genome.territorial,
+                saveData.genome.fightOrFlight,
+                saveData.genome.hostility,
+                saveData.genome.scent,
+                saveData.genome.stealth,
+                saveData.genome.lifeExpectancy,
+                saveData.genome.offensiveAbility,
+                saveData.genome.defensiveAbility,
+                saveData.genome.shape,
+                saveData.genome.color)
+
             self.species = saveData.species
             self.id = saveData.id
             self.speciesManager = speciesManager
             self.xCoordinate = saveData.xCoordinate
             self.yCoordinate = saveData.yCoordinate
-            self.lastAction = decision_network.CreatureAction(saveData.lastAction)
+            self.lastAction = decision_network.CreatureAction(
+                saveData.lastAction)
             self.reproductionCoolDown = saveData.reproductionCoolDown
             self.currentHealth = saveData.currentHealth
             self.maxHealth = self.genome.maxHealth * 100
@@ -109,7 +112,7 @@ class Creature:
                 self._decisionNetwork = decision_network.DecisionNetworkAsexual()
             else:
                 self._decisionNetwork = decision_network.DecisionNetworkSexual()
-            
+
             self.environment.addToCreatureRegistry(self)
 
     def unregisterFromEnvironment(self):
@@ -130,7 +133,7 @@ class Creature:
             'shape': self.genome.shape,
             'lastAction': self.lastAction
         }
-    
+
     def save(self):
         logging.info(f"Saving creature {self.id}")
         return {

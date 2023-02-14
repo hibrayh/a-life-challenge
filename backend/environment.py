@@ -29,7 +29,12 @@ class EnvironmentInfo:
 
 
 class Environment:
-    def __init__(self, widthInPx, heightInPx, loadExistingSave=False, saveData=None):
+    def __init__(
+            self,
+            widthInPx,
+            heightInPx,
+            loadExistingSave=False,
+            saveData=None):
         if not loadExistingSave:
             logging.info(
                 f"Creating new environment of width {widthInPx} and height {heightInPx}")
@@ -45,28 +50,47 @@ class Environment:
             # Load resources
             self.resourceRegistry = []
             for resource in saveData.resourceRegistry:
-                resources.Resource(resource.id, resource.replenishment, resource.xCoordinate, resource.yCoordinate,
-                                    resource.color, resource.shape, self)
+                resources.Resource(
+                    resource.id,
+                    resource.replenishment,
+                    resource.xCoordinate,
+                    resource.yCoordinate,
+                    resource.color,
+                    resource.shape,
+                    self)
             # Load topography
             self.topographyRegistry = []
             for topographyRegion in saveData.topographyRegistry:
-                topography.Topography(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, self, loadExistingSave=True, saveData=topographyRegion)
+                topography.Topography(
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    self,
+                    loadExistingSave=True,
+                    saveData=topographyRegion)
             self.lightVisibility = []
             # Load dimensions
             self.width = saveData.width
             self.height = saveData.height
-    
+
     def save(self):
         logging.info("Saving current state of the environment")
 
         resourceList = []
         for resource in self.resourceRegistry:
             resourceList.append(resource.save())
-        
+
         topographyList = []
         for topography in self.topographyRegistry:
             topographyList.append(topography.save())
-        
+
         return {
             'resourceRegistry': resourceList,
             'topographyRegistry': topographyList,

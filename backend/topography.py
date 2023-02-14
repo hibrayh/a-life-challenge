@@ -42,17 +42,17 @@ class Region:
         self.bottomLeftYCoordinate = bottomLeftYCoordinate
         self.bottomRightXCoordinate = bottomRightXCoordinate
         self.bottomRightYCoordinate = bottomRightYCoordinate
-    
+
     def save(self):
         return {
-            'topLeftXCoordinate': self.topLeftXCoordinate, 
-            'topLeftYCoordinate': self.topLeftYCoordinate, 
-            'topRightXCoordinate': self.topRightXCoordinate, 
-            'topRightYCoordinate': self.topRightYCoordinate, 
-            'bottomLeftXCoordinate': self.bottomLeftXCoordinate, 
-            'bottomLeftYCoordinate': self.bottomLeftYCoordinate, 
-            'bottomRightXCoordinate': self.bottomRightXCoordinate, 
-            'bottomRightYCoordinate': self.bottomRightYCoordinate, 
+            'topLeftXCoordinate': self.topLeftXCoordinate,
+            'topLeftYCoordinate': self.topLeftYCoordinate,
+            'topRightXCoordinate': self.topRightXCoordinate,
+            'topRightYCoordinate': self.topRightYCoordinate,
+            'bottomLeftXCoordinate': self.bottomLeftXCoordinate,
+            'bottomLeftYCoordinate': self.bottomLeftYCoordinate,
+            'bottomRightXCoordinate': self.bottomRightXCoordinate,
+            'bottomRightYCoordinate': self.bottomRightYCoordinate,
         }
 
 
@@ -85,7 +85,7 @@ class Topography:
                 bottomRightXCoordinate,
                 bottomRightYCoordinate)
             self.shape = (topLeftYCoordinate - bottomLeftYCoordinate,
-                        topRightXCoordinate - topLeftXCoordinate)
+                          topRightXCoordinate - topLeftXCoordinate)
 
             # Initialize random geography based on topography type
             self.generateRandomGeography()
@@ -101,13 +101,13 @@ class Topography:
             self.id = saveData.id
             self.type = TemplateTopography(saveData.type)
             self.region = Region(saveData.region.topLeftXCoordinate,
-                                    saveData.region.topLeftYCoordinate,
-                                    saveData.region.topRightXCoordinate,
-                                    saveData.region.topRightYCoordinate,
-                                    saveData.region.bottomLeftXCoordinate,
-                                    saveData.region.bottomLeftYCoordinate,
-                                    saveData.region.bottomRightXCoordinate,
-                                    saveData.region.bottomRightYCoordinate)
+                                 saveData.region.topLeftYCoordinate,
+                                 saveData.region.topRightXCoordinate,
+                                 saveData.region.topRightYCoordinate,
+                                 saveData.region.bottomLeftXCoordinate,
+                                 saveData.region.bottomLeftYCoordinate,
+                                 saveData.region.bottomRightXCoordinate,
+                                 saveData.region.bottomRightYCoordinate)
             self.shape = saveData.shape
             self.geography = saveData.geography
             self.environment = environment
@@ -120,7 +120,7 @@ class Topography:
             'topLeftYCoordinate': self.region.topLeftYCoordinate,
             'geography': self.geography.tolist(),
         }
-    
+
     def save(self):
         logging.info(f"Saving topography {self.id}")
         return {

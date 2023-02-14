@@ -218,12 +218,13 @@ def getSpeciesGenome():
 @cross_origin()
 def saveSimulation():
     global GOD
-    logging.info(f"Saving simulation state to {request.json['filename'] + '.json'}")
+    logging.info(
+        f"Saving simulation state to {request.json['filename'] + '.json'}")
     save = json.dumps(GOD.save(), indent=4)
-    
+
     with open(request.json['filename'] + '.json', "w") as savefile:
         savefile.write(save)
-    
+
     return "Success", 201
 
 
@@ -238,7 +239,7 @@ def loadSimulation():
     if os.path.isfile(filename):
         with open(filename, "r") as savefile:
             saveData = json.load(savefile)
-    
+
         GOD = god.God(0, 0, loadExistingSave=True, saveData=saveData)
     else:
         logging.info(f"No file of name {filename} was found to load from")

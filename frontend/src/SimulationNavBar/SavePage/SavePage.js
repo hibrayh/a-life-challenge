@@ -53,7 +53,7 @@ function SavePage(props) {
             method: 'POST',
             url: 'http://localhost:5000//save-simulation',
             data: {
-                filename: saveName
+                filename: saveName,
             },
         })
     }

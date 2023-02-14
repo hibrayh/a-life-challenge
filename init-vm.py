@@ -30,9 +30,11 @@ def initVM():
         perlinNoiseProcess = subprocess.Popen(
             ["pip.exe", "install", "noise"], shell=True)
         perlinNoiseProcess.wait()
-        numpyProcess = subprocess.Popen(["pip.exe", "install", "numpy"], shell=True)
+        numpyProcess = subprocess.Popen(
+            ["pip.exe", "install", "numpy"], shell=True)
         numpyProcess.wait()
-        pillowProcess = subprocess.Popen(["pip.exe", "install", "pillow"], shell=True)
+        pillowProcess = subprocess.Popen(
+            ["pip.exe", "install", "pillow"], shell=True)
         pillowProcess.wait()
     else:
         os.chdir("venv/bin/")
