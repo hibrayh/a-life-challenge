@@ -2,14 +2,14 @@ import './DummyConnection.css'
 import React from 'react'
 import axios from 'axios'
 import ReactAnime from 'react-animejs'
-import { useState, useEffect } from 'react'
+
 const { Anime } = ReactAnime
 
 //const used to define the creature element size
 const grown = '25px'
 let elementsArray = []
 let movementLogArray = []
-let movementKey = 0
+let keyId = 0
 
 class Animation extends React.Component {
     constructor(props) {
@@ -259,22 +259,22 @@ class Animation extends React.Component {
 
         let jsx = []
         movementLogArray = [] //reset the movement log
-
+        keyId++
+        console.log(keyId)
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
-            movementKey += 1
             if (creature.lastAction === 'BIRTHED') {
-                elementsArray.push({key: creature.creatureId, elem: <div key={"creature" + i}>{this.CreateCreature(creature)}</div>})
-                jsx.push(<div key={i}>{this.AnimateBirth(creature)}</div>)
+                elementsArray.push({key: creature.creatureId, elem: <div key={"creature" + keyId++}>{this.CreateCreature(creature)}</div>})
+                jsx.push(<div key={keyId++}>{this.AnimateBirth(creature)}</div>)
             } else if (creature.lastAction === 'DEATH') {
-                jsx.push(<div key={i}>{this.AnimateKilled(creature)}</div>)
+                jsx.push(<div key={keyId++}>{this.AnimateKilled(creature)}</div>)
             } else if (creature.lastAction === 'REPRODUCE') {
-                jsx.push(<div key={i}>{this.AnimateReproduce(creature)}</div>)
+                jsx.push(<div key={keyId++}>{this.AnimateReproduce(creature)}</div>)
             } else if (creature.lastAction === 'HIDE_FROM_CREATURE') {
-                jsx.push(<div key={i}>{this.AnimateHide(creature)}</div>)
+                jsx.push(<div key={keyId++}>{this.AnimateHide(creature)}</div>)
             } else {
-                movementLogArray.push({key: creature.creatureId, elem: <div key={"creature" + movementKey}>{this.CreateCreature(creature)}</div>})
-                jsx.push(<div key={i}>{this.AnimateMovement(creature)}</div>)
+                movementLogArray.push({key: creature.creatureId, elem: <div key={"movement" + keyId++}>{this.CreateCreature(creature)}</div>})
+                jsx.push(<div key={keyId++}>{this.AnimateMovement(creature)}</div>)
 
             }
         }
@@ -293,7 +293,7 @@ class Animation extends React.Component {
             )
         }
 
-        return <div id="animation-wrapper">{jsx}{elementsArray.map((element) => <div key={element.key + "jsx" + movementKey++}>{element.elem}</div>)}</div>
+        return <div id="animation-wrapper">{jsx}{elementsArray.map((element) => <div key={"map" + keyId++}>{element.elem}</div>)}</div>
     }
 }
 
