@@ -17,7 +17,6 @@ class Animation extends React.Component {
 
         this.state = {
             isSimStarted: false,
-            elements: elementsArray,
             creaturesToAnimate: [],
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
@@ -99,7 +98,8 @@ class Animation extends React.Component {
         // Takes the creature ID and performs the "creature starved" animation
         return (
             <>
-                {this.CreateCreature(creature)}
+                {//this.CreateCreature(creature)
+                }
                 <Anime
                     initial={[
                         {
@@ -117,7 +117,8 @@ class Animation extends React.Component {
         // Takes the creature ID and performs the "creature killed" animation
         return (
             <>
-                {this.CreateCreature(creature)}
+                {//this.CreateCreature(creature)
+                }
                 <Anime
                     initial={[
                         {
@@ -135,7 +136,8 @@ class Animation extends React.Component {
         // Takes the creature ID and performs the "creature starved" animation
         return (
             <>
-                {this.CreateCreature(creature)}
+                {//this.CreateCreature(creature)
+                }
                 <Anime
                     initial={[
                         {
@@ -249,18 +251,21 @@ class Animation extends React.Component {
     render() {
         // Example of looping through all creatures and animating
         //if a creature moved, remove the element and create one at the correct spot
-        for(let i = 0; i < movementLogArray.length; i++){
+        /*for(let i = 0; i < movementLogArray.length; i++){
             //go through and remove the elements that have moved (gets them via the creature id)
-            elementsArray = elementsArray.filter((element) => element.key === movementLogArray[i].key)
-        }
+            elementsArray = elementsArray.filter((element) => element.key !== movementLogArray[i].key)
+        }*/
+
+        movementLogArray.forEach( log => {
+            elementsArray = elementsArray.filter((element) => element.key !== log.key)
+        })
         
         // now re-add them from the movementlog at the correct location
         elementsArray = elementsArray.concat(movementLogArray)
 
         let jsx = []
         movementLogArray = [] //reset the movement log
-        keyId++
-        console.log(keyId)
+
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
             if (creature.lastAction === 'BIRTHED') {
@@ -279,7 +284,7 @@ class Animation extends React.Component {
             }
         }
 
-        for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
+        /*for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
             let resource = this.props.resourcesToAnimate[i]
             jsx.push(
                 <div key={'res' + { i }}>
@@ -291,7 +296,7 @@ class Animation extends React.Component {
                     )}
                 </div>
             )
-        }
+        }*/
 
         return <div id="animation-wrapper">{jsx}{elementsArray.map((element) => <div key={"map" + keyId++}>{element.elem}</div>)}</div>
     }
