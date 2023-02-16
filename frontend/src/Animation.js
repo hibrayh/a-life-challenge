@@ -79,7 +79,8 @@ class Animation extends React.Component {
         // Takes the creature to create an element with specific animation
         return (
             <>
-                {//this.CreateCreature(creature)
+                {
+                    //this.CreateCreature(creature)
                 }
                 <Anime
                     initial={[
@@ -98,7 +99,8 @@ class Animation extends React.Component {
         // Takes the creature ID and performs the "creature starved" animation
         return (
             <>
-                {//this.CreateCreature(creature)
+                {
+                    //this.CreateCreature(creature)
                 }
                 <Anime
                     initial={[
@@ -117,7 +119,8 @@ class Animation extends React.Component {
         // Takes the creature ID and performs the "creature killed" animation
         return (
             <>
-                {//this.CreateCreature(creature)
+                {
+                    //this.CreateCreature(creature)
                 }
                 <Anime
                     initial={[
@@ -136,7 +139,8 @@ class Animation extends React.Component {
         // Takes the creature ID and performs the "creature starved" animation
         return (
             <>
-                {//this.CreateCreature(creature)
+                {
+                    //this.CreateCreature(creature)
                 }
                 <Anime
                     initial={[
@@ -157,7 +161,8 @@ class Animation extends React.Component {
         // Takes the creature ID and moves to to the specified X and Y location
         return (
             <>
-                {//this.CreateCreature(creature)
+                {
+                    //this.CreateCreature(creature)
                 }
                 <Anime
                     initial={[
@@ -252,11 +257,13 @@ class Animation extends React.Component {
         // Example of looping through all creatures and animating
         //if a creature moved, remove the element and create one at the correct spot
 
-        movementLogArray.forEach( log => {
+        movementLogArray.forEach((log) => {
             //go through and remove the elements that have moved (gets them via the creature id)
-            elementsArray = elementsArray.filter((element) => element.key !== log.key)
+            elementsArray = elementsArray.filter(
+                (element) => element.key !== log.key
+            )
         })
-        
+
         // now re-add them from the movementlog at the correct location
         elementsArray = elementsArray.concat(movementLogArray)
 
@@ -266,18 +273,37 @@ class Animation extends React.Component {
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
             if (creature.lastAction === 'BIRTHED') {
-                elementsArray.push({key: creature.creatureId, elem: <div key={"creature" + keyId++}>{this.CreateCreature(creature)}</div>})
+                elementsArray.push({
+                    key: creature.creatureId,
+                    elem: (
+                        <div key={'creature' + keyId++}>
+                            {this.CreateCreature(creature)}
+                        </div>
+                    ),
+                })
                 jsx.push(<div key={keyId++}>{this.AnimateBirth(creature)}</div>)
             } else if (creature.lastAction === 'DEATH') {
-                jsx.push(<div key={keyId++}>{this.AnimateKilled(creature)}</div>)
+                jsx.push(
+                    <div key={keyId++}>{this.AnimateKilled(creature)}</div>
+                )
             } else if (creature.lastAction === 'REPRODUCE') {
-                jsx.push(<div key={keyId++}>{this.AnimateReproduce(creature)}</div>)
+                jsx.push(
+                    <div key={keyId++}>{this.AnimateReproduce(creature)}</div>
+                )
             } else if (creature.lastAction === 'HIDE_FROM_CREATURE') {
                 jsx.push(<div key={keyId++}>{this.AnimateHide(creature)}</div>)
             } else {
-                movementLogArray.push({key: creature.creatureId, elem: <div key={"movement" + keyId++}>{this.CreateCreature(creature)}</div>})
-                jsx.push(<div key={keyId++}>{this.AnimateMovement(creature)}</div>)
-
+                movementLogArray.push({
+                    key: creature.creatureId,
+                    elem: (
+                        <div key={'movement' + keyId++}>
+                            {this.CreateCreature(creature)}
+                        </div>
+                    ),
+                })
+                jsx.push(
+                    <div key={keyId++}>{this.AnimateMovement(creature)}</div>
+                )
             }
         }
 
@@ -295,7 +321,14 @@ class Animation extends React.Component {
             )
         }
 
-        return <div id="animation-wrapper">{jsx}{elementsArray.map((element) => <div key={"map" + keyId++}>{element.elem}</div>)}</div>
+        return (
+            <div id="animation-wrapper">
+                {jsx}
+                {elementsArray.map((element) => (
+                    <div key={'map' + keyId++}>{element.elem}</div>
+                ))}
+            </div>
+        )
     }
 }
 
