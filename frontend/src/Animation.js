@@ -251,12 +251,9 @@ class Animation extends React.Component {
     render() {
         // Example of looping through all creatures and animating
         //if a creature moved, remove the element and create one at the correct spot
-        /*for(let i = 0; i < movementLogArray.length; i++){
-            //go through and remove the elements that have moved (gets them via the creature id)
-            elementsArray = elementsArray.filter((element) => element.key !== movementLogArray[i].key)
-        }*/
 
         movementLogArray.forEach( log => {
+            //go through and remove the elements that have moved (gets them via the creature id)
             elementsArray = elementsArray.filter((element) => element.key !== log.key)
         })
         
@@ -284,7 +281,7 @@ class Animation extends React.Component {
             }
         }
 
-        /*for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
+        for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
             let resource = this.props.resourcesToAnimate[i]
             jsx.push(
                 <div key={'res' + { i }}>
@@ -296,7 +293,7 @@ class Animation extends React.Component {
                     )}
                 </div>
             )
-        }*/
+        }
 
         return <div id="animation-wrapper">{jsx}{elementsArray.map((element) => <div key={"map" + keyId++}>{element.elem}</div>)}</div>
     }
