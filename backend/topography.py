@@ -43,6 +43,18 @@ class Region:
         self.bottomRightXCoordinate = bottomRightXCoordinate
         self.bottomRightYCoordinate = bottomRightYCoordinate
 
+    def save(self):
+        return {
+            'topLeftXCoordinate': self.topLeftXCoordinate,
+            'topLeftYCoordinate': self.topLeftYCoordinate,
+            'topRightXCoordinate': self.topRightXCoordinate,
+            'topRightYCoordinate': self.topRightYCoordinate,
+            'bottomLeftXCoordinate': self.bottomLeftXCoordinate,
+            'bottomLeftYCoordinate': self.bottomLeftYCoordinate,
+            'bottomRightXCoordinate': self.bottomRightXCoordinate,
+            'bottomRightYCoordinate': self.bottomRightYCoordinate,
+        }
+
 
 class Topography:
     def __init__(
@@ -57,37 +69,65 @@ class Topography:
             bottomRightYCoordinate,
             id,
             topographyType,
-            environment):
-        logging.info(f"Creating new topography with id {id}")
-        self.id = id
-        self.type = topographyType
-        self.region = Region(
-            topLeftXCoordinate,
-            topLeftYCoordinate,
-            topRightXCoordinate,
-            topRightYCoordinate,
-            bottomLeftXCoordinate,
-            bottomLeftYCoordinate,
-            bottomRightXCoordinate,
-            bottomRightYCoordinate)
-        self.shape = (topLeftYCoordinate - bottomLeftYCoordinate,
-                      topRightXCoordinate - topLeftXCoordinate)
+            environment,
+            loadExistingSave=False, saveData=None):
+        if not loadExistingSave:
+            logging.info(f"Creating new topography with id {id}")
+            self.id = id
+            self.type = topographyType
+            self.region = Region(
+                topLeftXCoordinate,
+                topLeftYCoordinate,
+                topRightXCoordinate,
+                topRightYCoordinate,
+                bottomLeftXCoordinate,
+                bottomLeftYCoordinate,
+                bottomRightXCoordinate,
+                bottomRightYCoordinate)
+            self.shape = (topLeftYCoordinate - bottomLeftYCoordinate,
+                          topRightXCoordinate - topLeftXCoordinate)
 
-        # Initialize random geography based on topography type
-        self.generateRandomGeography()
+            # Initialize random geography based on topography type
+            self.generateRandomGeography()
 
-        # Initialize resources based on topography type
-        self.generateResources()
+            # Initialize resources based on topography type
+            self.generateResources()
 
-        # Register to environment
-        self.environment = environment
-        self.environment.addToTopographyRegistry(self)
+            # Register to environment
+            self.environment = environment
+            self.environment.addToTopographyRegistry(self)
+        else:
+            logging.info(f"Loading existing topography")
+            self.id = saveData.id
+            self.type = TemplateTopography(saveData.type)
+            self.region = Region(saveData.region.topLeftXCoordinate,
+                                 saveData.region.topLeftYCoordinate,
+                                 saveData.region.topRightXCoordinate,
+                                 saveData.region.topRightYCoordinate,
+                                 saveData.region.bottomLeftXCoordinate,
+                                 saveData.region.bottomLeftYCoordinate,
+                                 saveData.region.bottomRightXCoordinate,
+                                 saveData.region.bottomRightYCoordinate)
+            self.shape = saveData.shape
+            self.geography = saveData.geography
+            self.environment = environment
+            self.environment.addToTopographyRegistry(self)
 
     def serialize(self):
         return {
             'topographyId': self.id,
             'topLeftXCoordinate': self.region.topLeftXCoordinate,
             'topLeftYCoordinate': self.region.topLeftYCoordinate,
+            'geography': self.geography.tolist(),
+        }
+
+    def save(self):
+        logging.info(f"Saving topography {self.id}")
+        return {
+            'id': self.id,
+            'type': self.type,
+            'region': self.region.save(),
+            'shape': self.shape,
             'geography': self.geography.tolist(),
         }
 
