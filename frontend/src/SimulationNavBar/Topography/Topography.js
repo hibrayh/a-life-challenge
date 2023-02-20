@@ -2,7 +2,7 @@ import React from 'react'
 import './Topography.css'
 import { useState, useEffect } from 'react'
 import { FaTimes } from 'react-icons/fa'
-
+import axios from 'axios'
 
 function TopographyPage(props) {
     const [checkedValue, setCheckedValue] = useState()
@@ -99,12 +99,14 @@ function TopographyPage(props) {
 let gridArray = []
 let coordArray = []
 const unselected = 0
-//let topography = unselected
 
-/*
+/* My idea is for it to send the array with the topography info once the 
+page (when the grid is showing) is closed The following code is an attempted skeleton 
+which would need a select-topography handler on the backend. I'm not sure if there is
+one in place already
+
 async function handleCloseTopography(event) {
 
-    // Define new species
     await axios({
         method: 'POST',
         url: 'http://localhost:5000/select-topography',
@@ -113,12 +115,9 @@ async function handleCloseTopography(event) {
         },
     })
 
-
-    // Fetch new info from simulation
-    await props.updateSimulationCallback()
-
 }
 */
+
 
 function initialize() {
     for (let i = 0; i < 50; i++) {
