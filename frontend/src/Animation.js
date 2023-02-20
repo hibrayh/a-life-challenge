@@ -296,6 +296,7 @@ class Animation extends React.Component {
 
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
+
             if (creature.lastAction === 'BIRTHED') {
                 elementsArray.push({
                     key: creature.creatureId,
