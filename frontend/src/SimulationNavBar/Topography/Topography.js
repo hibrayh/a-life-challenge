@@ -25,6 +25,10 @@ function TopographyPage(props) {
                         <FaTimes />
                     </button>
 
+                    {
+                        //swapped to radio buttons, that way a user knows that the most recent topography selected is the one being placed down
+                        //once a radio button is pressed, the topography is updated (using setTopography) to the selected one.
+                    }
                     <form id="topographyForm">
                         <div className="attributeHolder">
                             <label className="dataTitle">Grass</label>
@@ -32,8 +36,9 @@ function TopographyPage(props) {
                                 onChange={(event) =>
                                     setTopography("Grass")
                                 }
-                                type="checkbox"
-                                value="Grass"></input>
+                                type="radio"
+                                value="Grass"
+                                name="topographyRadio"></input>
                             <br></br>
                         </div>
 
@@ -43,8 +48,9 @@ function TopographyPage(props) {
                                 onChange={(event) =>
                                     setTopography("Rocky")
                                 }
-                                type="checkbox"
-                                value="Rocky"></input>
+                                type="radio"
+                                value="Rocky"
+                                name="topographyRadio"></input>
                             <br></br>
                         </div>
 
@@ -52,19 +58,21 @@ function TopographyPage(props) {
                             <label className="dataTitle">Snowy</label>
                             <input
                                 onChange={(event) =>
-                                    setSnowy(event.target.value)
+                                    setTopography("Snowy")
                                 }
-                                type="checkbox"
-                                value="Snowy"></input>
+                                type="radio"
+                                value="Snowy"
+                                name="topographyRadio"></input>
                             <br></br>
                         </div>
 
                         <div className="attributeHolder">
                             <label className="dataTitle">Wet</label>
                             <input
-                                onChange={(event) => setWet(event.target.value)}
-                                type="checkbox"
-                                value="Wet"></input>
+                                onChange={(event) => setTopography("Wet")}
+                                type="radio"
+                                value="Wet"
+                                name="topographyRadio"></input>
                             <br></br>
                         </div>
                     </form>
@@ -115,8 +123,9 @@ async function handleCloseTopography(event) {
 function initialize() {
     for (let i = 0; i < 50; i++) {
         for (let j = 0; j < 25; j++) {
-            gridArray.push({ selected: false, row: i, col: j})
-            coordArray.push({row: i, col: j, topography: unselected})
+            //There are more columns than rows, so i and j have been swapped
+            gridArray.push({ selected: false, row: j, col: i})
+            coordArray.push({row: j, col: i, topography: unselected})
         }
     }
     console.log('constructor')
@@ -141,6 +150,7 @@ function Grid(props) {
     })
 
     let jsx = []
+    console.log(props.selectTopography)
 
     for (let i = 0; i < 1250; i++) {
         jsx.push(
@@ -182,7 +192,7 @@ function Grid(props) {
 
         setGrid(temp)
         setCoordGrid(tempCoord)
-        console.log(coordGrid[index])
+        //console.log(coordGrid[index])
     }
 }
 
