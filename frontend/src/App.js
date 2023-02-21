@@ -137,9 +137,6 @@ function App() {
     const Simulation = () => {
         return (
             <>
-                <header className="menu">
-                    <h1>Simulation Page</h1>
-                </header>
                 <Animation
                     creaturesToAnimate={creatureList}
                     resourcesToAnimate={resourceList}

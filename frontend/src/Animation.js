@@ -37,8 +37,8 @@ class Animation extends React.Component {
                     id={creature.creatureId}
                     style={{
                         position: 'absolute',
-                        left: `${creature.locationX}px`,
-                        top: `${creature.locationY}px`,
+                        left: `${creature.locationX / 10}vw`,
+                        top: `${creature.locationY / 10}vh`,
                         width: '0px',
                         height: '0px',
 
@@ -62,8 +62,8 @@ class Animation extends React.Component {
                         id={creature.creatureId}
                         style={{
                             position: 'absolute',
-                            left: `${creature.locationX}px`,
-                            top: `${creature.locationY}px`,
+                            left: `${creature.locationX / 10}vw`,
+                            top: `${creature.locationY / 10}vh`,
                             background: creature.color,
                             borderRadius: roundness,
                             height: grown,
@@ -79,9 +79,6 @@ class Animation extends React.Component {
         // Takes the creature to create an element with specific animation
         return (
             <>
-                {
-                    //this.CreateCreature(creature)
-                }
                 <Anime
                     initial={[
                         {
@@ -161,15 +158,12 @@ class Animation extends React.Component {
         // Takes the creature ID and moves to to the specified X and Y location
         return (
             <>
-                {
-                    //this.CreateCreature(creature)
-                }
                 <Anime
                     initial={[
                         {
                             targets: '#' + creature.creatureId,
-                            left: `${creature.locationX}px`,
-                            top: `${creature.locationY}px`,
+                            left: `${creature.locationX / 10}vw`,
+                            top: `${creature.locationY / 10}vh`,
                             easing: 'linear',
                         },
                     ]}></Anime>
@@ -177,16 +171,21 @@ class Animation extends React.Component {
         )
     }
 
-    AnimateResourceSpawn(resource) {
-        // Takes the resource ID, its location x and y, and color to create an element with specific animation
-        return (
-            <>
+    CreateResource(resource) {
+        //creates the elements for creatures
+        let roundness = '0%'
+        if (resource.shape === 'circle') {
+            roundness = '50%'
+        }
+
+        if (resource.shape === 'triangle') {
+            return (
                 <div
                     id={resource.resourceId}
                     style={{
                         position: 'absolute',
-                        left: `${resource.locationX}px`,
-                        top: `${resource.locationY}px`,
+                        left: `${resource.locationX / 10}vw`,
+                        top: `${resource.locationY / 10}vh`,
                         width: '0px',
                         height: '0px',
 
@@ -200,8 +199,33 @@ class Animation extends React.Component {
                         borderRightColor: 'transparent',
                         borderBottomColor: resource.color,
                         borderLeftColor: 'transparent',
-                    }}
-                />
+                    }}></div>
+            )
+        } else {
+            //return the circle or square
+            return (
+                <>
+                    <div
+                        id={resource.creatureId}
+                        style={{
+                            position: 'absolute',
+                            left: `${resource.locationX / 10}vw`,
+                            top: `${resource.locationY / 10}vh`,
+                            background: resource.color,
+                            borderRadius: roundness,
+                            height: grown,
+                            width: grown,
+                        }}
+                    />
+                </>
+            )
+        }
+    }
+
+    AnimateResourceSpawn(resource) {
+        // Takes the resource ID, its location x and y, and color to create an element with specific animation
+        return (
+            <>
                 <Anime
                     initial={[
                         {
@@ -272,6 +296,7 @@ class Animation extends React.Component {
 
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
+
             if (creature.lastAction === 'BIRTHED') {
                 elementsArray.push({
                     key: creature.creatureId,
@@ -305,20 +330,6 @@ class Animation extends React.Component {
                     <div key={keyId++}>{this.AnimateMovement(creature)}</div>
                 )
             }
-        }
-
-        for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
-            let resource = this.props.resourcesToAnimate[i]
-            jsx.push(
-                <div key={'res' + { i }}>
-                    {this.AnimateResourceSpawn(
-                        resource.resourceId,
-                        resource.locationX,
-                        resource.locationY,
-                        resource.color
-                    )}
-                </div>
-            )
         }
 
         return (
