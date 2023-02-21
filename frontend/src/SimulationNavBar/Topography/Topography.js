@@ -120,11 +120,14 @@ async function handleCloseTopography(event) {
 
 
 function initialize() {
-    for (let i = 0; i < 50; i++) {
-        for (let j = 0; j < 25; j++) {
-            //There are more columns than rows, so i and j have been swapped
-            gridArray.push({ selected: false, row: j, col: i})
-            coordArray.push({row: j, col: i, topography: unselected})
+    if(gridArray.length === 0){
+        //don't just append more onto the already created array!
+        for (let i = 0; i < 50; i++) {
+            for (let j = 0; j < 25; j++) {
+                //There are more columns than rows, so i and j have been swapped
+                gridArray.push({ selected: false, row: j, col: i})
+                coordArray.push({row: j, col: i, topography: unselected})
+            }
         }
     }
     console.log('constructor')
