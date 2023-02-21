@@ -37,8 +37,8 @@ class Animation extends React.Component {
                     id={creature.creatureId}
                     style={{
                         position: 'absolute',
-                        left: `${creature.locationX/10}vw`,
-                        top: `${creature.locationY/10}vh`,
+                        left: `${creature.locationX / 10}vw`,
+                        top: `${creature.locationY / 10}vh`,
                         width: '0px',
                         height: '0px',
 
@@ -62,8 +62,8 @@ class Animation extends React.Component {
                         id={creature.creatureId}
                         style={{
                             position: 'absolute',
-                            left: `${creature.locationX/10}vw`,
-                            top: `${creature.locationY/10}vh`,
+                            left: `${creature.locationX / 10}vw`,
+                            top: `${creature.locationY / 10}vh`,
                             background: creature.color,
                             borderRadius: roundness,
                             height: grown,
@@ -162,8 +162,8 @@ class Animation extends React.Component {
                     initial={[
                         {
                             targets: '#' + creature.creatureId,
-                            left: `${creature.locationX/10}vw`,
-                            top: `${creature.locationY/10}vh`,
+                            left: `${creature.locationX / 10}vw`,
+                            top: `${creature.locationY / 10}vh`,
                             easing: 'linear',
                         },
                     ]}></Anime>
@@ -184,8 +184,8 @@ class Animation extends React.Component {
                     id={resource.resourceId}
                     style={{
                         position: 'absolute',
-                        left: `${resource.locationX/10}vw`,
-                        top: `${resource.locationY/10}vh`,
+                        left: `${resource.locationX / 10}vw`,
+                        top: `${resource.locationY / 10}vh`,
                         width: '0px',
                         height: '0px',
 
@@ -209,8 +209,8 @@ class Animation extends React.Component {
                         id={resource.creatureId}
                         style={{
                             position: 'absolute',
-                            left: `${resource.locationX/10}vw`,
-                            top: `${resource.locationY/10}vh`,
+                            left: `${resource.locationX / 10}vw`,
+                            top: `${resource.locationY / 10}vh`,
                             background: resource.color,
                             borderRadius: roundness,
                             height: grown,
