@@ -12,13 +12,11 @@ function TopographyPage(props) {
     const [wet, setWet] = useState(false)
     const [topography, setTopography] = useState(unselected)
 
+
     if (props.show) {
         return (
             <>
-                <Grid
-                    showGridBorder={props.showGridBorder}
-                    selectTopography={topography}
-                />
+                <Grid showGridBorder={props.showGridBorder} selectTopography={topography}/>
                 <div id="topographyContainer">
                     <h1>Topography</h1>
                     <button
@@ -35,7 +33,9 @@ function TopographyPage(props) {
                         <div className="attributeHolder">
                             <label className="dataTitle">Grass</label>
                             <input
-                                onChange={(event) => setTopography('Grass')}
+                                onChange={(event) =>
+                                    setTopography("Grass")
+                                }
                                 type="radio"
                                 value="Grass"
                                 name="topographyRadio"></input>
@@ -45,7 +45,9 @@ function TopographyPage(props) {
                         <div className="attributeHolder">
                             <label className="dataTitle">Rocky</label>
                             <input
-                                onChange={(event) => setTopography('Rocky')}
+                                onChange={(event) =>
+                                    setTopography("Rocky")
+                                }
                                 type="radio"
                                 value="Rocky"
                                 name="topographyRadio"></input>
@@ -55,7 +57,9 @@ function TopographyPage(props) {
                         <div className="attributeHolder">
                             <label className="dataTitle">Snowy</label>
                             <input
-                                onChange={(event) => setTopography('Snowy')}
+                                onChange={(event) =>
+                                    setTopography("Snowy")
+                                }
                                 type="radio"
                                 value="Snowy"
                                 name="topographyRadio"></input>
@@ -65,7 +69,7 @@ function TopographyPage(props) {
                         <div className="attributeHolder">
                             <label className="dataTitle">Wet</label>
                             <input
-                                onChange={(event) => setTopography('Wet')}
+                                onChange={(event) => setTopography("Wet")}
                                 type="radio"
                                 value="Wet"
                                 name="topographyRadio"></input>
@@ -114,14 +118,15 @@ async function handleCloseTopography(event) {
 }
 */
 
+
 function initialize() {
-    if (gridArray.length === 0) {
+    if(gridArray.length === 0){
         //don't just append more onto the already created array!
         for (let i = 0; i < 50; i++) {
             for (let j = 0; j < 25; j++) {
                 //There are more columns than rows, so i and j have been swapped
-                gridArray.push({ selected: false, row: j, col: i })
-                coordArray.push({ row: j, col: i, topography: unselected })
+                gridArray.push({ selected: false, row: j, col: i})
+                coordArray.push({row: j, col: i, topography: unselected})
             }
         }
     }
@@ -179,9 +184,9 @@ function Grid(props) {
 
         //temp[index].selected = !temp[index].selected
         //if the topography is selected, update the coord, else flip it
-        if (temp[index].selected) {
+        if(temp[index].selected){
             tempCoord[index].topography = unselected
-        } else {
+        }else{
             tempCoord[index].topography = props.selectTopography
         }
 
