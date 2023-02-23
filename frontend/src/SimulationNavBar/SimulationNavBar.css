@@ -26,8 +26,6 @@
     transition-duration: 0.4s;
 }
 
-
-
 #pausePlayButton {
     width: 6vmin;
     height: 6vmin;
@@ -90,30 +88,25 @@
     left: 42%;
 }
 
-
-
-
-
-.mainBackgroundColor{
+.mainBackgroundColor {
     background-color: rgb(36, 36, 36);
 }
 
-.buttonBackgroundColor{
+.buttonBackgroundColor {
     background-color: rgb(31, 31, 31);
 }
 
-.mainTitleFont{
+.mainTitleFont {
     color: rgb(125, 125, 125);
     font-size: 1.5vmax;
 }
-
 
 .formExitButton {
     width: 3.5vmin;
     height: 2.5vmin;
     line-height: 2.7vmin;
     font-size: 0.8vmax;
-    background-color:rgb(36, 36, 36);
+    background-color: rgb(36, 36, 36);
     color: rgb(125, 125, 125);
     border: none;
     position: absolute;
@@ -122,15 +115,14 @@
     z-index: 100;
 }
 
-.buttonHover:hover{
+.buttonHover:hover {
     background-color: rgb(61, 61, 61);
     cursor: pointer;
-    color:rgb(212, 212, 212);
+    color: rgb(212, 212, 212);
 }
 
-.buttonHover2:hover{
-    background-color:rgb(36, 36, 36);
-    color:rgb(212, 212, 212);
+.buttonHover2:hover {
+    background-color: rgb(36, 36, 36);
+    color: rgb(212, 212, 212);
     cursor: pointer;
 }
-

@@ -13,7 +13,6 @@
     width: 100%;
     height: 100%;
 
-    
     position: relative;
     overflow: scroll;
 }
@@ -25,41 +24,38 @@
 }
 #statsPageInfoContainer::-webkit-scrollbar-thumb {
     background-color: rgb(26, 26, 26);
-    width:none;
+    width: none;
 }
 
 .mainName {
-    width:100%;
+    width: 100%;
     text-align: left;
-    border-top:1px solid rgb(59, 59, 59);
-    border-bottom:.5px solid rgb(59, 59, 59);
+    border-top: 1px solid rgb(59, 59, 59);
+    border-bottom: 0.5px solid rgb(59, 59, 59);
     padding-left: 20px;
-    font-size:.7vmax;
-    
+    font-size: 0.7vmax;
 }
 
-.genomeStat{
-    color:white;
+.genomeStat {
+    color: white;
     text-align: left;
 }
 
-.creatureItem{
+.creatureItem {
     text-align: left;
 }
 
-.backButton{
-    position:absolute;
-    left:0px;
-    top:10px;
-    background-color:rgb(36, 36, 36) ;
-    border:none;
-    width:3vmin;
-    height:3vmin;
+.backButton {
+    position: absolute;
+    left: 0px;
+    top: 10px;
+    background-color: rgb(36, 36, 36);
+    border: none;
+    width: 3vmin;
+    height: 3vmin;
     color: rgb(125, 125, 125);
 }
 
-
-.fillerTitle{
-    padding-top:15px;
+.fillerTitle {
+    padding-top: 15px;
 }
-

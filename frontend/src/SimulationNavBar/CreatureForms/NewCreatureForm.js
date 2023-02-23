@@ -910,11 +910,13 @@ function NewCreatureOrSpeciesForm(props) {
     if (props.show) {
         return (
             <div id="newCreatureOrSpeciesForm">
-                <h1 id="creatureOrSpeciesFormTitle" className="mainTitleFont">I would you like to...</h1>
+                <h1 id="creatureOrSpeciesFormTitle" className="mainTitleFont">
+                    I would you like to...
+                </h1>
                 <button
                     onClick={props.toggleCreatureOrSpeciesForm}
                     className="formExitButton buttonHover2">
-                    <FaTimes size={25}/>
+                    <FaTimes size={25} />
                 </button>
                 <button
                     onClick={() => {

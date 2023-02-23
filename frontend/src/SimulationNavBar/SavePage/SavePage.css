@@ -32,7 +32,7 @@
     bottom: 10vmin;
     left: 10vmin;
     transition-duration: 0.4s;
-    font-size:.8vmax;
+    font-size: 0.8vmax;
 }
 
 .saveFormButton:hover {
