@@ -155,42 +155,35 @@ function App() {
     }
 
     const LoadPage = () => {
+        const [loadName, setLoadName] = useState("")
         return (
             <div id="loadContainer">
                 <button
                     onClick={() => {
                         setShowLoad(false)
                     }}
-                    className="formExitButton">
-                    <FaTimes />
+                    className="formExitButton buttonHover2">
+                    <FaTimes size={25} />
                 </button>
                 <h1 className="loadTitle">Load Simulation</h1>
+                
+                <form id="loadForm">
+                    <label>Simulation Name:</label>
+                    <input type="text" value={loadName} onChange={(event) => setLoadName(event.target.value)}></input>
+               
 
-                <div id="simulationsContainer">
-                    <div className="simulationItem">
-                        <h2 className="simulationItemTitle">
-                            Simulation 1{' '}
-                            <span className="removeLater">
-                                This should be some basic info about the saved
-                                simulation
-                            </span>
-                        </h2>
-                    </div>
+                    <button onClick={handleSubmit} className='loadButton buttonHover2 buttonBackgroundColor'>Load</button>
+                </form>
 
-                    <div className="simulationItem">
-                        <h2 className="simulationItemTitle">Simulation 2</h2>
-                    </div>
 
-                    <div className="simulationItem">
-                        <h2 className="simulationItemTitle">Simulation 3</h2>
-                    </div>
 
-                    <div className="simulationItem">
-                        <h2 className="simulationItemTitle">Simulation 4</h2>
-                    </div>
-                </div>
             </div>
         )
+
+        function handleSubmit(event){
+            event.preventDefault()
+            //loadName is the name typed into the input box
+        }
     }
 
     return (
