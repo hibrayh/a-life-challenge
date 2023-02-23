@@ -26,12 +26,7 @@
     transition-duration: 0.4s;
 }
 
-.navButton:hover,
-.creatureSpeciesFormButton:hover,
-.formExitButton:hover {
-    background-color: rgb(61, 61, 61);
-    cursor: pointer;
-}
+
 
 #pausePlayButton {
     width: 6vmin;
@@ -94,3 +89,48 @@
 #statsButton {
     left: 42%;
 }
+
+
+
+
+
+.mainBackgroundColor{
+    background-color: rgb(36, 36, 36);
+}
+
+.buttonBackgroundColor{
+    background-color: rgb(31, 31, 31);
+}
+
+.mainTitleFont{
+    color: rgb(125, 125, 125);
+    font-size: 1.5vmax;
+}
+
+
+.formExitButton {
+    width: 3.5vmin;
+    height: 2.5vmin;
+    line-height: 2.7vmin;
+    font-size: 0.8vmax;
+    background-color:rgb(36, 36, 36);
+    color: rgb(125, 125, 125);
+    border: none;
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    z-index: 100;
+}
+
+.buttonHover:hover{
+    background-color: rgb(61, 61, 61);
+    cursor: pointer;
+    color:rgb(212, 212, 212);
+}
+
+.buttonHover2:hover{
+    background-color:rgb(36, 36, 36);
+    color:rgb(212, 212, 212);
+    cursor: pointer;
+}
+
