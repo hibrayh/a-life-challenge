@@ -10,8 +10,10 @@ function SavePage(props) {
     if (props.show) {
         return (
             <div id="savePageContainer">
-                <button onClick={handleCancel} className="formExitButton">
-                    <FaTimes />
+                <button
+                    onClick={handleCancel}
+                    className="formExitButton buttonHover2">
+                    <FaTimes size={25} />
                 </button>
                 <h1 id="saveTitle">Save Simulation</h1>
 

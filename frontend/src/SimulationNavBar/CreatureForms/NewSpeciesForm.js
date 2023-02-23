@@ -43,7 +43,7 @@ function NewSpeciesForm(props) {
             <div className="newCreatureOrSpeciesForm">
                 <button
                     onClick={props.toggleNewSpeciesForm}
-                    className="formExitButton">
+                    className="formExitButton buttonHover">
                     <FaTimes />
                 </button>
                 <h3 className="createCreatureOrSpeciesTitle">

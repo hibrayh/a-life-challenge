@@ -20,11 +20,11 @@ function TopographyPage(props) {
                     selectTopography={topography}
                 />
                 <div id="topographyContainer">
-                    <h1>Topography</h1>
+                    <h1 className="mainTitleFont">Topography</h1>
                     <button
                         onClick={props.closeTopographyPage}
-                        className="formExitButton">
-                        <FaTimes />
+                        className="formExitButton buttonHover2">
+                        <FaTimes size={25} />
                     </button>
 
                     {

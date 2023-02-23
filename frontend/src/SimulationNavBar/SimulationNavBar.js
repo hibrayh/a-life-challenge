@@ -153,7 +153,7 @@ function StatsButton(props) {
         <button
             onClick={handleClick}
             id="statsButton"
-            className="navButton"
+            className="navButton buttonHover"
             title="Stats Page">
             <FaFileAlt />
         </button>
@@ -169,7 +169,7 @@ function SaveButton(props) {
         <button
             onClick={props.toggleSavePage}
             id="saveButton"
-            className="navButton"
+            className="navButton buttonHover"
             title="Save">
             <FaSave />
         </button>
@@ -184,7 +184,7 @@ function TopographyButton(props) {
                 props.toggleShowGridBorder()
             }}
             id="topographyButton"
-            className="navButton"
+            className="navButton buttonHover"
             title="Topography">
             <FaTree />
         </button>
@@ -200,7 +200,7 @@ function AddNewCreatureOrSpeciesButton(props) {
                 props.closeNewSpeciesForm()
             }}
             id="addNewCreatureOrSpeciesButton"
-            className="navButton"
+            className="navButton buttonHover"
             title="Create New Creature/Species">
             <FaPlus />
         </button>
@@ -221,7 +221,7 @@ function PausePlayButton({ pausePlayCallback }) {
             <button
                 onClick={handleClick}
                 id="pausePlayButton"
-                className="navButton">
+                className="navButton buttonHover">
                 <FaPlay />
             </button>
         )
@@ -230,7 +230,7 @@ function PausePlayButton({ pausePlayCallback }) {
             <button
                 onClick={handleClick}
                 id="pausePlayButton"
-                className="navButton">
+                className="navButton buttonHover">
                 <FaPause />
             </button>
         )
@@ -250,7 +250,7 @@ function SpeedUpButton({ speedUpCall }) {
         <button
             onClick={handleClick}
             id="speedUpButton"
-            className="navButton"
+            className="navButton buttonHover"
             title="Speed Up">
             <FaFastForward />
         </button>
@@ -266,7 +266,7 @@ function SlowDownButton({ slowDownCall }) {
         <button
             onClick={handleClick}
             id="slowDownButton"
-            className="navButton"
+            className="navButton buttonHover"
             title="Slow Down">
             <FaFastBackward />
         </button>

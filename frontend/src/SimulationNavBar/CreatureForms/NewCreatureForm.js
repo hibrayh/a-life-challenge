@@ -115,7 +115,7 @@ function NewCreatureForm(props) {
             <div className="newCreatureOrSpeciesForm">
                 <button
                     onClick={props.toggleNewCreatureForm}
-                    className="formExitButton">
+                    className="formExitButton buttonHover">
                     <FaTimes />
                 </button>
                 <h3 className="createCreatureOrSpeciesTitle">
@@ -910,18 +910,20 @@ function NewCreatureOrSpeciesForm(props) {
     if (props.show) {
         return (
             <div id="newCreatureOrSpeciesForm">
-                <h1 id="creatureOrSpeciesFormTitle">I would you like to...</h1>
+                <h1 id="creatureOrSpeciesFormTitle" className="mainTitleFont">
+                    I would you like to...
+                </h1>
                 <button
                     onClick={props.toggleCreatureOrSpeciesForm}
-                    className="formExitButton">
-                    <FaTimes />
+                    className="formExitButton buttonHover2">
+                    <FaTimes size={25} />
                 </button>
                 <button
                     onClick={() => {
                         props.toggleNewCreatureForm()
                         props.toggleCreatureOrSpeciesForm()
                     }}
-                    className="creatureSpeciesFormButton"
+                    className="creatureSpeciesFormButton buttonHover"
                     id="createNewCreatureButton">
                     Create New Creature
                 </button>
@@ -930,7 +932,7 @@ function NewCreatureOrSpeciesForm(props) {
                         props.toggleNewSpeciesForm()
                         props.toggleCreatureOrSpeciesForm()
                     }}
-                    className="creatureSpeciesFormButton"
+                    className="creatureSpeciesFormButton buttonHover"
                     id="createNewSpeciesButton">
                     Create New Species
                 </button>

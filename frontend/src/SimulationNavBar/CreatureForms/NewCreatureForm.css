@@ -41,21 +41,6 @@
     text-align: center;
 }
 
-.formExitButton {
-    width: 3.5vmin;
-    height: 2.5vmin;
-    line-height: 2.7vmin;
-    font-size: 0.8vmax;
-
-    background-color: rgb(31, 31, 31);
-    color: rgb(125, 125, 125);
-    border: none;
-
-    position: absolute;
-    right: 7px;
-    top: 7px;
-}
-
 .newCreatureOrSpeciesForm {
     z-index: 5;
     position: absolute;
