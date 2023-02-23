@@ -155,7 +155,7 @@ function App() {
     }
 
     const LoadPage = () => {
-        const [loadName, setLoadName] = useState("")
+        const [loadName, setLoadName] = useState('')
         return (
             <div id="loadContainer">
                 <button
@@ -166,21 +166,26 @@ function App() {
                     <FaTimes size={25} />
                 </button>
                 <h1 className="loadTitle">Load Simulation</h1>
-                
+
                 <form id="loadForm">
                     <label>Simulation Name:</label>
-                    <input type="text" value={loadName} onChange={(event) => setLoadName(event.target.value)}></input>
-               
+                    <input
+                        type="text"
+                        value={loadName}
+                        onChange={(event) =>
+                            setLoadName(event.target.value)
+                        }></input>
 
-                    <button onClick={handleSubmit} className='loadButton buttonHover2 buttonBackgroundColor'>Load</button>
+                    <button
+                        onClick={handleSubmit}
+                        className="loadButton buttonHover2 buttonBackgroundColor">
+                        Load
+                    </button>
                 </form>
-
-
-
             </div>
         )
 
-        function handleSubmit(event){
+        function handleSubmit(event) {
             event.preventDefault()
             //loadName is the name typed into the input box
         }

@@ -59,20 +59,18 @@ html {
     font-size: 2vmax;
 }
 
-#loadForm{
-    font-size: .7vmax;
-    padding-top:50px;
+#loadForm {
+    font-size: 0.7vmax;
+    padding-top: 50px;
 }
 
-.loadButton{
-    display:block;
-    width:7vmin;
-    height:4vmin;
-    position:relative;
-    left:calc(50% - 3.5vmin);
-    margin-top:4vmin;
+.loadButton {
+    display: block;
+    width: 7vmin;
+    height: 4vmin;
+    position: relative;
+    left: calc(50% - 3.5vmin);
+    margin-top: 4vmin;
     color: rgb(125, 125, 125);
-    border:1px solid rgb(61, 61, 61);
+    border: 1px solid rgb(61, 61, 61);
 }
-
-
