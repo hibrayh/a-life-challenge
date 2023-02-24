@@ -6,12 +6,11 @@ import ReactAnime from 'react-animejs'
 const { Anime } = ReactAnime
 
 //const used to define the creature element size
-const grown = '25px'
+const grown = '2vh'
 let elementsArray = []
 let changeLogArray = []
 let removeLogArray = []
 let keyId = 0
-let REMOVE = 0
 
 class Animation extends React.Component {
     constructor(props) {
@@ -46,9 +45,9 @@ class Animation extends React.Component {
 
                         borderStyle: 'solid',
                         borderTopWidth: '0px',
-                        borderLeftWidth: '7.5px',
-                        borderBottomWidth: '13.0px',
-                        borderRightWidth: '7.5px',
+                        borderLeftWidth: '1vh',
+                        borderBottomWidth: '2vh',
+                        borderRightWidth: '1vh',
 
                         borderTopColor: 'transparent',
                         borderRightColor: 'transparent',
@@ -204,10 +203,35 @@ class Animation extends React.Component {
         )
     }
 
-    /*- Creature attacking another creature.
-- Creature taking damage.
-- Creature "leeching" off another creature. Leeching is broad, so I am not entirely sure what this animation should look like.
-- Creature maturing, which means that they are now capable of reproduction. */
+
+    AnimateMaturing(creature){
+        // animates a creature maturing, sizes up then back down again
+        return(
+                <>
+                <Anime
+                    initial={[
+                        {
+                            targets: '#' + creature.creatureId,
+                            keyframes: [
+                            {
+                                scale: [1, 1.1],
+                                easing: 'easeInOutElastic(2, 2)',
+                            },
+                            {
+                                scale: [1, 1.5],
+                                easing: 'easeInOutElastic(4, 2)',
+                            },
+                            {
+                                scale: [1.5, 1],
+                                easing: 'linear',
+                            }
+                        ]
+                        },
+                    ]}></Anime>
+            </>
+        )
+    }
+
 
     AnimateAttack(creature){
         // Animates a creature attackng
@@ -383,7 +407,6 @@ class Animation extends React.Component {
             )
         })
 
-        REMOVE++
         // now re-add the items that moved from changelog at the correct location
         elementsArray = elementsArray.concat(changeLogArray)
 
@@ -394,37 +417,30 @@ class Animation extends React.Component {
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
 
-            if(REMOVE % 3 === 0){
+            if (creature.lastAction === 'BIRTHED') {
+                elementsArray.push({
+                    key: creature.creatureId,
+                    elem: (
+                        <div key={'creature' + keyId++}>
+                            {this.CreateCreature(creature)}
+                        </div>
+                    ),
+                })
+                jsx.push(<div key={keyId++}>{this.AnimateBirth(creature)}</div>)
+            } else if (creature.lastAction === 'DEATH') {
+                //remove the element After playing the animation
+                removeLogArray.push({key: creature.creatureId})
                 jsx.push(
-                    <div key={keyId++}>{this.AnimateHide(creature)}</div>
+                    <div key={keyId++}>{this.AnimateKilled(creature)}</div>
                 )
-            } else {
-
-                if (creature.lastAction === 'BIRTHED') {
-                    elementsArray.push({
-                        key: creature.creatureId,
-                        elem: (
-                            <div key={'creature' + keyId++}>
-                                {this.CreateCreature(creature)}
-                            </div>
-                        ),
-                    })
-                    jsx.push(<div key={keyId++}>{this.AnimateBirth(creature)}</div>)
-                } else if (creature.lastAction === 'DEATH') {
-                    //remove the element After playing the animation
-                    removeLogArray.push({key: creature.creatureId})
-                    jsx.push(
-                        <div key={keyId++}>{this.AnimateKilled(creature)}</div>
-                    )
-                } else if (creature.lastAction === 'REPRODUCE') {
-                    jsx.push(
-                        <div key={keyId++}>{this.AnimateReproduce(creature)}</div>
-                    )
-                } else if (creature.lastAction === 'HIDE_FROM_CREATURE') {
-                    jsx.push(<div key={keyId++}>{this.AnimateHide(creature)}</div>)
-                }
-                
+            } else if (creature.lastAction === 'REPRODUCE') {
+                jsx.push(
+                    <div key={keyId++}>{this.AnimateReproduce(creature)}</div>
+                )
+            } else if (creature.lastAction === 'HIDE_FROM_CREATURE') {
+                jsx.push(<div key={keyId++}>{this.AnimateHide(creature)}</div>)
             }
+                
 
             //move the creatures
             changeLogArray.push({
@@ -439,8 +455,9 @@ class Animation extends React.Component {
                 <div key={keyId++}>{this.AnimateMovement(creature)}</div>
             )
 
-
         }
+        //this is the updated format for animating the resources, not going to actually add it until I can 
+        //check if it works
 
         /*for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
             let resource = this.props.resourcesToAnimate[i]
