@@ -435,7 +435,17 @@ class Animation extends React.Component {
                 )
             } else if (creature.lastAction === 'HIDE_FROM_CREATURE') {
                 jsx.push(<div key={keyId++}>{this.AnimateHide(creature)}</div>)
+
+            } else if (creature.lastAction === 'HURT') {
+                jsx.push(<div key={keyId++}>{this.AnimateDamage(creature)}</div>)
+
+            } else if (creature.lastAction === 'ATTACK_A_CREATURE') {
+                jsx.push(<div key={keyId++}>{this.AnimateAttack(creature)}</div>)
+
+            } else if (creature.lastAction === 'MATURE') {
+                jsx.push(<div key={keyId++}>{this.AnimateMaturing(creature)}</div>)
             }
+            
 
             //move the creatures
             changeLogArray.push({
