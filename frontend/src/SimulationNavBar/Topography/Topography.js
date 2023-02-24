@@ -139,7 +139,6 @@ function Grid(props) {
     const [grid, setGrid] = useState(gridArray)
     const [coordGrid, setCoordGrid] = useState(coordArray)
 
-
     useConstructor(() => {
         initialize()
         setGrid(gridArray)

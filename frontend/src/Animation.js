@@ -119,47 +119,47 @@ class Animation extends React.Component {
                         {
                             targets: '#' + creature.creatureId,
                             keyframes: [
-                            {
-                                translateY: '-=2vh',
-                                easing: 'linear',
-                            },
-                            {
-                                translateY: '-=0.6vh',
-                                easing: 'linear',
-                            },
-                            {
-                                translateY: '+=0.1vh',
-                                easing: 'linear',
-                            },
-                            {
-                                translateY: '+=0.5vh',
-                                easing: 'linear',
-                            },
-                            {
-                                translateY: '+=2vh',
-                                easing: 'linear',
-                            },
-                            {
-                                translateY: '-=2vh',
-                                easing: 'linear',
-                            },
-                            {
-                                translateY: '-=0.6vh',
-                                easing: 'linear',
-                            },
-                            {
-                                translateY: '+=0.1vh',
-                                easing: 'linear',
-                            },
-                            {
-                                translateY: '+=0.5vh',
-                                easing: 'linear',
-                            },
-                            {
-                                translateY: '+=2vh',
-                                easing: 'linear',
-                            }
-                        ]
+                                {
+                                    translateY: '-=2vh',
+                                    easing: 'linear',
+                                },
+                                {
+                                    translateY: '-=0.6vh',
+                                    easing: 'linear',
+                                },
+                                {
+                                    translateY: '+=0.1vh',
+                                    easing: 'linear',
+                                },
+                                {
+                                    translateY: '+=0.5vh',
+                                    easing: 'linear',
+                                },
+                                {
+                                    translateY: '+=2vh',
+                                    easing: 'linear',
+                                },
+                                {
+                                    translateY: '-=2vh',
+                                    easing: 'linear',
+                                },
+                                {
+                                    translateY: '-=0.6vh',
+                                    easing: 'linear',
+                                },
+                                {
+                                    translateY: '+=0.1vh',
+                                    easing: 'linear',
+                                },
+                                {
+                                    translateY: '+=0.5vh',
+                                    easing: 'linear',
+                                },
+                                {
+                                    translateY: '+=2vh',
+                                    easing: 'linear',
+                                },
+                            ],
                         },
                     ]}></Anime>
             </>
@@ -175,9 +175,9 @@ class Animation extends React.Component {
                         {
                             targets: '#' + creature.creatureId,
                             keyframes: [
-                                { opacity: '0.2'},
-                                { opacity: '0.2'},
-                                { opacity: '1'},
+                                { opacity: '0.2' },
+                                { opacity: '0.2' },
+                                { opacity: '1' },
                             ],
                             easing: 'linear',
                         },
@@ -203,37 +203,35 @@ class Animation extends React.Component {
         )
     }
 
-
-    AnimateMaturing(creature){
+    AnimateMaturing(creature) {
         // animates a creature maturing, sizes up then back down again
-        return(
-                <>
+        return (
+            <>
                 <Anime
                     initial={[
                         {
                             targets: '#' + creature.creatureId,
                             keyframes: [
-                            {
-                                scale: [1, 1.1],
-                                easing: 'easeInOutElastic(2, 2)',
-                            },
-                            {
-                                scale: [1, 1.5],
-                                easing: 'easeInOutElastic(4, 2)',
-                            },
-                            {
-                                scale: [1.5, 1],
-                                easing: 'linear',
-                            }
-                        ]
+                                {
+                                    scale: [1, 1.1],
+                                    easing: 'easeInOutElastic(2, 2)',
+                                },
+                                {
+                                    scale: [1, 1.5],
+                                    easing: 'easeInOutElastic(4, 2)',
+                                },
+                                {
+                                    scale: [1.5, 1],
+                                    easing: 'linear',
+                                },
+                            ],
                         },
                     ]}></Anime>
             </>
         )
     }
 
-
-    AnimateAttack(creature){
+    AnimateAttack(creature) {
         // Animates a creature attackng
         return (
             <>
@@ -242,22 +240,22 @@ class Animation extends React.Component {
                         {
                             targets: '#' + creature.creatureId,
                             keyframes: [
-                            {
-                                translateX: '+=0.5vw',
-                                easing: 'easeInOutElastic(7, 1)',
-                            },
-                            {
-                                translateX: '-=0.5vw',
-                                easing: 'linear',
-                            }
-                        ]
+                                {
+                                    translateX: '+=0.5vw',
+                                    easing: 'easeInOutElastic(7, 1)',
+                                },
+                                {
+                                    translateX: '-=0.5vw',
+                                    easing: 'linear',
+                                },
+                            ],
                         },
                     ]}></Anime>
             </>
         )
     }
 
-    AnimateDamage(creature){
+    AnimateDamage(creature) {
         // Animates a creature taking damage, shrinks and grows back
         return (
             <>
@@ -266,23 +264,22 @@ class Animation extends React.Component {
                         {
                             targets: '#' + creature.creatureId,
                             keyframes: [
-                            {
-                                scale: [1, 0.5],
-                                opacity: '0.5',
-                                easing: 'easeInOutElastic(4, 1.5)',
-                            },
-                            {
-                                scale: [0.5, 1],
-                                opacity: '1',
-                                easing: 'linear',
-                            }
-                        ]
+                                {
+                                    scale: [1, 0.5],
+                                    opacity: '0.5',
+                                    easing: 'easeInOutElastic(4, 1.5)',
+                                },
+                                {
+                                    scale: [0.5, 1],
+                                    opacity: '1',
+                                    easing: 'linear',
+                                },
+                            ],
                         },
                     ]}></Anime>
             </>
         )
     }
-
 
     CreateResource(resource) {
         //creates the elements for creatures
@@ -391,7 +388,6 @@ class Animation extends React.Component {
     }
 
     render() {
-        
         //remove any creatures that were killed
         removeLogArray.forEach((removing) => {
             elementsArray = elementsArray.filter(
@@ -429,7 +425,7 @@ class Animation extends React.Component {
                 jsx.push(<div key={keyId++}>{this.AnimateBirth(creature)}</div>)
             } else if (creature.lastAction === 'DEATH') {
                 //remove the element After playing the animation
-                removeLogArray.push({key: creature.creatureId})
+                removeLogArray.push({ key: creature.creatureId })
                 jsx.push(
                     <div key={keyId++}>{this.AnimateKilled(creature)}</div>
                 )
@@ -440,7 +436,6 @@ class Animation extends React.Component {
             } else if (creature.lastAction === 'HIDE_FROM_CREATURE') {
                 jsx.push(<div key={keyId++}>{this.AnimateHide(creature)}</div>)
             }
-                
 
             //move the creatures
             changeLogArray.push({
@@ -451,12 +446,9 @@ class Animation extends React.Component {
                     </div>
                 ),
             })
-            jsx.push(
-                <div key={keyId++}>{this.AnimateMovement(creature)}</div>
-            )
-
+            jsx.push(<div key={keyId++}>{this.AnimateMovement(creature)}</div>)
         }
-        //this is the updated format for animating the resources, not going to actually add it until I can 
+        //this is the updated format for animating the resources, not going to actually add it until I can
         //check if it works
 
         /*for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
