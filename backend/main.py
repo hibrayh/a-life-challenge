@@ -229,7 +229,7 @@ def saveSimulation():
 
 
 @api.route('/load-simulation', methods=['POST'])
-@cross_origin
+@cross_origin()
 def loadSimulation():
     global GOD
     filename = request.json['filename'] + '.json'
