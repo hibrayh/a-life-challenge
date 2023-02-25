@@ -55,54 +55,54 @@ class Creature:
             logging.info(f"Loading existing creature")
 
             receptors = []
-            if saveData.genome.canSee:
+            if saveData['genome']['canSee']:
                 receptors.append(genome.Receptors.VISION)
-            if saveData.genome.canSmell:
+            if saveData['genome']['canSmell']:
                 receptors.append(genome.Receptors.SMELL)
-            if saveData.genome.canHear:
+            if saveData['genome']['canHear']:
                 receptors.append(genome.Receptors.HEAR)
             self.genome = genome.Genome(
-                saveData.genome.visibility,
-                saveData.genome.maxHealth,
+                saveData['genome']['visibility'],
+                saveData['genome']['maxHealth'],
                 receptors,
-                saveData.genome.sightAbility,
-                saveData.genome.smellAbility,
-                saveData.genome.hearingAbility,
-                saveData.genome.sightRange,
-                saveData.genome.smellRange,
-                saveData.genome.hearingRange,
-                saveData.genome.reactionTime,
-                saveData.genome.intelligence,
-                saveData.genome.selfPreservation,
-                saveData.genome.mobility,
+                saveData['genome']['sightAbility'],
+                saveData['genome']['smellAbility'],
+                saveData['genome']['hearingAbility'],
+                saveData['genome']['sightRange'],
+                saveData['genome']['smellRange'],
+                saveData['genome']['hearingRange'],
+                saveData['genome']['reactionTime'],
+                saveData['genome']['intelligence'],
+                saveData['genome']['selfPreservation'],
+                saveData['genome']['mobility'],
                 genome.ReproductionType(
-                    saveData.genome.reproductionType),
-                saveData.genome.offspringAmount,
-                saveData.genome.motivation,
-                saveData.genome.maxEnergy,
-                saveData.genome.individualism,
-                saveData.genome.territorial,
-                saveData.genome.fightOrFlight,
-                saveData.genome.hostility,
-                saveData.genome.scent,
-                saveData.genome.stealth,
-                saveData.genome.lifeExpectancy,
-                saveData.genome.offensiveAbility,
-                saveData.genome.defensiveAbility,
-                saveData.genome.shape,
-                saveData.genome.color)
+                    saveData['genome']['reproductionType']),
+                saveData['genome']['offspringAmount'],
+                saveData['genome']['motivation'],
+                saveData['genome']['maxEnergy'],
+                saveData['genome']['individualism'],
+                saveData['genome']['territorial'],
+                saveData['genome']['fightOrFlight'],
+                saveData['genome']['hostility'],
+                saveData['genome']['scent'],
+                saveData['genome']['stealth'],
+                saveData['genome']['lifeExpectancy'],
+                saveData['genome']['offensiveAbility'],
+                saveData['genome']['defensiveAbility'],
+                saveData['genome']['shape'],
+                saveData['genome']['color'])
 
-            self.species = saveData.species
-            self.id = saveData.id
+            self.species = saveData['species']
+            self.id = saveData['id']
             self.speciesManager = speciesManager
-            self.xCoordinate = saveData.xCoordinate
-            self.yCoordinate = saveData.yCoordinate
+            self.xCoordinate = saveData['xCoordinate']
+            self.yCoordinate = saveData['yCoordinate']
             self.lastAction = decision_network.CreatureAction(
-                saveData.lastAction)
-            self.reproductionCoolDown = saveData.reproductionCoolDown
-            self.currentHealth = saveData.currentHealth
+                saveData['lastAction'])
+            self.reproductionCoolDown = saveData['reproductionCoolDown']
+            self.currentHealth = saveData['currentHealth']
             self.maxHealth = self.genome.maxHealth * 100
-            self.currentEnergy = saveData.currentEnergy
+            self.currentEnergy = saveData['currentEnergy']
             self.maxEnergy = self.genome.maxEnergy * 100
             self.hasPerformedActionThisTurn = False
             self.environment = environment

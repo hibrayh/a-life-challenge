@@ -185,9 +185,21 @@ function App() {
             </div>
         )
 
-        function handleSubmit(event) {
+        async function handleSubmit(event) {
             event.preventDefault()
-            //loadName is the name typed into the input box
+            // Load simulation in the backend
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000//load-simulation',
+                data: {
+                    filename: loadName,
+                },
+            })
+
+            setShowLoad(false)
+            setShowMenu(false)
+            setShowSimulation(true)
+            setHasSimulationStarted(true)
         }
     }
 

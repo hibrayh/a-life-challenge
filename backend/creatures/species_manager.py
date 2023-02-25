@@ -50,52 +50,52 @@ class SpeciesManager:
         else:
             logging.info(f"Loading existing Species Manager")
 
-            self.speciesName = saveData.speciesName
+            self.speciesName = saveData['speciesName']
 
             self.environment = environment
 
             receptors = []
-            if saveData._startingGenome.canSee:
+            if saveData['_startingGenome']['canSee']:
                 receptors.append(genome.Receptors.VISION)
-            if saveData._startingGenome.canSmell:
+            if saveData['_startingGenome']['canSmell']:
                 receptors.append(genome.Receptors.SMELL)
-            if saveData._startingGenome.canHear:
+            if saveData['_startingGenome']['canHear']:
                 receptors.append(genome.Receptors.HEAR)
 
             self._startingGenome = genome.Genome(
-                saveData._startingGenome.visibility,
-                saveData._startingGenome.maxHealth,
+                saveData['_startingGenome']['visibility'],
+                saveData['_startingGenome']['maxHealth'],
                 receptors,
-                saveData._startingGenome.sightAbility,
-                saveData._startingGenome.smellAbility,
-                saveData._startingGenome.hearingAbility,
-                saveData._startingGenome.sightRange,
-                saveData._startingGenome.smellRange,
-                saveData._startingGenome.hearingRange,
-                saveData._startingGenome.reactionTime,
-                saveData._startingGenome.intelligence,
-                saveData._startingGenome.selfPreservation,
-                saveData._startingGenome.mobility,
+                saveData['_startingGenome']['sightAbility'],
+                saveData['_startingGenome']['smellAbility'],
+                saveData['_startingGenome']['hearingAbility'],
+                saveData['_startingGenome']['sightRange'],
+                saveData['_startingGenome']['smellRange'],
+                saveData['_startingGenome']['hearingRange'],
+                saveData['_startingGenome']['reactionTime'],
+                saveData['_startingGenome']['intelligence'],
+                saveData['_startingGenome']['selfPreservation'],
+                saveData['_startingGenome']['mobility'],
                 genome.ReproductionType(
-                    saveData._startingGenome.reproductionType),
-                saveData._startingGenome.offspringAmount,
-                saveData._startingGenome.motivation,
-                saveData._startingGenome.maxEnergy,
-                saveData._startingGenome.individualism,
-                saveData._startingGenome.territorial,
-                saveData._startingGenome.fightOrFlight,
-                saveData._startingGenome.hostility,
-                saveData._startingGenome.scent,
-                saveData._startingGenome.stealth,
-                saveData._startingGenome.lifeExpectancy,
-                saveData._startingGenome.offensiveAbility,
-                saveData._startingGenome.defensiveAbility,
-                saveData._startingGenome.shape,
-                saveData._startingGenome.color)
+                    saveData['_startingGenome']['reproductionType']),
+                saveData['_startingGenome']['offspringAmount'],
+                saveData['_startingGenome']['motivation'],
+                saveData['_startingGenome']['maxEnergy'],
+                saveData['_startingGenome']['individualism'],
+                saveData['_startingGenome']['territorial'],
+                saveData['_startingGenome']['fightOrFlight'],
+                saveData['_startingGenome']['hostility'],
+                saveData['_startingGenome']['scent'],
+                saveData['_startingGenome']['stealth'],
+                saveData['_startingGenome']['lifeExpectancy'],
+                saveData['_startingGenome']['offensiveAbility'],
+                saveData['_startingGenome']['defensiveAbility'],
+                saveData['_startingGenome']['shape'],
+                saveData['_startingGenome']['color'])
 
             # Load creatures
             self._creatures = []
-            for savedCreature in saveData._creatures:
+            for savedCreature in saveData['_creatures']:
                 self._creatures.append(
                     creature.Creature(
                         None,
@@ -108,12 +108,12 @@ class SpeciesManager:
                         loadExistingSave=True,
                         saveData=savedCreature))
 
-            self.speciesRelations = saveData.speciesRelations
+            self.speciesRelations = saveData['speciesRelations']
             self.simulationWidth = simulationWidth
             self.simulationHeight = simulationHeight
-            self._creatureIdIncrementer = saveData._creatureIdIncrementer
-            self._spawnPointXCoordinate = saveData._spawnPointXCoordinate
-            self._spawnPointYCoordinate = saveData._spawnPointYCoordinate
+            self._creatureIdIncrementer = saveData['_creatureIdIncrementer']
+            self._spawnPointXCoordinate = saveData['_spawnPointXCoordinate']
+            self._spawnPointYCoordinate = saveData['_spawnPointYCoordinate']
 
     def save(self):
         logging.info(f"Saving Species Manager for {self.speciesName}")
