@@ -100,16 +100,16 @@ class Topography:
             logging.info(f"Loading existing topography")
             self.id = saveData.id
             self.type = TemplateTopography(saveData.type)
-            self.region = Region(saveData.region.topLeftXCoordinate,
-                                 saveData.region.topLeftYCoordinate,
-                                 saveData.region.topRightXCoordinate,
-                                 saveData.region.topRightYCoordinate,
-                                 saveData.region.bottomLeftXCoordinate,
-                                 saveData.region.bottomLeftYCoordinate,
-                                 saveData.region.bottomRightXCoordinate,
-                                 saveData.region.bottomRightYCoordinate)
-            self.shape = saveData.shape
-            self.geography = saveData.geography
+            self.region = Region(saveData['region']['topLeftXCoordinate'],
+                                 saveData['region']['topLeftYCoordinate'],
+                                 saveData['region']['topRightXCoordinate'],
+                                 saveData['region']['topRightYCoordinate'],
+                                 saveData['region']['bottomLeftXCoordinate'],
+                                 saveData['region']['bottomLeftYCoordinate'],
+                                 saveData['region']['bottomRightXCoordinate'],
+                                 saveData['region']['bottomRightYCoordinate'])
+            self.shape = saveData['shape']
+            self.geography = saveData['geography']
             self.environment = environment
             self.environment.addToTopographyRegistry(self)
 

@@ -26,14 +26,14 @@ class God:
             self._simulationHeight = simulationHeight
         else:
             logging.info("Loading existing God object")
-            self._simulationWidth = saveData._simulationWidth
-            self._simulationHeight = saveData._simulationHeight
+            self._simulationWidth = saveData['_simulationWidth']
+            self._simulationHeight = saveData['_simulationHeight']
             # Initialize environment
             self._environment = environment.Environment(
-                0, 0, loadExistingSave=True, saveData=saveData._environment)
+                0, 0, loadExistingSave=True, saveData=saveData['_environment'])
             # Initialize species managers
             self._speciesManagers = []
-            for savedSpecies in saveData._speciesManagers:
+            for savedSpecies in saveData['_speciesManagers']:
                 self._speciesManagers.append(
                     creatures.species_manager.SpeciesManager(
                         None,

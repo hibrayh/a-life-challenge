@@ -46,21 +46,21 @@ class Environment:
             self.height = heightInPx
         else:
             logging.info("Loading existing environment")
-            self.creatureRegistry = []
+            self.creatureRegistry = registry.Registry()
             # Load resources
             self.resourceRegistry = []
-            for resource in saveData.resourceRegistry:
+            for resource in saveData['resourceRegistry']:
                 resources.Resource(
-                    resource.id,
-                    resource.replenishment,
-                    resource.xCoordinate,
-                    resource.yCoordinate,
-                    resource.color,
-                    resource.shape,
+                    resource['id'],
+                    resource['replenishment'],
+                    resource['xCoordinate'],
+                    resource['yCoordinate'],
+                    resource['color'],
+                    resource['shape'],
                     self)
             # Load topography
             self.topographyRegistry = []
-            for topographyRegion in saveData.topographyRegistry:
+            for topographyRegion in saveData['topographyRegistry']:
                 topography.Topography(
                     0,
                     0,
@@ -77,8 +77,8 @@ class Environment:
                     saveData=topographyRegion)
             self.lightVisibility = []
             # Load dimensions
-            self.width = saveData.width
-            self.height = saveData.height
+            self.width = saveData['width']
+            self.height = saveData['height']
 
     def save(self):
         logging.info("Saving current state of the environment")
