@@ -120,7 +120,7 @@ function initialize() {
         for (let i = 0; i < 50; i++) {
             for (let j = 0; j < 25; j++) {
                 //There are more columns than rows, so i and j have been swapped
-                gridArray.push({ selected: false, row: j, col: i })
+                gridArray.push({ topography: 0, row: j, col: i })
                 coordArray.push({ row: j, col: i, topography: unselected })
             }
         }
@@ -154,7 +154,8 @@ function Grid(props) {
             <Node
                 id={grid[i]}
                 toggleSelected={toggleSelected}
-                selected={grid[i].selected}
+                topography={grid[i].topography}
+                selectTopography={props.selectTopography}
                 showGridBorder={props.showGridBorder}
                 row={grid[i].row}
                 col={grid[i].col}
@@ -168,7 +169,7 @@ function Grid(props) {
         </div>
     )
 
-    function toggleSelected(row, col, selected) {
+    function toggleSelected(row, col) {
         let temp = JSON.parse(JSON.stringify(grid))
         let tempCoord = JSON.parse(JSON.stringify(coordGrid))
         let index = grid.findIndex(function (node) {
@@ -179,17 +180,19 @@ function Grid(props) {
 
         //temp[index].selected = !temp[index].selected
         //if the topography is selected, update the coord, else flip it
-        if (temp[index].selected) {
+        if (temp[index].topography) {
             tempCoord[index].topography = unselected
         } else {
             tempCoord[index].topography = props.selectTopography
         }
-
-        temp[index].selected = !temp[index].selected
+        
+        console.log(temp[index].topography, "previous")
+        console.log(props.selectTopography, "new")
+        temp[index].topography = props.selectTopography
 
         setGrid(temp)
         setCoordGrid(tempCoord)
-        //console.log(coordGrid[index])
+       
     }
 }
 
@@ -197,21 +200,28 @@ let currentClass = 'node'
 let gridBorder = ''
 
 function Node(props) {
+
     if (props.showGridBorder) {
         gridBorder = ' gridBorder'
     } else {
         gridBorder = ''
     }
 
-    if (props.selected) {
-        currentClass = 'selectedNode'
-    } else {
-        currentClass = 'node'
+
+    // if the node is unselected, make it a default node
+    if(!props.topography){
+        currentClass="defaultNode"
     }
+    // if it's not default, set it's style equal to the current topography of the node
+    // (which is updated automatically by the handleClick() )
+    else{
+        currentClass = props.topography
+    }
+
 
     function handleClick() {
         if (props.showGridBorder) {
-            props.toggleSelected(props.row, props.col, props.selected)
+            props.toggleSelected(props.row, props.col)
         }
     }
 
