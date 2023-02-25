@@ -139,7 +139,6 @@ function Grid(props) {
     const [grid, setGrid] = useState(gridArray)
     const [coordGrid, setCoordGrid] = useState(coordArray)
 
-    console.log(coordGrid)
     useConstructor(() => {
         initialize()
         setGrid(gridArray)
@@ -147,7 +146,6 @@ function Grid(props) {
     })
 
     let jsx = []
-    console.log(props.selectTopography)
 
     for (let i = 0; i < 1250; i++) {
         jsx.push(
@@ -189,7 +187,6 @@ function Grid(props) {
 
         setGrid(temp)
         setCoordGrid(tempCoord)
-        //console.log(coordGrid[index])
     }
 }
 
