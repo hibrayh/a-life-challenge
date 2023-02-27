@@ -5,6 +5,7 @@ from enum import Enum
 import noise
 import numpy as np
 from PIL import Image
+import time
 
 
 logging.basicConfig(
@@ -15,7 +16,7 @@ logging.basicConfig(
 THRESHOLD = 10
 
 
-class TemplateTopography(Enum):
+class TemplateTopography(str, Enum):
     FLAT = 'flat'
     MILD = 'mild'
     MODERATE = 'moderate'
@@ -33,15 +34,24 @@ class Region:
             bottomLeftYCoordinate,
             bottomRightXCoordinate,
             bottomRightYCoordinate):
-        logging.info("Initializing new region")
-        self.topLeftXCoordinate = topLeftXCoordinate
-        self.topLeftYCoordinate = topLeftYCoordinate
-        self.topRightXCoordinate = topRightXCoordinate
-        self.topRightYCoordinate = topRightYCoordinate
-        self.bottomLeftXCoordinate = bottomLeftXCoordinate
-        self.bottomLeftYCoordinate = bottomLeftYCoordinate
-        self.bottomRightXCoordinate = bottomRightXCoordinate
-        self.bottomRightYCoordinate = bottomRightYCoordinate
+        self.topLeftXCoordinate = int(topLeftXCoordinate)
+        self.topLeftYCoordinate = int(topLeftYCoordinate)
+        self.topRightXCoordinate = int(topRightXCoordinate)
+        self.topRightYCoordinate = int(topRightYCoordinate)
+        self.bottomLeftXCoordinate = int(bottomLeftXCoordinate)
+        self.bottomLeftYCoordinate = int(bottomLeftYCoordinate)
+        self.bottomRightXCoordinate = int(bottomRightXCoordinate)
+        self.bottomRightYCoordinate = int(bottomRightYCoordinate)
+
+        logging.info(f"Initializing new region:\n" + \
+                        f"\ttopLeftXCoordinate: {self.topLeftXCoordinate}\n" + \
+                        f"\ttopLeftYCoordinate: {self.topLeftYCoordinate}\n" + \
+                        f"\ttopRightXCoordinate: {self.topRightXCoordinate}\n" + \
+                        f"\ttopRightYCoordinate: {self.topRightYCoordinate}\n" + \
+                        f"\tbottomLeftXCoordinate: {self.bottomLeftXCoordinate}\n" + \
+                        f"\tbottomLeftYCoordinate: {self.bottomLeftYCoordinate}\n" + \
+                        f"\tbottomRightXCoordinate: {self.bottomRightXCoordinate}\n" + \
+                        f"\tbottomRightYCoordinate: {self.bottomRightYCoordinate}\n")
 
     def save(self):
         return {
@@ -84,8 +94,9 @@ class Topography:
                 bottomLeftYCoordinate,
                 bottomRightXCoordinate,
                 bottomRightYCoordinate)
-            self.shape = (topLeftYCoordinate - bottomLeftYCoordinate,
-                          topRightXCoordinate - topLeftXCoordinate)
+            self.shape = (int(bottomLeftYCoordinate - topLeftYCoordinate),
+                          int(topRightXCoordinate - topLeftXCoordinate))
+            self.environment = environment
 
             # Initialize random geography based on topography type
             self.generateRandomGeography()
@@ -94,12 +105,11 @@ class Topography:
             self.generateResources()
 
             # Register to environment
-            self.environment = environment
             self.environment.addToTopographyRegistry(self)
         else:
             logging.info(f"Loading existing topography")
-            self.id = saveData.id
-            self.type = TemplateTopography(saveData.type)
+            self.id = saveData['id']
+            self.type = TemplateTopography(saveData['type'])
             self.region = Region(saveData['region']['topLeftXCoordinate'],
                                  saveData['region']['topLeftYCoordinate'],
                                  saveData['region']['topRightXCoordinate'],
@@ -118,7 +128,7 @@ class Topography:
             'topographyId': self.id,
             'topLeftXCoordinate': self.region.topLeftXCoordinate,
             'topLeftYCoordinate': self.region.topLeftYCoordinate,
-            'geography': self.geography.tolist(),
+            'geography': self.geography,
         }
 
     def save(self):
@@ -128,7 +138,7 @@ class Topography:
             'type': self.type,
             'region': self.region.save(),
             'shape': self.shape,
-            'geography': self.geography.tolist(),
+            'geography': self.geography,
         }
 
     # Using perlin-noise to create random geography
@@ -150,6 +160,10 @@ class Topography:
         else:
             logging.info("Unknown topography type encountered")
             persistence = 0.5
+        
+        # Generate a random seed to use with the Perlin noise generator
+        random.seed(time.time())
+        seed = int(random.random() * 1_000)
 
         geography = np.zeros(self.shape)
         for i in range(self.shape[0]):
@@ -161,9 +175,9 @@ class Topography:
                                                 lacunarity=lacunarity,
                                                 repeatx=self.shape[0],
                                                 repeaty=self.shape[1],
-                                                base=0)
+                                                base=seed)
 
-        self.geography = np.floor((geography + .5) * 255).astype(np.uint8)
+        self.geography = np.floor((geography + .5) * 255).astype(np.uint8).tolist()
 
     def generateResources(self):
         rarity = 0.0
@@ -199,7 +213,7 @@ class Topography:
             self.shape[0] * self.shape[1]) / (THRESHOLD ** 2)
         # Now determine, using the rarity, how many resources will actually be
         # in this area
-        resourcesToCreate = rarity * totalResourcesPossible
+        resourcesToCreate = int(rarity * totalResourcesPossible)
 
         # Randomly spawn in resources
         while resourcesToCreate > 0:
@@ -207,8 +221,8 @@ class Topography:
                 self.region.topLeftXCoordinate,
                 self.region.topRightXCoordinate)
             randomY = random.randrange(
-                self.region.bottomLeftYCoordinate,
-                self.region.topLeftYCoordinate)
+                self.region.topLeftYCoordinate,
+                self.region.bottomLeftYCoordinate)
             Resource(
                 f"{self.id}{resourcesToCreate}",
                 replenishment,
@@ -230,6 +244,9 @@ if __name__ == '__main__':
     persistence = 0.3
     lacunarity = 2.0
 
+    random.seed(time.time())
+    seed = int(random.random() * 1_000)
+
     geography = np.zeros(shape)
     for i in range(shape[0]):
         for j in range(shape[1]):
@@ -240,8 +257,8 @@ if __name__ == '__main__':
                                             lacunarity=lacunarity,
                                             repeatx=1024,
                                             repeaty=1024,
-                                            base=0)
+                                            base=seed)
 
     img = np.floor((geography + .5) * 255).astype(np.uint8)
-    Image.fromarray(img, mode='L').save(f'./sample.jpg')
+    Image.fromarray(img, mode='L').save(f'./sample_{seed}.jpg')
 """

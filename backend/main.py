@@ -5,6 +5,7 @@ from flask import request
 import logging
 import json
 import god
+import topography
 import creatures.genome
 import creatures.species_manager
 import os.path
@@ -71,6 +72,23 @@ def _convertRequestToGenome(inputRequest):
     return inputGenome
 
 
+def _convertRequestToTopographyType(inputTopography):
+    convertedTopographyType = None
+    if inputTopography == 'flat':
+        convertedTopographyType = topography.TemplateTopography.FLAT
+    elif inputTopography == 'mild':
+        convertedTopographyType = topography.TemplateTopography.MILD
+    elif inputTopography == 'moderate':
+        convertedTopographyType = topography.TemplateTopography.MODERATE
+    elif inputTopography == 'extreme':
+        convertedTopographyType = topography.TemplateTopography.EXTREME
+    else:
+        logging.info(f"Unknown topography type {inputTopography}. Setting default of FLAT")
+        convertedTopographyType = topography.TemplateTopography.FLAT
+
+    return convertedTopographyType
+
+
 @api.route('/get-info')
 @cross_origin()
 def return_dummy_info():
@@ -93,7 +111,9 @@ def startSimulation():
     global GOD
     GOD = god.God(
         request.json['simulationWidth'],
-        request.json['simulationHeight'])
+        request.json['simulationHeight'],
+        request.json['columnCount'],
+        request.json['rowCount'])
     return "Success", 201
 
 
@@ -240,8 +260,27 @@ def loadSimulation():
         with open(filename, "r") as savefile:
             saveData = json.load(savefile)
 
-        GOD = god.God(0, 0, loadExistingSave=True, saveData=saveData)
+        GOD = god.God(0, 0, 0, 0, loadExistingSave=True, saveData=saveData)
     else:
         logging.info(f"No file of name {filename} was found to load from")
+
+    return "Success", 201
+
+@api.route('/create-new-topography', methods=['POST'])
+@cross_origin()
+def createNewTopography():
+    global GOD
+    logging.info(f"Adding new topography type {request.json['topographyType']}")
+    GOD.addNewTopography(_convertRequestToTopographyType(request.json['topographyType']), 
+                            request.json['column'], request.json['row'])
+
+    return "Success", 201
+
+@api.route('/remove-topography', methods=['POST'])
+@cross_origin()
+def removeTopography():
+    global GOD
+    logging.info(f"Removing topography from column {request.json['column']}, row {request.json['row']}")
+    GOD.removeTopography(request.json['column'], request.json['row'])
 
     return "Success", 201

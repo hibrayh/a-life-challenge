@@ -1,5 +1,6 @@
 import logging
 import environment
+import topography
 import creatures.species_manager
 import random
 from environment import Environment
@@ -14,6 +15,8 @@ class God:
             self,
             simulationWidth,
             simulationHeight,
+            columnCount,
+            rowCount,
             loadExistingSave=False,
             saveData=None):
         if not loadExistingSave:
@@ -21,16 +24,20 @@ class God:
 
             self._speciesManagers = []
             self._environment = environment.Environment(
-                simulationWidth, simulationHeight)
+                simulationWidth, simulationHeight, columnCount, rowCount)
             self._simulationWidth = simulationWidth
             self._simulationHeight = simulationHeight
+            self._columnCount = columnCount
+            self._rowCount = rowCount
         else:
             logging.info("Loading existing God object")
             self._simulationWidth = saveData['_simulationWidth']
             self._simulationHeight = saveData['_simulationHeight']
+            self._columnCount = saveData['_columnCount']
+            self._rowCount = saveData['_rowCount']
             # Initialize environment
             self._environment = environment.Environment(
-                0, 0, loadExistingSave=True, saveData=saveData['_environment'])
+                0, 0, 0, 0, loadExistingSave=True, saveData=saveData['_environment'])
             # Initialize species managers
             self._speciesManagers = []
             for savedSpecies in saveData['_speciesManagers']:
@@ -55,6 +62,8 @@ class God:
             '_environment': self._environment.save(),
             '_simulationWidth': self._simulationWidth,
             '_simulationHeight': self._simulationHeight,
+            '_columnCount': self._columnCount,
+            '_rowCount': self._rowCount,
         }
 
     def _getSpeciesManagerFromName(self, speciesName):
@@ -151,6 +160,34 @@ class God:
             logging.info("Could not find species to edit creature")
         else:
             speciesManagerOfInterest.editCreatureGenome(creatureId, newGenome)
+    
+    def addNewTopography(self, topographyType, column, row):
+        topographyId = f"topography_column{column}_row{row}"
+        logging.info(f"Creating new topography of type {topographyType} with id {topographyId}")
+
+        topLeftXCoordinate = (column - 1) * (self._simulationWidth / self._columnCount)
+        topLeftYCoordinate = (row - 1) * (self._simulationHeight / self._rowCount)
+        bottomRightXCoordinate = column * (self._simulationWidth / self._columnCount)
+        bottomRightYCoordinate = row * (self._simulationHeight / self._rowCount)
+        topRightXCoordinate = bottomRightXCoordinate
+        topRightYCoordinate = topLeftYCoordinate
+        bottomLeftXCoordinate = topLeftXCoordinate
+        bottomLeftYCoordinate = bottomRightYCoordinate
+
+        topography.Topography(topLeftXCoordinate,
+                                topLeftYCoordinate,
+                                topRightXCoordinate,
+                                topRightYCoordinate,
+                                bottomLeftXCoordinate,
+                                bottomLeftYCoordinate,
+                                bottomRightXCoordinate,
+                                bottomRightYCoordinate,
+                                topographyId,
+                                topographyType,
+                                self._environment)
+    
+    def removeTopography(self, column, row):
+        self._environment.removeTopography(column, row)
 
     def getSpeciesInfo(self, speciesName):
         pass
