@@ -145,7 +145,7 @@ class Environment:
             if topography.id == topographyId:
                 topographyToRemove = topography
                 break
-        
+
         if topographyToRemove is not None:
             self.topographyRegistry.remove(topographyToRemove)
         else:

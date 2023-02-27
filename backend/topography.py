@@ -43,15 +43,16 @@ class Region:
         self.bottomRightXCoordinate = int(bottomRightXCoordinate)
         self.bottomRightYCoordinate = int(bottomRightYCoordinate)
 
-        logging.info(f"Initializing new region:\n" + \
-                        f"\ttopLeftXCoordinate: {self.topLeftXCoordinate}\n" + \
-                        f"\ttopLeftYCoordinate: {self.topLeftYCoordinate}\n" + \
-                        f"\ttopRightXCoordinate: {self.topRightXCoordinate}\n" + \
-                        f"\ttopRightYCoordinate: {self.topRightYCoordinate}\n" + \
-                        f"\tbottomLeftXCoordinate: {self.bottomLeftXCoordinate}\n" + \
-                        f"\tbottomLeftYCoordinate: {self.bottomLeftYCoordinate}\n" + \
-                        f"\tbottomRightXCoordinate: {self.bottomRightXCoordinate}\n" + \
-                        f"\tbottomRightYCoordinate: {self.bottomRightYCoordinate}\n")
+        logging.info(
+            f"Initializing new region:\n" +
+            f"\ttopLeftXCoordinate: {self.topLeftXCoordinate}\n" +
+            f"\ttopLeftYCoordinate: {self.topLeftYCoordinate}\n" +
+            f"\ttopRightXCoordinate: {self.topRightXCoordinate}\n" +
+            f"\ttopRightYCoordinate: {self.topRightYCoordinate}\n" +
+            f"\tbottomLeftXCoordinate: {self.bottomLeftXCoordinate}\n" +
+            f"\tbottomLeftYCoordinate: {self.bottomLeftYCoordinate}\n" +
+            f"\tbottomRightXCoordinate: {self.bottomRightXCoordinate}\n" +
+            f"\tbottomRightYCoordinate: {self.bottomRightYCoordinate}\n")
 
     def save(self):
         return {
@@ -160,7 +161,7 @@ class Topography:
         else:
             logging.info("Unknown topography type encountered")
             persistence = 0.5
-        
+
         # Generate a random seed to use with the Perlin noise generator
         random.seed(time.time())
         seed = int(random.random() * 1_000)
@@ -177,7 +178,8 @@ class Topography:
                                                 repeaty=self.shape[1],
                                                 base=seed)
 
-        self.geography = np.floor((geography + .5) * 255).astype(np.uint8).tolist()
+        self.geography = np.floor(
+            (geography + .5) * 255).astype(np.uint8).tolist()
 
     def generateResources(self):
         rarity = 0.0

@@ -188,7 +188,6 @@ function Grid(props) {
                     row: row,
                 },
             })
-
         } else {
             tempCoord[index].topography = props.selectTopography
             // Add new topography in backend at (col, row) position

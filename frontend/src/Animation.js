@@ -481,9 +481,7 @@ class Animation extends React.Component {
             console.log(resource)
             jsx.push(
                 <div key={'resource' + { i }}>
-                    {this.CreateResource(
-                        resource
-                    )}
+                    {this.CreateResource(resource)}
                 </div>
             )
         }

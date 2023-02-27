@@ -83,7 +83,8 @@ def _convertRequestToTopographyType(inputTopography):
     elif inputTopography == 'extreme':
         convertedTopographyType = topography.TemplateTopography.EXTREME
     else:
-        logging.info(f"Unknown topography type {inputTopography}. Setting default of FLAT")
+        logging.info(
+            f"Unknown topography type {inputTopography}. Setting default of FLAT")
         convertedTopographyType = topography.TemplateTopography.FLAT
 
     return convertedTopographyType
@@ -266,21 +267,28 @@ def loadSimulation():
 
     return "Success", 201
 
+
 @api.route('/create-new-topography', methods=['POST'])
 @cross_origin()
 def createNewTopography():
     global GOD
-    logging.info(f"Adding new topography type {request.json['topographyType']}")
-    GOD.addNewTopography(_convertRequestToTopographyType(request.json['topographyType']), 
-                            request.json['column'], request.json['row'])
+    logging.info(
+        f"Adding new topography type {request.json['topographyType']}")
+    GOD.addNewTopography(
+        _convertRequestToTopographyType(
+            request.json['topographyType']),
+        request.json['column'],
+        request.json['row'])
 
     return "Success", 201
+
 
 @api.route('/remove-topography', methods=['POST'])
 @cross_origin()
 def removeTopography():
     global GOD
-    logging.info(f"Removing topography from column {request.json['column']}, row {request.json['row']}")
+    logging.info(
+        f"Removing topography from column {request.json['column']}, row {request.json['row']}")
     GOD.removeTopography(request.json['column'], request.json['row'])
 
     return "Success", 201

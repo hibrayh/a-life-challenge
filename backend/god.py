@@ -160,32 +160,37 @@ class God:
             logging.info("Could not find species to edit creature")
         else:
             speciesManagerOfInterest.editCreatureGenome(creatureId, newGenome)
-    
+
     def addNewTopography(self, topographyType, column, row):
         topographyId = f"topography_column{column}_row{row}"
-        logging.info(f"Creating new topography of type {topographyType} with id {topographyId}")
+        logging.info(
+            f"Creating new topography of type {topographyType} with id {topographyId}")
 
-        topLeftXCoordinate = (column - 1) * (self._simulationWidth / self._columnCount)
-        topLeftYCoordinate = (row - 1) * (self._simulationHeight / self._rowCount)
-        bottomRightXCoordinate = column * (self._simulationWidth / self._columnCount)
-        bottomRightYCoordinate = row * (self._simulationHeight / self._rowCount)
+        topLeftXCoordinate = (column - 1) * \
+            (self._simulationWidth / self._columnCount)
+        topLeftYCoordinate = (row - 1) * \
+            (self._simulationHeight / self._rowCount)
+        bottomRightXCoordinate = column * \
+            (self._simulationWidth / self._columnCount)
+        bottomRightYCoordinate = row * \
+            (self._simulationHeight / self._rowCount)
         topRightXCoordinate = bottomRightXCoordinate
         topRightYCoordinate = topLeftYCoordinate
         bottomLeftXCoordinate = topLeftXCoordinate
         bottomLeftYCoordinate = bottomRightYCoordinate
 
         topography.Topography(topLeftXCoordinate,
-                                topLeftYCoordinate,
-                                topRightXCoordinate,
-                                topRightYCoordinate,
-                                bottomLeftXCoordinate,
-                                bottomLeftYCoordinate,
-                                bottomRightXCoordinate,
-                                bottomRightYCoordinate,
-                                topographyId,
-                                topographyType,
-                                self._environment)
-    
+                              topLeftYCoordinate,
+                              topRightXCoordinate,
+                              topRightYCoordinate,
+                              bottomLeftXCoordinate,
+                              bottomLeftYCoordinate,
+                              bottomRightXCoordinate,
+                              bottomRightYCoordinate,
+                              topographyId,
+                              topographyType,
+                              self._environment)
+
     def removeTopography(self, column, row):
         self._environment.removeTopography(column, row)
 
