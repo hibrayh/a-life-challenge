@@ -33,41 +33,41 @@ function TopographyPage(props) {
                     }
                     <form id="topographyForm">
                         <div className="attributeHolder">
-                            <label className="dataTitle">Grass</label>
+                            <label className="dataTitle">Flat</label>
                             <input
-                                onChange={(event) => setTopography('Grass')}
+                                onChange={(event) => setTopography('flat')}
                                 type="radio"
-                                value="Grass"
+                                value="flat"
                                 name="topographyRadio"></input>
                             <br></br>
                         </div>
 
                         <div className="attributeHolder">
-                            <label className="dataTitle">Rocky</label>
+                            <label className="dataTitle">Mild</label>
                             <input
-                                onChange={(event) => setTopography('Rocky')}
+                                onChange={(event) => setTopography('mild')}
                                 type="radio"
-                                value="Rocky"
+                                value="mild"
                                 name="topographyRadio"></input>
                             <br></br>
                         </div>
 
                         <div className="attributeHolder">
-                            <label className="dataTitle">Snowy</label>
+                            <label className="dataTitle">Moderate</label>
                             <input
-                                onChange={(event) => setTopography('Snowy')}
+                                onChange={(event) => setTopography('moderate')}
                                 type="radio"
-                                value="Snowy"
+                                value="moderate"
                                 name="topographyRadio"></input>
                             <br></br>
                         </div>
 
                         <div className="attributeHolder">
-                            <label className="dataTitle">Wet</label>
+                            <label className="dataTitle">Extreme</label>
                             <input
-                                onChange={(event) => setTopography('Wet')}
+                                onChange={(event) => setTopography('extreme')}
                                 type="radio"
-                                value="Wet"
+                                value="extreme"
                                 name="topographyRadio"></input>
                             <br></br>
                         </div>
@@ -166,7 +166,7 @@ function Grid(props) {
         </div>
     )
 
-    function toggleSelected(row, col, selected) {
+    async function toggleSelected(row, col, selected) {
         let temp = JSON.parse(JSON.stringify(grid))
         let tempCoord = JSON.parse(JSON.stringify(coordGrid))
         let index = grid.findIndex(function (node) {
@@ -179,8 +179,27 @@ function Grid(props) {
         //if the topography is selected, update the coord, else flip it
         if (temp[index].selected) {
             tempCoord[index].topography = unselected
+            // Delete topography in backend at (col, row) position
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/remove-topography',
+                data: {
+                    column: col,
+                    row: row,
+                },
+            })
         } else {
             tempCoord[index].topography = props.selectTopography
+            // Add new topography in backend at (col, row) position
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/create-new-topography',
+                data: {
+                    topographyType: props.selectTopography,
+                    column: col,
+                    row: row,
+                },
+            })
         }
 
         temp[index].selected = !temp[index].selected

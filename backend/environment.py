@@ -33,6 +33,8 @@ class Environment:
             self,
             widthInPx,
             heightInPx,
+            columnCount,
+            rowCount,
             loadExistingSave=False,
             saveData=None):
         if not loadExistingSave:
@@ -44,6 +46,8 @@ class Environment:
             self.lightVisibility = []
             self.width = widthInPx
             self.height = heightInPx
+            self.columnCount = columnCount
+            self.rowCount = rowCount
         else:
             logging.info("Loading existing environment")
             self.creatureRegistry = registry.Registry()
@@ -79,6 +83,8 @@ class Environment:
             # Load dimensions
             self.width = saveData['width']
             self.height = saveData['height']
+            self.columnCount = saveData['columnCount']
+            self.rowCount = saveData['rowCount']
 
     def save(self):
         logging.info("Saving current state of the environment")
@@ -96,6 +102,8 @@ class Environment:
             'topographyRegistry': topographyList,
             'width': self.width,
             'height': self.height,
+            'columnCount': self.columnCount,
+            'rowCount': self.rowCount,
         }
 
     def addToCreatureRegistry(self, newCreature):
@@ -127,6 +135,21 @@ class Environment:
         logging.info(
             f"Removing topography with id {topographyToRemove.id} from the environment")
         self.topographyRegistry.remove(topographyToRemove)
+
+    def removeTopography(self, column, row):
+        topographyId = f"topography_column{column}_row{row}"
+        logging.info(f"Removing topography with id {topographyId}")
+
+        topographyToRemove = None
+        for topography in self.topographyRegistry:
+            if topography.id == topographyId:
+                topographyToRemove = topography
+                break
+
+        if topographyToRemove is not None:
+            self.topographyRegistry.remove(topographyToRemove)
+        else:
+            logging.info(f"Could not find topography to remove")
 
     def _getVisionPerceivableCreatures(
             self, creatureOfInterest, perceivableCreatures):
