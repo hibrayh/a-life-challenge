@@ -61,7 +61,6 @@ function App() {
 
         // Get the updated time of the simulation
         const simulationTime = await getTimeOfSimulation()
-        console.log(`Time of simulation: ${simulationTime}`)
     }
 
     const incrementTicksPerSecond = () => {
@@ -97,7 +96,6 @@ function App() {
         }).then((response) => {
             const res = response.data
             console.log(`Time of simulation: ${res}`)
-            // Do something with time of simulation
         })
     }
 

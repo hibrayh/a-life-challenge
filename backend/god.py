@@ -31,7 +31,6 @@ class God:
             self._simulationHeight = simulationHeight
             self._columnCount = columnCount
             self._rowCount = rowCount
-            self.startTime = time.time()
         else:
             logging.info("Loading existing God object")
             self._simulationWidth = saveData['_simulationWidth']
@@ -234,12 +233,4 @@ class God:
 
     def getTimeOfSimulation(self):
         logging.info("Getting the current time of simulation")
-        elapsedTime = time.time() - self.startTime
-        if elapsedTime < 21600:
-            timeOfSimulation = 'night'
-        elif elapsedTime < 64800:
-            timeOfSimulation = 'day'
-        else:
-            timeOfSimulation = 'night'
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        return f"{timeOfSimulation}, {timestamp}"
+        return self._environment.getTimeOfSimulation()

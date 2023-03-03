@@ -8,7 +8,8 @@ import creatures.creature
 import resources
 import topography
 import random
-from datetime import datetime
+import datetime
+import time 
 
 
 logging.basicConfig(
@@ -50,6 +51,8 @@ class Environment:
             self.columnCount = columnCount
             self.rowCount = rowCount
             self.timeOfSimulation = 0
+            self.daysElapsed = 0
+            self.startTime = time.time()
         else:
             logging.info("Loading existing environment")
             self.creatureRegistry = registry.Registry()
@@ -339,5 +342,19 @@ class Environment:
             if not creature.hasPerformedActionThisTurn:
                 creature.performAction()
 
-        # Increment the simulation time by one tick to track simulation time
+        # Increment the simulation time by one tick to track simulation time in ticks per second
         self.timeOfSimulation += 1
+
+        # Check if 300 ticks have elapsed and increment daysElapsed if so
+        if self.timeOfSimulation % 300 == 0:
+            self.daysElapsed += 1
+
+    def getTimeOfSimulation(self):
+        logging.info("Getting the current time of simulation")
+        elapsedTicks = self.timeOfSimulation % 300
+        if elapsedTicks < 150:
+            timeOfSimulation = 'daytime'
+        else:
+            timeOfSimulation = 'nighttime'
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return f"{timeOfSimulation}, {elapsedTicks} ticks elapsed, {self.daysElapsed} days elapsed"
