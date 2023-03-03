@@ -11,11 +11,13 @@ function App() {
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
     const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
+    const [simulationTime, setSimulationTime] = useState(0);
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
     const [creatureList, setCreatureList] = useState([])
     const [showLoad, setShowLoad] = useState(false)
     const [resourceList, setResourceList] = useState([])
+    const [timeOfDay, setTimeOfDay] = useState('')
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
@@ -56,6 +58,10 @@ function App() {
         })
 
         await getSimulationInfo()
+
+        // Get the updated time of the simulation
+        const simulationTime = await getTimeOfSimulation();
+        console.log(`Time of simulation: ${simulationTime}`);
     }
 
     const incrementTicksPerSecond = () => {
@@ -84,20 +90,26 @@ function App() {
         })
     }
 
-    useEffect(() => {
-        const interval = setInterval(
-            () => {
-                if (simulationTicksPerSecond > 0 && isSimulationRunning) {
-                    progressSimulationTimeByOneTick()
-                }
-            },
-            simulationTicksPerSecond > 0
-                ? 1000 / simulationTicksPerSecond
-                : 1000
-        )
+    const getTimeOfSimulation = async () => {
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/time-of-simulation',
+        }).then((response) => {
+            const res = response.data
+            console.log(`Time of simulation: ${res}`)
+            // Do something with time of simulation
+        })
+    }
 
-        return () => clearInterval(interval)
-    }, [isSimulationRunning, simulationTicksPerSecond])
+    useEffect(() => {
+        const interval = setInterval(() => {
+          if (simulationTicksPerSecond > 0 && isSimulationRunning) {
+            progressSimulationTimeByOneTick();
+          }
+        }, simulationTicksPerSecond > 0 ? 1000 / simulationTicksPerSecond : 1000);
+      
+        return () => clearInterval(interval);
+      }, [isSimulationRunning, simulationTicksPerSecond]);
 
     const Menu = () => {
         return (

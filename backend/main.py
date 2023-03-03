@@ -292,3 +292,10 @@ def removeTopography():
     GOD.removeTopography(request.json['column'], request.json['row'])
 
     return "Success", 201
+
+
+@api.route('/time-of-simulation')
+@cross_origin()
+def timeOfSimulation():
+    global GOD
+    return jsonify(GOD.getTimeOfSimulation())

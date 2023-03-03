@@ -8,6 +8,7 @@ import creatures.creature
 import resources
 import topography
 import random
+from datetime import datetime 
 
 
 logging.basicConfig(
@@ -48,6 +49,7 @@ class Environment:
             self.height = heightInPx
             self.columnCount = columnCount
             self.rowCount = rowCount
+            self.timeOfSimulation = 0
         else:
             logging.info("Loading existing environment")
             self.creatureRegistry = registry.Registry()
@@ -336,3 +338,6 @@ class Environment:
         for creature in self.creatureRegistry.registry:
             if not creature.hasPerformedActionThisTurn:
                 creature.performAction()
+
+        # Increment the simulation time by one tick to track simulation time
+        self.timeOfSimulation += 1
