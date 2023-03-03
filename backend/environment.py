@@ -45,7 +45,7 @@ class Environment:
             self.creatureRegistry = registry.Registry()
             self.resourceRegistry = []
             self.topographyRegistry = []
-            self.lightVisibility = []
+            self.lightVisibility = 1.0
             self.width = widthInPx
             self.height = heightInPx
             self.columnCount = columnCount
@@ -159,7 +159,7 @@ class Environment:
     def _getVisionPerceivableCreatures(
             self, creatureOfInterest, perceivableCreatures):
         radiusOfSightPerception = int(
-            creatureOfInterest.genome.sightRange * 200)
+            creatureOfInterest.genome.sightRange * 200 * self.lightVisibility)      #Multiplying by lightVisibility to get the creatures VISION based on time of day)
 
         for creature in self.creatureRegistry.registry:
             distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
@@ -218,7 +218,7 @@ class Environment:
     def _getVisionPerceivableResources(
             self, creatureOfInterest, perceivableResources):
         radiusOfSightPerception = int(
-            creatureOfInterest.genome.sightRange * 200)
+            creatureOfInterest.genome.sightRange * 200 * self.lightVisibility)      #Multiplying by lightVisibility to get the creatures VISION based on time of day
 
         for resource in self.resourceRegistry:
             distanceFromCreature = (math.sqrt((abs(resource.xCoordinate -
@@ -273,12 +273,25 @@ class Environment:
             f"Fetching perceivable environment for {creatureOfInterest.id}")
         perceivableResources = []
         perceivableCreatures = []
+        lightVisibility = 1.0
 
         if creatures.genome.Receptors.VISION in creatureOfInterest.genome.receptors:
             self._getVisionPerceivableCreatures(
                 creatureOfInterest, perceivableCreatures)
             self._getVisionPerceivableResources(
                 creatureOfInterest, perceivableResources)
+            # Establishing visibility factor when simulation is initialized
+            if self.lightVisibility == 1.0:
+                self._getVisionPerceivableCreatures(
+                    creatureOfInterest, perceivableCreatures)
+                self._getVisionPerceivableResources(
+                    creatureOfInterest, perceivableResources)
+            # Reduced visibility at nighttime
+            if self.lightVisibility == 0.5:
+                self._getVisionPerceivableCreatures(
+                    creatureOfInterest, perceivableCreatures)
+                self._getVisionPerceivableResources(
+                    creatureOfInterest, perceivableResources)
 
         if creatures.genome.Receptors.SMELL in creatureOfInterest.genome.receptors:
             self._getSmellPerceivableCreatures(
@@ -351,11 +364,11 @@ class Environment:
             self.daysElapsed += 1
 
     def getTimeOfSimulation(self):
-        logging.info("Getting the current time of simulation")
-        elapsedTicks = self.timeOfSimulation % 300
+        elapsedTicks = self.timeOfSimulation % 300  #A day cycle is currently set to 300, so once ticks reach 300, a new day starts
         if elapsedTicks < 150:
+            self.lightVisibility = 1.0              #Daytime, sets visibility to factor of 1 
             timeOfSimulation = 'daytime'
         else:
+            self.lightVisibility = 0.5              #Nighttime, sets visibility to factor of 0.5
             timeOfSimulation = 'nighttime'
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         return f"{timeOfSimulation}, {elapsedTicks} ticks elapsed, {self.daysElapsed} days elapsed"
