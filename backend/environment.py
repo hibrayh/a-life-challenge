@@ -9,7 +9,7 @@ import resources
 import topography
 import random
 import datetime
-import time 
+import time
 
 
 logging.basicConfig(
@@ -342,7 +342,8 @@ class Environment:
             if not creature.hasPerformedActionThisTurn:
                 creature.performAction()
 
-        # Increment the simulation time by one tick to track simulation time in ticks per second
+        # Increment the simulation time by one tick to track simulation time in
+        # ticks per second
         self.timeOfSimulation += 1
 
         # Check if 300 ticks have elapsed and increment daysElapsed if so
