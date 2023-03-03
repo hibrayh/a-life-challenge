@@ -11,7 +11,7 @@ function App() {
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
     const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
-    const [simulationTime, setSimulationTime] = useState(0);
+    const [simulationTime, setSimulationTime] = useState(0)
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
     const [creatureList, setCreatureList] = useState([])
@@ -60,8 +60,8 @@ function App() {
         await getSimulationInfo()
 
         // Get the updated time of the simulation
-        const simulationTime = await getTimeOfSimulation();
-        console.log(`Time of simulation: ${simulationTime}`);
+        const simulationTime = await getTimeOfSimulation()
+        console.log(`Time of simulation: ${simulationTime}`)
     }
 
     const incrementTicksPerSecond = () => {
@@ -102,14 +102,19 @@ function App() {
     }
 
     useEffect(() => {
-        const interval = setInterval(() => {
-          if (simulationTicksPerSecond > 0 && isSimulationRunning) {
-            progressSimulationTimeByOneTick();
-          }
-        }, simulationTicksPerSecond > 0 ? 1000 / simulationTicksPerSecond : 1000);
-      
-        return () => clearInterval(interval);
-      }, [isSimulationRunning, simulationTicksPerSecond]);
+        const interval = setInterval(
+            () => {
+                if (simulationTicksPerSecond > 0 && isSimulationRunning) {
+                    progressSimulationTimeByOneTick()
+                }
+            },
+            simulationTicksPerSecond > 0
+                ? 1000 / simulationTicksPerSecond
+                : 1000
+        )
+
+        return () => clearInterval(interval)
+    }, [isSimulationRunning, simulationTicksPerSecond])
 
     const Menu = () => {
         return (

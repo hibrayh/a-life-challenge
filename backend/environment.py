@@ -8,7 +8,7 @@ import creatures.creature
 import resources
 import topography
 import random
-from datetime import datetime 
+from datetime import datetime
 
 
 logging.basicConfig(

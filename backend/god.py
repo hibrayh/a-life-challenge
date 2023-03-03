@@ -4,8 +4,8 @@ import topography
 import creatures.species_manager
 import random
 from environment import Environment
-import time 
-import datetime 
+import time
+import datetime
 
 logging.basicConfig(
     level=logging.INFO,
