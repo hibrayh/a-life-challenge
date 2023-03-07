@@ -15,7 +15,6 @@ let textChangeLogArray = []
 let removeLogArray = []
 let keyId = 0
 
-
 class Animation extends React.Component {
     constructor(props) {
         super(props)
@@ -28,22 +27,20 @@ class Animation extends React.Component {
         this.AnimateMovement = this.AnimateMovement.bind(this)
     }
 
-    CreateText(creature){
+    CreateText(creature) {
         return (
             <div
-                id={"text" + creature.creatureId}
+                id={'text' + creature.creatureId}
                 style={{
                     position: 'absolute',
                     left: `${creature.locationX - textOffsetSide}px`,
                     top: `${creature.locationY - textOffsetUp}px`,
-                    fontSize: "1.5vh",
-                }}
-            >
+                    fontSize: '1.5vh',
+                }}>
                 {creature.creatureId + ': '}
 
                 {creature.lastAction}
             </div>
-            
         )
     }
 
@@ -265,10 +262,10 @@ class Animation extends React.Component {
                             duration: 1000 / this.props.simulationSpeed,
                         },
                     ]}></Anime>
-                                    <Anime
+                <Anime
                     initial={[
                         {
-                            targets: "#text" + creature.creatureId,
+                            targets: '#text' + creature.creatureId,
                             left: `${creature.locationX - textOffsetSide}px`,
                             top: `${creature.locationY - textOffsetUp}px`,
                             easing: 'linear',
@@ -475,9 +472,7 @@ class Animation extends React.Component {
         })
 
         textChangeLogArray.forEach((log) => {
-            textArray = textArray.filter(
-                (element) => element.key !== log.key
-            )
+            textArray = textArray.filter((element) => element.key !== log.key)
         })
 
         // now re-add the items that moved from changelog at the correct location
@@ -512,7 +507,7 @@ class Animation extends React.Component {
             } else if (creature.lastAction === 'DEATH') {
                 //remove the element After playing the animation
                 removeLogArray.push({ key: creature.creatureId })
-                removeLogArray.push({key: "text" + creature.creatureId})
+                removeLogArray.push({ key: 'text' + creature.creatureId })
             }
 
             //move the creatures
@@ -526,7 +521,7 @@ class Animation extends React.Component {
             })
 
             textChangeLogArray.push({
-                key: "text" + creature.creatureId,
+                key: 'text' + creature.creatureId,
                 elem: (
                     <div key={'text' + keyId++}>
                         {this.CreateText(creature)}
@@ -631,10 +626,9 @@ class Animation extends React.Component {
                     ))}
                 </div>
             )
-
         } else {
             //we only animate movement
-            // here we also include the text, this can easily be moved to a different 
+            // here we also include the text, this can easily be moved to a different
             // if statement, so it can be hooked up to a button
             jsx = this.runQuickAnimation()
 
