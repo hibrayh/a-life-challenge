@@ -25,6 +25,8 @@ function App() {
             data: {
                 simulationWidth: window.innerWidth,
                 simulationHeight: window.innerHeight,
+                columnCount: 50,
+                rowCount: 25,
             },
         })
         setHasSimulationStarted(true)
@@ -190,7 +192,7 @@ function App() {
             // Load simulation in the backend
             await axios({
                 method: 'POST',
-                url: 'http://localhost:5000//load-simulation',
+                url: 'http://localhost:5000/load-simulation',
                 data: {
                     filename: loadName,
                 },

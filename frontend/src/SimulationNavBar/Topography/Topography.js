@@ -5,11 +5,6 @@ import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 
 function TopographyPage(props) {
-    const [checkedValue, setCheckedValue] = useState()
-    const [grassland, setGrass] = useState(true)
-    const [rocky, setRocky] = useState(false)
-    const [snowy, setSnowy] = useState(false)
-    const [wet, setWet] = useState(false)
     const [topography, setTopography] = useState(unselected)
 
     if (props.show) {
@@ -167,7 +162,7 @@ function Grid(props) {
         </div>
     )
 
-    function toggleSelected(row, col) {
+    async function toggleSelected(row, col) {
         let temp = JSON.parse(JSON.stringify(grid))
         let tempCoord = JSON.parse(JSON.stringify(coordGrid))
         let index = grid.findIndex(function (node) {
@@ -180,8 +175,27 @@ function Grid(props) {
         //if the topography is selected, update the coord, else flip it
         if (temp[index].topography) {
             tempCoord[index].topography = unselected
+            // Delete topography in backend at (col, row) position
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/remove-topography',
+                data: {
+                    column: col,
+                    row: row,
+                },
+            })
         } else {
             tempCoord[index].topography = props.selectTopography
+            // Add new topography in backend at (col, row) position
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/create-new-topography',
+                data: {
+                    topographyType: props.selectTopography,
+                    column: col,
+                    row: row,
+                },
+            })
         }
         
         console.log(temp[index].topography, "previous")
