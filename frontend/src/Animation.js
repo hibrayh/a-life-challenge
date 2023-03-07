@@ -7,6 +7,7 @@ const { Anime } = ReactAnime
 //const used to define the creature element size
 const grown = '2vh'
 let elementsArray = []
+let textElementsArray = []
 let changeLogArray = []
 let removeLogArray = []
 let keyId = 0
@@ -219,6 +220,25 @@ class Animation extends React.Component {
         )
     }
 
+    AnimateZooming(creature){
+        //at tick speeds 3 and up, the fancy animations stop. However, that doesn't mean
+        //elements have to teleport around.
+        return (
+            <>
+                <Anime
+                    initial={[
+                        {
+                            targets: '#' + creature.creatureId,
+                            left: `${creature.locationX}px`,
+                            top: `${creature.locationY}px`,
+                            easing: 'linear',
+                            duration: 500,
+                        },
+                    ]}></Anime>
+            </>
+        )
+    }
+
     AnimateMaturing(creature) {
         // animates a creature maturing, sizes up then back down again
         return (
@@ -388,13 +408,9 @@ class Animation extends React.Component {
         )
     }
 
-    runAnimations(){
-        //This function is where the element management and animation magic happen
-        //That way the actual render() function is a bit clearer
-        //While it manages the elements, it only actually returns the animation jsx
-
-        let jsx = []
-
+    elementManagement(){
+        //remove and re-add elements at their new locations
+        
         removeLogArray.forEach((removing) => {
             elementsArray = elementsArray.filter(
                 (element) => element.key !== removing.key
@@ -411,7 +427,6 @@ class Animation extends React.Component {
 
         // now re-add the items that moved from changelog at the correct location
         elementsArray = elementsArray.concat(changeLogArray)
-        console.log(this.props.simulationSpeed)
 
         changeLogArray = [] //reset the movement log
         removeLogArray = []
@@ -428,10 +443,37 @@ class Animation extends React.Component {
                         </div>
                     ),
                 })
-                jsx.push(<div key={keyId++}>{this.AnimateBirth(creature)}</div>)
             } else if (creature.lastAction === 'DEATH') {
                 //remove the element After playing the animation
                 removeLogArray.push({ key: creature.creatureId })
+            } 
+            //move the creatures
+            changeLogArray.push({
+                key: creature.creatureId,
+                elem: (
+                    <div key={'movement' + keyId++}>
+                        {this.CreateCreature(creature)}
+                    </div>
+                ),
+            })
+        }
+
+    }
+
+    runFullAnimations(){
+        //This function is where the element management and animation magic happen
+        //That way the actual render() function is a bit clearer
+        //While it manages the elements, it only actually returns the animation jsx
+
+        let jsx = []
+
+        for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
+            let creature = this.props.creaturesToAnimate[i]
+
+            if (creature.lastAction === 'BIRTHED') {
+                jsx.push(<div key={keyId++}>{this.AnimateBirth(creature)}</div>)
+            } else if (creature.lastAction === 'DEATH') {
+                //remove the element After playing the animation
                 jsx.push(
                     <div key={keyId++}>{this.AnimateKilled(creature)}</div>
                 )
@@ -456,14 +498,6 @@ class Animation extends React.Component {
             } 
 
             //move the creatures
-            changeLogArray.push({
-                key: creature.creatureId,
-                elem: (
-                    <div key={'movement' + keyId++}>
-                        {this.CreateCreature(creature)}
-                    </div>
-                ),
-            })
             jsx.push(<div key={keyId++}>{this.AnimateMovement(creature)}</div>)
         }
         
@@ -486,20 +520,19 @@ class Animation extends React.Component {
 
     }
 
-    displayText(){
-
-    }
 
     render() {
 
         //returns the jsx will all its animations, and the elements in the element array for those animations to reference
-        let jsx = this.runAnimations()
 
         //we only want to actually display the jsx if the time is slow enough to be stable
         //we always want to return the elementsArray
 
+        this.elementManagement() //always manage the elements
+
         if(this.props.simulationSpeed < 4){
             // run the animations
+            let jsx = this.runFullAnimations()
             return (
                 <div id="animation-wrapper">
                     {jsx}
