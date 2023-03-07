@@ -388,13 +388,12 @@ class Animation extends React.Component {
         )
     }
 
-    displayText(){
+    runAnimations(){
+        //This function is where the element management and animation magic happen
+        //That way the actual render() function is a bit clearer
+        //While it manages the elements, it only actually returns the animation jsx
 
-    }
-
-    render() {
         let jsx = []
-        let textJsx = []
 
         removeLogArray.forEach((removing) => {
             elementsArray = elementsArray.filter(
@@ -478,16 +477,49 @@ class Animation extends React.Component {
                 </div>
             )
         }
-        //returns the jsx will all its animations, and the elements in the element array for those animations to reference
+
         return (
             <div id="animation-wrapper">
                 {jsx}
+            </div>
+        )
+
+    }
+
+    displayText(){
+
+    }
+
+    render() {
+
+        //returns the jsx will all its animations, and the elements in the element array for those animations to reference
+        let jsx = this.runAnimations()
+
+        //we only want to actually display the jsx if the time is slow enough to be stable
+        //we always want to return the elementsArray
+
+        if(this.props.simulationSpeed < 4){
+            // run the animations
+            return (
+                <div id="animation-wrapper">
+                    {jsx}
+                    {elementsArray.map((element) => (
+                        <div key={'map' + keyId++}>{element.elem}</div>
+                    ))}
+                </div>
+            )
+        }
+
+        return (
+            // just show the elements
+            <div id="animation-wrapper">
                 {elementsArray.map((element) => (
                     <div key={'map' + keyId++}>{element.elem}</div>
                 ))}
             </div>
         )
     }
+
 }
 
 export default Animation
