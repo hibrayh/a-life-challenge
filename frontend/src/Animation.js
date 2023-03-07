@@ -504,7 +504,7 @@ class Animation extends React.Component {
 
     }
 
-    runQuickAnimations(){
+    runQuickAnimation(){
         let jsx = []
 
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
@@ -538,38 +538,26 @@ class Animation extends React.Component {
         //returns the jsx will all its animations, and the elements in the element array for those animations to reference
         //we only want to actually display the full animation jsx if the time is slow enough to be stable
         let jsx = []
+        this.elementManagement() //manage the elements
 
-        if(this.props.simulationSpeed < 3){
-            // run the full animations
-            this.elementManagement() //manage the elements
+        if(this.props.simulationSpeed < 4){
+            // run the full animations at 1, 2, 3 ticks a second
             jsx = this.runFullAnimations()
-            return (
-                <div id="animation-wrapper">
-                    {jsx}
-                    {elementsArray.map((element) => (
-                        <div key={'map' + keyId++}>{element.elem}</div>
-                    ))}
-                </div>
-            )
 
         } else {
-            //we only animate a speed up movement
-            //first we need to determine the speed, we want the zooming animations to run 2 ticks a second
-            // number of ticks to skip = (ticks per second / 2)
-
-                //run the zoom movement animations
-                this.elementManagement() //manage the elements
-                jsx = this.runQuickAnimations()
-                return (
-                    <div id="animation-wrapper">
-                        {jsx}
-                        {elementsArray.map((element) => (
-                            <div key={'map' + keyId++}>{element.elem}</div>
-                        ))}
-                    </div>
-                )
+            //we only animate movement
+            jsx = this.runQuickAnimation()
             
         }
+
+        return (
+            <div id="animation-wrapper">
+                {jsx}
+                {elementsArray.map((element) => (
+                    <div key={'map' + keyId++}>{element.elem}</div>
+                ))}
+            </div>
+        )
 
     }
 
