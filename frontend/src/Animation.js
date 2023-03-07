@@ -7,10 +7,10 @@ const { Anime } = ReactAnime
 //const used to define the creature element size
 const grown = '2vh'
 let elementsArray = []
-let textElementsArray = []
 let changeLogArray = []
 let removeLogArray = []
 let keyId = 0
+let skipped = 0 // keeping track of how many ticks have been skipped
 
 class Animation extends React.Component {
     constructor(props) {
@@ -220,24 +220,6 @@ class Animation extends React.Component {
         )
     }
 
-    AnimateZooming(creature){
-        //at tick speeds 3 and up, the fancy animations stop. However, that doesn't mean
-        //elements have to teleport around.
-        return (
-            <>
-                <Anime
-                    initial={[
-                        {
-                            targets: '#' + creature.creatureId,
-                            left: `${creature.locationX}px`,
-                            top: `${creature.locationY}px`,
-                            easing: 'linear',
-                            duration: 500,
-                        },
-                    ]}></Anime>
-            </>
-        )
-    }
 
     AnimateMaturing(creature) {
         // animates a creature maturing, sizes up then back down again
@@ -409,7 +391,9 @@ class Animation extends React.Component {
     }
 
     elementManagement(){
-        //remove and re-add elements at their new locations
+        //adds, removes, and re-add elements at their new locations
+        //this has to happen regardless of whether the animations are running, as we still
+        //want the creatures to at least Show on screen
         
         removeLogArray.forEach((removing) => {
             elementsArray = elementsArray.filter(
@@ -461,9 +445,9 @@ class Animation extends React.Component {
     }
 
     runFullAnimations(){
-        //This function is where the element management and animation magic happen
+        //This function is where the animation magic happens
         //That way the actual render() function is a bit clearer
-        //While it manages the elements, it only actually returns the animation jsx
+        //returns the full animation jsx
 
         let jsx = []
 
@@ -520,19 +504,45 @@ class Animation extends React.Component {
 
     }
 
+    runQuickAnimations(){
+        let jsx = []
+
+        for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
+            let creature = this.props.creaturesToAnimate[i]
+
+            //move the creatures
+            jsx.push(<div key={keyId++}>{this.AnimateMovement(creature)}</div>)
+        }
+        
+
+        for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
+            let resource = this.props.resourcesToAnimate[i]
+            console.log(resource)
+            jsx.push(
+                <div key={'resource' + { i }}>
+                    {this.CreateResource(resource)}
+                </div>
+            )
+        }
+
+        return (
+            <div id="animation-wrapper">
+                {jsx}
+            </div>
+        )
+    }
+
 
     render() {
 
         //returns the jsx will all its animations, and the elements in the element array for those animations to reference
+        //we only want to actually display the full animation jsx if the time is slow enough to be stable
+        let jsx = []
 
-        //we only want to actually display the jsx if the time is slow enough to be stable
-        //we always want to return the elementsArray
-
-        this.elementManagement() //always manage the elements
-
-        if(this.props.simulationSpeed < 4){
-            // run the animations
-            let jsx = this.runFullAnimations()
+        if(this.props.simulationSpeed < 3){
+            // run the full animations
+            this.elementManagement() //manage the elements
+            jsx = this.runFullAnimations()
             return (
                 <div id="animation-wrapper">
                     {jsx}
@@ -541,16 +551,26 @@ class Animation extends React.Component {
                     ))}
                 </div>
             )
+
+        } else {
+            //we only animate a speed up movement
+            //first we need to determine the speed, we want the zooming animations to run 2 ticks a second
+            // number of ticks to skip = (ticks per second / 2)
+
+                //run the zoom movement animations
+                this.elementManagement() //manage the elements
+                jsx = this.runQuickAnimations()
+                return (
+                    <div id="animation-wrapper">
+                        {jsx}
+                        {elementsArray.map((element) => (
+                            <div key={'map' + keyId++}>{element.elem}</div>
+                        ))}
+                    </div>
+                )
+            
         }
 
-        return (
-            // just show the elements
-            <div id="animation-wrapper">
-                {elementsArray.map((element) => (
-                    <div key={'map' + keyId++}>{element.elem}</div>
-                ))}
-            </div>
-        )
     }
 
 }
