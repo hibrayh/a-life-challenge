@@ -155,6 +155,7 @@ function App() {
                 <Animation
                     creaturesToAnimate={creatureList}
                     resourcesToAnimate={resourceList}
+                    simulationSpeed={simulationTicksPerSecond}
                 />
                 <SimulationNavBar
                     playOrPauseSimulationCallback={playPauseSimulation}

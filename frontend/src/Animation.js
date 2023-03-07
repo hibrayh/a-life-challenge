@@ -1,6 +1,5 @@
 import './DummyConnection.css'
 import React from 'react'
-import axios from 'axios'
 import ReactAnime from 'react-animejs'
 
 const { Anime } = ReactAnime
@@ -22,7 +21,6 @@ class Animation extends React.Component {
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
-        this.getCreatureInfo = this.getCreatureInfo.bind(this)
     }
 
     CreateCreature(creature) {
@@ -87,6 +85,7 @@ class Animation extends React.Component {
                             scale: [0, 1],
                             rotate: 360,
                             easing: 'linear',
+                            duration: 1000 / this.props.simulationSpeed
                         },
                     ]}></Anime>
             </>
@@ -102,8 +101,8 @@ class Animation extends React.Component {
                         {
                             targets: '#' + creature.creatureId,
                             opacity: '0',
-                            duration: 3000,
                             easing: 'easeInOutElastic(8, 1)',
+                            duration: 1000 / this.props.simulationSpeed
                         },
                     ]}></Anime>
             </>
@@ -122,42 +121,52 @@ class Animation extends React.Component {
                                 {
                                     translateY: '-=2vh',
                                     easing: 'linear',
+                                    duration: 1000/(10*this.props.simulationSpeed)  
                                 },
                                 {
                                     translateY: '-=0.6vh',
                                     easing: 'linear',
+                                    duration: 1000/(10*this.props.simulationSpeed)
                                 },
                                 {
                                     translateY: '+=0.1vh',
                                     easing: 'linear',
+                                    duration: 1000/(10*this.props.simulationSpeed) 
                                 },
                                 {
                                     translateY: '+=0.5vh',
                                     easing: 'linear',
+                                    duration: 1000/(10*this.props.simulationSpeed) 
                                 },
                                 {
                                     translateY: '+=2vh',
                                     easing: 'linear',
+                                    duration: 1000/(10*this.props.simulationSpeed) 
                                 },
                                 {
                                     translateY: '-=2vh',
                                     easing: 'linear',
+                                    duration: 1000/(10*this.props.simulationSpeed) 
                                 },
                                 {
                                     translateY: '-=0.6vh',
                                     easing: 'linear',
+                                    duration: 1000/(10*this.props.simulationSpeed) 
                                 },
                                 {
                                     translateY: '+=0.1vh',
                                     easing: 'linear',
+                                    duration: 1000/(10*this.props.simulationSpeed) 
                                 },
                                 {
                                     translateY: '+=0.5vh',
                                     easing: 'linear',
+                                    duration: 1000/(10*this.props.simulationSpeed) 
                                 },
                                 {
                                     translateY: '+=2vh',
                                     easing: 'linear',
+                                    duration: 1000/(10*this.props.simulationSpeed) 
                                 },
                             ],
                         },
@@ -175,9 +184,15 @@ class Animation extends React.Component {
                         {
                             targets: '#' + creature.creatureId,
                             keyframes: [
-                                { opacity: '0.2' },
-                                { opacity: '0.2' },
-                                { opacity: '1' },
+                                { opacity: '0.2',
+                                  duration: 1000/(3*this.props.simulationSpeed)  
+                                },
+                                { opacity: '0.2', 
+                                  duration: 1000/(3*this.props.simulationSpeed)  
+                                },
+                                { opacity: '1',
+                                  duration: 1000/(3*this.props.simulationSpeed)  
+                                },
                             ],
                             easing: 'linear',
                         },
@@ -197,6 +212,7 @@ class Animation extends React.Component {
                             left: `${creature.locationX}px`,
                             top: `${creature.locationY}px`,
                             easing: 'linear',
+                            duration: 1000 / this.props.simulationSpeed,
                         },
                     ]}></Anime>
             </>
@@ -215,14 +231,17 @@ class Animation extends React.Component {
                                 {
                                     scale: [1, 1.1],
                                     easing: 'easeInOutElastic(2, 2)',
+                                    duration: 1000 / (3*this.props.simulationSpeed)
                                 },
                                 {
                                     scale: [1, 1.5],
                                     easing: 'easeInOutElastic(4, 2)',
+                                    duration: 1000 / (3*this.props.simulationSpeed)
                                 },
                                 {
                                     scale: [1.5, 1],
                                     easing: 'linear',
+                                    duration: 1000 / (3*this.props.simulationSpeed)
                                 },
                             ],
                         },
@@ -243,10 +262,12 @@ class Animation extends React.Component {
                                 {
                                     translateX: '+=0.5vw',
                                     easing: 'easeInOutElastic(7, 1)',
+                                    duration: 1000 / (2*this.props.simulationSpeed)
                                 },
                                 {
                                     translateX: '-=0.5vw',
                                     easing: 'linear',
+                                    duration: 1000 / (2*this.props.simulationSpeed)
                                 },
                             ],
                         },
@@ -268,6 +289,7 @@ class Animation extends React.Component {
                                     scale: [1, 0.5],
                                     opacity: '0.5',
                                     easing: 'easeInOutElastic(4, 1.5)',
+                                    
                                 },
                                 {
                                     scale: [0.5, 1],
@@ -366,29 +388,14 @@ class Animation extends React.Component {
         )
     }
 
-    getCreatureInfo() {
-        // Use axios to retrieve info from the backend
-        axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-info',
-        }).then((response) => {
-            const res = response.data
-            // change the state variable to trigger a re-render
-            this.setState({
-                creatureId: res.creatureId,
-                species: res.species,
-                movement: res.movement,
-                birth: res.birth,
-                locationX: res.locationX,
-                locationY: res.locationY,
-                shape: res.shape,
-                color: res.color,
-            })
-        })
+    displayText(){
+
     }
 
     render() {
-        //remove any creatures that were killed
+        let jsx = []
+        let textJsx = []
+
         removeLogArray.forEach((removing) => {
             elementsArray = elementsArray.filter(
                 (element) => element.key !== removing.key
@@ -405,8 +412,8 @@ class Animation extends React.Component {
 
         // now re-add the items that moved from changelog at the correct location
         elementsArray = elementsArray.concat(changeLogArray)
+        console.log(this.props.simulationSpeed)
 
-        let jsx = []
         changeLogArray = [] //reset the movement log
         removeLogArray = []
 
@@ -447,7 +454,7 @@ class Animation extends React.Component {
                 jsx.push(
                     <div key={keyId++}>{this.AnimateMaturing(creature)}</div>
                 )
-            }
+            } 
 
             //move the creatures
             changeLogArray.push({
@@ -460,21 +467,7 @@ class Animation extends React.Component {
             })
             jsx.push(<div key={keyId++}>{this.AnimateMovement(creature)}</div>)
         }
-        //this is the updated format for animating the resources, not going to actually add it until I can
-        //check if it works
-
-        /*for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
-            let resource = this.props.resourcesToAnimate[i]
-            elementsArray.push({
-                key: creature.creatureId,
-                elem: (
-                    <div key={'creature' + keyId++}>
-                        {this.CreateCreature(creature)}
-                    </div>
-                ),
-            })
-            jsx.push(<div key={'res' + { i }}>{this.AnimateResourceSpawn(resource)}</div>)
-        }*/
+        
 
         for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
             let resource = this.props.resourcesToAnimate[i]
@@ -485,7 +478,6 @@ class Animation extends React.Component {
                 </div>
             )
         }
-
         //returns the jsx will all its animations, and the elements in the element array for those animations to reference
         return (
             <div id="animation-wrapper">
