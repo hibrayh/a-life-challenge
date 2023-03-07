@@ -6,11 +6,15 @@ const { Anime } = ReactAnime
 
 //const used to define the creature element size
 const grown = '2vh'
+const textOffsetUp = 20
+const textOffsetSide = 40
 let elementsArray = []
+let textArray = []
 let changeLogArray = []
+let textChangeLogArray = []
 let removeLogArray = []
 let keyId = 0
-let skipped = 0 // keeping track of how many ticks have been skipped
+
 
 class Animation extends React.Component {
     constructor(props) {
@@ -22,6 +26,25 @@ class Animation extends React.Component {
         }
         this.AnimateBirth = this.AnimateBirth.bind(this)
         this.AnimateMovement = this.AnimateMovement.bind(this)
+    }
+
+    CreateText(creature){
+        return (
+            <div
+                id={"text" + creature.creatureId}
+                style={{
+                    position: 'absolute',
+                    left: `${creature.locationX - textOffsetSide}px`,
+                    top: `${creature.locationY - textOffsetUp}px`,
+                    fontSize: "1.5vh",
+                }}
+            >
+                {creature.creatureId + ': '}
+
+                {creature.lastAction}
+            </div>
+            
+        )
     }
 
     CreateCreature(creature) {
@@ -242,6 +265,16 @@ class Animation extends React.Component {
                             duration: 1000 / this.props.simulationSpeed,
                         },
                     ]}></Anime>
+                                    <Anime
+                    initial={[
+                        {
+                            targets: "#text" + creature.creatureId,
+                            left: `${creature.locationX - textOffsetSide}px`,
+                            top: `${creature.locationY - textOffsetUp}px`,
+                            easing: 'linear',
+                            duration: 1000 / this.props.simulationSpeed,
+                        },
+                    ]}></Anime>
             </>
         )
     }
@@ -428,6 +461,9 @@ class Animation extends React.Component {
             elementsArray = elementsArray.filter(
                 (element) => element.key !== removing.key
             )
+            textArray = textArray.filter(
+                (element) => element.key !== removing.key
+            )
         })
 
         //if a creature moved, remove the element and create one at the correct spot
@@ -438,16 +474,25 @@ class Animation extends React.Component {
             )
         })
 
+        textChangeLogArray.forEach((log) => {
+            textArray = textArray.filter(
+                (element) => element.key !== log.key
+            )
+        })
+
         // now re-add the items that moved from changelog at the correct location
         elementsArray = elementsArray.concat(changeLogArray)
+        textArray = textArray.concat(textChangeLogArray)
 
         changeLogArray = [] //reset the movement log
+        textChangeLogArray = []
         removeLogArray = []
 
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
 
             if (creature.lastAction === 'BIRTHED') {
+                //make the elements for both the animation and the text
                 elementsArray.push({
                     key: creature.creatureId,
                     elem: (
@@ -456,16 +501,35 @@ class Animation extends React.Component {
                         </div>
                     ),
                 })
+                textArray.push({
+                    key: 'text' + creature.creatureId,
+                    elem: (
+                        <div key={'text' + keyId++}>
+                            {this.CreateText(creature)}
+                        </div>
+                    ),
+                })
             } else if (creature.lastAction === 'DEATH') {
                 //remove the element After playing the animation
                 removeLogArray.push({ key: creature.creatureId })
+                removeLogArray.push({key: "text" + creature.creatureId})
             }
+
             //move the creatures
             changeLogArray.push({
                 key: creature.creatureId,
                 elem: (
                     <div key={'movement' + keyId++}>
                         {this.CreateCreature(creature)}
+                    </div>
+                ),
+            })
+
+            textChangeLogArray.push({
+                key: "text" + creature.creatureId,
+                elem: (
+                    <div key={'text' + keyId++}>
+                        {this.CreateText(creature)}
                     </div>
                 ),
             })
@@ -558,19 +622,34 @@ class Animation extends React.Component {
         if (this.props.simulationSpeed < 4) {
             // run the full animations at 1, 2, 3 ticks a second
             jsx = this.runFullAnimations()
+
+            return (
+                <div id="animation-wrapper">
+                    {jsx}
+                    {elementsArray.map((element) => (
+                        <div key={'map' + keyId++}>{element.elem}</div>
+                    ))}
+                </div>
+            )
+
         } else {
             //we only animate movement
+            // here we also include the text, this can easily be moved to a different 
+            // if statement, so it can be hooked up to a button
             jsx = this.runQuickAnimation()
-        }
 
-        return (
-            <div id="animation-wrapper">
-                {jsx}
-                {elementsArray.map((element) => (
-                    <div key={'map' + keyId++}>{element.elem}</div>
-                ))}
-            </div>
-        )
+            return (
+                <div id="animation-wrapper">
+                    {jsx}
+                    {elementsArray.map((element) => (
+                        <div key={'map' + keyId++}>{element.elem}</div>
+                    ))}
+                    {textArray.map((element) => (
+                        <div key={'textmap' + keyId++}>{element.elem}</div>
+                    ))}
+                </div>
+            )
+        }
     }
 }
 
