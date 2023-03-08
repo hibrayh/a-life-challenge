@@ -88,8 +88,8 @@
     left: 42%;
 }
 
-#speciesRelationshipButton{
-    left:43%;
+#speciesRelationshipButton {
+    left: 43%;
 }
 
 .mainBackgroundColor {
@@ -106,7 +106,7 @@
 }
 
 .subTitleFont {
-    color:rgb(125,125,125);
+    color: rgb(125, 125, 125);
     font-size: 1vmax;
 }
 
@@ -136,6 +136,6 @@
     cursor: pointer;
 }
 
-.biggerIcon{
+.biggerIcon {
     line-height: 5px;
 }

@@ -1,7 +1,18 @@
 import React from 'react'
 import { useState } from 'react'
 import './SimulationNavBar.css'
-import {FaPlay, FaPause, FaPlus, FaMinus, FaFastForward, FaFastBackward, FaTree, FaFileAlt, FaSave, FaConnectdevelop} from 'react-icons/fa'
+import {
+    FaPlay,
+    FaPause,
+    FaPlus,
+    FaMinus,
+    FaFastForward,
+    FaFastBackward,
+    FaTree,
+    FaFileAlt,
+    FaSave,
+    FaConnectdevelop,
+} from 'react-icons/fa'
 import { NewCreatureForm } from './CreatureForms/NewCreatureForm.js'
 import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
@@ -27,12 +38,15 @@ function SimulationNavBar({
     const [showTopographyPage, setShowTopographyPage] = useState(false)
     const [showGridBorder, setShowGridBorder] = useState(false)
     const [showSavePage, setShowSavePage] = useState(false)
-    const [showSpeciesRelationshipPage, setShowSpeciesRelationshipPage] = useState(false)
+    const [showSpeciesRelationshipPage, setShowSpeciesRelationshipPage] =
+        useState(false)
 
     return (
         <>
-
-            <SpeciesRelationshipPage show={showSpeciesRelationshipPage} toggleSpeciesRelationshipPage={toggleSpeciesRelationshipPage} />
+            <SpeciesRelationshipPage
+                show={showSpeciesRelationshipPage}
+                toggleSpeciesRelationshipPage={toggleSpeciesRelationshipPage}
+            />
             <SavePage show={showSavePage} toggleSavePage={toggleSavePage} />
 
             <StatsPage show={showStatsPage} closeStatsPage={closeStatsPage} />
@@ -90,8 +104,11 @@ function SimulationNavBar({
 
                 <StatsButton toggleStatsPage={toggleStatsPage} />
 
-                <SpeciesRelationshipButton toggleSpeciesRelationshipPage={toggleSpeciesRelationshipPage} />
-
+                <SpeciesRelationshipButton
+                    toggleSpeciesRelationshipPage={
+                        toggleSpeciesRelationshipPage
+                    }
+                />
 
                 <SaveButton toggleSavePage={toggleSavePage} />
             </div>
@@ -146,26 +163,26 @@ function SimulationNavBar({
         setShowSavePage(!showSavePage)
     }
 
-    function toggleSpeciesRelationshipPage(){
+    function toggleSpeciesRelationshipPage() {
         setShowSpeciesRelationshipPage(!showSpeciesRelationshipPage)
     }
 }
 
-function SpeciesRelationshipButton(props){
-    return(
+function SpeciesRelationshipButton(props) {
+    return (
         <button
             onClick={handleClick}
             id="speciesRelationshipButton"
             className="navButton buttonHover biggerIcon"
-            title="Species Relationships"
-        ><FaConnectdevelop size={33}/></button>
+            title="Species Relationships">
+            <FaConnectdevelop size={33} />
+        </button>
     )
 
-    function handleClick(){
+    function handleClick() {
         props.toggleSpeciesRelationshipPage()
     }
 }
-
 
 function StatsButton(props) {
     return (
