@@ -11,13 +11,11 @@ function App() {
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
     const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
-    const [simulationTime, setSimulationTime] = useState(0)
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
     const [creatureList, setCreatureList] = useState([])
     const [showLoad, setShowLoad] = useState(false)
     const [resourceList, setResourceList] = useState([])
-    const [timeOfDay, setTimeOfDay] = useState('')
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation

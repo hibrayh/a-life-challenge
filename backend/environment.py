@@ -9,7 +9,6 @@ import resources
 import topography
 import random
 import datetime
-import time
 
 
 logging.basicConfig(
@@ -52,7 +51,6 @@ class Environment:
             self.rowCount = rowCount
             self.timeOfSimulation = 0
             self.daysElapsed = 0
-            self.startTime = time.time()
         else:
             logging.info("Loading existing environment")
             self.creatureRegistry = registry.Registry()
@@ -273,25 +271,13 @@ class Environment:
             f"Fetching perceivable environment for {creatureOfInterest.id}")
         perceivableResources = []
         perceivableCreatures = []
-        lightVisibility = 1.0
+        lightVisibility = self.getLightVisibility()
 
         if creatures.genome.Receptors.VISION in creatureOfInterest.genome.receptors:
             self._getVisionPerceivableCreatures(
-                creatureOfInterest, perceivableCreatures)
+                creatureOfInterest, perceivableCreatures, lightVisibility)
             self._getVisionPerceivableResources(
-                creatureOfInterest, perceivableResources)
-            # Establishing visibility factor when simulation is initialized
-            if self.lightVisibility == 1.0:
-                self._getVisionPerceivableCreatures(
-                    creatureOfInterest, perceivableCreatures)
-                self._getVisionPerceivableResources(
-                    creatureOfInterest, perceivableResources)
-            # Reduced visibility at nighttime
-            if self.lightVisibility == 0.5:
-                self._getVisionPerceivableCreatures(
-                    creatureOfInterest, perceivableCreatures)
-                self._getVisionPerceivableResources(
-                    creatureOfInterest, perceivableResources)
+                creatureOfInterest, perceivableResources, lightVisibility)
 
         if creatures.genome.Receptors.SMELL in creatureOfInterest.genome.receptors:
             self._getSmellPerceivableCreatures(
@@ -308,7 +294,7 @@ class Environment:
         return EnvironmentInfo(
             perceivableResources,
             perceivableCreatures,
-            [],
+            lightVisibility,
             [])
 
     def getRegisteredCreatures(self):
@@ -359,16 +345,38 @@ class Environment:
         # ticks per second
         self.timeOfSimulation += 1
 
-        # Check if 300 ticks have elapsed and increment daysElapsed if so
+        # Check if 300 ticks have elapsed and increment daysElapsed in the simulation if so
         if self.timeOfSimulation % 300 == 0:
             self.daysElapsed += 1
 
     def getTimeOfSimulation(self):
         elapsedTicks = self.timeOfSimulation % 300  #A day cycle is currently set to 300, so once ticks reach 300, a new day starts
-        if elapsedTicks < 150:
-            self.lightVisibility = 1.0              #Daytime, sets visibility to factor of 1 
-            timeOfSimulation = 'daytime'
+        if elapsedTicks < 30:
+            timeOfSimulation = 'dawn'
+        elif elapsedTicks < 90:
+            timeOfSimulation = 'morning'
+        elif elapsedTicks < 150:
+            timeOfSimulation = 'noon'
+        elif elapsedTicks < 210:
+            timeOfSimulation = 'afternoon'
+        elif elapsedTicks < 270:
+            timeOfSimulation = 'evening'
         else:
-            self.lightVisibility = 0.5              #Nighttime, sets visibility to factor of 0.5
-            timeOfSimulation = 'nighttime'
+            timeOfSimulation = 'dusk'
         return f"{timeOfSimulation}, {elapsedTicks} ticks elapsed, {self.daysElapsed} days elapsed"
+
+    def getLightVisibility(self):
+        elapsedTicks = self.timeOfSimulation % 300
+        if elapsedTicks < 30:
+            self.lightVisibility = 0.2  # Low visibility at dawn
+        elif elapsedTicks < 90:
+            self.lightVisibility = 1.0  # Full visibility during morning and noon
+        elif elapsedTicks < 150:
+            self.lightVisibility = 0.8  # Slightly reduced visibility in the afternoon
+        elif elapsedTicks < 210:
+            self.lightVisibility = 0.5  # Reduced visibility in the evening
+        elif elapsedTicks < 270:
+            self.lightVisibility = 0.3  # Low visibility at dusk
+        else:
+            self.lightVisibility = 0.2  # Low visibility at night
+        return self.lightVisibility

@@ -215,6 +215,8 @@ class God:
             'creatureRegistry': self._environment.getRegisteredCreatures(),
             'resourceRegistry': self._environment.getRegisteredResources(),
             'topographyRegistry': self._environment.getRegisteredTopography(),
+            'lightVisibility': self._environment.getLightVisibility(),
+            'timeOfSimulation': self._environment.getTimeOfSimulation(),
         }
 
     def advanceSimulation(self):
