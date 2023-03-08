@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import './SimulationNavBar.css'
-import {FaPlay, FaPause, FaPlus, FaMinus, FaFastForward, FaFastBackward, FaTree, FaFileAlt, FaSave} from 'react-icons/fa'
+import {FaPlay, FaPause, FaPlus, FaMinus, FaFastForward, FaFastBackward, FaTree, FaFileAlt, FaSave, FaConnectdevelop} from 'react-icons/fa'
 import { NewCreatureForm } from './CreatureForms/NewCreatureForm.js'
 import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
@@ -156,11 +156,9 @@ function SpeciesRelationshipButton(props){
         <button
             onClick={handleClick}
             id="speciesRelationshipButton"
-            className="navButton buttonHover"
+            className="navButton buttonHover biggerIcon"
             title="Species Relationships"
-            //icon goes here
-        
-        >R</button>
+        ><FaConnectdevelop size={33}/></button>
     )
 
     function handleClick(){

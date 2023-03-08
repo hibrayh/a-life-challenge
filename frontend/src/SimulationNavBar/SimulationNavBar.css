@@ -135,3 +135,7 @@
     color: rgb(212, 212, 212);
     cursor: pointer;
 }
+
+.biggerIcon{
+    line-height: 5px;
+}

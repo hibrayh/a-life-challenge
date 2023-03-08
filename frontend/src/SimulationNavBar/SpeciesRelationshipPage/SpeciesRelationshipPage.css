@@ -50,3 +50,11 @@
     color:rgb(125,125,125);
     padding: 15px;
 }
+
+.relationshipFormButton:disabled{
+    background-color: grey;
+    opacity: 50%;
+    color:black;
+    cursor:not-allowed;
+}
+

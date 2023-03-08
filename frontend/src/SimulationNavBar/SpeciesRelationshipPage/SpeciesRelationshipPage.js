@@ -4,38 +4,42 @@ import { useState, useEffect } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 
-/*
-    
-    HUNTS = 'HUNTS'
-    IS_HUNTED_BY = 'IS_HUNTED_BY'
-    COMPETES_WITH = 'COMPETES_WITH'
-    WORKS_WITH = 'WORKS_WITH'
-    PROTECTS = 'PROTECTS'
-    DEFENDED_BY = 'DEFENDED_BY'
-    LEECHES = 'LEECHES'
-    LEECHED_OFF_OF = 'LEECHED_OFF_OF'
-    GATHERS_FOOD_FOR = 'GATHERS_FOOD_FOR'
-    RECEIVES_FOOD_FROM = 'RECEIVES_FOOD_FROM'
- 
- */
+
 function SpeciesRelationshipPage(props){
+
+    // I think it would be smart to have the value "" prepended to the list of species so that when you 
+    // open the form origonally, there will be blank values.
     const dummySpeciesList = ["","test1sdfasdf", "test2", "test3"]
-    
-
     const dummySpeciesRelationships = ["","hunts", "works with", "leeches"]
-
-    
 
     const [species1, setSpecies1] = useState('')
     const [species2, setSpecies2] = useState('')
     const [relationship, setRelationship] = useState('')
+
+    // if we ever leave/open the form, set all values back to default
+    useEffect(() => {
+        setSpecies1("")
+        setSpecies2("")
+        setRelationship("")
+    },[props.show])
+
+    // This will disable the submit button unless all values are valid
+    let submitButtonDisabled 
+    if(species1 == "" || species2 == "" || relationship == "" || species1 == species2){
+        submitButtonDisabled = true
+    }
+    else{
+        submitButtonDisabled = false
+    }
+
+   
     if(props.show){
 
         return(
             <>
             <div id="speciesRelationshipContainer" className='mainBackgroundColor'>
 
-                <button onClick={props.toggleSpeciesRelationshipPage} className='formExitButton buttonHover2'><FaTimes size={25} /> </button>
+                <button onClick={handleCancel} className='formExitButton buttonHover2'><FaTimes size={25} /> </button>
                 <h1 className='mainTitleFont'>Species Relationship Manager</h1>
 
                 <form id="speciesRelationshipForm">
@@ -76,8 +80,8 @@ function SpeciesRelationshipPage(props){
                     </div>
                     
                     <div id="speciesRelationshipButtonContainer">
-                        <button onClick={handleSubmit} className="relationshipFormButton buttonHover buttonBackgroundColor">Submit Relationship</button>
-                        <button onClick={props.toggleSpeciesRelationshipPage} className="relationshipFormButton buttonHover buttonBackgroundColor">Cancel</button>
+                        <button disabled={submitButtonDisabled} onClick={handleSubmit} className="relationshipFormButton buttonHover buttonBackgroundColor">Submit Relationship</button>
+                        <button onClick={handleCancel} className="relationshipFormButton buttonHover buttonBackgroundColor">Cancel</button>
                     </div>
                     
                 </form>
@@ -91,15 +95,23 @@ function SpeciesRelationshipPage(props){
 
         function handleSubmit(event){
             event.preventDefault()
-            // set new relationship
+            // if we got here, this means that all of the values entered are valid.
+            // The variables for the values are "species1, species2, relationship"
             
-            console.log(species1)
-            console.log(relationship, "relationship")
+            //console.log(species1)
+            //console.log(relationship)
+            //console.log(species2)
 
-
-            
-            //props.toggleSpeciesRelationshipPage()
+            props.toggleSpeciesRelationshipPage()
         }
+
+        function handleCancel(event){
+           
+            props.toggleSpeciesRelationshipPage()
+
+        }
+
+        
     }
 }
 
