@@ -156,8 +156,12 @@ class Environment:
 
     def _getVisionPerceivableCreatures(
             self, creatureOfInterest, perceivableCreatures):
+        # Multiplying by lightVisibility to get the creatures VISION based on
+        # time of day)
         radiusOfSightPerception = int(
-            creatureOfInterest.genome.sightRange * 200 * self.lightVisibility)      #Multiplying by lightVisibility to get the creatures VISION based on time of day)
+            creatureOfInterest.genome.sightRange *
+            200 *
+            self.lightVisibility)
 
         for creature in self.creatureRegistry.registry:
             distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
@@ -215,8 +219,12 @@ class Environment:
 
     def _getVisionPerceivableResources(
             self, creatureOfInterest, perceivableResources):
+        # Multiplying by lightVisibility to get the creatures VISION based on
+        # time of day
         radiusOfSightPerception = int(
-            creatureOfInterest.genome.sightRange * 200 * self.lightVisibility)      #Multiplying by lightVisibility to get the creatures VISION based on time of day
+            creatureOfInterest.genome.sightRange *
+            200 *
+            self.lightVisibility)
 
         for resource in self.resourceRegistry:
             distanceFromCreature = (math.sqrt((abs(resource.xCoordinate -
