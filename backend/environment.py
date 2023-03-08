@@ -353,12 +353,15 @@ class Environment:
         # ticks per second
         self.timeOfSimulation += 1
 
-        # Check if 300 ticks have elapsed and increment daysElapsed in the simulation if so
+        # Check if 300 ticks have elapsed and increment daysElapsed in the
+        # simulation if so
         if self.timeOfSimulation % 300 == 0:
             self.daysElapsed += 1
 
     def getTimeOfSimulation(self):
-        elapsedTicks = self.timeOfSimulation % 300  #A day cycle is currently set to 300, so once ticks reach 300, a new day starts
+        # A day cycle is currently set to 300, so once ticks reach 300, a new
+        # day starts
+        elapsedTicks = self.timeOfSimulation % 300
         if elapsedTicks < 30:
             timeOfSimulation = 'dawn'
         elif elapsedTicks < 90:
