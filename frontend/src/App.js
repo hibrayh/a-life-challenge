@@ -98,7 +98,6 @@ function App() {
         })
     }
 
-
     const getLightVisibility = async () => {
         await axios({
             method: 'GET',
