@@ -120,7 +120,6 @@ function initialize() {
             }
         }
     }
-    console.log('constructor')
 }
 
 const useConstructor = (callBack = () => {}) => {

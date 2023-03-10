@@ -16,6 +16,7 @@ function App() {
     const [creatureList, setCreatureList] = useState([])
     const [showLoad, setShowLoad] = useState(false)
     const [resourceList, setResourceList] = useState([])
+    const [timeOfDay, setTimeOfDay] = useState("")
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
@@ -87,6 +88,7 @@ function App() {
         })
     }
 
+   
     const getTimeOfSimulation = async () => {
         await axios({
             method: 'GET',
@@ -94,6 +96,17 @@ function App() {
         }).then((response) => {
             const res = response.data
             console.log(`Time of simulation: ${res}`)
+        })
+    }
+
+    const getLightVisibility = async () => {
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/light-visibility-of-simulation',
+        }).then((response) => {
+            const res = response.data
+            console.log(res)
+            setTimeOfDay(res)
         })
     }
 
@@ -166,6 +179,8 @@ function App() {
                     ticksPerSecond={simulationTicksPerSecond}
                     hasSimulationStarted={hasSimulationStarted}
                 />
+
+                <GiantDayAndNightContainer />
             </>
         )
     }
@@ -219,6 +234,19 @@ function App() {
         }
     }
 
+    const GiantDayAndNightContainer = (props) => {
+        console.log(timeOfDay[0])
+
+
+        return(
+
+            <div id='giantDayAndNightContainer'>
+
+                test
+            </div>
+        )
+    }
+    
     return (
         <>
             {
