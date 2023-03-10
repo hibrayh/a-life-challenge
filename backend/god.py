@@ -4,6 +4,8 @@ import topography
 import creatures.species_manager
 import random
 from environment import Environment
+import time
+import datetime
 
 logging.basicConfig(
     level=logging.INFO,
@@ -213,6 +215,8 @@ class God:
             'creatureRegistry': self._environment.getRegisteredCreatures(),
             'resourceRegistry': self._environment.getRegisteredResources(),
             'topographyRegistry': self._environment.getRegisteredTopography(),
+            'lightVisibility': self._environment.getLightVisibility(),
+            'timeOfSimulation': self._environment.getTimeOfSimulation(),
         }
 
     def advanceSimulation(self):
@@ -228,3 +232,7 @@ class God:
         return {
             "speciesNames": speciesNames
         }
+
+    def getTimeOfSimulation(self):
+        logging.info("Getting the current time of simulation")
+        return self._environment.getTimeOfSimulation()
