@@ -88,6 +88,10 @@
     left: 42%;
 }
 
+#speciesRelationshipButton {
+    left: 43%;
+}
+
 .mainBackgroundColor {
     background-color: rgb(36, 36, 36);
 }
@@ -99,6 +103,11 @@
 .mainTitleFont {
     color: rgb(125, 125, 125);
     font-size: 1.5vmax;
+}
+
+.subTitleFont {
+    color: rgb(125, 125, 125);
+    font-size: 1vmax;
 }
 
 .formExitButton {
@@ -125,4 +134,8 @@
     background-color: rgb(36, 36, 36);
     color: rgb(212, 212, 212);
     cursor: pointer;
+}
+
+.biggerIcon {
+    line-height: 5px;
 }

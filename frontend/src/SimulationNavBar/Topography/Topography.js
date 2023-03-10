@@ -5,11 +5,6 @@ import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 
 function TopographyPage(props) {
-    const [checkedValue, setCheckedValue] = useState()
-    const [grassland, setGrass] = useState(true)
-    const [rocky, setRocky] = useState(false)
-    const [snowy, setSnowy] = useState(false)
-    const [wet, setWet] = useState(false)
     const [topography, setTopography] = useState(unselected)
 
     if (props.show) {
@@ -33,41 +28,41 @@ function TopographyPage(props) {
                     }
                     <form id="topographyForm">
                         <div className="attributeHolder">
-                            <label className="dataTitle">Flat</label>
+                            <label className="dataTitle">Grass</label>
                             <input
-                                onChange={(event) => setTopography('flat')}
+                                onChange={(event) => setTopography('Grass')}
                                 type="radio"
-                                value="flat"
+                                value="Grass"
                                 name="topographyRadio"></input>
                             <br></br>
                         </div>
 
                         <div className="attributeHolder">
-                            <label className="dataTitle">Mild</label>
+                            <label className="dataTitle">Rocky</label>
                             <input
-                                onChange={(event) => setTopography('mild')}
+                                onChange={(event) => setTopography('Rocky')}
                                 type="radio"
-                                value="mild"
+                                value="Rocky"
                                 name="topographyRadio"></input>
                             <br></br>
                         </div>
 
                         <div className="attributeHolder">
-                            <label className="dataTitle">Moderate</label>
+                            <label className="dataTitle">Snowy</label>
                             <input
-                                onChange={(event) => setTopography('moderate')}
+                                onChange={(event) => setTopography('Snowy')}
                                 type="radio"
-                                value="moderate"
+                                value="Snowy"
                                 name="topographyRadio"></input>
                             <br></br>
                         </div>
 
                         <div className="attributeHolder">
-                            <label className="dataTitle">Extreme</label>
+                            <label className="dataTitle">Wet</label>
                             <input
-                                onChange={(event) => setTopography('extreme')}
+                                onChange={(event) => setTopography('Wet')}
                                 type="radio"
-                                value="extreme"
+                                value="Wet"
                                 name="topographyRadio"></input>
                             <br></br>
                         </div>
@@ -120,7 +115,7 @@ function initialize() {
         for (let i = 0; i < 50; i++) {
             for (let j = 0; j < 25; j++) {
                 //There are more columns than rows, so i and j have been swapped
-                gridArray.push({ selected: false, row: j, col: i })
+                gridArray.push({ topography: 0, row: j, col: i })
                 coordArray.push({ row: j, col: i, topography: unselected })
             }
         }
@@ -152,7 +147,8 @@ function Grid(props) {
             <Node
                 id={grid[i]}
                 toggleSelected={toggleSelected}
-                selected={grid[i].selected}
+                topography={grid[i].topography}
+                selectTopography={props.selectTopography}
                 showGridBorder={props.showGridBorder}
                 row={grid[i].row}
                 col={grid[i].col}
@@ -166,7 +162,7 @@ function Grid(props) {
         </div>
     )
 
-    async function toggleSelected(row, col, selected) {
+    async function toggleSelected(row, col) {
         let temp = JSON.parse(JSON.stringify(grid))
         let tempCoord = JSON.parse(JSON.stringify(coordGrid))
         let index = grid.findIndex(function (node) {
@@ -177,7 +173,7 @@ function Grid(props) {
 
         //temp[index].selected = !temp[index].selected
         //if the topography is selected, update the coord, else flip it
-        if (temp[index].selected) {
+        if (temp[index].topography) {
             tempCoord[index].topography = unselected
             // Delete topography in backend at (col, row) position
             await axios({
@@ -202,7 +198,9 @@ function Grid(props) {
             })
         }
 
-        temp[index].selected = !temp[index].selected
+        console.log(temp[index].topography, 'previous')
+        console.log(props.selectTopography, 'new')
+        temp[index].topography = props.selectTopography
 
         setGrid(temp)
         setCoordGrid(tempCoord)
@@ -219,15 +217,19 @@ function Node(props) {
         gridBorder = ''
     }
 
-    if (props.selected) {
-        currentClass = 'selectedNode'
-    } else {
-        currentClass = 'node'
+    // if the node is unselected, make it a default node
+    if (!props.topography) {
+        currentClass = 'defaultNode'
+    }
+    // if it's not default, set it's style equal to the current topography of the node
+    // (which is updated automatically by the handleClick() )
+    else {
+        currentClass = props.topography
     }
 
     function handleClick() {
         if (props.showGridBorder) {
-            props.toggleSelected(props.row, props.col, props.selected)
+            props.toggleSelected(props.row, props.col)
         }
     }
 

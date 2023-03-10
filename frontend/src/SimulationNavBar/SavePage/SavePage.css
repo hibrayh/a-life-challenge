@@ -1,10 +1,10 @@
 #savePageContainer {
     width: 33vmin;
-    height: 32vmin;
-    position: relative;
+    height: 30vmin;
+    position: absolute;
     background-color: rgb(36, 36, 36);
     left: calc(50% - 16.5vmin);
-    top: calc(50% - 17.5vmin);
+    top: calc(50% - 19vmin);
     color: rgb(148, 147, 147);
 }
 #saveTitle {
