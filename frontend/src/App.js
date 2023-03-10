@@ -56,6 +56,9 @@ function App() {
         })
 
         await getSimulationInfo()
+
+        // Get the updated time of the simulation
+        const simulationTime = await getTimeOfSimulation()
     }
 
     const incrementTicksPerSecond = () => {
@@ -81,6 +84,16 @@ function App() {
             const res = response.data
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
+        })
+    }
+
+    const getTimeOfSimulation = async () => {
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/time-of-simulation',
+        }).then((response) => {
+            const res = response.data
+            console.log(`Time of simulation: ${res}`)
         })
     }
 
