@@ -299,3 +299,9 @@ def removeTopography():
 def timeOfSimulation():
     global GOD
     return jsonify(GOD.getTimeOfSimulation())
+
+@api.route('/get-light-visibility')
+@cross_origin()
+def getLightVisibility():
+    global GOD
+    return jsonify(GOD.getLightVisibility())

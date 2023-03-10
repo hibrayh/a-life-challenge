@@ -236,3 +236,7 @@ class God:
     def getTimeOfSimulation(self):
         logging.info("Getting the current time of simulation")
         return self._environment.getTimeOfSimulation()
+
+    def getLightVisibility(self):
+        logging.info("Getting the visible light factor based on time of simulation")
+        return self._environment.getLightVisibility()
