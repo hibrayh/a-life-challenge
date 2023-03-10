@@ -9,6 +9,7 @@ import resources
 import topography
 import random
 import datetime
+import copy
 
 
 logging.basicConfig(
@@ -43,7 +44,16 @@ class Environment:
                 f"Creating new environment of width {widthInPx} and height {heightInPx}")
             self.creatureRegistry = registry.Registry()
             self.resourceRegistry = []
-            self.topographyRegistry = []
+
+            self.topographyRegistry = []            
+            for row in range(rowCount):
+                rowList = []
+                for column in range(columnCount):
+                    topographyId = f"topography_column{column}_row{row}"
+                    rowList.append(topography.Topography(0, 0, 0, 0, 0, 0, 0, 0, topographyId, column, row, topography.TemplateTopography.UNSELECTED,
+                                                            self))
+                self.topographyRegistry.append(rowList)
+
             self.lightVisibility = 1.0
             self.width = widthInPx
             self.height = heightInPx
@@ -97,8 +107,9 @@ class Environment:
             resourceList.append(resource.save())
 
         topographyList = []
-        for topography in self.topographyRegistry:
-            topographyList.append(topography.save())
+        for topographyRow in self.topographyRegistry:
+            for topography in topographyRow:
+                topographyList.append(topography.save())
 
         return {
             'resourceRegistry': resourceList,
@@ -132,7 +143,9 @@ class Environment:
     def addToTopographyRegistry(self, newTopography):
         logging.info(
             f"Adding new topography with id {newTopography.id} to the environment")
-        self.topographyRegistry.append(newTopography)
+        #self.topographyRegistry.append(newTopography)
+
+        self.topographyRegistry[newTopography.row][newTopography.column] = newTopography
 
     def removeFromTopographyRegistry(self, topographyToRemove):
         logging.info(
@@ -140,19 +153,9 @@ class Environment:
         self.topographyRegistry.remove(topographyToRemove)
 
     def removeTopography(self, column, row):
-        topographyId = f"topography_column{column}_row{row}"
-        logging.info(f"Removing topography with id {topographyId}")
-
-        topographyToRemove = None
-        for topography in self.topographyRegistry:
-            if topography.id == topographyId:
-                topographyToRemove = topography
-                break
-
-        if topographyToRemove is not None:
-            self.topographyRegistry.remove(topographyToRemove)
-        else:
-            logging.info(f"Could not find topography to remove")
+        logging.info(f"Removing topography from column: {column}, row: {row}")
+        self.topographyRegistry[column][row] = topography.Topography(0, 0, 0, 0, 0, 0, 0, 0, None, column, row, topography.TemplateTopography.UNSELECTED,
+                                                self)
 
     def _getVisionPerceivableCreatures(
             self, creatureOfInterest, perceivableCreatures):
@@ -324,8 +327,9 @@ class Environment:
     def getRegisteredTopography(self):
         topographyList = []
 
-        for topography in self.topographyRegistry:
-            topographyList.append(topography.serialize())
+        for row in range(self.rowCount):
+            for column in range(self.columnCount):
+                topographyList.append(self.topographyRegistry[row][column].serialize())
 
         return topographyList
 
