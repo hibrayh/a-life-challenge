@@ -196,14 +196,13 @@ function Grid(props) {
                 },
             })
         }
-        
-        console.log(temp[index].topography, "previous")
-        console.log(props.selectTopography, "new")
+
+        console.log(temp[index].topography, 'previous')
+        console.log(props.selectTopography, 'new')
         temp[index].topography = props.selectTopography
 
         setGrid(temp)
         setCoordGrid(tempCoord)
-       
     }
 }
 
@@ -211,24 +210,21 @@ let currentClass = 'node'
 let gridBorder = ''
 
 function Node(props) {
-
     if (props.showGridBorder) {
         gridBorder = ' gridBorder'
     } else {
         gridBorder = ''
     }
 
-
     // if the node is unselected, make it a default node
-    if(!props.topography){
-        currentClass="defaultNode"
+    if (!props.topography) {
+        currentClass = 'defaultNode'
     }
     // if it's not default, set it's style equal to the current topography of the node
     // (which is updated automatically by the handleClick() )
-    else{
+    else {
         currentClass = props.topography
     }
-
 
     function handleClick() {
         if (props.showGridBorder) {

@@ -60,6 +60,7 @@ function App() {
 
         // Get the updated time of the simulation
         const simulationTime = await getTimeOfSimulation()
+        const lightVisibility = await getLightVisibility()
     }
 
     const incrementTicksPerSecond = () => {
@@ -102,11 +103,10 @@ function App() {
     const getLightVisibility = async () => {
         await axios({
             method: 'GET',
-            url: 'http://localhost:5000/light-visibility-of-simulation',
+            url: 'http://localhost:5000/get-light-visibility',
         }).then((response) => {
             const res = response.data
-            console.log(res)
-            setTimeOfDay(res)
+            console.log(`Light visibility: ${res}`)
         })
     }
 
