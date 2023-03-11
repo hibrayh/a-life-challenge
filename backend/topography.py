@@ -17,6 +17,7 @@ THRESHOLD = 10
 
 
 class TemplateTopography(str, Enum):
+    UNSELECTED = 'unselected'
     FLAT = 'flat'
     MILD = 'mild'
     MODERATE = 'moderate'
@@ -79,12 +80,16 @@ class Topography:
             bottomRightXCoordinate,
             bottomRightYCoordinate,
             id,
+            column,
+            row,
             topographyType,
             environment,
             loadExistingSave=False, saveData=None):
         if not loadExistingSave:
             logging.info(f"Creating new topography with id {id}")
             self.id = id
+            self.column = column
+            self.row = row
             self.type = topographyType
             self.region = Region(
                 topLeftXCoordinate,
@@ -100,16 +105,20 @@ class Topography:
             self.environment = environment
 
             # Initialize random geography based on topography type
-            self.generateRandomGeography()
+            # self.generateRandomGeography()
 
             # Initialize resources based on topography type
-            self.generateResources()
+            if topographyType != TemplateTopography.UNSELECTED:
+                self.generateResources()
 
             # Register to environment
-            self.environment.addToTopographyRegistry(self)
+            # if topographyType != TemplateTopography.UNSELECTED:
+                # self.environment.addToTopographyRegistry(self)
         else:
             logging.info(f"Loading existing topography")
             self.id = saveData['id']
+            self.column = saveData['column']
+            self.row = saveData['row']
             self.type = TemplateTopography(saveData['type'])
             self.region = Region(saveData['region']['topLeftXCoordinate'],
                                  saveData['region']['topLeftYCoordinate'],
@@ -120,26 +129,25 @@ class Topography:
                                  saveData['region']['bottomRightXCoordinate'],
                                  saveData['region']['bottomRightYCoordinate'])
             self.shape = saveData['shape']
-            self.geography = saveData['geography']
+            #self.geography = saveData['geography']
             self.environment = environment
-            self.environment.addToTopographyRegistry(self)
+            # self.environment.addToTopographyRegistry(self)
 
     def serialize(self):
         return {
-            'topographyId': self.id,
-            'topLeftXCoordinate': self.region.topLeftXCoordinate,
-            'topLeftYCoordinate': self.region.topLeftYCoordinate,
-            'geography': self.geography,
+            'id': self.id,
+            'column': self.column,
+            'row': self.row,
+            'type': self.type,
         }
 
     def save(self):
         logging.info(f"Saving topography {self.id}")
         return {
             'id': self.id,
+            'column': self.column,
+            'row': self.row,
             'type': self.type,
-            'region': self.region.save(),
-            'shape': self.shape,
-            'geography': self.geography,
         }
 
     # Using perlin-noise to create random geography
@@ -208,7 +216,7 @@ class Topography:
             color = 'red'
             shape = 'circle'
         else:
-            logging.info("Unknown topography type encountered")
+            logging.info("Unknown/unselected topography type encountered")
 
         # Determine how many resources could fit into this area
         totalResourcesPossible = (
@@ -262,5 +270,12 @@ if __name__ == '__main__':
                                             base=seed)
 
     img = np.floor((geography + .5) * 255).astype(np.uint8)
-    Image.fromarray(img, mode='L').save(f'./sample_{seed}.jpg')
+
+    # Render as "blue-ish"
+    blue_geography = np.zeros((shape[0], shape[1], 3))
+    for i in range(shape[0]):
+        for j in range(shape[1]):
+            blue_geography[i][j] = [0, 0, img[i][j]]
+
+    Image.fromarray(blue_geography.astype('uint8'), mode="RGB").save(f'./sample_{seed}_blue.jpg')
 """
