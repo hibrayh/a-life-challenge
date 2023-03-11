@@ -45,13 +45,26 @@ class Environment:
             self.creatureRegistry = registry.Registry()
             self.resourceRegistry = []
 
-            self.topographyRegistry = []            
+            self.topographyRegistry = []
             for row in range(rowCount):
                 rowList = []
                 for column in range(columnCount):
                     topographyId = f"topography_column{column}_row{row}"
-                    rowList.append(topography.Topography(0, 0, 0, 0, 0, 0, 0, 0, topographyId, column, row, topography.TemplateTopography.UNSELECTED,
-                                                            self))
+                    rowList.append(
+                        topography.Topography(
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            topographyId,
+                            column,
+                            row,
+                            topography.TemplateTopography.UNSELECTED,
+                            self))
                 self.topographyRegistry.append(rowList)
 
             self.lightVisibility = 1.0
@@ -143,7 +156,7 @@ class Environment:
     def addToTopographyRegistry(self, newTopography):
         logging.info(
             f"Adding new topography with id {newTopography.id} to the environment")
-        #self.topographyRegistry.append(newTopography)
+        # self.topographyRegistry.append(newTopography)
 
         self.topographyRegistry[newTopography.row][newTopography.column] = newTopography
 
@@ -154,8 +167,20 @@ class Environment:
 
     def removeTopography(self, column, row):
         logging.info(f"Removing topography from column: {column}, row: {row}")
-        self.topographyRegistry[column][row] = topography.Topography(0, 0, 0, 0, 0, 0, 0, 0, None, column, row, topography.TemplateTopography.UNSELECTED,
-                                                self)
+        self.topographyRegistry[column][row] = topography.Topography(
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            None,
+            column,
+            row,
+            topography.TemplateTopography.UNSELECTED,
+            self)
 
     def _getVisionPerceivableCreatures(
             self, creatureOfInterest, perceivableCreatures):
@@ -329,7 +354,8 @@ class Environment:
 
         for row in range(self.rowCount):
             for column in range(self.columnCount):
-                topographyList.append(self.topographyRegistry[row][column].serialize())
+                topographyList.append(
+                    self.topographyRegistry[row][column].serialize())
 
         return topographyList
 

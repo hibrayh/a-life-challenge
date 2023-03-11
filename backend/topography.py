@@ -105,15 +105,15 @@ class Topography:
             self.environment = environment
 
             # Initialize random geography based on topography type
-            #self.generateRandomGeography()
+            # self.generateRandomGeography()
 
             # Initialize resources based on topography type
             if topographyType != TemplateTopography.UNSELECTED:
                 self.generateResources()
 
             # Register to environment
-            #if topographyType != TemplateTopography.UNSELECTED:
-                #self.environment.addToTopographyRegistry(self)
+            # if topographyType != TemplateTopography.UNSELECTED:
+                # self.environment.addToTopographyRegistry(self)
         else:
             logging.info(f"Loading existing topography")
             self.id = saveData['id']
@@ -131,7 +131,7 @@ class Topography:
             self.shape = saveData['shape']
             #self.geography = saveData['geography']
             self.environment = environment
-            #self.environment.addToTopographyRegistry(self)
+            # self.environment.addToTopographyRegistry(self)
 
     def serialize(self):
         return {
@@ -276,6 +276,6 @@ if __name__ == '__main__':
     for i in range(shape[0]):
         for j in range(shape[1]):
             blue_geography[i][j] = [0, 0, img[i][j]]
-    
+
     Image.fromarray(blue_geography.astype('uint8'), mode="RGB").save(f'./sample_{seed}_blue.jpg')
 """
