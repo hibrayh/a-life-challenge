@@ -395,7 +395,7 @@ class Environment:
         if elapsedTicks < 30:
             timeOfSimulation = 'midnight'
         elif elapsedTicks < 60:
-            timeOfSimulation = 'dusk'
+            timeOfSimulation = 'dawn'
         elif elapsedTicks < 130:
             timeOfSimulation = 'early morning'
         elif elapsedTicks < 200:
