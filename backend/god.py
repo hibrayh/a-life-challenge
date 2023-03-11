@@ -190,6 +190,8 @@ class God:
                               bottomRightXCoordinate,
                               bottomRightYCoordinate,
                               topographyId,
+                              column,
+                              row,
                               topographyType,
                               self._environment)
 
