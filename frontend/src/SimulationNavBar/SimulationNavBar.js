@@ -29,6 +29,7 @@ function SimulationNavBar({
     startSimulationCallback,
     ticksPerSecond,
     hasSimulationStarted,
+    topographyInfo,
 }) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
         useState(false)
@@ -55,6 +56,7 @@ function SimulationNavBar({
                 show={showTopographyPage}
                 closeTopographyPage={closeTopographyPage}
                 showGridBorder={showGridBorder}
+                topographyInfo={topographyInfo}
             />
 
             <NewCreatureOrSpeciesForm

@@ -5,14 +5,15 @@ import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 
 function TopographyPage(props) {
-    const [topography, setTopography] = useState(unselected)
-
+    const [topography, setTopography] = useState("unselected")
+    
     if (props.show) {
         return (
             <>
                 <Grid
                     showGridBorder={props.showGridBorder}
                     selectTopography={topography}
+                    topographyInfo={props.topographyInfo}
                 />
                 <div id="topographyContainer">
                     <h1 className="mainTitleFont">Topography</h1>
@@ -71,86 +72,25 @@ function TopographyPage(props) {
             </>
         )
     } else {
-        return <Grid showGridBorder={props.showGridBorder} />
+        return <Grid topographyInfo={props.topographyInfo} showGridBorder={props.showGridBorder} />
     }
-}
-
-// class Coordinate {
-
-//     constructor(x,y){
-//         this.x
-//     }
-
-// }
-
-// class Box {
-
-// }
-
-let gridArray = []
-let coordArray = []
-const unselected = 0
-
-/* My idea is for it to send the array with the topography info once the 
-page (when the grid is showing) is closed The following code is an attempted skeleton 
-which would need a select-topography handler on the backend. I'm not sure if there is
-one in place already
-
-async function handleCloseTopography(event) {
-
-    await axios({
-        method: 'POST',
-        url: 'http://localhost:5000/select-topography',
-        data: {
-            gridCoords: coordArray
-        },
-    })
-
-}
-*/
-
-function initialize() {
-    if (gridArray.length === 0) {
-        //don't just append more onto the already created array!
-        for (let i = 0; i < 50; i++) {
-            for (let j = 0; j < 25; j++) {
-                //There are more columns than rows, so i and j have been swapped
-                gridArray.push({ topography: 0, row: j, col: i })
-                coordArray.push({ row: j, col: i, topography: unselected })
-            }
-        }
-    }
-}
-
-const useConstructor = (callBack = () => {}) => {
-    const [hasBeenCalled, setHasBeenCalled] = useState(false)
-    if (hasBeenCalled) return
-    callBack()
-    setHasBeenCalled(true)
 }
 
 function Grid(props) {
-    const [grid, setGrid] = useState(gridArray)
-    const [coordGrid, setCoordGrid] = useState(coordArray)
-
-    useConstructor(() => {
-        initialize()
-        setGrid(gridArray)
-        setCoordGrid(coordArray)
-    })
-
+    const [forceUpdate, setForceUpdate] = useState(false)
+    
     let jsx = []
 
     for (let i = 0; i < 1250; i++) {
         jsx.push(
             <Node
-                id={grid[i]}
+                id={props.topographyInfo[i]}
                 toggleSelected={toggleSelected}
-                topography={grid[i].topography}
+                topography={props.topographyInfo[i].type}
                 selectTopography={props.selectTopography}
                 showGridBorder={props.showGridBorder}
-                row={grid[i].row}
-                col={grid[i].col}
+                row={props.topographyInfo[i].row}
+                col={props.topographyInfo[i].column}
             />
         )
     }
@@ -161,19 +101,23 @@ function Grid(props) {
         </div>
     )
 
+
     async function toggleSelected(row, col) {
-        let temp = JSON.parse(JSON.stringify(grid))
-        let tempCoord = JSON.parse(JSON.stringify(coordGrid))
-        let index = grid.findIndex(function (node) {
-            if (node.row === row && node.col === col) {
+        
+        // find the index of the node that was clicked
+        let index = props.topographyInfo.findIndex(function (node) {
+            if (node.row === row && node.column === col) {
                 return true
             }
         })
-
-        //temp[index].selected = !temp[index].selected
+        
         //if the topography is selected, update the coord, else flip it
-        if (temp[index].topography) {
-            tempCoord[index].topography = unselected
+        if (props.topographyInfo[index].type != "unselected") {
+
+            // This is what I had to do to actually change the visuals, unfortunately it wouldn't
+            // automatically update after making the backend call
+            props.topographyInfo[index].type = "unselected"
+            
             // Delete topography in backend at (col, row) position
             await axios({
                 method: 'POST',
@@ -184,7 +128,11 @@ function Grid(props) {
                 },
             })
         } else {
-            tempCoord[index].topography = props.selectTopography
+
+            // This is what I had to do to actually change the visuals, unfortunately it wouldn't
+            // automatically update after making the backend call
+            props.topographyInfo[index].type = props.selectTopography
+          
             // Add new topography in backend at (col, row) position
             await axios({
                 method: 'POST',
@@ -197,27 +145,27 @@ function Grid(props) {
             })
         }
 
-        console.log(temp[index].topography, 'previous')
-        console.log(props.selectTopography, 'new')
-        temp[index].topography = props.selectTopography
-
-        setGrid(temp)
-        setCoordGrid(tempCoord)
+        // this is the only way I was able to get the actual nodes to change color on the 
+        // screen right when they are clicked. Without this, it will only update once you 
+        // click another button or change topographies.
+        setForceUpdate(!forceUpdate)
+        
     }
 }
 
-let currentClass = 'node'
+let currentClass = 'defaultNode'
 let gridBorder = ''
 
 function Node(props) {
-    if (props.showGridBorder) {
-        gridBorder = ' gridBorder'
-    } else {
-        gridBorder = ''
-    }
+
+    
+    // if we should be showing the grid border, show it, if not then don't
+    if (props.showGridBorder) { gridBorder = ' gridBorder' } else { gridBorder = '' }
+
+
 
     // if the node is unselected, make it a default node
-    if (!props.topography) {
+    if (props.topography == "unselected") {
         currentClass = 'defaultNode'
     }
     // if it's not default, set it's style equal to the current topography of the node
@@ -225,6 +173,8 @@ function Node(props) {
     else {
         currentClass = props.topography
     }
+
+
 
     function handleClick() {
         if (props.showGridBorder) {
@@ -236,10 +186,11 @@ function Node(props) {
         <div
             className={currentClass + gridBorder}
             onClick={handleClick}
-            onDragOver={handleClick}
-            onDragEnter={handleClick}
+            //onDragOver={handleClick}
+            //onDragEnter={handleClick}
             row={props.row}
-            col={props.col}></div>
+            col={props.col}>
+        </div>
     )
 }
 

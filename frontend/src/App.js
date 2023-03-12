@@ -18,7 +18,7 @@ function App() {
     const [resourceList, setResourceList] = useState([])
     const [timeOfDay, setTimeOfDay] = useState("")
     const [lightVisibility, setLightVisibility] = useState(1)
-
+    const [topographyInfo, setTopographyInfo] = useState([])
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
@@ -32,6 +32,7 @@ function App() {
                 rowCount: 25,
             },
         })
+        await getSimulationInfo()
         setHasSimulationStarted(true)
     }
 
@@ -89,6 +90,8 @@ function App() {
             const res = response.data
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
+            setTopographyInfo(res.topographyRegistry)
+            console.log(res.topographyRegistry, "in getSimulationInfo()")
         })
     }
 
@@ -139,7 +142,8 @@ function App() {
                     <div>
                         <button
                             id="menuButtonStart"
-                            onClick={() => {
+                            onClick={async () => {
+                                await startSimulation()
                                 setShowMenu(false)
                                 setShowSimulation(true)
                             }}>
@@ -167,6 +171,8 @@ function App() {
 
     // "Page" that will show the simulation
     const Simulation = () => {
+
+        console.log(topographyInfo)
         return (
             <>
                 <Animation
@@ -182,6 +188,7 @@ function App() {
                     startSimulationCallback={startSimulation}
                     ticksPerSecond={simulationTicksPerSecond}
                     hasSimulationStarted={hasSimulationStarted}
+                    topographyInfo={topographyInfo}
                 />
 
                 <GiantDayAndNightContainer />
