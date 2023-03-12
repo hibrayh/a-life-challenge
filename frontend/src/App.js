@@ -21,8 +21,6 @@ function App() {
 
     const [topographyInfo, setTopographyInfo] = useState([])
 
-
-
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
         await axios({
@@ -93,7 +91,7 @@ function App() {
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
             setTopographyInfo(res.topographyRegistry)
-            console.log(res.topographyRegistry, "in getSimulationInfo()")
+            console.log(res.topographyRegistry, 'in getSimulationInfo()')
         })
     }
 
@@ -172,7 +170,6 @@ function App() {
 
     // "Page" that will show the simulation
     const Simulation = () => {
-
         console.log(topographyInfo)
         return (
             <>

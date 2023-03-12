@@ -5,8 +5,8 @@ import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 
 function TopographyPage(props) {
-    const [topography, setTopography] = useState("unselected")
-    
+    const [topography, setTopography] = useState('unselected')
+
     if (props.show) {
         return (
             <>
@@ -72,13 +72,18 @@ function TopographyPage(props) {
             </>
         )
     } else {
-        return <Grid topographyInfo={props.topographyInfo} showGridBorder={props.showGridBorder} />
+        return (
+            <Grid
+                topographyInfo={props.topographyInfo}
+                showGridBorder={props.showGridBorder}
+            />
+        )
     }
 }
 
 function Grid(props) {
     const [forceUpdate, setForceUpdate] = useState(false)
-    
+
     let jsx = []
 
     for (let i = 0; i < 1250; i++) {
@@ -101,23 +106,20 @@ function Grid(props) {
         </div>
     )
 
-
     async function toggleSelected(row, col) {
-        
         // find the index of the node that was clicked
         let index = props.topographyInfo.findIndex(function (node) {
             if (node.row === row && node.column === col) {
                 return true
             }
         })
-        
-        //if the topography is selected, update the coord, else flip it
-        if (props.topographyInfo[index].type != "unselected") {
 
+        //if the topography is selected, update the coord, else flip it
+        if (props.topographyInfo[index].type != 'unselected') {
             // This is what I had to do to actually change the visuals, unfortunately it wouldn't
             // automatically update after making the backend call
-            props.topographyInfo[index].type = "unselected"
-            
+            props.topographyInfo[index].type = 'unselected'
+
             // Delete topography in backend at (col, row) position
             await axios({
                 method: 'POST',
@@ -128,11 +130,10 @@ function Grid(props) {
                 },
             })
         } else {
-
             // This is what I had to do to actually change the visuals, unfortunately it wouldn't
             // automatically update after making the backend call
             props.topographyInfo[index].type = props.selectTopography
-          
+
             // Add new topography in backend at (col, row) position
             await axios({
                 method: 'POST',
@@ -145,11 +146,10 @@ function Grid(props) {
             })
         }
 
-        // this is the only way I was able to get the actual nodes to change color on the 
-        // screen right when they are clicked. Without this, it will only update once you 
+        // this is the only way I was able to get the actual nodes to change color on the
+        // screen right when they are clicked. Without this, it will only update once you
         // click another button or change topographies.
         setForceUpdate(!forceUpdate)
-        
     }
 }
 
@@ -157,15 +157,15 @@ let currentClass = 'defaultNode'
 let gridBorder = ''
 
 function Node(props) {
-
-    
     // if we should be showing the grid border, show it, if not then don't
-    if (props.showGridBorder) { gridBorder = ' gridBorder' } else { gridBorder = '' }
-
-
+    if (props.showGridBorder) {
+        gridBorder = ' gridBorder'
+    } else {
+        gridBorder = ''
+    }
 
     // if the node is unselected, make it a default node
-    if (props.topography == "unselected") {
+    if (props.topography == 'unselected') {
         currentClass = 'defaultNode'
     }
     // if it's not default, set it's style equal to the current topography of the node
@@ -173,8 +173,6 @@ function Node(props) {
     else {
         currentClass = props.topography
     }
-
-
 
     function handleClick() {
         if (props.showGridBorder) {
@@ -189,8 +187,7 @@ function Node(props) {
             //onDragOver={handleClick}
             //onDragEnter={handleClick}
             row={props.row}
-            col={props.col}>
-        </div>
+            col={props.col}></div>
     )
 }
 
