@@ -16,9 +16,12 @@ function App() {
     const [creatureList, setCreatureList] = useState([])
     const [showLoad, setShowLoad] = useState(false)
     const [resourceList, setResourceList] = useState([])
-    const [timeOfDay, setTimeOfDay] = useState("")
+    const [timeOfDay, setTimeOfDay] = useState('')
     const [lightVisibility, setLightVisibility] = useState(1)
+<<<<<<< HEAD
     const [topographyInfo, setTopographyInfo] = useState([])
+=======
+>>>>>>> ee37c38301cfe36c0776c6130031877c86dadf3a
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
@@ -64,7 +67,6 @@ function App() {
         // Get the updated time of the simulation
         //const simulationTime = await getTimeOfSimulation()
         await getLightVisibility()
-       
     }
 
     const incrementTicksPerSecond = () => {
@@ -95,7 +97,6 @@ function App() {
         })
     }
 
-   
     const getTimeOfSimulation = async () => {
         await axios({
             method: 'GET',
@@ -248,36 +249,32 @@ function App() {
     const GiantDayAndNightContainer = (props) => {
         console.log(lightVisibility)
         let style
-        switch(lightVisibility){
+        switch (lightVisibility) {
             case 1:
-                style = "light1-0"
+                style = 'light1-0'
                 break
             case 0.8:
-                style = "light0-8"
+                style = 'light0-8'
                 break
 
             case 0.5:
-                style = "light0-5"
+                style = 'light0-5'
                 break
 
             case 0.3:
-                style = "light0-3"
+                style = 'light0-3'
                 break
-            
+
             case 0.2:
-                style = "light0-2"
+                style = 'light0-2'
                 break
             default:
-                style = "light1-0"
-
-
+                style = 'light1-0'
         }
 
-        return(
-            <div className={style} id='giantDayAndNightContainer'></div>
-        )
+        return <div className={style} id="giantDayAndNightContainer"></div>
     }
-    
+
     return (
         <>
             {
