@@ -93,7 +93,6 @@ function App() {
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
             setTopographyInfo(res.topographyRegistry)
-            console.log(res.topographyRegistry, "in getSimulationInfo()")
         })
     }
 
@@ -173,7 +172,6 @@ function App() {
     // "Page" that will show the simulation
     const Simulation = () => {
 
-        console.log(topographyInfo)
         return (
             <>
                 <Animation
@@ -246,8 +244,7 @@ function App() {
         }
     }
 
-    const GiantDayAndNightContainer = (props) => {
-        console.log(lightVisibility)
+    const GiantDayAndNightContainer = () => {
         let style
         switch (lightVisibility) {
             case 1:
