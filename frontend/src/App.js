@@ -19,6 +19,8 @@ function App() {
     const [timeOfDay, setTimeOfDay] = useState('')
     const [lightVisibility, setLightVisibility] = useState(1)
 
+    const [topographyInfo, setTopographyInfo] = useState([])
+
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
         await axios({
@@ -31,6 +33,7 @@ function App() {
                 rowCount: 25,
             },
         })
+        await getSimulationInfo()
         setHasSimulationStarted(true)
     }
 
@@ -87,6 +90,7 @@ function App() {
             const res = response.data
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
+            setTopographyInfo(res.topographyRegistry)
         })
     }
 
@@ -136,7 +140,8 @@ function App() {
                     <div>
                         <button
                             id="menuButtonStart"
-                            onClick={() => {
+                            onClick={async () => {
+                                await startSimulation()
                                 setShowMenu(false)
                                 setShowSimulation(true)
                             }}>
@@ -179,6 +184,7 @@ function App() {
                     startSimulationCallback={startSimulation}
                     ticksPerSecond={simulationTicksPerSecond}
                     hasSimulationStarted={hasSimulationStarted}
+                    topographyInfo={topographyInfo}
                 />
 
                 <GiantDayAndNightContainer />
@@ -235,8 +241,7 @@ function App() {
         }
     }
 
-    const GiantDayAndNightContainer = (props) => {
-        console.log(lightVisibility)
+    const GiantDayAndNightContainer = () => {
         let style
         switch (lightVisibility) {
             case 1:
