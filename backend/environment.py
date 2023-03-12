@@ -2,6 +2,7 @@ import logging
 import math
 import creatures.genome
 import creatures.decision_network
+import creatures.species_manager
 import registry
 from enum import Enum
 import creatures.creature
@@ -17,15 +18,38 @@ logging.basicConfig(
     format='%(levelname)s %(asctime)s - %(message)s')
 
 
+UNIT = 20
+
+
 class EnvironmentInfo:
     def __init__(
             self,
             perceivableResources,
-            perceivableCreatures,
+            perceivableMates,
+            perceivablePredators,
+            perceivablePrey,
+            perceivableCompetitors,
+            perceivableAllies,
+            perceivableDefenders,
+            perceivableDefendees,
+            perceivableParasites,
+            perceivableHosts,
+            perceivableNurturers,
+            perceivableNurturees,
             regionTopography,
             lightVisibility):
         self.perceivableResources = perceivableResources
-        self.perceivableCreatures = perceivableCreatures
+        self.perceivableMates = perceivableMates
+        self.perceivablePredators = perceivablePredators
+        self.perceivablePrey = perceivablePrey
+        self.perceivableCompetitors = perceivableCompetitors
+        self.perceivableAllies = perceivableAllies
+        self.perceivableDefenders = perceivableDefenders
+        self.perceivableDefendees = perceivableDefendees
+        self.perceivableParasites = perceivableParasites
+        self.perceivableHosts = perceivableHosts
+        self.perceivableNurturers = perceivableNurturers
+        self.perceivableNurturees = perceivableNurturees
         self.regionTopography = regionTopography
         self.lightVisibility = lightVisibility
 
@@ -187,9 +211,7 @@ class Environment:
         # Multiplying by lightVisibility to get the creatures VISION based on
         # time of day)
         radiusOfSightPerception = int(
-            creatureOfInterest.genome.sightRange *
-            200 *
-            self.lightVisibility)
+            creatureOfInterest.genome.sightRange * (10 * UNIT))
 
         for creature in self.creatureRegistry.registry:
             distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
@@ -210,7 +232,7 @@ class Environment:
             creatureOfInterest,
             perceivableCreatures):
         radiusOfSmellPerception = int(
-            creatureOfInterest.genome.smellRange * 200)
+            creatureOfInterest.genome.smellRange * (10 * UNIT))
 
         for creature in self.creatureRegistry.registry:
             distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
@@ -229,7 +251,7 @@ class Environment:
     def _getAuditoryPerceivableCreatures(
             self, creatureOfInterest, perceivableCreatures):
         radiusOfHearingPerception = int(
-            creatureOfInterest.genome.hearingRange * 200)
+            creatureOfInterest.genome.hearingRange * (10 * UNIT))
 
         for creature in self.creatureRegistry.registry:
             distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
@@ -250,9 +272,7 @@ class Environment:
         # Multiplying by lightVisibility to get the creatures VISION based on
         # time of day
         radiusOfSightPerception = int(
-            creatureOfInterest.genome.sightRange *
-            200 *
-            self.lightVisibility)
+            creatureOfInterest.genome.sightRange * (10 * UNIT))
 
         for resource in self.resourceRegistry:
             distanceFromCreature = (math.sqrt((abs(resource.xCoordinate -
@@ -271,7 +291,7 @@ class Environment:
             creatureOfInterest,
             perceivableResources):
         radiusOfSmellPerception = int(
-            creatureOfInterest.genome.smellRange * 200)
+            creatureOfInterest.genome.smellRange * (10 * UNIT))
 
         for resource in self.resourceRegistry:
             distanceFromCreature = (math.sqrt((abs(resource.xCoordinate -
@@ -288,7 +308,7 @@ class Environment:
     def _getAuditoryPerceivableResources(
             self, creatureOfInterest, perceivableResources):
         radiusOfHearingPerception = int(
-            creatureOfInterest.genome.hearingRange * 200)
+            creatureOfInterest.genome.hearingRange * (10 * UNIT))
 
         for resource in self.resourceRegistry:
             distanceFromCreature = (math.sqrt((abs(resource.xCoordinate -
@@ -311,9 +331,9 @@ class Environment:
 
         if creatures.genome.Receptors.VISION in creatureOfInterest.genome.receptors:
             self._getVisionPerceivableCreatures(
-                creatureOfInterest, perceivableCreatures, lightVisibility)
+                creatureOfInterest, perceivableCreatures)
             self._getVisionPerceivableResources(
-                creatureOfInterest, perceivableResources, lightVisibility)
+                creatureOfInterest, perceivableResources)
 
         if creatures.genome.Receptors.SMELL in creatureOfInterest.genome.receptors:
             self._getSmellPerceivableCreatures(
@@ -327,11 +347,64 @@ class Environment:
             self._getAuditoryPerceivableResources(
                 creatureOfInterest, perceivableResources)
 
+        # Filter the info
+        perceivableMates = []
+        perceivablePredators = []
+        perceivablePrey = []
+        perceivableCompetitors = []
+        perceivableAllies = []
+        perceivableDefenders = []
+        perceivableDefendees = []
+        perceivableParasites = []
+        perceivableHosts = []
+        perceivableNurturers = []
+        perceivableNurturees = []
+
+        for creature in perceivableCreatures:
+            if (creatureOfInterest.species == creature.species) \
+                    and (creature.canReproduce()):
+                perceivableMates.append(creature)
+            elif (creatureOfInterest.species == creature.species):
+                perceivableAllies.append(creature)
+            else:
+                relationship = creatureOfInterest.speciesRelationship(
+                    creature.species)
+
+                if relationship == creatures.species_manager.SpeciesRelationship.IS_HUNTED_BY:
+                    perceivablePredators.append(creature)
+                elif relationship == creatures.species_manager.SpeciesRelationship.HUNTS:
+                    perceivablePrey.append(creature)
+                elif relationship == creatures.species_manager.SpeciesRelationship.COMPETES_WITH:
+                    perceivableCompetitors.append(creature)
+                elif relationship == creatures.species_manager.SpeciesRelationship.DEFENDED_BY:
+                    perceivableDefenders.append(creature)
+                elif relationship == creatures.species_manager.SpeciesRelationship.PROTECTS:
+                    perceivableDefendees.append(creature)
+                elif relationship == creatures.species_manager.SpeciesRelationship.LEECHED_OFF_OF:
+                    perceivableParasites.append(creature)
+                elif relationship == creatures.species_manager.SpeciesRelationship.LEECHES:
+                    perceivableHosts.append(creature)
+                elif relationship == creatures.species_manager.SpeciesRelationship.NURTURED_BY:
+                    perceivableNurturers.append(creature)
+                elif relationship == creatures.species_manager.SpeciesRelationship.NURTURES:
+                    perceivableNurturees.append(creature)
+
         return EnvironmentInfo(
             perceivableResources,
-            perceivableCreatures,
-            lightVisibility,
-            [])
+            perceivableMates,
+            perceivablePredators,
+            perceivablePrey,
+            perceivableCompetitors,
+            perceivableAllies,
+            perceivableDefenders,
+            perceivableDefendees,
+            perceivableParasites,
+            perceivableHosts,
+            perceivableNurturers,
+            perceivableNurturees,
+            [],
+            []
+        )
 
     def getRegisteredCreatures(self):
         creatureList = []

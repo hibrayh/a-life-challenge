@@ -1,7 +1,7 @@
 import logging
 import copy
 import math
-from . import decision_network, species_manager, genome
+from . import decision_network, species_manager, genome, memory
 import random
 import json
 
@@ -10,6 +10,33 @@ logging.basicConfig(
     format='%(levelname)s %(asctime)s - %(message)s')
 
 MAX_MOVEMENT = 20
+MAX_ENERGY_LOSS = 0.2
+MAX_DAMAGE = 100
+UNIT = 20
+
+
+def _get_closest_from_collection(collection, centralObject):
+    if len(collection) > 0:
+        closestObject = collection[0]
+        closestDistance = None
+        if closestObject is None:
+            closestDistance = 100000000000
+        else:
+            closestDistance = abs(math.dist([centralObject.xCoordinate, centralObject.yCoordinate], [
+                                  closestObject.xCoordinate, closestObject.yCoordinate]))
+
+        for _object in collection[1:]:
+            if _object is not None:
+                objectDistance = abs(math.dist([centralObject.xCoordinate, centralObject.yCoordinate], [
+                                     _object.xCoordinate, _object.yCoordinate]))
+
+                if objectDistance < closestDistance:
+                    closestDistance = objectDistance
+                    closestObject = _object
+
+        return closestObject
+    else:
+        return None
 
 
 class Creature:
@@ -34,7 +61,11 @@ class Creature:
             self.yCoordinate = yCoordinate
             self.environment = environment
             self.lastAction = decision_network.CreatureAction.BIRTHED
-            self.reproductionCoolDown = 10
+            self.lastMovementDirection = [
+                0, 0]  # [angle (in radians), distance]
+            self.lastTargetedObject = None
+
+            self.reproductionCoolDown = 50 * self.genome.reproductionCooldown
             self.hasPerformedActionThisTurn = True
 
             if self.genome.reproductionType == genome.ReproductionType.ASEXUAL:
@@ -48,9 +79,19 @@ class Creature:
             self.maxEnergy = inputGenome.maxEnergy * 100
             self.currentEnergy = copy.deepcopy(self.maxEnergy)
 
+            self.maxAge = math.floor(inputGenome.lifeExpectancy * 100)
+            self.currentAge = 0
+
+            self.memory = memory.ShortTermMemory(
+                self.genome.shortTermMemoryCapacity,
+                self.genome.shortTermMemoryAccuracy)
+
             self.reactionTime = inputGenome.reactionTime * 100
 
             self.environment.addToCreatureRegistry(self)
+
+            self.beingProtected = False
+            self.protectedBy = None
         else:
             logging.info(f"Loading existing creature")
 
@@ -72,14 +113,16 @@ class Creature:
                 saveData['genome']['smellRange'],
                 saveData['genome']['hearingRange'],
                 saveData['genome']['reactionTime'],
-                saveData['genome']['intelligence'],
+                saveData['genome']['impulsivity'],
                 saveData['genome']['selfPreservation'],
                 saveData['genome']['mobility'],
                 genome.ReproductionType(
                     saveData['genome']['reproductionType']),
+                saveData['genome']['reproductionCooldown'],
                 saveData['genome']['offspringAmount'],
                 saveData['genome']['motivation'],
                 saveData['genome']['maxEnergy'],
+                saveData['genome']['metabolism'],
                 saveData['genome']['individualism'],
                 saveData['genome']['territorial'],
                 saveData['genome']['fightOrFlight'],
@@ -87,8 +130,16 @@ class Creature:
                 saveData['genome']['scent'],
                 saveData['genome']['stealth'],
                 saveData['genome']['lifeExpectancy'],
+                saveData['genome']['maturity'],
                 saveData['genome']['offensiveAbility'],
                 saveData['genome']['defensiveAbility'],
+                saveData['genome']['effectFromHost'],
+                saveData['genome']['effectFromParasite'],
+                saveData['genome']['protecting'],
+                saveData['genome']['nurturing'],
+                saveData['genome']['effectFromBeingNurtured'],
+                saveData['genome']['shortTermMemoryAccuracy'],
+                saveData['genome']['shortTermMemoryCapacity'],
                 saveData['genome']['shape'],
                 saveData['genome']['color'])
 
@@ -99,11 +150,19 @@ class Creature:
             self.yCoordinate = saveData['yCoordinate']
             self.lastAction = decision_network.CreatureAction(
                 saveData['lastAction'])
+            self.lastMovementDirection = saveData['lastMovementDirection']
+            self.lastTargetedObject = saveData['lastTargetedObject']
+
             self.reproductionCoolDown = saveData['reproductionCoolDown']
+
             self.currentHealth = saveData['currentHealth']
             self.maxHealth = self.genome.maxHealth * 100
             self.currentEnergy = saveData['currentEnergy']
             self.maxEnergy = self.genome.maxEnergy * 100
+            self.currentAge = saveData['currentAge']
+            self.maxAge = self.genome.lifeExpectancy * 100
+            self.memory = memory.ShortTermMemory(
+                None, None, loadExistingSave=True, saveData=saveData['memory'])
             self.hasPerformedActionThisTurn = False
             self.environment = environment
             self.reactionTime = self.genome.reactionTime * 100
@@ -114,6 +173,9 @@ class Creature:
                 self._decisionNetwork = decision_network.DecisionNetworkSexual()
 
             self.environment.addToCreatureRegistry(self)
+
+            self.beingProtected = False
+            self.protectedBy = None
 
     def unregisterFromEnvironment(self):
         logging.info(f"Unregistering {self.id} from the Environment")
@@ -143,54 +205,83 @@ class Creature:
             'xCoordinate': self.xCoordinate,
             'yCoordinate': self.yCoordinate,
             'lastAction': self.lastAction,
+            'lastMovementDirection': self.lastMovementDirection,
+            'lastTargetedObject': self.lastTargetedObject,
             'reproductionCoolDown': self.reproductionCoolDown,
             'currentHealth': self.currentHealth,
             'currentEnergy': self.currentEnergy,
+            'currentAge': self.currentAge,
+            'memory': self.memory.save()
         }
 
     def canReproduce(self):
-        return (self.reproductionCoolDown == 0) and (
-            not self.hasPerformedActionThisTurn)
+        return (self.reproductionCoolDown == 0) \
+            and (not self.hasPerformedActionThisTurn) \
+            and ((self.currentAge / self.maxAge) >= self.genome.maturity)
 
     def speciesRelationship(self, species):
-        return species_manager.SpeciesRelationship.WORKS_WITH
-        # return self.speciesManager.speciesRelations[species]
+        return self.speciesManager.speciesRelations[species]
 
     def reproduceAsexual(self):
-        if self.canReproduce():
-            logging.info(f"{self.id} reproducing asexually")
+        logging.info(f"{self.id} reproducing asexually")
+
+        for i in range(self.genome.offspringAmount):
             childGenome = genome.createNewGenomeAsexual(self.genome)
             self.speciesManager.createNewChild(
                 childGenome, self.xCoordinate, self.yCoordinate)
-            self.lastAction = decision_network.CreatureAction.REPRODUCE
-            self.reproductionCoolDown = 10
-            self.currentEnergy = .5 * self.maxEnergy
+        self.lastAction = decision_network.CreatureAction.REPRODUCE
+        self.reproductionCoolDown = 50 * self.genome.reproductionCooldown
+        self.currentEnergy -= (self.genome.metabolism *
+                               MAX_ENERGY_LOSS) * self.maxEnergy
 
     def reproduceSexual(self, otherParent):
-        if self.canReproduce() and otherParent.canReproduce():
-            logging.info(
-                f"{self.id} reproducing sexually with {otherParent.id}")
+        logging.info(
+            f"{self.id} reproducing sexually with {otherParent.id}")
+
+        for i in range(self.genome.offspringAmount):
             childGenome = genome.createNewGenomeSexual(
                 self.genome, otherParent.genome)
             self.speciesManager.createNewChild(
                 childGenome, self.xCoordinate, self.yCoordinate)
-            self.lastAction = decision_network.CreatureAction.REPRODUCE
-            self.reproductionCoolDown = 10
-            self.currentEnergy = .5 * self.maxEnergy
-
-    def consumeResource(self, resource):
-        logging.info(f"{self.id} consuming resource {resource.id}")
-        self.currentEnergy = min(
-            (1 + resource.replenishment) * self.currentEnergy,
-            self.maxEnergy)
-        resource.noticeOfConsumption()
-        self.lastAction = decision_network.CreatureAction.CONSUME_FOOD
+        self.lastAction = decision_network.CreatureAction.REPRODUCE
+        self.reproductionCoolDown = 50 * self.genome.reproductionCooldown
+        self.currentEnergy -= (self.genome.metabolism *
+                               MAX_ENERGY_LOSS) * self.maxEnergy
 
     def notificationOfReproduction(self):
         self.lastAction = decision_network.CreatureAction.REPRODUCE
         self.hasPerformedActionThisTurn = True
         self.reproductionCoolDown = 10
-        self.currentEnergy = .5 * self.maxEnergy
+        self.currentEnergy -= (self.genome.metabolism *
+                               MAX_ENERGY_LOSS) * self.maxEnergy
+
+    def takeDamage(self, damage):
+        if not self.beingProtected:
+            self.currentHealth -= (damage * (1 - self.genome.defensiveAbility))
+        else:
+            self.protectedBy.takeDamage(damage)
+            self.protectedBy = None
+            self.beingProtected = False
+
+        if self.currentHealth <= 0:
+            self.lastAction = decision_network.CreatureAction.DEAD
+            return self.maxEnergy
+        else:
+            return 0
+
+    def leeched(self):
+        self.currentHealth += (self.genome.effectFromParasite -
+                               0.5) * self.maxHealth
+
+        if self.currentHealth <= 0:
+            self.lastAction = decision_network.CreatureAction.DEAD
+
+    def nurtured(self):
+        self.currentHealth += 0.1 * self.maxHealth
+
+    def underProtection(self, creatureProtecting):
+        self.beingProtected = True
+        self.beingProtected = creatureProtecting
 
     def moveCreature(self, degreeOfMovement, distance):
         xMovement = distance * math.cos(degreeOfMovement)
@@ -199,7 +290,41 @@ class Creature:
         self.xCoordinate += xMovement
         self.yCoordinate += yMovement
 
-        self.currentEnergy -= 0.005 * self.maxEnergy
+        self.currentEnergy -= (self.genome.metabolism *
+                               MAX_ENERGY_LOSS) * self.maxEnergy
+
+        self.lastMovementDirection = degreeOfMovement
+
+    def moveCreatureTowardsObject(self, _object):
+        distance = abs(math.dist([self.xCoordinate, self.yCoordinate], [
+                       _object.xCoordinate, _object.yCoordinate]))
+        degreeOfMovement = math.acos(
+            (_object.xCoordinate - self.xCoordinate) / distance)
+
+        if _object.yCoordinate - self.yCoordinate < 0:
+            degreeOfMovement = -1 * degreeOfMovement
+
+        movementLength = min(
+            self.genome.mobility * MAX_MOVEMENT,
+            distance - (UNIT / 2)
+        )
+
+        self.moveCreature(degreeOfMovement, movementLength)
+        self.lastTargetedObject = _object.id
+
+    def moveCreatureAwayFromObject(self, _object):
+        distance = abs(math.dist([self.xCoordinate, self.yCoordinate], [
+                       _object.xCoordinate, _object.yCoordinate]))
+        degreeOfMovement = math.acos(
+            (_object.xCoordinate - self.xCoordinate) / distance)
+
+        if _object.yCoordinate - self.yCoordinate < 0:
+            degreeOfMovement = -1 * degreeOfMovement
+
+        self.moveCreature(
+            degreeOfMovement + math.pi,
+            self.genome.mobility * MAX_MOVEMENT)
+        self.lastTargetedObject = _object.id
 
     def moveRandom(self):
         logging.info(f"{self.id} is moving in a random direction")
@@ -208,123 +333,6 @@ class Creature:
 
         self.moveCreature(degreeOfMovement, movementLength)
 
-    def searchForMate(self, perceivableMates):
-        if perceivableMates == []:
-            self.moveRandom()
-        else:
-            distances = []
-            for creature in perceivableMates:
-                distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                       self.xCoordinate) ** 2) +
-                                                  (abs(creature.yCoordinate -
-                                                       self.yCoordinate) ** 2)))
-                distances.append(distanceFromCreature)
-
-            closestMateDistance = min(distances)
-            closestMate = perceivableMates[distances.index(
-                closestMateDistance)]
-            degreeOfMovement = math.acos(
-                (closestMate.xCoordinate - self.xCoordinate) / closestMateDistance)
-
-            if closestMate.yCoordinate - self.yCoordinate < 0:
-                degreeOfMovement = -1 * degreeOfMovement
-
-            movementLength = min(
-                self.genome.mobility * MAX_MOVEMENT,
-                closestMateDistance - 1)
-
-            logging.info(f"{self.id} moving towards potential mate")
-            self.moveCreature(degreeOfMovement, movementLength)
-
-        self.lastAction = decision_network.CreatureAction.SEARCH_FOR_MATE
-
-    def searchForResource(self, perceivableResources):
-        if perceivableResources == []:
-            self.moveRandom()
-        else:
-            distances = []
-            for resource in perceivableResources:
-                distanceFromResource = (math.sqrt((abs(resource.xCoordinate - self.xCoordinate) ** 2)
-                                        + (abs(resource.yCoordinate - self.yCoordinate) ** 2)))
-                distances.append(distanceFromResource)
-
-            closestResourceDistance = min(distances)
-            closestResource = perceivableResources[distances.index(
-                closestResourceDistance)]
-            degreeOfMovement = math.acos(
-                (closestResource.xCoordinate -
-                 self.xCoordinate) /
-                closestResourceDistance)
-
-            if closestResource.yCoordinate - self.yCoordinate < 0:
-                degreeOfMovement = -1 * degreeOfMovement
-
-            movementLength = min(
-                self.genome.mobility * MAX_MOVEMENT,
-                closestResourceDistance - 1)
-
-            logging.info(f"{self.id} moving towards resource")
-            self.moveCreature(degreeOfMovement, movementLength)
-
-        self.lastAction = decision_network.CreatureAction.SEARCH_FOR_FOOD
-
-    def fleeFromPredator(self, perceivablePredators):
-        if perceivablePredators == []:
-            self.moveRandom()
-        else:
-            distances = []
-            for creature in perceivablePredators:
-                distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                       self.xCoordinate) ** 2) +
-                                                  (abs(creature.yCoordinate -
-                                                       self.yCoordinate) ** 2)))
-                distances.append(distanceFromCreature)
-
-            closestPredatorDistance = min(distances)
-            closestPredator = perceivablePredators[distances.index(
-                closestPredatorDistance)]
-            degreeOfMovement = math.acos(
-                (closestPredator.xCoordinate -
-                 self.xCoordinate) /
-                closestPredatorDistance)
-
-            if closestPredator.yCoordinate - self.yCoordinate < 0:
-                degreeOfMovement = -1 * degreeOfMovement
-
-            movementLength = self.genome.mobility * MAX_MOVEMENT
-            logging.info(f"{self.id} fleeing from predator")
-            self.moveCreature(degreeOfMovement, movementLength)
-
-        self.lastAction = decision_network.CreatureAction.FLEE_FROM_CREATURE
-
-    def chasePrey(self, perceivablePrey):
-        if perceivablePrey == []:
-            self.moveRandom()
-        else:
-            distances = []
-            for creature in perceivablePrey:
-                distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                       self.xCoordinate) ** 2) +
-                                                  (abs(creature.yCoordinate -
-                                                       self.yCoordinate) ** 2)))
-                distances.append(distanceFromCreature)
-
-            closestPreyDistance = min(distances)
-            closestPrey = perceivablePrey[distances.index(closestPreyDistance)]
-            degreeOfMovement = math.acos(
-                (closestPrey.xCoordinate - self.xCoordinate) / closestPreyDistance)
-
-            if closestPrey.yCoordinate - self.yCoordinate < 0:
-                degreeOfMovement = -1 * degreeOfMovement
-
-            movementLength = min(
-                self.genome.mobility * MAX_MOVEMENT,
-                closestPreyDistance - 1)
-            logging.info(f"{self.id} chasing prey")
-            self.moveCreature(degreeOfMovement, movementLength)
-
-        self.lastAction = decision_network.CreatureAction.CHASE_A_CREATURE
-
     def performAction(self):
         logging.info(f"{self.id} determining its next action")
         perceivableEnvironment = self.environment.returnCreaturesPerceivableEnvironment(
@@ -332,79 +340,219 @@ class Creature:
         actionToPerform = self._decisionNetwork.determineMostFavorableCreatureAction(
             self, perceivableEnvironment)
 
+        startingHealth = copy.deepcopy(self.currentHealth)
+        startingEnergy = copy.deepcopy(self.currentEnergy)
+        changeInOffspring = 0
+
         if actionToPerform == decision_network.CreatureAction.REPRODUCE:
             logging.info(f"{self.id} has decided to reproduce")
-            if self.genome.reproductionType == genome.ReproductionType.ASEXUAL:
+
+            if self.genome.reproductionType == genome.ReproductionType.SEXUAL:
+                closestMate = _get_closest_from_collection(
+                    perceivableEnvironment.perceivableMates, self)
+                self.reproduceSexual(closestMate)
+                self.lastTargetedObject = closestMate.id
+            else:
                 self.reproduceAsexual()
-            else:
-                distances = []
-                for creature in perceivableEnvironment.perceivableCreatures:
-                    if (creature.species == self.species) and (
-                            creature.canReproduce()):
-                        distanceFromCreature = (math.sqrt((abs(creature.xCoordinate -
-                                                               self.xCoordinate) ** 2) +
-                                                          (abs(creature.yCoordinate -
-                                                               self.yCoordinate) ** 2)))
-                        distances.append(distanceFromCreature)
 
-                if len(distances) == 0:
-                    logging.info(
-                        "No creature nearby to reproduce with (REMOVE THIS FUNCTIONALITY AFTER DECISION NETWORK IS FULLY IMPLEMENTED)")
-                else:
-                    self.reproduceSexual(
-                        perceivableEnvironment.perceivableCreatures[distances.index(min(distances))])
-        elif actionToPerform == decision_network.CreatureAction.CONSUME_FOOD:
-            logging.info(f"{self.id} has decided to consume")
-            distances = []
-            for resource in perceivableEnvironment.perceivableResources:
-                distanceFromResource = (math.sqrt((abs(resource.xCoordinate - self.xCoordinate) ** 2)
-                                        + (abs(resource.yCoordinate - self.yCoordinate) ** 2)))
-                distances.append(distanceFromResource)
-
-            if len(distances) == 0:
-                logging.info("No nearby food to consume")
-            else:
-                if min(distances) <= 10:
-                    self.consumeResource(
-                        perceivableEnvironment.perceivableResources[distances.index(min(distances))])
-                else:
-                    logging.info("No nearby food to consume")
+            changeInOffspring = self.genome.offspringAmount
         elif actionToPerform == decision_network.CreatureAction.SEARCH_FOR_FOOD:
             logging.info(f"{self.id} has decided to search for food")
-            self.searchForResource(perceivableEnvironment.perceivableResources)
-        elif actionToPerform == decision_network.CreatureAction.SEARCH_FOR_MATE:
-            logging.info(f"{self.id} has decided to search for a mate")
-            possibleMates = []
-            for creature in perceivableEnvironment.perceivableCreatures:
-                if (creature.species == self.species) and (
-                        creature.canReproduce()):
-                    possibleMates.append(creature)
 
-            self.searchForMate(possibleMates)
+            closestResource = _get_closest_from_collection(
+                perceivableEnvironment.perceivableResources, self)
+            if closestResource is not None:
+                self.moveCreatureTowardsObject(closestResource)
+            else:
+                self.moveRandom()
+
+            self.lastAction = decision_network.CreatureAction.SEARCH_FOR_FOOD
+        elif actionToPerform == decision_network.CreatureAction.CONSUME_FOOD:
+            logging.info(f"{self.id} has decided to consume food")
+            closestResource = _get_closest_from_collection(
+                perceivableEnvironment.perceivableResources, self)
+            self.currentEnergy = min(
+                self.maxEnergy, self.currentEnergy + (closestResource.replenishment * self.maxEnergy))
+            closestResource.noticeOfConsumption()
+            self.lastAction = decision_network.CreatureAction.CONSUME_FOOD
+        elif actionToPerform == decision_network.CreatureAction.SEARCH_FOR_MATE:
+            logging.info(f"{self.id} has decided to look for a mate")
+            closestMate = _get_closest_from_collection(
+                perceivableEnvironment.perceivableMates, self)
+            if closestMate is not None:
+                self.moveCreatureTowardsObject(closestMate)
+            else:
+                self.moveRandom()
+            self.lastAction = decision_network.CreatureAction.SEARCH_FOR_MATE
         elif actionToPerform == decision_network.CreatureAction.FLEE_FROM_CREATURE:
             logging.info(f"{self.id} has decided to flee from predators")
-            perceivablePredators = []
-            for creature in perceivableEnvironment.perceivableCreatures:
-                if self.speciesRelationship(
-                        creature.species) == species_manager.SpeciesRelationship.IS_HUNTED_BY:
-                    perceivablePredators.append(creature)
-
-            self.fleeFromPredator(perceivablePredators)
+            closestPredator = _get_closest_from_collection(
+                perceivableEnvironment.perceivablePredators, self)
+            self.moveCreatureAwayFromObject(closestPredator)
+            self.lastAction = decision_network.CreatureAction.FLEE_FROM_CREATURE
         elif actionToPerform == decision_network.CreatureAction.CHASE_A_CREATURE:
             logging.info(f"{self.id} has decided to chase prey")
-            perceivablePrey = []
-            for creature in perceivableEnvironment.perceivableCreatures:
-                if self.speciesRelationship(
-                        creature.species) == species_manager.SpeciesRelationship.HUNTS:
-                    perceivablePrey.append(creature)
-
-            self.chasePrey(perceivablePrey)
+            closestPrey = _get_closest_from_collection(
+                perceivableEnvironment.perceivablePrey, self)
+            self.moveCreatureTowardsObject(closestPrey)
+            self.lastAction = decision_network.CreatureAction.CHASE_A_CREATURE
+        elif actionToPerform == decision_network.CreatureAction.ATTACK_A_CREATURE:
+            logging.info(f"{self.id} has decided to attack a creature")
+            closestPredator = _get_closest_from_collection(
+                perceivableEnvironment.perceivablePredators, self)
+            closestPrey = _get_closest_from_collection(
+                perceivableEnvironment.perceivablePrey, self)
+            closestCompetitor = _get_closest_from_collection(
+                perceivableEnvironment.perceivableCompetitors, self)
+            closestParasite = _get_closest_from_collection(
+                perceivableEnvironment.perceivableParasites, self)
+            closestHost = _get_closest_from_collection(
+                perceivableEnvironment.perceivableHosts, self)
+            closestPotentialHostile = _get_closest_from_collection(
+                [closestPredator, closestPrey, closestCompetitor, closestParasite, closestHost], self)
+            self.currentHealth += closestPotentialHostile.takeDamage(
+                self.genome.offensiveAbility * MAX_DAMAGE)
+            self.lastAction = decision_network.CreatureAction.ATTACK_A_CREATURE
+            self.lastTargetedObject = closestPotentialHostile.id
+        elif actionToPerform == decision_network.CreatureAction.SEEK_ALLIES:
+            logging.info(f"{self.id} has decided to seek allies")
+            closestAlly = _get_closest_from_collection(
+                perceivableEnvironment.perceivableAllies, self)
+            if closestAlly is not None:
+                self.moveCreatureTowardsObject(closestAlly)
+            else:
+                self.moveRandom()
+            self.lastAction = decision_network.CreatureAction.SEEK_ALLIES
+        elif actionToPerform == decision_network.CreatureAction.LEECH_OFF_CREATURE:
+            logging.info(f"{self.id} has decided to leech off of a host")
+            closestHost = _get_closest_from_collection(
+                perceivableEnvironment.perceivableHosts, self)
+            self.currentHealth += (self.genome.effectFromHost -
+                                   0.5) * self.maxHealth
+            closestHost.leeched()
+            self.lastAction = decision_network.CreatureAction.LEECH_OFF_CREATURE
+            self.lastTargetedObject = closestHost.id
+        elif actionToPerform == decision_network.CreatureAction.SEEK_HOST:
+            logging.info(f"{self.id} has decided to seek a host")
+            closestHost = _get_closest_from_collection(
+                perceivableEnvironment.perceivableHosts, self)
+            if closestHost is not None:
+                self.moveCreatureTowardsObject(closestHost)
+            else:
+                self.moveRandom()
+            self.lastAction = decision_network.CreatureAction.SEEK_HOST
+        elif actionToPerform == decision_network.CreatureAction.EVADE_HOST:
+            logging.info(f"{self.id} has decided to evade hosts")
+            closestHost = _get_closest_from_collection(
+                perceivableEnvironment.perceivableHosts, self)
+            if closestHost is not None:
+                self.moveCreatureAwayFromObject(closestHost)
+            else:
+                self.moveRandom()
+            self.lastAction = decision_network.CreatureAction.EVADE_HOST
+        elif actionToPerform == decision_network.CreatureAction.SEEK_PARASITE:
+            logging.info(f"{self.id} has decided to seek parasites")
+            closestParasite = _get_closest_from_collection(
+                perceivableEnvironment.perceivableParasites, self)
+            if closestParasite is not None:
+                self.moveCreatureTowardsObject(closestParasite)
+            else:
+                self.moveRandom()
+            self.lastAction = decision_network.CreatureAction.SEEK_PARASITE
+        elif actionToPerform == decision_network.CreatureAction.EVADE_PARASITE:
+            logging.info(f"{self.id} has decided to evade parasites")
+            closestParasite = _get_closest_from_collection(
+                perceivableEnvironment.perceivableParasites, self)
+            if closestParasite is not None:
+                self.moveCreatureAwayFromObject(closestParasite)
+            else:
+                self.moveRandom()
+            self.lastAction = decision_network.CreatureAction.EVADE_PARASITE
+        elif actionToPerform == decision_network.CreatureAction.PROTECT_CREATURE:
+            logging.info(f"{self.id} has deicded to protect another creature")
+            closestDefendee = _get_closest_from_collection(
+                perceivableEnvironment.perceivableDefendees, self)
+            closestDefendee.underProtection(self)
+            self.lastAction = decision_network.CreatureAction.PROTECT_CREATURE
+            self.lastTargetedObject = closestDefendee.id
+        elif actionToPerform == decision_network.CreatureAction.SEEK_DEFENDEE:
+            logging.info(f"{self.id} has decided to seek creatures to protect")
+            closestDefendee = _get_closest_from_collection(
+                perceivableEnvironment.perceivableDefendees, self)
+            if closestDefendee is not None:
+                self.moveCreatureTowardsObject(closestDefendee)
+            else:
+                self.moveRandom()
+            self.lastAction = decision_network.CreatureAction.SEEK_DEFENDEE
+        elif actionToPerform == decision_network.CreatureAction.SEEK_DEFENDER:
+            logging.info(f"{self.id} has decided to seek defenders")
+            closestDefender = _get_closest_from_collection(
+                perceivableEnvironment.perceivableDefenders, self)
+            if closestDefender is not None:
+                self.moveCreatureTowardsObject(closestDefender)
+            else:
+                self.moveRandom()
+            self.lastAction = decision_network.CreatureAction.SEEK_DEFENDER
+        elif actionToPerform == decision_network.CreatureAction.NURTURE_CREATURE:
+            logging.info(f"{self.id} has decided to nurture a creature")
+            closestNurturee = _get_closest_from_collection(
+                perceivableEnvironment.perceivableNurturees, self)
+            closestNurturee.nurtured()
+            self.lastAction = decision_network.CreatureAction.NURTURE_CREATURE
+            self.lastTargetedObject = closestNurturee.id
+        elif actionToPerform == decision_network.CreatureAction.SEEK_NURTUREE:
+            logging.info(
+                f"{self.id} has decided to search for creatures to nurture")
+            closestNurturee = _get_closest_from_collection(
+                perceivableEnvironment.perceivableNurturees, self)
+            if closestNurturee is not None:
+                self.moveCreatureTowardsObject(closestNurturee)
+            else:
+                self.moveRandom()
+            self.lastAction = decision_network.CreatureAction.SEEK_NURTUREE
+        elif actionToPerform == decision_network.CreatureAction.SEEK_NURTURER:
+            logging.info(f"{self.id} has decided to seek nurturers")
+            closestNurturer = _get_closest_from_collection(
+                perceivableEnvironment.perceivableNurturers, self)
+            if closestNurturer is not None:
+                self.moveCreatureTowardsObject(closestNurturer)
+            else:
+                self.moveRandom()
+            self.lastAction = decision_network.CreatureAction.SEEK_NURTURER
         else:
             logging.info(f"{self.id} has decided to do nothing")
+            self.lastAction = decision_network.CreatureAction.NOTHING
+            self.currentEnergy -= (self.genome.metabolism *
+                                   MAX_ENERGY_LOSS) * self.maxEnergy
 
         self.hasPerformedActionThisTurn = True
-        self.reproductionCoolDown = self.reproductionCoolDown - \
-            1 if self.reproductionCoolDown > 0 else 0
+
+        self.reproductionCoolDown = max(0, self.reproductionCoolDown - 1)
+        self.currentAge += 1
+
+        # Store memory and net action benefit
+        self.memory.addNewMemory(
+            perceivableEnvironment,
+            startingHealth /
+            self.maxHealth,
+            startingEnergy /
+            self.maxEnergy,
+            copy.deepcopy(
+                self.lastAction),
+            memory.NetActionBenefit(
+                self.currentHealth -
+                startingHealth,
+                self.currentEnergy -
+                startingEnergy,
+                changeInOffspring))
+
+        # Check for potential death conditions
+        if (self.currentHealth <= 0) or (self.currentEnergy <= 0) or (
+                self.currentAge >= self.maxAge):
+            self.lastAction = decision_network.CreatureAction.DEAD
+
+        self.currentHealth += (.2 * (self.currentEnergy /
+                               self.maxEnergy)) * self.maxHealth
 
         logging.info(
             f"Creature {self.id} now has {(self.currentEnergy / self.maxEnergy) * 100}% energy remaining")
