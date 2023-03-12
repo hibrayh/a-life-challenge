@@ -331,9 +331,9 @@ class Environment:
 
         if creatures.genome.Receptors.VISION in creatureOfInterest.genome.receptors:
             self._getVisionPerceivableCreatures(
-                creatureOfInterest, perceivableCreatures, lightVisibility)
+                creatureOfInterest, perceivableCreatures)
             self._getVisionPerceivableResources(
-                creatureOfInterest, perceivableResources, lightVisibility)
+                creatureOfInterest, perceivableResources)
 
         if creatures.genome.Receptors.SMELL in creatureOfInterest.genome.receptors:
             self._getSmellPerceivableCreatures(
