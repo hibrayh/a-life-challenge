@@ -459,7 +459,7 @@ class Animation extends React.Component {
                 (element) => element.key !== removing.key
             )
             textArray = textArray.filter(
-                (element) => element.key !== removing.key
+                (element) => element.key !== 'text'+removing.key
             )
         })
 
@@ -504,30 +504,31 @@ class Animation extends React.Component {
                         </div>
                     ),
                 })
-            } else if (creature.lastAction === 'DEATH') {
+            } else if (creature.lastAction === 'DEAD') {
                 //remove the element After playing the animation
                 removeLogArray.push({ key: creature.creatureId })
-                removeLogArray.push({ key: 'text' + creature.creatureId })
+            } else {
+
+                //move the creatures
+                changeLogArray.push({
+                    key: creature.creatureId,
+                    elem: (
+                        <div key={'movement' + keyId++}>
+                            {this.CreateCreature(creature)}
+                        </div>
+                    ),
+                })
+
+                textChangeLogArray.push({
+                    key: 'text' + creature.creatureId,
+                    elem: (
+                        <div key={'text' + keyId++}>
+                            {this.CreateText(creature)}
+                        </div>
+                    ),
+                })
+
             }
-
-            //move the creatures
-            changeLogArray.push({
-                key: creature.creatureId,
-                elem: (
-                    <div key={'movement' + keyId++}>
-                        {this.CreateCreature(creature)}
-                    </div>
-                ),
-            })
-
-            textChangeLogArray.push({
-                key: 'text' + creature.creatureId,
-                elem: (
-                    <div key={'text' + keyId++}>
-                        {this.CreateText(creature)}
-                    </div>
-                ),
-            })
         }
     }
 
@@ -543,7 +544,7 @@ class Animation extends React.Component {
 
             if (creature.lastAction === 'BIRTHED') {
                 jsx.push(<div key={keyId++}>{this.AnimateBirth(creature)}</div>)
-            } else if (creature.lastAction === 'DEATH') {
+            } else if (creature.lastAction === 'DEAD') {
                 //remove the element After playing the animation
                 jsx.push(
                     <div key={keyId++}>{this.AnimateKilled(creature)}</div>
@@ -566,10 +567,11 @@ class Animation extends React.Component {
                 jsx.push(
                     <div key={keyId++}>{this.AnimateMaturing(creature)}</div>
                 )
+            } else if (creature.lastAction !== 'DEAD')
+            {
+                //move the creatures if they aren't dead
+                jsx.push(<div key={keyId++}>{this.AnimateMovement(creature)}</div>)
             }
-
-            //move the creatures
-            jsx.push(<div key={keyId++}>{this.AnimateMovement(creature)}</div>)
         }
 
         for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
