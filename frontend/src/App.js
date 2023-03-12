@@ -169,7 +169,6 @@ function App() {
 
     // "Page" that will show the simulation
     const Simulation = () => {
-
         return (
             <>
                 <Animation
