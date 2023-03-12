@@ -201,7 +201,7 @@ def createNewGenomeSexual(parentAGenome, parentBGenome):
         _generateTraitValue(parentAGenome.shortTermMemoryCapacity, parentBGenome.shortTermMemoryCapacity),
         parentAGenome.shape,
         parentAGenome.color
-)
+    )
 
 
 def createNewGenomeAsexual(parentGenome):

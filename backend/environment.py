@@ -346,7 +346,7 @@ class Environment:
                 creatureOfInterest, perceivableCreatures)
             self._getAuditoryPerceivableResources(
                 creatureOfInterest, perceivableResources)
-        
+
         # Filter the info
         perceivableMates = []
         perceivablePredators = []
@@ -362,12 +362,13 @@ class Environment:
 
         for creature in perceivableCreatures:
             if (creatureOfInterest.species == creature.species) \
-                and (creature.canReproduce()):
+                    and (creature.canReproduce()):
                 perceivableMates.append(creature)
             elif (creatureOfInterest.species == creature.species):
                 perceivableAllies.append(creature)
             else:
-                relationship = creatureOfInterest.speciesRelationship(creature.species)
+                relationship = creatureOfInterest.speciesRelationship(
+                    creature.species)
 
                 if relationship == creatures.species_manager.SpeciesRelationship.IS_HUNTED_BY:
                     perceivablePredators.append(creature)
@@ -387,7 +388,6 @@ class Environment:
                     perceivableNurturers.append(creature)
                 elif relationship == creatures.species_manager.SpeciesRelationship.NURTURES:
                     perceivableNurturees.append(creature)
-            
 
         return EnvironmentInfo(
             perceivableResources,

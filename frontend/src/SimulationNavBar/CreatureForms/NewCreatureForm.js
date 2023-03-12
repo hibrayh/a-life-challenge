@@ -971,7 +971,9 @@ function NewCreatureForm(props) {
                     </div>
 
                     <div className="attributeHolder">
-                        <span className="dataTitle">Effect From Being Nurtured</span>
+                        <span className="dataTitle">
+                            Effect From Being Nurtured
+                        </span>
                         <input
                             onChange={(event) =>
                                 setEffectFromBeingNurtured(event.target.value)
@@ -996,7 +998,9 @@ function NewCreatureForm(props) {
                     </div>
 
                     <div className="attributeHolder">
-                        <span className="dataTitle">Short Term Memory Accuracy</span>
+                        <span className="dataTitle">
+                            Short Term Memory Accuracy
+                        </span>
                         <input
                             onChange={(event) =>
                                 setShortTermMemoryAccuracy(event.target.value)
@@ -1021,7 +1025,9 @@ function NewCreatureForm(props) {
                     </div>
 
                     <div className="attributeHolder">
-                        <span className="dataTitle">Short Term Memory Capacity</span>
+                        <span className="dataTitle">
+                            Short Term Memory Capacity
+                        </span>
                         <input
                             onChange={(event) =>
                                 setShortTermMemoryCapacity(event.target.value)
