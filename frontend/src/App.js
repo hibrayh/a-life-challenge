@@ -18,10 +18,10 @@ function App() {
     const [resourceList, setResourceList] = useState([])
     const [timeOfDay, setTimeOfDay] = useState('')
     const [lightVisibility, setLightVisibility] = useState(1)
-<<<<<<< HEAD
+
     const [topographyInfo, setTopographyInfo] = useState([])
-=======
->>>>>>> ee37c38301cfe36c0776c6130031877c86dadf3a
+
+
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
