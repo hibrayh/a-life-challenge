@@ -504,8 +504,8 @@ class Animation extends React.Component {
                         </div>
                     ),
                 })
-            } 
-            
+            }
+
             if (creature.lastAction === 'DEAD') {
                 //remove the element After playing the animation
                 removeLogArray.push({ key: creature.creatureId })
@@ -567,8 +567,8 @@ class Animation extends React.Component {
                 jsx.push(
                     <div key={keyId++}>{this.AnimateMaturing(creature)}</div>
                 )
-            } 
-            
+            }
+
             if (creature.lastAction !== 'DEAD') {
                 //move the creatures only if they aren't dead
                 jsx.push(
