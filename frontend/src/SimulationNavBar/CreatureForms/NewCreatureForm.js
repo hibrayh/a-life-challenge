@@ -17,13 +17,15 @@ function NewCreatureForm(props) {
     const [smellRange, setSmellRange] = useState(0.5)
     const [hearingRange, setHearingRange] = useState(0.5)
     const [reactionTime, setReactionTime] = useState(0.5)
-    const [intelligence, setIntelligence] = useState(0.5)
+    const [impulsivity, setImpulsivity] = useState(0.5)
     const [selfPreservation, setSelfPreservation] = useState(0.5)
     const [mobility, setMobility] = useState(0.5)
     const [reproductionType, setReproductionType] = useState('sexual') // Set default
+    const [reproductionCoolDown, setReproductionCooldown] = useState(0.5)
     const [offSpringAmount, setOffSpringAmount] = useState(0.5)
     const [motivation, setMotivation] = useState(0.5)
     const [maxEnergy, setMaxEnergy] = useState(0.5)
+    const [metabolism, setMetabolism] = useState(0.5)
     const [individualism, setIndividualism] = useState(0.5)
     const [territorial, setTerritorial] = useState(0.5)
     const [fightOrFlight, setFightOrFlight] = useState(0.5)
@@ -31,8 +33,16 @@ function NewCreatureForm(props) {
     const [scent, setScent] = useState(0.5)
     const [stealth, setStealth] = useState(0.5)
     const [lifeExpectancy, setLifeExpectancy] = useState(0.5)
+    const [maturity, setMaturity] = useState(0.5)
     const [offensiveAbility, setOffensiveAbility] = useState(0.5)
     const [defensiveAbility, setDefensiveAbility] = useState(0.5)
+    const [effectFromHost, setEffectFromHost] = useState(0.5)
+    const [effectFromParasite, setEffectFromParasite] = useState(0.5)
+    const [protecting, setProtecting] = useState(0.5)
+    const [nurturing, setNurturing] = useState(0.5)
+    const [effectFromBeingNurtured, setEffectFromBeingNurtured] = useState(0.5)
+    const [shortTermMemoryAccuracy, setShortTermMemoryAccuracy] = useState(0.5)
+    const [shortTermMemoryCapacity, setShortTermMemoryCapacity] = useState(0.5)
     const [shape, setShape] = useState('circle') // Set default
     const [color, setColor] = useState('red') // Set default
     const [speciesName, setSpeciesName] = useState('')
@@ -73,13 +83,15 @@ function NewCreatureForm(props) {
             setSmellRange(res.smellRange)
             setHearingRange(res.hearingRange)
             setReactionTime(res.reactionTime)
-            setIntelligence(res.intelligence)
+            setImpulsivity(res.impulsivity)
             setSelfPreservation(res.selfPreservation)
             setMobility(res.mobility)
             setReproductionType(res.reproductionType)
+            setReproductionCooldown(res.reproductionCoolDown)
             setOffSpringAmount(res.offSpringAmount)
             setMotivation(res.motivation)
             setMaxEnergy(res.maxEnergy)
+            setMetabolism(res.metabolism)
             setIndividualism(res.individualism)
             setTerritorial(res.territorial)
             setFightOrFlight(res.fightOrFlight)
@@ -87,8 +99,16 @@ function NewCreatureForm(props) {
             setScent(res.scent)
             setStealth(res.stealth)
             setLifeExpectancy(res.lifeExpectancy)
+            setMaturity(res.maturity)
             setOffensiveAbility(res.offensiveAbility)
             setDefensiveAbility(res.defensiveAbility)
+            setEffectFromHost(res.effectFromHost)
+            setEffectFromParasite(res.effectFromParasite)
+            setProtecting(res.protecting)
+            setNurturing(res.nurturing)
+            setEffectFromBeingNurtured(res.effectFromBeingNurtured)
+            setShortTermMemoryAccuracy(res.shortTermMemoryAccuracy)
+            setShortTermMemoryCapacity(res.shortTermMemoryCapacity)
             setShape(res.shape)
             setColor(res.color)
             setSpeciesName(speciesOfInterest)
@@ -394,27 +414,27 @@ function NewCreatureForm(props) {
                     </div>
 
                     <div className="attributeHolder">
-                        <span className="dataTitle">Intelligence</span>
+                        <span className="dataTitle">impulsivity</span>
                         <input
                             onChange={(event) =>
-                                setIntelligence(event.target.value)
+                                setImpulsivity(event.target.value)
                             }
                             className="dataSlider"
                             type="range"
                             min="0"
                             max="1"
                             step=".01"
-                            value={intelligence}></input>
+                            value={impulsivity}></input>
                         <input
                             onChange={(event) =>
-                                setIntelligence(event.target.value)
+                                setImpulsivity(event.target.value)
                             }
                             className="dataText"
                             type="number"
                             min="0"
                             max="1"
                             step=".01"
-                            value={intelligence}></input>
+                            value={impulsivity}></input>
                         <br></br>
                     </div>
 
@@ -480,6 +500,31 @@ function NewCreatureForm(props) {
                             <option value="sexual">Sexual</option>
                             <option value="Asexual">Asexual</option>
                         </select>
+                        <br></br>
+                    </div>
+
+                    <div className="attributeHolder">
+                        <span className="dataTitle">Reproduction Cooldown</span>
+                        <input
+                            onChange={(event) =>
+                                setReproductionCooldown(event.target.value)
+                            }
+                            className="dataSlider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={reproductionCoolDown}></input>
+                        <input
+                            onChange={(event) =>
+                                setReproductionCooldown(event.target.value)
+                            }
+                            className="dataText"
+                            type="number"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={reproductionCoolDown}></input>
                         <br></br>
                     </div>
 
@@ -555,6 +600,31 @@ function NewCreatureForm(props) {
                             max="1"
                             step=".01"
                             value={maxEnergy}></input>
+                        <br></br>
+                    </div>
+
+                    <div className="attributeHolder">
+                        <span className="dataTitle">Metabolism</span>
+                        <input
+                            onChange={(event) =>
+                                setMetabolism(event.target.value)
+                            }
+                            className="dataSlider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={metabolism}></input>
+                        <input
+                            onChange={(event) =>
+                                setMetabolism(event.target.value)
+                            }
+                            className="dataText"
+                            type="number"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={metabolism}></input>
                         <br></br>
                     </div>
 
@@ -726,6 +796,31 @@ function NewCreatureForm(props) {
                     </div>
 
                     <div className="attributeHolder">
+                        <span className="dataTitle">Maturity</span>
+                        <input
+                            onChange={(event) =>
+                                setMaturity(event.target.value)
+                            }
+                            className="dataSlider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={maturity}></input>
+                        <input
+                            onChange={(event) =>
+                                setMaturity(event.target.value)
+                            }
+                            className="dataText"
+                            type="number"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={maturity}></input>
+                        <br></br>
+                    </div>
+
+                    <div className="attributeHolder">
                         <span className="dataTitle">Offensive Ability</span>
                         <input
                             onChange={(event) =>
@@ -772,6 +867,181 @@ function NewCreatureForm(props) {
                             max="1"
                             step=".01"
                             value={defensiveAbility}></input>
+                        <br></br>
+                    </div>
+
+                    <div className="attributeHolder">
+                        <span className="dataTitle">Effect From Host</span>
+                        <input
+                            onChange={(event) =>
+                                setEffectFromHost(event.target.value)
+                            }
+                            className="dataSlider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={effectFromHost}></input>
+                        <input
+                            onChange={(event) =>
+                                setEffectFromHost(event.target.value)
+                            }
+                            className="dataText"
+                            type="number"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={effectFromHost}></input>
+                        <br></br>
+                    </div>
+
+                    <div className="attributeHolder">
+                        <span className="dataTitle">Effect From Parasite</span>
+                        <input
+                            onChange={(event) =>
+                                setEffectFromParasite(event.target.value)
+                            }
+                            className="dataSlider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={effectFromParasite}></input>
+                        <input
+                            onChange={(event) =>
+                                setEffectFromParasite(event.target.value)
+                            }
+                            className="dataText"
+                            type="number"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={effectFromParasite}></input>
+                        <br></br>
+                    </div>
+
+                    <div className="attributeHolder">
+                        <span className="dataTitle">Protecting</span>
+                        <input
+                            onChange={(event) =>
+                                setProtecting(event.target.value)
+                            }
+                            className="dataSlider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={protecting}></input>
+                        <input
+                            onChange={(event) =>
+                                setProtecting(event.target.value)
+                            }
+                            className="dataText"
+                            type="number"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={protecting}></input>
+                        <br></br>
+                    </div>
+
+                    <div className="attributeHolder">
+                        <span className="dataTitle">Nurturing</span>
+                        <input
+                            onChange={(event) =>
+                                setNurturing(event.target.value)
+                            }
+                            className="dataSlider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={nurturing}></input>
+                        <input
+                            onChange={(event) =>
+                                setNurturing(event.target.value)
+                            }
+                            className="dataText"
+                            type="number"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={nurturing}></input>
+                        <br></br>
+                    </div>
+
+                    <div className="attributeHolder">
+                        <span className="dataTitle">Effect From Being Nurtured</span>
+                        <input
+                            onChange={(event) =>
+                                setEffectFromBeingNurtured(event.target.value)
+                            }
+                            className="dataSlider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={effectFromBeingNurtured}></input>
+                        <input
+                            onChange={(event) =>
+                                setEffectFromBeingNurtured(event.target.value)
+                            }
+                            className="dataText"
+                            type="number"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={effectFromBeingNurtured}></input>
+                        <br></br>
+                    </div>
+
+                    <div className="attributeHolder">
+                        <span className="dataTitle">Short Term Memory Accuracy</span>
+                        <input
+                            onChange={(event) =>
+                                setShortTermMemoryAccuracy(event.target.value)
+                            }
+                            className="dataSlider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={shortTermMemoryAccuracy}></input>
+                        <input
+                            onChange={(event) =>
+                                setShortTermMemoryAccuracy(event.target.value)
+                            }
+                            className="dataText"
+                            type="number"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={shortTermMemoryAccuracy}></input>
+                        <br></br>
+                    </div>
+
+                    <div className="attributeHolder">
+                        <span className="dataTitle">Short Term Memory Capacity</span>
+                        <input
+                            onChange={(event) =>
+                                setShortTermMemoryCapacity(event.target.value)
+                            }
+                            className="dataSlider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={shortTermMemoryCapacity}></input>
+                        <input
+                            onChange={(event) =>
+                                setShortTermMemoryCapacity(event.target.value)
+                            }
+                            className="dataText"
+                            type="number"
+                            min="0"
+                            max="1"
+                            step=".01"
+                            value={shortTermMemoryCapacity}></input>
                         <br></br>
                     </div>
 
@@ -870,13 +1140,15 @@ function NewCreatureForm(props) {
                     smellRange: smellRange,
                     hearingRange: hearingRange,
                     reactionTime: reactionTime,
-                    intelligence: intelligence,
+                    impulsivity: impulsivity,
                     selfPreservation: selfPreservation,
                     mobility: mobility,
                     reproductionType: reproductionType,
+                    reproductionCooldown: reproductionCoolDown,
                     offspringAmount: offSpringAmount,
                     motivation: motivation,
                     maxEnergy: maxEnergy,
+                    metabolism: metabolism,
                     individualism: individualism,
                     territorial: territorial,
                     fightOrFlight: fightOrFlight,
@@ -884,8 +1156,16 @@ function NewCreatureForm(props) {
                     scent: scent,
                     stealth: stealth,
                     lifeExpectancy: lifeExpectancy,
+                    maturity: maturity,
                     offensiveAbility: offensiveAbility,
                     defensiveAbility: defensiveAbility,
+                    effectFromHost: effectFromHost,
+                    effectFromParasite: effectFromParasite,
+                    protecting: protecting,
+                    nurturing: nurturing,
+                    effectFromBeingNurtured: effectFromBeingNurtured,
+                    shortTermMemoryAccuracy: shortTermMemoryAccuracy,
+                    shortTermMemoryCapacity: shortTermMemoryCapacity,
                     shape: shape,
                     color: color,
                     speciesName: speciesName,

@@ -49,6 +49,7 @@
     height: fit-content;
     min-height: 750px;
     background-color: rgb(31, 31, 31);
+    overflow: scroll;
 
     left: calc(50% - 22.5vmin);
     top: calc(50% - 49vmin);

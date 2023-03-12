@@ -18,8 +18,8 @@ class SpeciesRelationship(str, Enum):
     DEFENDED_BY = 'DEFENDED_BY'
     LEECHES = 'LEECHES'
     LEECHED_OFF_OF = 'LEECHED_OFF_OF'
-    GATHERS_FOOD_FOR = 'GATHERS_FOOD_FOR'
-    RECEIVES_FOOD_FROM = 'RECEIVES_FOOD_FROM'
+    NURTURES = 'NURTURES'
+    NURTURED_BY = 'NURTURED_BY'
 
 
 class SpeciesManager:
@@ -73,14 +73,16 @@ class SpeciesManager:
                 saveData['_startingGenome']['smellRange'],
                 saveData['_startingGenome']['hearingRange'],
                 saveData['_startingGenome']['reactionTime'],
-                saveData['_startingGenome']['intelligence'],
+                saveData['_startingGenome']['impulsivity'],
                 saveData['_startingGenome']['selfPreservation'],
                 saveData['_startingGenome']['mobility'],
                 genome.ReproductionType(
                     saveData['_startingGenome']['reproductionType']),
+                saveData['_startingGenome']['reproductionCooldown'],
                 saveData['_startingGenome']['offspringAmount'],
                 saveData['_startingGenome']['motivation'],
                 saveData['_startingGenome']['maxEnergy'],
+                saveData['_startingGenome']['metabolism'],
                 saveData['_startingGenome']['individualism'],
                 saveData['_startingGenome']['territorial'],
                 saveData['_startingGenome']['fightOrFlight'],
@@ -88,8 +90,16 @@ class SpeciesManager:
                 saveData['_startingGenome']['scent'],
                 saveData['_startingGenome']['stealth'],
                 saveData['_startingGenome']['lifeExpectancy'],
+                saveData['_startingGenome']['maturity'],
                 saveData['_startingGenome']['offensiveAbility'],
                 saveData['_startingGenome']['defensiveAbility'],
+                saveData['_startingGenome']['effectFromHost'],
+                saveData['_startingGenome']['effectFromParasite'],
+                saveData['_startingGenome']['protecting'],
+                saveData['_startingGenome']['nurturing'],
+                saveData['_startingGenome']['effectFromBeingNurtured'],
+                saveData['_startingGenome']['shortTermMemoryAccuracy'],
+                saveData['_startingGenome']['shortTermMemoryCapacity'],
                 saveData['_startingGenome']['shape'],
                 saveData['_startingGenome']['color'])
 
