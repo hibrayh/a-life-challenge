@@ -459,7 +459,7 @@ class Animation extends React.Component {
                 (element) => element.key !== removing.key
             )
             textArray = textArray.filter(
-                (element) => element.key !== 'text'+removing.key
+                (element) => element.key !== 'text' + removing.key
             )
         })
 
@@ -508,7 +508,6 @@ class Animation extends React.Component {
                 //remove the element After playing the animation
                 removeLogArray.push({ key: creature.creatureId })
             } else {
-
                 //move the creatures
                 changeLogArray.push({
                     key: creature.creatureId,
@@ -527,7 +526,6 @@ class Animation extends React.Component {
                         </div>
                     ),
                 })
-
             }
         }
     }
@@ -567,10 +565,11 @@ class Animation extends React.Component {
                 jsx.push(
                     <div key={keyId++}>{this.AnimateMaturing(creature)}</div>
                 )
-            } else if (creature.lastAction !== 'DEAD')
-            {
+            } else if (creature.lastAction !== 'DEAD') {
                 //move the creatures if they aren't dead
-                jsx.push(<div key={keyId++}>{this.AnimateMovement(creature)}</div>)
+                jsx.push(
+                    <div key={keyId++}>{this.AnimateMovement(creature)}</div>
+                )
             }
         }
 
