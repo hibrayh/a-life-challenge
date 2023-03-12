@@ -385,39 +385,51 @@ class Environment:
 
         # Check if 300 ticks have elapsed and increment daysElapsed in the
         # simulation if so
-        if self.timeOfSimulation % 300 == 0:
+        if self.timeOfSimulation % 500 == 0:
             self.daysElapsed += 1
 
     def getTimeOfSimulation(self):
-        # A day cycle is currently set to 300, so once ticks reach 300, a new
+        # A day cycle is currently set to 500, so once ticks reach 500, a new
         # day starts
-        elapsedTicks = self.timeOfSimulation % 300
+        elapsedTicks = self.timeOfSimulation % 500
         if elapsedTicks < 30:
+            timeOfSimulation = 'midnight'
+        elif elapsedTicks < 60:
             timeOfSimulation = 'dawn'
-        elif elapsedTicks < 90:
-            timeOfSimulation = 'morning'
-        elif elapsedTicks < 150:
-            timeOfSimulation = 'noon'
-        elif elapsedTicks < 210:
-            timeOfSimulation = 'afternoon'
+        elif elapsedTicks < 130:
+            timeOfSimulation = 'early morning'
+        elif elapsedTicks < 200:
+            timeOfSimulation = 'late morning'
         elif elapsedTicks < 270:
+            timeOfSimulation = 'noon'
+        elif elapsedTicks < 340:
+            timeOfSimulation = 'afternoon'
+        elif elapsedTicks < 410:
             timeOfSimulation = 'evening'
-        else:
+        elif elapsedTicks < 440:
             timeOfSimulation = 'dusk'
+        else:
+            timeOfSimulation = 'midnight'
         return f"{timeOfSimulation}, {elapsedTicks} ticks elapsed, {self.daysElapsed} days elapsed"
 
     def getLightVisibility(self):
-        elapsedTicks = self.timeOfSimulation % 300
-        if elapsedTicks < 30:
-            self.lightVisibility = 0.2  # Low visibility at dawn
-        elif elapsedTicks < 90:
-            self.lightVisibility = 1.0  # Full visibility during morning and noon
-        elif elapsedTicks < 150:
-            self.lightVisibility = 0.8  # Slightly reduced visibility in the afternoon
-        elif elapsedTicks < 210:
-            self.lightVisibility = 0.5  # Reduced visibility in the evening
-        elif elapsedTicks < 270:
-            self.lightVisibility = 0.3  # Low visibility at dusk
-        else:
-            self.lightVisibility = 0.2  # Low visibility at night
+        elapsedTicks = self.timeOfSimulation % 500
+        if elapsedTicks < 30:           # Ticks 0-30, Midnight (early)
+            self.lightVisibility = 0.2
+        elif elapsedTicks < 60:         # Ticks 30-59, Dawn
+            self.lightVisibility = 0.3
+        elif elapsedTicks < 130:        # Ticks 60-129, Early Morning
+            self.lightVisibility = 0.5
+        elif elapsedTicks < 200:        # Ticks 130-199, Late Morning
+            self.lightVisibility = 0.8
+        elif elapsedTicks < 270:        # Ticks 200-269, Noon
+            self.lightVisibility = 1.0
+        elif elapsedTicks < 340:        # Ticks 270-339, Afternoon
+            self.lightVisibility = 0.8
+        elif elapsedTicks < 410:        # Ticks 340-409, Evening
+            self.lightVisibility = 0.5
+        elif elapsedTicks < 440:        # Ticks 410-439, Dusk
+            self.lightVisibility = 0.3
+        else:                           # Ticks 440-500, Midnight
+            self.lightVisibility = 0.2
         return self.lightVisibility
