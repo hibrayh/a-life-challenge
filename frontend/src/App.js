@@ -21,8 +21,6 @@ function App() {
 
     const [topographyInfo, setTopographyInfo] = useState([])
 
-
-
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
         await axios({
