@@ -61,8 +61,7 @@ class Creature:
             self.yCoordinate = yCoordinate
             self.environment = environment
             self.lastAction = decision_network.CreatureAction.BIRTHED
-            self.lastMovementDirection = [
-                0, 0]  # [angle (in radians), distance]
+            self.lastMovementDirection = None
             self.lastTargetedObject = None
 
             self.reproductionCoolDown = 50 * self.genome.reproductionCooldown
@@ -220,7 +219,10 @@ class Creature:
             and ((self.currentAge / self.maxAge) >= self.genome.maturity)
 
     def speciesRelationship(self, species):
-        return self.speciesManager.speciesRelations[species]
+        if species in self.speciesManager.speciesRelations:
+            return self.speciesManager.speciesRelations[species]
+        else:
+            return species_manager.SpeciesRelationship.COMPETES_WITH
 
     def reproduceAsexual(self):
         logging.info(f"{self.id} reproducing asexually")
@@ -331,6 +333,9 @@ class Creature:
         degreeOfMovement = math.radians(random.randrange(360))
         movementLength = self.genome.mobility * MAX_MOVEMENT
 
+        if self.lastMovementDirection is not None:
+            degreeOfMovement = self.lastMovementDirection + math.radians(random.randrange(-45, 45))
+
         self.moveCreature(degreeOfMovement, movementLength)
 
     def performAction(self):
@@ -344,7 +349,9 @@ class Creature:
         startingEnergy = copy.deepcopy(self.currentEnergy)
         changeInOffspring = 0
 
-        if actionToPerform == decision_network.CreatureAction.REPRODUCE:
+        logging.info(f"DEBUG: action to perform {actionToPerform}")
+
+        if actionToPerform is decision_network.CreatureAction.REPRODUCE:
             logging.info(f"{self.id} has decided to reproduce")
 
             if self.genome.reproductionType == genome.ReproductionType.SEXUAL:
@@ -356,7 +363,7 @@ class Creature:
                 self.reproduceAsexual()
 
             changeInOffspring = self.genome.offspringAmount
-        elif actionToPerform == decision_network.CreatureAction.SEARCH_FOR_FOOD:
+        elif actionToPerform is decision_network.CreatureAction.SEARCH_FOR_FOOD:
             logging.info(f"{self.id} has decided to search for food")
 
             closestResource = _get_closest_from_collection(
@@ -367,7 +374,7 @@ class Creature:
                 self.moveRandom()
 
             self.lastAction = decision_network.CreatureAction.SEARCH_FOR_FOOD
-        elif actionToPerform == decision_network.CreatureAction.CONSUME_FOOD:
+        elif actionToPerform is decision_network.CreatureAction.CONSUME_FOOD:
             logging.info(f"{self.id} has decided to consume food")
             closestResource = _get_closest_from_collection(
                 perceivableEnvironment.perceivableResources, self)
@@ -375,7 +382,7 @@ class Creature:
                 self.maxEnergy, self.currentEnergy + (closestResource.replenishment * self.maxEnergy))
             closestResource.noticeOfConsumption()
             self.lastAction = decision_network.CreatureAction.CONSUME_FOOD
-        elif actionToPerform == decision_network.CreatureAction.SEARCH_FOR_MATE:
+        elif actionToPerform is decision_network.CreatureAction.SEARCH_FOR_MATE:
             logging.info(f"{self.id} has decided to look for a mate")
             closestMate = _get_closest_from_collection(
                 perceivableEnvironment.perceivableMates, self)
@@ -384,19 +391,19 @@ class Creature:
             else:
                 self.moveRandom()
             self.lastAction = decision_network.CreatureAction.SEARCH_FOR_MATE
-        elif actionToPerform == decision_network.CreatureAction.FLEE_FROM_CREATURE:
+        elif actionToPerform is decision_network.CreatureAction.FLEE_FROM_CREATURE:
             logging.info(f"{self.id} has decided to flee from predators")
             closestPredator = _get_closest_from_collection(
                 perceivableEnvironment.perceivablePredators, self)
             self.moveCreatureAwayFromObject(closestPredator)
             self.lastAction = decision_network.CreatureAction.FLEE_FROM_CREATURE
-        elif actionToPerform == decision_network.CreatureAction.CHASE_A_CREATURE:
+        elif actionToPerform is decision_network.CreatureAction.CHASE_A_CREATURE:
             logging.info(f"{self.id} has decided to chase prey")
             closestPrey = _get_closest_from_collection(
                 perceivableEnvironment.perceivablePrey, self)
             self.moveCreatureTowardsObject(closestPrey)
             self.lastAction = decision_network.CreatureAction.CHASE_A_CREATURE
-        elif actionToPerform == decision_network.CreatureAction.ATTACK_A_CREATURE:
+        elif actionToPerform is decision_network.CreatureAction.ATTACK_A_CREATURE:
             logging.info(f"{self.id} has decided to attack a creature")
             closestPredator = _get_closest_from_collection(
                 perceivableEnvironment.perceivablePredators, self)
@@ -414,7 +421,7 @@ class Creature:
                 self.genome.offensiveAbility * MAX_DAMAGE)
             self.lastAction = decision_network.CreatureAction.ATTACK_A_CREATURE
             self.lastTargetedObject = closestPotentialHostile.id
-        elif actionToPerform == decision_network.CreatureAction.SEEK_ALLIES:
+        elif actionToPerform is decision_network.CreatureAction.SEEK_ALLIES:
             logging.info(f"{self.id} has decided to seek allies")
             closestAlly = _get_closest_from_collection(
                 perceivableEnvironment.perceivableAllies, self)
@@ -423,7 +430,7 @@ class Creature:
             else:
                 self.moveRandom()
             self.lastAction = decision_network.CreatureAction.SEEK_ALLIES
-        elif actionToPerform == decision_network.CreatureAction.LEECH_OFF_CREATURE:
+        elif actionToPerform is decision_network.CreatureAction.LEECH_OFF_CREATURE:
             logging.info(f"{self.id} has decided to leech off of a host")
             closestHost = _get_closest_from_collection(
                 perceivableEnvironment.perceivableHosts, self)
@@ -432,7 +439,7 @@ class Creature:
             closestHost.leeched()
             self.lastAction = decision_network.CreatureAction.LEECH_OFF_CREATURE
             self.lastTargetedObject = closestHost.id
-        elif actionToPerform == decision_network.CreatureAction.SEEK_HOST:
+        elif actionToPerform is decision_network.CreatureAction.SEEK_HOST:
             logging.info(f"{self.id} has decided to seek a host")
             closestHost = _get_closest_from_collection(
                 perceivableEnvironment.perceivableHosts, self)
@@ -441,7 +448,7 @@ class Creature:
             else:
                 self.moveRandom()
             self.lastAction = decision_network.CreatureAction.SEEK_HOST
-        elif actionToPerform == decision_network.CreatureAction.EVADE_HOST:
+        elif actionToPerform is decision_network.CreatureAction.EVADE_HOST:
             logging.info(f"{self.id} has decided to evade hosts")
             closestHost = _get_closest_from_collection(
                 perceivableEnvironment.perceivableHosts, self)
@@ -450,7 +457,7 @@ class Creature:
             else:
                 self.moveRandom()
             self.lastAction = decision_network.CreatureAction.EVADE_HOST
-        elif actionToPerform == decision_network.CreatureAction.SEEK_PARASITE:
+        elif actionToPerform is decision_network.CreatureAction.SEEK_PARASITE:
             logging.info(f"{self.id} has decided to seek parasites")
             closestParasite = _get_closest_from_collection(
                 perceivableEnvironment.perceivableParasites, self)
@@ -459,7 +466,7 @@ class Creature:
             else:
                 self.moveRandom()
             self.lastAction = decision_network.CreatureAction.SEEK_PARASITE
-        elif actionToPerform == decision_network.CreatureAction.EVADE_PARASITE:
+        elif actionToPerform is decision_network.CreatureAction.EVADE_PARASITE:
             logging.info(f"{self.id} has decided to evade parasites")
             closestParasite = _get_closest_from_collection(
                 perceivableEnvironment.perceivableParasites, self)
@@ -468,14 +475,14 @@ class Creature:
             else:
                 self.moveRandom()
             self.lastAction = decision_network.CreatureAction.EVADE_PARASITE
-        elif actionToPerform == decision_network.CreatureAction.PROTECT_CREATURE:
+        elif actionToPerform is decision_network.CreatureAction.PROTECT_CREATURE:
             logging.info(f"{self.id} has deicded to protect another creature")
             closestDefendee = _get_closest_from_collection(
                 perceivableEnvironment.perceivableDefendees, self)
             closestDefendee.underProtection(self)
             self.lastAction = decision_network.CreatureAction.PROTECT_CREATURE
             self.lastTargetedObject = closestDefendee.id
-        elif actionToPerform == decision_network.CreatureAction.SEEK_DEFENDEE:
+        elif actionToPerform is decision_network.CreatureAction.SEEK_DEFENDEE:
             logging.info(f"{self.id} has decided to seek creatures to protect")
             closestDefendee = _get_closest_from_collection(
                 perceivableEnvironment.perceivableDefendees, self)
@@ -484,7 +491,7 @@ class Creature:
             else:
                 self.moveRandom()
             self.lastAction = decision_network.CreatureAction.SEEK_DEFENDEE
-        elif actionToPerform == decision_network.CreatureAction.SEEK_DEFENDER:
+        elif actionToPerform is decision_network.CreatureAction.SEEK_DEFENDER:
             logging.info(f"{self.id} has decided to seek defenders")
             closestDefender = _get_closest_from_collection(
                 perceivableEnvironment.perceivableDefenders, self)
@@ -493,14 +500,14 @@ class Creature:
             else:
                 self.moveRandom()
             self.lastAction = decision_network.CreatureAction.SEEK_DEFENDER
-        elif actionToPerform == decision_network.CreatureAction.NURTURE_CREATURE:
+        elif actionToPerform is decision_network.CreatureAction.NURTURE_CREATURE:
             logging.info(f"{self.id} has decided to nurture a creature")
             closestNurturee = _get_closest_from_collection(
                 perceivableEnvironment.perceivableNurturees, self)
             closestNurturee.nurtured()
             self.lastAction = decision_network.CreatureAction.NURTURE_CREATURE
             self.lastTargetedObject = closestNurturee.id
-        elif actionToPerform == decision_network.CreatureAction.SEEK_NURTUREE:
+        elif actionToPerform is decision_network.CreatureAction.SEEK_NURTUREE:
             logging.info(
                 f"{self.id} has decided to search for creatures to nurture")
             closestNurturee = _get_closest_from_collection(
@@ -510,7 +517,7 @@ class Creature:
             else:
                 self.moveRandom()
             self.lastAction = decision_network.CreatureAction.SEEK_NURTUREE
-        elif actionToPerform == decision_network.CreatureAction.SEEK_NURTURER:
+        elif actionToPerform is decision_network.CreatureAction.SEEK_NURTURER:
             logging.info(f"{self.id} has decided to seek nurturers")
             closestNurturer = _get_closest_from_collection(
                 perceivableEnvironment.perceivableNurturers, self)

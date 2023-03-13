@@ -100,6 +100,35 @@ def _convertRequestToTopographyType(inputTopography):
     return convertedTopographyType
 
 
+def _convertRequestToSpeciesRelationship(inputRelationship):
+    convertedRelationship = None
+    if inputRelationship == 'hunts':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.HUNTS
+    elif inputRelationship == 'hunted by':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.IS_HUNTED_BY
+    elif inputRelationship == 'competes with':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.COMPETES_WITH
+    elif inputRelationship == 'works with':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.WORKS_WITH
+    elif inputRelationship == 'protects':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.PROTECTS
+    elif inputRelationship == 'defended by':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.DEFENDED_BY
+    elif inputRelationship == 'leeches':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.LEECHES
+    elif inputRelationship == 'leeched by':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.LEECHED_OFF_OF
+    elif inputRelationship == 'nurtures':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.NURTURES
+    elif inputRelationship == 'nurtured by':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.NURTURED_BY
+    else:
+        logging.info(f"Unknown relationship {inputRelationship}. Setting default as COMPETES_WITH")
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.COMPETES_WITH
+    
+    return convertedRelationship
+    
+
 @api.route('/get-info')
 @cross_origin()
 def return_dummy_info():
@@ -316,3 +345,13 @@ def timeOfSimulation():
 def getLightVisibility():
     global GOD
     return jsonify(GOD.getLightVisibility())
+
+
+@api.route('/define-new-species-relationship', methods=['POST'])
+@cross_origin()
+def defineNewSpeciesRelationship():
+    global GOD
+    GOD.addSpeciesRelationship(request.json['species1'], request.json['species2'], 
+                                _convertRequestToSpeciesRelationship(request.json['relationship']))
+    
+    return "Success", 201

@@ -120,6 +120,7 @@ class Topography:
             self.column = saveData['column']
             self.row = saveData['row']
             self.type = TemplateTopography(saveData['type'])
+            """
             self.region = Region(saveData['region']['topLeftXCoordinate'],
                                  saveData['region']['topLeftYCoordinate'],
                                  saveData['region']['topRightXCoordinate'],
@@ -128,6 +129,7 @@ class Topography:
                                  saveData['region']['bottomLeftYCoordinate'],
                                  saveData['region']['bottomRightXCoordinate'],
                                  saveData['region']['bottomRightYCoordinate'])
+            """
             self.shape = saveData['shape']
             #self.geography = saveData['geography']
             self.environment = environment
@@ -148,6 +150,7 @@ class Topography:
             'column': self.column,
             'row': self.row,
             'type': self.type,
+            'shape': self.shape
         }
 
     # Using perlin-noise to create random geography

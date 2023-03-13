@@ -12,6 +12,35 @@ logging.basicConfig(
     format='%(levelname)s %(asctime)s - %(message)s')
 
 
+def _determineInverseAction(action):
+    convertedRelationship = None
+    if action == 'HUNTS':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.IS_HUNTED_BY
+    elif action == 'IS_HUNTED_BY':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.HUNTS
+    elif action == 'COMPETES_WITH':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.COMPETES_WITH
+    elif action == 'WORKS_WITH':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.WORKS_WITH
+    elif action == 'PROTECTS':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.DEFENDED_BY
+    elif action == 'DEFENDED_BY':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.PROTECTS
+    elif action == 'LEECHES':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.LEECHED_OFF_OF
+    elif action == 'LEECHED_OFF_OF':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.LEECHES
+    elif action == 'NURTURES':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.NURTURED_BY
+    elif action == 'NURTURED_BY':
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.NURTURES
+    else:
+        logging.info(f"Unknown relationship {action}. Setting default as COMPETES_WITH")
+        convertedRelationship = creatures.species_manager.SpeciesRelationship.COMPETES_WITH
+    
+    return convertedRelationship
+
+
 class God:
     def __init__(
             self,
@@ -121,14 +150,18 @@ class God:
             speciesOfInterest,
             newSpecies,
             newRelationship):
-        speciesManagerToAddRelation = self._getSpeciesManagerFromName(
+        logging.info(f"DEBUG: species1 {speciesOfInterest} species2 {newSpecies}")
+        species1 = self._getSpeciesManagerFromName(
             speciesOfInterest)
+        species2 = self._getSpeciesManagerFromName(newSpecies)
 
-        if speciesManagerToAddRelation is None:
+        if (species1 is None) or (species2 is None):
             logging.info("Could not find species to add relationship to")
         else:
-            speciesManagerToAddRelation.addSpeciesRelationship(
+            species1.addSpeciesRelationship(
                 newSpecies, newRelationship)
+            species2.addSpeciesRelationship(
+                speciesOfInterest, _determineInverseAction(newRelationship))
 
     def createNewCreature(self, speciesName, startingGenome):
         speciesManagerOfInterest = self._getSpeciesManagerFromName(speciesName)
