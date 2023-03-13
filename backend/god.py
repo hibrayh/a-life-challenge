@@ -216,19 +216,21 @@ class God:
         bottomLeftXCoordinate = topLeftXCoordinate
         bottomLeftYCoordinate = bottomRightYCoordinate
 
-        topography.Topography(topLeftXCoordinate,
-                              topLeftYCoordinate,
-                              topRightXCoordinate,
-                              topRightYCoordinate,
-                              bottomLeftXCoordinate,
-                              bottomLeftYCoordinate,
-                              bottomRightXCoordinate,
-                              bottomRightYCoordinate,
-                              topographyId,
-                              column,
-                              row,
-                              topographyType,
-                              self._environment)
+        newTopography = topography.Topography(topLeftXCoordinate,
+                                              topLeftYCoordinate,
+                                              topRightXCoordinate,
+                                              topRightYCoordinate,
+                                              bottomLeftXCoordinate,
+                                              bottomLeftYCoordinate,
+                                              bottomRightXCoordinate,
+                                              bottomRightYCoordinate,
+                                              topographyId,
+                                              column,
+                                              row,
+                                              topographyType,
+                                              self._environment)
+
+        self._environment.addToTopographyRegistry(newTopography)
 
     def removeTopography(self, column, row):
         self._environment.removeTopography(column, row)

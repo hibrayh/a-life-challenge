@@ -113,30 +113,38 @@ class Environment:
                     resource['shape'],
                     self)
             # Load topography
+            currentIndex = 0
             self.topographyRegistry = []
-            for topographyRegion in saveData['topographyRegistry']:
-                topography.Topography(
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    self,
-                    loadExistingSave=True,
-                    saveData=topographyRegion)
+            for row in range(saveData['rowCount']):
+                topographyRow = []
+                for column in range(saveData['columnCount']):
+                    topographyRow.append(topography.Topography(
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        self,
+                        loadExistingSave=True,
+                        saveData=saveData['topographyRegistry'][currentIndex]))
+                    currentIndex += 1
+                self.topographyRegistry.append(topographyRow)
+
             self.lightVisibility = []
             # Load dimensions
             self.width = saveData['width']
             self.height = saveData['height']
             self.columnCount = saveData['columnCount']
             self.rowCount = saveData['rowCount']
+            self.timeOfSimulation = saveData['timeOfSimulation']
+            self.daysElapsed = saveData['daysElapsed']
 
     def save(self):
         logging.info("Saving current state of the environment")
@@ -157,6 +165,8 @@ class Environment:
             'height': self.height,
             'columnCount': self.columnCount,
             'rowCount': self.rowCount,
+            'timeOfSimulation': self.timeOfSimulation,
+            'daysElapsed': self.daysElapsed,
         }
 
     def addToCreatureRegistry(self, newCreature):

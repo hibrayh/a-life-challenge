@@ -234,11 +234,11 @@ function App() {
                 },
             })
 
+            await getSimulationInfo()
             setShowLoad(false)
             setShowMenu(false)
             setShowSimulation(true)
             setHasSimulationStarted(true)
-            getSimulationInfo()
         }
     }
 
