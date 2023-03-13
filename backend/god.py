@@ -216,7 +216,7 @@ class God:
         bottomLeftXCoordinate = topLeftXCoordinate
         bottomLeftYCoordinate = bottomRightYCoordinate
 
-        topography.Topography(topLeftXCoordinate,
+        newTopography = topography.Topography(topLeftXCoordinate,
                               topLeftYCoordinate,
                               topRightXCoordinate,
                               topRightYCoordinate,
@@ -229,6 +229,8 @@ class God:
                               row,
                               topographyType,
                               self._environment)
+        
+        self._environment.addToTopographyRegistry(newTopography)
 
     def removeTopography(self, column, row):
         self._environment.removeTopography(column, row)

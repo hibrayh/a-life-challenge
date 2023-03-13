@@ -86,6 +86,8 @@ function Grid(props) {
 
     let jsx = []
 
+    console.log(props.topographyInfo)
+
     for (let i = 0; i < 1250; i++) {
         jsx.push(
             <Node
