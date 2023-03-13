@@ -12,13 +12,14 @@ function StatsPage(props) {
     const [selectedSpecies, setSelectedSpecies] = useState('')
 
     useEffect(() => {
-        function getSpeciesList() {
-            axios({
+        const getSpeciesList = async () => {
+            await axios({
                 method: 'GET',
                 url: 'http://localhost:5000/get-list-of-species',
             }).then((response) => {
                 const res = response.data
                 setList(res.speciesNames)
+                setSelectedSpecies(res.speciesNames[0])
             })
         }
 
@@ -70,7 +71,8 @@ function ListAllSpeciesNames(props) {
                 {props.listOfSpecies.map((species) => (
                     <div
                         onClick={() => (
-                            props.toggleView(), props.setCurrentSpecies(species)
+                            props.toggleView(),
+                            props.setCurrentSpecies(species)
                         )}
                         className="mainName buttonHover2">
                         <h2>{species}</h2>
@@ -84,21 +86,37 @@ function ListAllSpeciesNames(props) {
 function ListSpeciesGenomeInformation(props) {
     const [showCreatureData, setShowCreatureData] = useState(false)
     const [selectedCreatureName, setSelectedCreatureName] = useState('')
+    const [speciesGenomeInfo, setSpeciesGenomeInfo] = useState({})
+    const [creatureNames, setCreatureNames] = useState([])
 
-    //props.speciesName is the name of the current selected Species
-    //Use it to get actual species genome info
-    const dummySpeciesGenomeInfo = {
-        population: 1,
-        canSee: 'yes',
-        canHear: 'yes',
-    }
+    useEffect(() => {
+        const getSpeciesInfo = async () => {
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/get-species-genome',
+                data: {
+                    speciesOfInterest: props.speciesName
+                }
+            }).then((response) => {
+                const res = response.data
 
-    //Can use props.speciesName to also get list of actual Creatures from species
-    const dummyCreaturesOfSpeciesList = [
-        'creatureName1',
-        'creatureName2',
-        'creatureName3',
-    ]
+                setSpeciesGenomeInfo(res)
+            })
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/get-creature-list-from-species',
+                data: {
+                    speciesOfInterest: props.speciesName
+                }
+            }).then((response) => {
+                const res = response.data
+
+                setCreatureNames(res.creatures)
+            })
+        }
+
+        getSpeciesInfo()
+    }, [props.speciesName])
 
     if (showCreatureData) {
         //creature name is stored in selectedCreatureName
@@ -113,7 +131,7 @@ function ListSpeciesGenomeInformation(props) {
                     <FaArrowLeft size={25} />
                 </button>
                 <h1 className="fillerTitle">{selectedCreatureName}'s Genome</h1>
-                <ListCreatureGenomeInfo creatureName={selectedCreatureName} />
+                <ListCreatureGenomeInfo creatureName={selectedCreatureName} speciesName={props.speciesName} />
             </>
         )
     } else if (props.show) {
@@ -130,14 +148,14 @@ function ListSpeciesGenomeInformation(props) {
                         {props.speciesName}'s Genome:
                     </h1>
                     <ul>
-                        {Object.keys(dummySpeciesGenomeInfo).map(
+                        {Object.keys(speciesGenomeInfo).map(
                             (attribute, index) => (
                                 <li className="genomeStat">
                                     {attribute}:{' '}
                                     {
-                                        Object.values(dummySpeciesGenomeInfo)[
+                                        Object.values(speciesGenomeInfo)[
                                             index
-                                        ]
+                                        ].toString()
                                     }
                                 </li>
                             )
@@ -147,7 +165,7 @@ function ListSpeciesGenomeInformation(props) {
 
                 {/*This will print out a list of all the creatures that are apart of the species */}
                 <h1 className="mainTitleFont">List of Creatures:</h1>
-                {dummyCreaturesOfSpeciesList.map((creature) => (
+                {creatureNames.map((creature) => (
                     <div
                         onClick={() => {
                             setSelectedCreatureName(creature)
@@ -164,14 +182,33 @@ function ListSpeciesGenomeInformation(props) {
 
 function ListCreatureGenomeInfo(props) {
     //use props.creatureName to get actual creature data
-    const dummyCreatureStats = { population: 1, canSee: 'yes', canHear: 'yes' }
+    const [creatureGenomeInfo, setCreatureGenomeInfo] = useState({})
+
+    useEffect(() => {
+        const getCreatureInfo = async () => {
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/get-creature-genome',
+                data: {
+                    speciesOfInterest: props.speciesName,
+                    creatureOfInterest: props.creatureName
+                }
+            }).then((response) => {
+                const res = response.data
+
+                setCreatureGenomeInfo(res)
+            })
+        }
+
+        getCreatureInfo()
+    }, [props.creatureName])
 
     return (
         <>
             <ul>
-                {Object.keys(dummyCreatureStats).map((attribute, index) => (
+                {Object.keys(creatureGenomeInfo).map((attribute, index) => (
                     <li className="genomeStat">
-                        {attribute}: {Object.values(dummyCreatureStats)[index]}
+                        {attribute}: {Object.values(creatureGenomeInfo)[index].toString()}
                     </li>
                 ))}
             </ul>

@@ -243,9 +243,22 @@ class God:
             logging.info("Could not find requested species")
         else:
             return speciesManagerOfInterest.getSpeciesGenome()
+    
+    def getCreaturesFromSpecies(self, speciesName):
+        speciesManagerOfInterest = self._getSpeciesManagerFromName(speciesName)
 
-    def getCreatureInfo(self, creatureId):
-        pass
+        if speciesManagerOfInterest is None:
+            logging.info(f"Could not find requested species: {speciesName}")
+        else:
+            return speciesManagerOfInterest.getCreatures()
+
+    def getCreatureInfo(self, creatureId, speciesOfInterest):
+        speciesManagerOfInterest = self._getSpeciesManagerFromName(speciesOfInterest)
+
+        if speciesManagerOfInterest is None:
+            logging.info(f"Could not find requested species: {speciesOfInterest}")
+        else:
+            return speciesManagerOfInterest.getCreatureGenome(creatureId)
 
     def getSimulationInfo(self):
         return {

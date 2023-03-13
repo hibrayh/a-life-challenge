@@ -275,6 +275,20 @@ def getSpeciesGenome():
     return jsonify(GOD.getSpeciesGenome(request.json['speciesOfInterest']))
 
 
+@api.route('/get-creature-list-from-species', methods=['POST'])
+@cross_origin()
+def getCreatureListFromSpecies():
+    global GOD
+    return jsonify(GOD.getCreaturesFromSpecies(request.json['speciesOfInterest']))
+
+
+@api.route('/get-creature-genome', methods=['POST'])
+@cross_origin()
+def getCreatureGenome():
+    global GOD
+    return jsonify(GOD.getCreatureInfo(request.json['creatureOfInterest'], request.json['speciesOfInterest']))
+
+
 @api.route('/save-simulation', methods=['POST'])
 @cross_origin()
 def saveSimulation():

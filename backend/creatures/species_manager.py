@@ -241,6 +241,14 @@ class SpeciesManager:
         else:
             creatureToDelete.unregisterFromEnvironment()
             self._creatures.remove(creatureToDelete)
+    
+    def getCreatureGenome(self, creatureId):
+        creatureOfInterest = self._getCreatureFromId(creatureId)
+
+        if creatureId is None:
+            logging.info(f"Could not find requested creature: {creatureId}")
+        else:
+            return creatureOfInterest.genome.serialize()
 
     def unregisterCreature(self, creature):
         self._creatures.remove(creature)
@@ -259,3 +267,12 @@ class SpeciesManager:
 
     def getSpeciesGenome(self):
         return self._startingGenome.serialize()
+
+    def getCreatures(self):
+        creatureIdList = []
+        for creature in self._creatures:
+            creatureIdList.append(creature.id)
+        
+        return {
+            'creatures': creatureIdList
+        }
