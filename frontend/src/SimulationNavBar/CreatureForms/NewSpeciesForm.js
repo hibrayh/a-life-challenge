@@ -67,7 +67,7 @@ function NewSpeciesForm(props) {
                             onChange={(event) =>
                                 setSpeciesName(event.target.value)
                             }
-                            className="dataTextBox"
+                            className="dropDownOption"
                             type="text"
                             value={speciesName}></input>
                     </div>
@@ -890,7 +890,7 @@ function NewSpeciesForm(props) {
                             onChange={(event) =>
                                 setEffectFromBeingNurtured(event.target.value)
                             }
-                            className="dataSlider"
+                            className="dataSlider longName"
                             type="range"
                             min="0"
                             max="1"
@@ -900,7 +900,7 @@ function NewSpeciesForm(props) {
                             onChange={(event) =>
                                 setEffectFromBeingNurtured(event.target.value)
                             }
-                            className="dataText"
+                            className="dataText longName"
                             type="number"
                             min="0"
                             max="1"
@@ -917,7 +917,7 @@ function NewSpeciesForm(props) {
                             onChange={(event) =>
                                 setShortTermMemoryAccuracy(event.target.value)
                             }
-                            className="dataSlider"
+                            className="dataSlider longName"
                             type="range"
                             min="0"
                             max="1"
@@ -927,7 +927,7 @@ function NewSpeciesForm(props) {
                             onChange={(event) =>
                                 setShortTermMemoryAccuracy(event.target.value)
                             }
-                            className="dataText"
+                            className="dataText longName"
                             type="number"
                             min="0"
                             max="1"
@@ -944,7 +944,7 @@ function NewSpeciesForm(props) {
                             onChange={(event) =>
                                 setShortTermMemoryCapacity(event.target.value)
                             }
-                            className="dataSlider"
+                            className="dataSlider longName"
                             type="range"
                             min="0"
                             max="1"
@@ -954,7 +954,7 @@ function NewSpeciesForm(props) {
                             onChange={(event) =>
                                 setShortTermMemoryCapacity(event.target.value)
                             }
-                            className="dataText"
+                            className="dataText longName"
                             type="number"
                             min="0"
                             max="1"

@@ -29,9 +29,9 @@ function TopographyPage(props) {
                     }
                     <form id="topographyForm">
                         <div className="attributeHolder">
-                            <label className="dataTitle">Grass</label>
+                            <label className="dataTitle">Flat</label>
                             <input
-                                onChange={(event) => setTopography('Grass')}
+                                onChange={(event) => setTopography('flat')}
                                 type="radio"
                                 value="Grass"
                                 name="topographyRadio"></input>
@@ -39,9 +39,9 @@ function TopographyPage(props) {
                         </div>
 
                         <div className="attributeHolder">
-                            <label className="dataTitle">Rocky</label>
+                            <label className="dataTitle">Mild</label>
                             <input
-                                onChange={(event) => setTopography('Rocky')}
+                                onChange={(event) => setTopography('mild')}
                                 type="radio"
                                 value="Rocky"
                                 name="topographyRadio"></input>
@@ -49,9 +49,9 @@ function TopographyPage(props) {
                         </div>
 
                         <div className="attributeHolder">
-                            <label className="dataTitle">Snowy</label>
+                            <label className="dataTitle">Moderate</label>
                             <input
-                                onChange={(event) => setTopography('Snowy')}
+                                onChange={(event) => setTopography('moderate')}
                                 type="radio"
                                 value="Snowy"
                                 name="topographyRadio"></input>
@@ -59,9 +59,9 @@ function TopographyPage(props) {
                         </div>
 
                         <div className="attributeHolder">
-                            <label className="dataTitle">Wet</label>
+                            <label className="dataTitle">Extreme</label>
                             <input
-                                onChange={(event) => setTopography('Wet')}
+                                onChange={(event) => setTopography('extreme')}
                                 type="radio"
                                 value="Wet"
                                 name="topographyRadio"></input>

@@ -5,6 +5,11 @@
     height: 25vmin;
     left: calc(50% - 30vmin);
     top: 25vmin;
+    overflow: scroll;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 .creatureSpeciesFormButton {
@@ -46,7 +51,7 @@
     position: absolute;
     width: 45vmin;
 
-    height: fit-content;
+    height: 90vmin;
     min-height: 750px;
     background-color: rgb(31, 31, 31);
     overflow: scroll;
@@ -66,46 +71,53 @@
 .newCreatureOrSpeciesData {
     position: relative;
     bottom: 10px;
-    left: calc(50% - 19.5vmin);
 }
 
 .dataTitle {
     color: rgb(238, 238, 238);
-    font-size: 0.7vmax;
+    font-size: 0.8vmax;
     padding-left: 15px;
 }
 
 .dataSlider {
     width: 12vmin;
     position: absolute;
-    left: 17vmin;
+    left: 20vmin;
     height: -10px;
+}
+.dataSlider.longName {
+    left: 24vmin;
 }
 
 .dataText {
     position: absolute;
-    left: 32vmin;
+    left: 35vmin;
     width: 4vmin;
     font-size: 0.6vmax;
 }
 
+.dataText.longName {
+    left: 39vmin;
+}
+
 .dropDownOption {
     position: absolute;
-    left: 17vmin;
+    left: 20vmin;
     width: 12vmin;
     font-size: 0.7vmax;
 }
 
 .dataCheckbox {
     position: absolute;
-    left: 17vmin;
+    left: 20vmin;
 }
 
 .attributeHolder {
     width: 100%;
-
-    padding-top: 2px;
-    padding-bottom: 2px;
+    border: 1px solid rgb(48, 48, 48);
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: calc(50% - 21vmin);
 }
 
 .formButton {
@@ -121,8 +133,8 @@
 
 #buttonContainer {
     position: relative;
-    left: calc(50% - 9vmin);
-    margin-top: 5px;
+    left: calc(50% - 7vmin);
+    margin-top: 10px;
 }
 
 #submitButton {
@@ -137,7 +149,7 @@
 
 .dataTextBox {
     position: absolute;
-    left: 17vmin;
+    left: 19vmin;
     width: 12vmin;
     font-size: 0.7vmax;
 }
