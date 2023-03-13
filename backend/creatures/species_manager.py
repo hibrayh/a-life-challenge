@@ -241,7 +241,7 @@ class SpeciesManager:
         else:
             creatureToDelete.unregisterFromEnvironment()
             self._creatures.remove(creatureToDelete)
-    
+
     def getCreatureGenome(self, creatureId):
         creatureOfInterest = self._getCreatureFromId(creatureId)
 
@@ -272,7 +272,7 @@ class SpeciesManager:
         creatureIdList = []
         for creature in self._creatures:
             creatureIdList.append(creature.id)
-        
+
         return {
             'creatures': creatureIdList
         }

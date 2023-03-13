@@ -71,8 +71,7 @@ function ListAllSpeciesNames(props) {
                 {props.listOfSpecies.map((species) => (
                     <div
                         onClick={() => (
-                            props.toggleView(),
-                            props.setCurrentSpecies(species)
+                            props.toggleView(), props.setCurrentSpecies(species)
                         )}
                         className="mainName buttonHover2">
                         <h2>{species}</h2>
@@ -95,8 +94,8 @@ function ListSpeciesGenomeInformation(props) {
                 method: 'POST',
                 url: 'http://localhost:5000/get-species-genome',
                 data: {
-                    speciesOfInterest: props.speciesName
-                }
+                    speciesOfInterest: props.speciesName,
+                },
             }).then((response) => {
                 const res = response.data
 
@@ -106,8 +105,8 @@ function ListSpeciesGenomeInformation(props) {
                 method: 'POST',
                 url: 'http://localhost:5000/get-creature-list-from-species',
                 data: {
-                    speciesOfInterest: props.speciesName
-                }
+                    speciesOfInterest: props.speciesName,
+                },
             }).then((response) => {
                 const res = response.data
 
@@ -131,7 +130,10 @@ function ListSpeciesGenomeInformation(props) {
                     <FaArrowLeft size={25} />
                 </button>
                 <h1 className="fillerTitle">{selectedCreatureName}'s Genome</h1>
-                <ListCreatureGenomeInfo creatureName={selectedCreatureName} speciesName={props.speciesName} />
+                <ListCreatureGenomeInfo
+                    creatureName={selectedCreatureName}
+                    speciesName={props.speciesName}
+                />
             </>
         )
     } else if (props.show) {
@@ -152,11 +154,9 @@ function ListSpeciesGenomeInformation(props) {
                             (attribute, index) => (
                                 <li className="genomeStat">
                                     {attribute}:{' '}
-                                    {
-                                        Object.values(speciesGenomeInfo)[
-                                            index
-                                        ].toString()
-                                    }
+                                    {Object.values(speciesGenomeInfo)[
+                                        index
+                                    ].toString()}
                                 </li>
                             )
                         )}
@@ -191,8 +191,8 @@ function ListCreatureGenomeInfo(props) {
                 url: 'http://localhost:5000/get-creature-genome',
                 data: {
                     speciesOfInterest: props.speciesName,
-                    creatureOfInterest: props.creatureName
-                }
+                    creatureOfInterest: props.creatureName,
+                },
             }).then((response) => {
                 const res = response.data
 
@@ -208,7 +208,8 @@ function ListCreatureGenomeInfo(props) {
             <ul>
                 {Object.keys(creatureGenomeInfo).map((attribute, index) => (
                     <li className="genomeStat">
-                        {attribute}: {Object.values(creatureGenomeInfo)[index].toString()}
+                        {attribute}:{' '}
+                        {Object.values(creatureGenomeInfo)[index].toString()}
                     </li>
                 ))}
             </ul>
