@@ -170,7 +170,7 @@ function App() {
     // "Page" that will show the simulation
     const Simulation = () => {
         return (
-            <>
+            <div>
                 <Animation
                     creaturesToAnimate={creatureList}
                     resourcesToAnimate={resourceList}
@@ -188,7 +188,7 @@ function App() {
                 />
 
                 <GiantDayAndNightContainer />
-            </>
+            </div>
         )
     }
 
