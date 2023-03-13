@@ -35,9 +35,10 @@ def _determineInverseAction(action):
     elif action == 'NURTURED_BY':
         convertedRelationship = creatures.species_manager.SpeciesRelationship.NURTURES
     else:
-        logging.info(f"Unknown relationship {action}. Setting default as COMPETES_WITH")
+        logging.info(
+            f"Unknown relationship {action}. Setting default as COMPETES_WITH")
         convertedRelationship = creatures.species_manager.SpeciesRelationship.COMPETES_WITH
-    
+
     return convertedRelationship
 
 
@@ -150,7 +151,8 @@ class God:
             speciesOfInterest,
             newSpecies,
             newRelationship):
-        logging.info(f"DEBUG: species1 {speciesOfInterest} species2 {newSpecies}")
+        logging.info(
+            f"DEBUG: species1 {speciesOfInterest} species2 {newSpecies}")
         species1 = self._getSpeciesManagerFromName(
             speciesOfInterest)
         species2 = self._getSpeciesManagerFromName(newSpecies)

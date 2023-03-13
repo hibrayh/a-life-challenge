@@ -7,7 +7,19 @@ import axios from 'axios'
 function SpeciesRelationshipPage(props) {
     // I think it would be smart to have the value "" prepended to the list of species so that when you
     // open the form origonally, there will be blank values.
-    const speciesRelationships = ['', 'hunts', 'hunted by', 'competes with', 'works with', 'protects', 'defended by', 'leeches', 'leeched by', 'nurtures', 'nurtured by']
+    const speciesRelationships = [
+        '',
+        'hunts',
+        'hunted by',
+        'competes with',
+        'works with',
+        'protects',
+        'defended by',
+        'leeches',
+        'leeched by',
+        'nurtures',
+        'nurtured by',
+    ]
 
     const [speciesList, setSpeciesList] = useState([])
     const [species1, setSpecies1] = useState('')
@@ -82,11 +94,9 @@ function SpeciesRelationshipPage(props) {
                                 onChange={(event) =>
                                     setRelationship(event.target.value)
                                 }>
-                                {speciesRelationships.map(
-                                    (relationship) => (
-                                        <option>{relationship}</option>
-                                    )
-                                )}
+                                {speciesRelationships.map((relationship) => (
+                                    <option>{relationship}</option>
+                                ))}
                             </select>
                         </div>
 
@@ -105,7 +115,9 @@ function SpeciesRelationshipPage(props) {
 
                         <div id="speciesRelationshipButtonContainer">
                             <button
-                                disabled={species1 == species2 || relationship == ''}
+                                disabled={
+                                    species1 == species2 || relationship == ''
+                                }
                                 onClick={handleSubmit}
                                 className="relationshipFormButton buttonHover buttonBackgroundColor">
                                 Submit Relationship

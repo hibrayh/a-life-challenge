@@ -334,7 +334,8 @@ class Creature:
         movementLength = self.genome.mobility * MAX_MOVEMENT
 
         if self.lastMovementDirection is not None:
-            degreeOfMovement = self.lastMovementDirection + math.radians(random.randrange(-45, 45))
+            degreeOfMovement = self.lastMovementDirection + \
+                math.radians(random.randrange(-45, 45))
 
         self.moveCreature(degreeOfMovement, movementLength)
 

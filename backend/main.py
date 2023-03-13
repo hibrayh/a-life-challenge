@@ -123,11 +123,12 @@ def _convertRequestToSpeciesRelationship(inputRelationship):
     elif inputRelationship == 'nurtured by':
         convertedRelationship = creatures.species_manager.SpeciesRelationship.NURTURED_BY
     else:
-        logging.info(f"Unknown relationship {inputRelationship}. Setting default as COMPETES_WITH")
+        logging.info(
+            f"Unknown relationship {inputRelationship}. Setting default as COMPETES_WITH")
         convertedRelationship = creatures.species_manager.SpeciesRelationship.COMPETES_WITH
-    
+
     return convertedRelationship
-    
+
 
 @api.route('/get-info')
 @cross_origin()
@@ -351,7 +352,10 @@ def getLightVisibility():
 @cross_origin()
 def defineNewSpeciesRelationship():
     global GOD
-    GOD.addSpeciesRelationship(request.json['species1'], request.json['species2'], 
-                                _convertRequestToSpeciesRelationship(request.json['relationship']))
-    
+    GOD.addSpeciesRelationship(
+        request.json['species1'],
+        request.json['species2'],
+        _convertRequestToSpeciesRelationship(
+            request.json['relationship']))
+
     return "Success", 201

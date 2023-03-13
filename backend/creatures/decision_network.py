@@ -1149,7 +1149,8 @@ class DecisionNetwork(metaclass=ABCMeta):
         activatedTriggerNodes = []
         for trigger in self.triggerNodes:
             if trigger.determinePossibility(stimuli):
-                activatedTriggerNodes.append(CreatureAction(trigger.actionType))
+                activatedTriggerNodes.append(
+                    CreatureAction(trigger.actionType))
 
         logging.info(f"Triggers {activatedTriggerNodes}")
 
@@ -1175,8 +1176,8 @@ class DecisionNetwork(metaclass=ABCMeta):
 
         if beneficialMemory is None:
             logging.info(f"Activation values: {activationValues}")
-            mostLikelyDecision = CreatureAction(activatedTriggerNodes[activationValues.index(
-                max(activationValues))])
+            mostLikelyDecision = CreatureAction(
+                activatedTriggerNodes[activationValues.index(max(activationValues))])
             return mostLikelyDecision
         else:
             logging.info(f"Using past memory")
