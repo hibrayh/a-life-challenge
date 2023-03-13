@@ -489,22 +489,22 @@ class Environment:
 
     def getLightVisibility(self):
         elapsedTicks = self.timeOfSimulation % 500
-        if elapsedTicks < 30:           # Ticks 0-30, Midnight (early)
-            self.lightVisibility = 0.2
-        elif elapsedTicks < 60:         # Ticks 30-59, Dawn
-            self.lightVisibility = 0.3
-        elif elapsedTicks < 130:        # Ticks 60-129, Early Morning
-            self.lightVisibility = 0.5
-        elif elapsedTicks < 200:        # Ticks 130-199, Late Morning
+        if elapsedTicks < 70:           # Ticks 0-69, Noon
+            self.lightVisibility = 1.0  
+        elif elapsedTicks < 140:         # Ticks 70-139, Afternoon 
             self.lightVisibility = 0.8
-        elif elapsedTicks < 270:        # Ticks 200-269, Noon
-            self.lightVisibility = 1.0
-        elif elapsedTicks < 340:        # Ticks 270-339, Afternoon
-            self.lightVisibility = 0.8
-        elif elapsedTicks < 410:        # Ticks 340-409, Evening
+        elif elapsedTicks < 210:        # Ticks 140-209, Evening
             self.lightVisibility = 0.5
-        elif elapsedTicks < 440:        # Ticks 410-439, Dusk
+        elif elapsedTicks < 240:        # Ticks 210-239, Dusk
             self.lightVisibility = 0.3
-        else:                           # Ticks 440-500, Midnight
+        elif elapsedTicks < 300:        # Ticks 240-299, Midnight 
             self.lightVisibility = 0.2
+        elif elapsedTicks < 330:        # Ticks 300-329, Midnight (early) 
+            self.lightVisibility = 0.2
+        elif elapsedTicks < 410:        # Ticks 330-409, Dawn
+            self.lightVisibility = 0.3
+        elif elapsedTicks < 440:        # Ticks 410-439, Early Morning
+            self.lightVisibility = 0.5
+        else:                           
+            self.lightVisibility = 0.8  # Ticks 440-500, Late Morning
         return self.lightVisibility

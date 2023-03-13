@@ -136,7 +136,7 @@ function App() {
                 <header className="menu">
                     <h1>A-Life Challenge</h1>
                 </header>
-                <div class="menu">
+                <div className="menu">
                     <div>
                         <button
                             id="menuButtonStart"
@@ -238,6 +238,7 @@ function App() {
             setShowMenu(false)
             setShowSimulation(true)
             setHasSimulationStarted(true)
+            getSimulationInfo()
         }
     }
 
