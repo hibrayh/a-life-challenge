@@ -8,8 +8,8 @@
     overflow: scroll;
 }
 
-::-webkit-scrollbar{
-    display:none;
+::-webkit-scrollbar {
+    display: none;
 }
 
 .creatureSpeciesFormButton {
@@ -71,7 +71,6 @@
 .newCreatureOrSpeciesData {
     position: relative;
     bottom: 10px;
-    
 }
 
 .dataTitle {
@@ -86,8 +85,8 @@
     left: 20vmin;
     height: -10px;
 }
-.dataSlider.longName{
-    left:24vmin;
+.dataSlider.longName {
+    left: 24vmin;
 }
 
 .dataText {
@@ -97,7 +96,7 @@
     font-size: 0.6vmax;
 }
 
-.dataText.longName{
+.dataText.longName {
     left: 39vmin;
 }
 
@@ -118,7 +117,7 @@
     border: 1px solid rgb(48, 48, 48);
     padding-top: 3px;
     padding-bottom: 3px;
-    padding-left:calc(50% - 21vmin);
+    padding-left: calc(50% - 21vmin);
 }
 
 .formButton {

@@ -85,13 +85,12 @@ function Grid(props) {
     const [forceUpdate, setForceUpdate] = useState(false)
 
     let jsx = []
-    
+
     for (let i = 0; i < 1250; i++) {
         jsx.push(
             <Node
                 id={props.topographyInfo[i]}
                 toggleSelected={toggleSelected}
-                
                 topography={props.topographyInfo[i].type}
                 selectTopography={props.selectTopography}
                 showGridBorder={props.showGridBorder}
