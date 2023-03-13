@@ -7,19 +7,42 @@ import axios from 'axios'
 function SpeciesRelationshipPage(props) {
     // I think it would be smart to have the value "" prepended to the list of species so that when you
     // open the form origonally, there will be blank values.
-    const dummySpeciesList = ['', 'test1sdfasdf', 'test2', 'test3']
-    const dummySpeciesRelationships = ['', 'hunts', 'works with', 'leeches']
+    const speciesRelationships = [
+        '',
+        'hunts',
+        'hunted by',
+        'competes with',
+        'works with',
+        'protects',
+        'defended by',
+        'leeches',
+        'leeched by',
+        'nurtures',
+        'nurtured by',
+    ]
 
+    const [speciesList, setSpeciesList] = useState([])
     const [species1, setSpecies1] = useState('')
     const [species2, setSpecies2] = useState('')
     const [relationship, setRelationship] = useState('')
 
     // if we ever leave/open the form, set all values back to default
     useEffect(() => {
-        setSpecies1('')
-        setSpecies2('')
-        setRelationship('')
-    }, [props.show])
+        const init = async () => {
+            setSpecies1('')
+            setSpecies2('')
+            setRelationship('')
+
+            await axios({
+                method: 'GET',
+                url: 'http://localhost:5000/get-list-of-species',
+            }).then((response) => {
+                const res = response.data
+                setSpeciesList([''].concat(res.speciesNames))
+            })
+        }
+        init()
+    }, [])
 
     // This will disable the submit button unless all values are valid
     let submitButtonDisabled
@@ -57,7 +80,7 @@ function SpeciesRelationshipPage(props) {
                                 onChange={(event) =>
                                     setSpecies1(event.target.value)
                                 }>
-                                {dummySpeciesList.map((species) => (
+                                {speciesList.map((species) => (
                                     <option>{species}</option>
                                 ))}
                             </select>
@@ -71,11 +94,9 @@ function SpeciesRelationshipPage(props) {
                                 onChange={(event) =>
                                     setRelationship(event.target.value)
                                 }>
-                                {dummySpeciesRelationships.map(
-                                    (relationship) => (
-                                        <option>{relationship}</option>
-                                    )
-                                )}
+                                {speciesRelationships.map((relationship) => (
+                                    <option>{relationship}</option>
+                                ))}
                             </select>
                         </div>
 
@@ -86,7 +107,7 @@ function SpeciesRelationshipPage(props) {
                                 onChange={(event) =>
                                     setSpecies2(event.target.value)
                                 }>
-                                {dummySpeciesList.map((species) => (
+                                {speciesList.map((species) => (
                                     <option>{species}</option>
                                 ))}
                             </select>
@@ -94,7 +115,9 @@ function SpeciesRelationshipPage(props) {
 
                         <div id="speciesRelationshipButtonContainer">
                             <button
-                                disabled={submitButtonDisabled}
+                                disabled={
+                                    species1 == species2 || relationship == ''
+                                }
                                 onClick={handleSubmit}
                                 className="relationshipFormButton buttonHover buttonBackgroundColor">
                                 Submit Relationship
@@ -110,7 +133,7 @@ function SpeciesRelationshipPage(props) {
             </>
         )
 
-        function handleSubmit(event) {
+        async function handleSubmit(event) {
             event.preventDefault()
             // if we got here, this means that all of the values entered are valid.
             // The variables for the values are "species1, species2, relationship"
@@ -118,6 +141,17 @@ function SpeciesRelationshipPage(props) {
             //console.log(species1)
             //console.log(relationship)
             //console.log(species2)
+
+            // Make call to backend to add new species relationship
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/define-new-species-relationship',
+                data: {
+                    species1: species1,
+                    species2: species2,
+                    relationship: relationship,
+                },
+            })
 
             props.toggleSpeciesRelationshipPage()
         }
