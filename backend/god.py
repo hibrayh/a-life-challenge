@@ -203,13 +203,13 @@ class God:
         logging.info(
             f"Creating new topography of type {topographyType} with id {topographyId}")
 
-        topLeftXCoordinate = (column - 1) * \
+        topLeftXCoordinate = (column) * \
             (self._simulationWidth / self._columnCount)
-        topLeftYCoordinate = (row - 1) * \
+        topLeftYCoordinate = (row) * \
             (self._simulationHeight / self._rowCount)
-        bottomRightXCoordinate = column * \
+        bottomRightXCoordinate = (column + 1) * \
             (self._simulationWidth / self._columnCount)
-        bottomRightYCoordinate = row * \
+        bottomRightYCoordinate = (row + 1) * \
             (self._simulationHeight / self._rowCount)
         topRightXCoordinate = bottomRightXCoordinate
         topRightYCoordinate = topLeftYCoordinate
