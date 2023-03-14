@@ -88,7 +88,6 @@ function Grid(props) {
 
     console.log(props.topographyInfo)
 
-    
     for (let i = 0; i < 1250; i++) {
         jsx.push(
             <Node
@@ -102,7 +101,7 @@ function Grid(props) {
             />
         )
     }
-    
+
     /*
     let i = 0
     for (let row = 0; row < 25; row++) {
