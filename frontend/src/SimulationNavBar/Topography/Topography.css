@@ -16,7 +16,7 @@
 #mainGrid {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
     height: calc(100% - 7vmin);
     position: absolute;

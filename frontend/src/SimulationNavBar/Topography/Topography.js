@@ -88,6 +88,7 @@ function Grid(props) {
 
     console.log(props.topographyInfo)
 
+    
     for (let i = 0; i < 1250; i++) {
         jsx.push(
             <Node
@@ -101,6 +102,32 @@ function Grid(props) {
             />
         )
     }
+    
+    /*
+    let i = 0
+    for (let row = 0; row < 25; row++) {
+        let currentRow = []
+        for (let column = 0; column < 50; column++) {
+            currentRow.push(
+                <Node
+                    id={props.topographyInfo[i]}
+                    toggleSelected={toggleSelected}
+                    topography={props.topographyInfo[i].type}
+                    selectTopography={props.selectTopography}
+                    showGridBorder={props.showGridBorder}
+                    row={props.topographyInfo[i].row}
+                    col={props.topographyInfo[i].column}
+                />
+            )
+            i += 1
+        }
+        jsx.push(
+            <div id={"row" + row} class="flex-container">
+                {currentRow}
+            </div>
+        )
+    }
+    */
 
     return (
         <div>
@@ -115,6 +142,8 @@ function Grid(props) {
                 return true
             }
         })
+
+        console.log(row, col)
 
         //if the topography is selected, update the coord, else flip it
         if (props.topographyInfo[index].type != 'unselected') {
@@ -176,7 +205,7 @@ function Node(props) {
         currentClass = props.topography
     }
 
-    function handleClick() {
+    const handleClick = () => {
         if (props.showGridBorder) {
             props.toggleSelected(props.row, props.col)
         }

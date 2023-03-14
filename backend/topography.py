@@ -13,7 +13,7 @@ logging.basicConfig(
     format='%(levelname)s %(asctime)s - %(message)s')
 
 
-THRESHOLD = 10
+THRESHOLD = 20
 
 
 class TemplateTopography(str, Enum):
@@ -234,7 +234,7 @@ class Topography:
                 self.region.topLeftXCoordinate,
                 self.region.topRightXCoordinate)
             randomY = random.randrange(
-                self.region.topLeftYCoordinate,
+                self.region.topLeftYCoordinate - 20,
                 self.region.bottomLeftYCoordinate)
             Resource(
                 f"{self.id}{resourcesToCreate}",
