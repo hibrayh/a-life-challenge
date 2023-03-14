@@ -43,9 +43,9 @@ class SpeciesManager:
             self.simulationHeight = simulationHeight
             self.environment = environment
             self._creatureIdIncrementer = 0
-            self._spawnPointXCoordinate = random.randrange(
+            self.spawnPointXCoordinate = random.randrange(
                 self.simulationWidth)
-            self._spawnPointYCoordinate = random.randrange(
+            self.spawnPointYCoordinate = random.randrange(
                 self.simulationHeight)
         else:
             logging.info(f"Loading existing Species Manager")
@@ -122,8 +122,8 @@ class SpeciesManager:
             self.simulationWidth = simulationWidth
             self.simulationHeight = simulationHeight
             self._creatureIdIncrementer = saveData['_creatureIdIncrementer']
-            self._spawnPointXCoordinate = saveData['_spawnPointXCoordinate']
-            self._spawnPointYCoordinate = saveData['_spawnPointYCoordinate']
+            self.spawnPointXCoordinate = saveData['_spawnPointXCoordinate']
+            self.spawnPointYCoordinate = saveData['_spawnPointYCoordinate']
 
     def save(self):
         logging.info(f"Saving Species Manager for {self.speciesName}")
@@ -138,8 +138,8 @@ class SpeciesManager:
             '_creatures': creatureList,
             'speciesRelations': self.speciesRelations,
             '_creatureIdIncrementer': self._creatureIdIncrementer,
-            '_spawnPointXCoordinate': self._spawnPointXCoordinate,
-            '_spawnPointYCoordinate': self._spawnPointYCoordinate,
+            '_spawnPointXCoordinate': self.spawnPointXCoordinate,
+            '_spawnPointYCoordinate': self.spawnPointYCoordinate,
         }
 
     def _getCreatureFromId(self, creatureId):
@@ -160,8 +160,10 @@ class SpeciesManager:
         randomOffsetMagnitude = random.randrange(-10 * 25, 10 * 25)
         OffsetX = randomOffsetMagnitude * math.cos(randomDegreeOfOffset)
         OffsetY = randomOffsetMagnitude * math.sin(randomDegreeOfOffset)
-        newCreatureSpawnX = self._spawnPointXCoordinate + OffsetX
-        newCreatureSpawnY = self._spawnPointYCoordinate + OffsetY
+        newCreatureSpawnX = min([min([self.spawnPointXCoordinate + OffsetX, self.environment.width]),
+            max([0, self.spawnPointXCoordinate + OffsetX])])
+        newCreatureSpawnY = min([min([self.spawnPointYCoordinate + OffsetY, self.environment.height]),
+            max([0, self.spawnPointYCoordinate + OffsetY])])
 
         newCreature = creature.Creature(
             startingGenome,
@@ -183,10 +185,10 @@ class SpeciesManager:
         self._creatureIdIncrementer += 1
 
         randomDegreeOfOffset = math.radians(random.randrange(360))
-        newCreatureSpawnX = parentXCoordinate + \
-            (math.cos(randomDegreeOfOffset) * 25)
-        newCreatureSpawnY = parentYCoordinate + \
-            (math.sin(randomDegreeOfOffset) * 25)
+        newCreatureSpawnX = min([min([parentXCoordinate + (math.cos(randomDegreeOfOffset) * 25), self.environment.width]), 
+            max([0, parentXCoordinate + (math.cos(randomDegreeOfOffset) * 25)])])
+        newCreatureSpawnY = min([min([parentYCoordinate + (math.sin(randomDegreeOfOffset) * 25), self.environment.height]),
+            max([0, parentYCoordinate + (math.sin(randomDegreeOfOffset) * 25)])])
 
         newCreature = creature.Creature(
             startingGenome,

@@ -398,7 +398,7 @@ class ShortTermMemory:
                 netActionBenefit)] + self._memories
 
         if len(self._memories) >= self.capacity * MAX_STM_CAPACITY:
-            self._memories = self._memories[:(
+            self._memories = self._memories[:int(
                 self.capacity * MAX_STM_CAPACITY)]
 
         for memory in self._memories:
