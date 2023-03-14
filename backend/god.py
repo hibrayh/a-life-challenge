@@ -99,7 +99,8 @@ class God:
         }
 
     def resizeSimulation(self, newWidth, newHeight):
-        logging.info(f"Resizing simulation to new width of {newWidth} and height of {newHeight}")
+        logging.info(
+            f"Resizing simulation to new width of {newWidth} and height of {newHeight}")
         scalingFactorX = newWidth / self._simulationWidth
         scalingFactorY = newHeight / self._simulationHeight
 
@@ -109,8 +110,10 @@ class God:
         for speciesManager in self._speciesManagers:
             speciesManager.spawnPointXCoordinate = speciesManager.spawnPointXCoordinate * scalingFactorX
             speciesManager.spawnPointYCoordinate = speciesManager.spawnPointYCoordinate * scalingFactorY
-        
-        self._environment.resize(newWidth, newHeight, [scalingFactorX, scalingFactorY])
+
+        self._environment.resize(
+            newWidth, newHeight, [
+                scalingFactorX, scalingFactorY])
 
     def _getSpeciesManagerFromName(self, speciesName):
         speciesManagerOfInterest = None

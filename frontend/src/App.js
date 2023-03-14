@@ -122,8 +122,8 @@ function App() {
                 url: 'http://localhost:5000/resize-simulation',
                 data: {
                     newWidth: window.innerWidth,
-                    newHeight: window.innerHeight
-                }
+                    newHeight: window.innerHeight,
+                },
             })
         }
 

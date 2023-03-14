@@ -161,9 +161,9 @@ class SpeciesManager:
         OffsetX = randomOffsetMagnitude * math.cos(randomDegreeOfOffset)
         OffsetY = randomOffsetMagnitude * math.sin(randomDegreeOfOffset)
         newCreatureSpawnX = min([min([self.spawnPointXCoordinate + OffsetX, self.environment.width]),
-            max([0, self.spawnPointXCoordinate + OffsetX])])
+                                 max([0, self.spawnPointXCoordinate + OffsetX])])
         newCreatureSpawnY = min([min([self.spawnPointYCoordinate + OffsetY, self.environment.height]),
-            max([0, self.spawnPointYCoordinate + OffsetY])])
+                                 max([0, self.spawnPointYCoordinate + OffsetY])])
 
         newCreature = creature.Creature(
             startingGenome,
@@ -185,10 +185,16 @@ class SpeciesManager:
         self._creatureIdIncrementer += 1
 
         randomDegreeOfOffset = math.radians(random.randrange(360))
-        newCreatureSpawnX = min([min([parentXCoordinate + (math.cos(randomDegreeOfOffset) * 25), self.environment.width]), 
-            max([0, parentXCoordinate + (math.cos(randomDegreeOfOffset) * 25)])])
-        newCreatureSpawnY = min([min([parentYCoordinate + (math.sin(randomDegreeOfOffset) * 25), self.environment.height]),
-            max([0, parentYCoordinate + (math.sin(randomDegreeOfOffset) * 25)])])
+        newCreatureSpawnX = min([min([parentXCoordinate +
+                                      (math.cos(randomDegreeOfOffset) *
+                                       25), self.environment.width]), max([0, parentXCoordinate +
+                                                                           (math.cos(randomDegreeOfOffset) *
+                                                                            25)])])
+        newCreatureSpawnY = min([min([parentYCoordinate +
+                                      (math.sin(randomDegreeOfOffset) *
+                                       25), self.environment.height]), max([0, parentYCoordinate +
+                                                                            (math.sin(randomDegreeOfOffset) *
+                                                                             25)])])
 
         newCreature = creature.Creature(
             startingGenome,
