@@ -116,6 +116,19 @@ function App() {
     }
 
     useEffect(() => {
+        const handleResize = async () => {
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/resize-simulation',
+                data: {
+                    newWidth: window.innerWidth,
+                    newHeight: window.innerHeight,
+                },
+            })
+        }
+
+        window.addEventListener('resize', handleResize)
+
         const interval = setInterval(
             () => {
                 if (simulationTicksPerSecond > 0 && isSimulationRunning) {

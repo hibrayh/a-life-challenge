@@ -148,6 +148,7 @@ def return_dummy_info():
 
 
 @api.route('/start-simulation', methods=['POST'])
+@cross_origin()
 def startSimulation():
     global GOD
     GOD = god.God(
@@ -155,6 +156,14 @@ def startSimulation():
         request.json['simulationHeight'],
         request.json['columnCount'],
         request.json['rowCount'])
+    return "Success", 201
+
+
+@api.route('/resize-simulation', methods=['POST'])
+@cross_origin()
+def resizeSimulation():
+    global GOD
+    GOD.resizeSimulation(request.json['newWidth'], request.json['newHeight'])
     return "Success", 201
 
 

@@ -169,6 +169,18 @@ class Environment:
             'daysElapsed': self.daysElapsed,
         }
 
+    def resize(self, newWidth, newHeight, scalingFactors):
+        self.width = newWidth
+        self.height = newHeight
+
+        for creature in self.creatureRegistry.registry:
+            creature.xCoordinate = creature.xCoordinate * scalingFactors[0]
+            creature.yCoordinate = creature.yCoordinate * scalingFactors[1]
+
+        for resource in self.resourceRegistry:
+            resource.xCoordinate = resource.xCoordinate * scalingFactors[0]
+            resource.yCoordinate = resource.yCoordinate * scalingFactors[1]
+
     def addToCreatureRegistry(self, newCreature):
         logging.info(
             f"Registering new creature with id: {newCreature.id} to the environment")

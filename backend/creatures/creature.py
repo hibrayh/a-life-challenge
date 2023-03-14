@@ -289,8 +289,10 @@ class Creature:
         xMovement = distance * math.cos(degreeOfMovement)
         yMovement = distance * math.sin(degreeOfMovement)
 
-        self.xCoordinate += xMovement
-        self.yCoordinate += yMovement
+        self.xCoordinate += min([min([xMovement,
+                                self.environment.width]), max([xMovement, 0])])
+        self.yCoordinate += min([min([yMovement,
+                                self.environment.height]), max([yMovement, 0])])
 
         self.currentEnergy -= (self.genome.metabolism *
                                MAX_ENERGY_LOSS) * self.maxEnergy
