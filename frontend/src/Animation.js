@@ -373,9 +373,9 @@ class Animation extends React.Component {
 
         if (resource.shape === 'triangle') {
             return (
-                <div
-                    id={resource.resourceId}
-                    style={{
+                <div id={resource.resourceId}>
+                    <div
+                        style={{
                         position: 'absolute',
                         left: `${resource.locationX}px`,
                         top: `${resource.locationY}px`,
@@ -393,6 +393,26 @@ class Animation extends React.Component {
                         borderBottomColor: resource.color,
                         borderLeftColor: 'transparent',
                     }}></div>
+                        <div
+                        style={{
+                        position: 'absolute',
+                        left: `${resource.locationX + 2.5}px`,
+                        top: `${resource.locationY + 2.25}px`,
+                        width: '0px',
+                        height: '0px',
+
+                        borderStyle: 'solid',
+                        borderTopWidth: '0px',
+                        borderLeftWidth: '4.5px',
+                        borderBottomWidth: '10px',
+                        borderRightWidth: '4.5px',
+
+                        borderTopColor: 'transparent',
+                        borderRightColor: 'transparent',
+                        borderBottomColor: "gray",
+                        borderLeftColor: 'transparent',
+                    }}></div>
+                </div>
             )
         } else {
             //return the circle or square
@@ -404,8 +424,10 @@ class Animation extends React.Component {
                             position: 'absolute',
                             left: `${resource.locationX}px`,
                             top: `${resource.locationY}px`,
-                            background: resource.color,
+                            background: "gray",
                             borderRadius: roundness,
+                            borderColor: resource.color,
+                            borderStyle: "solid",
                             height: grown,
                             width: grown,
                         }}
