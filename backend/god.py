@@ -312,3 +312,40 @@ class God:
         logging.info(
             "Getting the visible light factor based on time of simulation")
         return self._environment.getLightVisibility()
+
+    def getTopographyInfo(self):
+        column = 0
+        row = 0
+        topographyType = topography.TemplateTopography.UNSELECTED
+        logging.info(
+            "Getting the elevation values of the entire environment region")
+        topLeftXCoordinate = (column) * \
+            (self._simulationWidth / self._columnCount)
+        topLeftYCoordinate = (row) * \
+            (self._simulationHeight / self._rowCount)
+        bottomRightXCoordinate = (column + 1) * \
+            (self._simulationWidth / self._columnCount)
+        bottomRightYCoordinate = (row + 1) * \
+            (self._simulationHeight / self._rowCount)
+        topRightXCoordinate = bottomRightXCoordinate
+        topRightYCoordinate = topLeftYCoordinate
+        bottomLeftXCoordinate = topLeftXCoordinate
+        bottomLeftYCoordinate = bottomRightYCoordinate
+        topographyId = f"topography_column{column}_row{row}"
+        topo = topography.Topography(topLeftXCoordinate,
+                                            topLeftYCoordinate,
+                                            topRightXCoordinate,
+                                            topRightYCoordinate,
+                                            bottomLeftXCoordinate,
+                                            bottomLeftYCoordinate,
+                                            bottomRightXCoordinate,
+                                            bottomRightYCoordinate,
+                                            topographyId,
+                                            topographyType,
+                                            column,
+                                            row,
+                                            self._environment)
+        return {
+            'topographyGeography': topo.getGeography(),
+            'topographyRegistry': self._environment.getRegisteredTopography()
+        }
