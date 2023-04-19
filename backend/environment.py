@@ -96,7 +96,7 @@ class Environment:
             self.height = heightInPx
             self.columnCount = columnCount
             self.rowCount = rowCount
-            self.timeOfSimulation = 0
+            self.timeOfSimulation = 201
             self.daysElapsed = 0
         else:
             logging.info("Loading existing environment")
