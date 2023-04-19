@@ -333,18 +333,18 @@ class God:
         bottomLeftYCoordinate = bottomRightYCoordinate
         topographyId = f"topography_column{column}_row{row}"
         topo = topography.Topography(topLeftXCoordinate,
-                                            topLeftYCoordinate,
-                                            topRightXCoordinate,
-                                            topRightYCoordinate,
-                                            bottomLeftXCoordinate,
-                                            bottomLeftYCoordinate,
-                                            bottomRightXCoordinate,
-                                            bottomRightYCoordinate,
-                                            topographyId,
-                                            topographyType,
-                                            column,
-                                            row,
-                                            self._environment)
+                                     topLeftYCoordinate,
+                                     topRightXCoordinate,
+                                     topRightYCoordinate,
+                                     bottomLeftXCoordinate,
+                                     bottomLeftYCoordinate,
+                                     bottomRightXCoordinate,
+                                     bottomRightYCoordinate,
+                                     topographyId,
+                                     topographyType,
+                                     column,
+                                     row,
+                                     self._environment)
         return {
             'topographyGeography': topo.getGeography(),
             'topographyRegistry': self._environment.getRegisteredTopography()

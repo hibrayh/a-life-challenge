@@ -106,11 +106,9 @@ class Topography:
             self.elevationEnergyCost = 0
             self.elevation = 0
 
-
             # Initialize random geography based on topography type
             if topographyType != TemplateTopography.UNSELECTED:
                 self.generateRandomGeography()
-
 
             # Initialize resources based on topography type
             if topographyType != TemplateTopography.UNSELECTED:
@@ -158,7 +156,7 @@ class Topography:
             'shape': self.shape
         }
 
-    # Distinguishes between the elevation values 
+    # Distinguishes between the elevation values
     def getElevationOfRegion(self):
         elevation = self.elevation
         if elevation <= 54:
@@ -173,15 +171,16 @@ class Topography:
             return "mountainous/extreme incline"
 
     # Gets the energy expenditure value based on the level of elevation
-    # Calculates an energy factor used by a creature when moving throughout various inclines in elevation
+    # Calculates an energy factor used by a creature when moving throughout
+    # various inclines in elevation
     def getElevationEnergyCost(self):
         elevation = self.elevation
         if elevation <= 54:                     # No incline
-            self.elevationEnergyCost = 1.0      
+            self.elevationEnergyCost = 1.0
         elif elevation <= 104:                  # Mild incline
             self.elevationEnergyCost = 0.8
         elif elevation <= 164:                  # Average incline
-            self.elevationEnergyCost = 0.6      
+            self.elevationEnergyCost = 0.6
         elif elevation <= 214:                  # Steep incline
             self.elevationEnergyCost = 0.4
         else:                                   # Extreme incline
@@ -228,7 +227,7 @@ class Topography:
         logging.info("Elevation values of the entire environment (50x25):")
         for row in self.geography:
             logging.info(row)
-        
+
         return self.geography
 
     def getGeography(self):
