@@ -383,6 +383,11 @@ def getLightVisibility():
     global GOD
     return jsonify(GOD.getLightVisibility())
 
+@api.route('/get-topography-info', methods=['GET'])
+@cross_origin()
+def getTopographyInfo():
+    global GOD
+    return jsonify(GOD.getTopographyInfo())
 
 @api.route('/get-topography-info', methods=['GET'])
 @cross_origin()
