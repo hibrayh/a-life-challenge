@@ -47,10 +47,10 @@ function SpeciesRelationshipPage(props) {
     // This will disable the submit button unless all values are valid
     let submitButtonDisabled
     if (
-        species1 == '' ||
-        species2 == '' ||
-        relationship == '' ||
-        species1 == species2
+        species1 === '' ||
+        species2 === '' ||
+        relationship === '' ||
+        species1 === species2
     ) {
         submitButtonDisabled = true
     } else {
@@ -115,9 +115,7 @@ function SpeciesRelationshipPage(props) {
 
                         <div id="speciesRelationshipButtonContainer">
                             <button
-                                disabled={
-                                    species1 == species2 || relationship == ''
-                                }
+                                disabled={submitButtonDisabled}
                                 onClick={handleSubmit}
                                 className="relationshipFormButton buttonHover buttonBackgroundColor">
                                 Submit Relationship
