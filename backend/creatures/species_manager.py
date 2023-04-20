@@ -30,8 +30,11 @@ class SpeciesManager:
             simulationWidth,
             simulationHeight,
             environment,
+            decisionNetwork,
             loadExistingSave=False,
             saveData=None):
+        self._decisionNetwork = decisionNetwork
+
         if not loadExistingSave:
             logging.info(f"Initializing new Species Manager for {speciesName}")
 
@@ -115,6 +118,7 @@ class SpeciesManager:
                         0,
                         self,
                         self.environment,
+                        self._decisionNetwork,
                         loadExistingSave=True,
                         saveData=savedCreature))
 
@@ -172,7 +176,8 @@ class SpeciesManager:
             newCreatureSpawnX,
             newCreatureSpawnY,
             self,
-            self.environment)
+            self.environment,
+            self._decisionNetwork)
 
         self._creatures.append(newCreature)
 
@@ -203,7 +208,8 @@ class SpeciesManager:
             newCreatureSpawnX,
             newCreatureSpawnY,
             self,
-            self.environment)
+            self.environment,
+            self._decisionNetwork)
 
         self._creatures.append(newCreature)
 
