@@ -75,8 +75,8 @@ class God:
             self._speciesManagers = []
             for savedSpecies in saveData['_speciesManagers']:
                 decisionNetworkToUse = self._sexualReproductionDecisionNetwork \
-                                        if savedSpecies['_startingGenome'] == 'Sexual' \
-                                        else self._asexualReproductionDecisionNetwork
+                    if savedSpecies['_startingGenome'] == 'Sexual' \
+                    else self._asexualReproductionDecisionNetwork
                 self._speciesManagers.append(
                     creatures.species_manager.SpeciesManager(
                         None,
@@ -134,8 +134,8 @@ class God:
         logging.info(f"Creating new species: {speciesName}")
 
         decisionNetworkToUse = self._sexualReproductionDecisionNetwork \
-                                if startingGenome.reproductionType == ReproductionType.SEXUAL \
-                                else self._asexualReproductionDecisionNetwork
+            if startingGenome.reproductionType == ReproductionType.SEXUAL \
+            else self._asexualReproductionDecisionNetwork
 
         newSpecies = creatures.species_manager.SpeciesManager(
             speciesName,

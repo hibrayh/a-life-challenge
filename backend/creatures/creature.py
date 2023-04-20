@@ -53,7 +53,7 @@ class Creature:
             loadExistingSave=False,
             saveData=None):
         self._decisionNetwork = decisionNetwork
-        
+
         if not loadExistingSave:
             logging.info(f"Initializing new creature with id {id}")
             self.genome = inputGenome
