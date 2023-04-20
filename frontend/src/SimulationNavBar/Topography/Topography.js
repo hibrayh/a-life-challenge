@@ -6,31 +6,29 @@ import axios from 'axios'
 
 function TopographyPage(props) {
     const [topography, setTopography] = useState('unselected')
-    const [dragging, setDragging] = useState(false);
-    const [position, setPosition] = useState({ x: 0, y: 160 });
-    
+    const [dragging, setDragging] = useState(false)
+    const [position, setPosition] = useState({ x: 0, y: 160 })
+
     const handleDragStart = (e) => {
-      setDragging(true);
-    }
-  
-    const handleDragEnd = (e) => {
-      setDragging(false);
-      setPosition({
-        x: e.clientX,
-        y: e.clientY
-      })
-    }
-  
-    const handleDrag = (e) => {
-      
-      if (dragging) {
-        setPosition({
-          x: e.clientX,
-          y: e.clientY
-        })
-      }
+        setDragging(true)
     }
 
+    const handleDragEnd = (e) => {
+        setDragging(false)
+        setPosition({
+            x: e.clientX,
+            y: e.clientY,
+        })
+    }
+
+    const handleDrag = (e) => {
+        if (dragging) {
+            setPosition({
+                x: e.clientX,
+                y: e.clientY,
+            })
+        }
+    }
 
     if (props.show) {
         return (
@@ -41,9 +39,14 @@ function TopographyPage(props) {
                     topographyInfo={props.topographyInfo}
                 />
 
-                <div id="topographyContainer"  style={{left: position.x, top: position.y}}>
-
-                    <div id="dragBox" onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDrag={handleDrag}>
+                <div
+                    id="topographyContainer"
+                    style={{ left: position.x, top: position.y }}>
+                    <div
+                        id="dragBox"
+                        onDragStart={handleDragStart}
+                        onDragEnd={handleDragEnd}
+                        onDrag={handleDrag}>
                         <FaArrowsAlt size={22} />
                     </div>
 
@@ -251,11 +254,5 @@ function Node(props) {
             col={props.col}></div>
     )
 }
-
-
-
-
-
-
 
 export { TopographyPage, Grid }

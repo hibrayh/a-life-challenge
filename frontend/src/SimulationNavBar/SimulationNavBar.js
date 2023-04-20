@@ -47,8 +47,10 @@ function SimulationNavBar({
 
     return (
         <>
-
-            <SettingsPage show={showSettingsPage} toggleSettingsPage={toggleSettingsPage} />
+            <SettingsPage
+                show={showSettingsPage}
+                toggleSettingsPage={toggleSettingsPage}
+            />
 
             <SpeciesRelationshipPage
                 show={showSpeciesRelationshipPage}
@@ -176,24 +178,23 @@ function SimulationNavBar({
         setShowSpeciesRelationshipPage(!showSpeciesRelationshipPage)
     }
 
-    function toggleSettingsPage(){
+    function toggleSettingsPage() {
         setShowSettingsPage(!showSettingsPage)
     }
 }
 
-function SettingsButton(props){
-
-    return(
+function SettingsButton(props) {
+    return (
         <button
-        onClick={handleClick}
-        id="settingsButton"
-        className="navButton buttonHover"
-        title="Settings">
-        <FaRegSun />
+            onClick={handleClick}
+            id="settingsButton"
+            className="navButton buttonHover"
+            title="Settings">
+            <FaRegSun />
         </button>
     )
 
-    function handleClick(){
+    function handleClick() {
         props.toggleSettingsPage()
     }
 }

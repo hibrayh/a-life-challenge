@@ -6,9 +6,7 @@
     color: rgb(148, 147, 147);
     top: calc(50% - 40vmin);
     text-align: center;
-    
 }
-
 
 #topographyForm {
     text-align: left;
@@ -67,14 +65,13 @@
     border: 1px solid black;
 }
 
-#dragBox{
+#dragBox {
     position: absolute;
-    top:0px;
-    left:0px;
-    width:3vmin;
-    height:3vmin;
-    padding-left:.4vmin;
-    padding-top:.7vmin;
+    top: 0px;
+    left: 0px;
+    width: 3vmin;
+    height: 3vmin;
+    padding-left: 0.4vmin;
+    padding-top: 0.7vmin;
     cursor: move;
-
 }
