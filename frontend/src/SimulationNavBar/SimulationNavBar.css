@@ -81,7 +81,7 @@
 
 #saveButton {
     position: absolute;
-    right: 15px;
+    right: 8vmin;
 }
 
 #statsButton {
@@ -91,6 +91,11 @@
 #speciesRelationshipButton {
     left: 43%;
     font-size: 1.2vmax;
+}
+
+#settingsButton {
+    position: absolute;
+    right: 2vmin;
 }
 
 .mainBackgroundColor {
@@ -104,6 +109,7 @@
 .mainTitleFont {
     color: rgb(125, 125, 125);
     font-size: 1.5vmax;
+    text-align: center;
 }
 
 .subTitleFont {

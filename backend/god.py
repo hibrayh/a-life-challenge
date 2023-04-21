@@ -2,10 +2,8 @@ import logging
 import environment
 import topography
 import creatures.species_manager
-import random
-from environment import Environment
-import time
-import datetime
+from creatures.decision_network import DecisionNetworkSexual, DecisionNetworkAsexual
+from creatures.genome import ReproductionType
 
 logging.basicConfig(
     level=logging.INFO,
@@ -51,6 +49,9 @@ class God:
             rowCount,
             loadExistingSave=False,
             saveData=None):
+        self._sexualReproductionDecisionNetwork = DecisionNetworkSexual()
+        self._asexualReproductionDecisionNetwork = DecisionNetworkAsexual()
+
         if not loadExistingSave:
             logging.info("Initializing new God object")
 
@@ -73,6 +74,9 @@ class God:
             # Initialize species managers
             self._speciesManagers = []
             for savedSpecies in saveData['_speciesManagers']:
+                decisionNetworkToUse = self._sexualReproductionDecisionNetwork \
+                    if savedSpecies['_startingGenome'] == 'Sexual' \
+                    else self._asexualReproductionDecisionNetwork
                 self._speciesManagers.append(
                     creatures.species_manager.SpeciesManager(
                         None,
@@ -80,6 +84,7 @@ class God:
                         self._simulationWidth,
                         self._simulationHeight,
                         self._environment,
+                        decisionNetworkToUse,
                         loadExistingSave=True,
                         saveData=savedSpecies))
 
@@ -128,12 +133,17 @@ class God:
     def createNewSpecies(self, speciesName, startingGenome):
         logging.info(f"Creating new species: {speciesName}")
 
+        decisionNetworkToUse = self._sexualReproductionDecisionNetwork \
+            if startingGenome.reproductionType == ReproductionType.SEXUAL \
+            else self._asexualReproductionDecisionNetwork
+
         newSpecies = creatures.species_manager.SpeciesManager(
             speciesName,
             startingGenome,
             self._simulationWidth,
             self._simulationHeight,
-            self._environment)
+            self._environment,
+            decisionNetworkToUse)
         self._speciesManagers.append(newSpecies)
 
     def deleteSpecies(self, speciesName):

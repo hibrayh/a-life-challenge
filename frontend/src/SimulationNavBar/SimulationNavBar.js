@@ -12,6 +12,7 @@ import {
     FaFileAlt,
     FaSave,
     FaConnectdevelop,
+    FaRegSun,
 } from 'react-icons/fa'
 import { NewCreatureForm } from './CreatureForms/NewCreatureForm.js'
 import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
@@ -20,6 +21,7 @@ import StatsPage from './StatsPage/StatsPage.js'
 import { TopographyPage } from './Topography/Topography.js'
 import SavePage from './SavePage/SavePage.js'
 import SpeciesRelationshipPage from './SpeciesRelationshipPage/SpeciesRelationshipPage.js'
+import SettingsPage from './SettingsPage/SettingsPage.js'
 
 function SimulationNavBar({
     playOrPauseSimulationCallback,
@@ -42,9 +44,15 @@ function SimulationNavBar({
     const [showSavePage, setShowSavePage] = useState(false)
     const [showSpeciesRelationshipPage, setShowSpeciesRelationshipPage] =
         useState(false)
+    const [showSettingsPage, setShowSettingsPage] = useState(false)
 
     return (
         <>
+            <SettingsPage
+                show={showSettingsPage}
+                toggleSettingsPage={toggleSettingsPage}
+            />
+
             <SpeciesRelationshipPage
                 show={showSpeciesRelationshipPage}
                 toggleSpeciesRelationshipPage={toggleSpeciesRelationshipPage}
@@ -116,6 +124,7 @@ function SimulationNavBar({
                 <ToggleTextButton toggleTextCall={toggleTextSimulationCallback} />
 
                 <SaveButton toggleSavePage={toggleSavePage} />
+                <SettingsButton toggleSettingsPage={toggleSettingsPage} />
             </div>
         </>
     )
@@ -170,6 +179,26 @@ function SimulationNavBar({
 
     function toggleSpeciesRelationshipPage() {
         setShowSpeciesRelationshipPage(!showSpeciesRelationshipPage)
+    }
+
+    function toggleSettingsPage() {
+        setShowSettingsPage(!showSettingsPage)
+    }
+}
+
+function SettingsButton(props) {
+    return (
+        <button
+            onClick={handleClick}
+            id="settingsButton"
+            className="navButton buttonHover"
+            title="Settings">
+            <FaRegSun />
+        </button>
+    )
+
+    function handleClick() {
+        props.toggleSettingsPage()
     }
 }
 
