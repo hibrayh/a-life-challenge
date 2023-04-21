@@ -32,6 +32,7 @@ function SimulationNavBar({
     ticksPerSecond,
     hasSimulationStarted,
     topographyInfo,
+    toggleTextSimulationCallback,
 }) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
         useState(false)
@@ -50,6 +51,7 @@ function SimulationNavBar({
             <SettingsPage
                 show={showSettingsPage}
                 toggleSettingsPage={toggleSettingsPage}
+                toggleTextCall={toggleTextSimulationCallback}
             />
 
             <SpeciesRelationshipPage
@@ -179,6 +181,7 @@ function SimulationNavBar({
     }
 
     function toggleSettingsPage() {
+        console.log('toggled')
         setShowSettingsPage(!showSettingsPage)
     }
 }

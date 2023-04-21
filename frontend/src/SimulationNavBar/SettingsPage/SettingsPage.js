@@ -22,7 +22,9 @@ function SettingsPage(props) {
                         </h1>
 
                         <label class="switch">
-                            <input type="checkbox"></input>
+                            <input
+                                type="checkbox"
+                                onClick={props.toggleTextCall}></input>
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -41,6 +43,11 @@ function SettingsPage(props) {
                 </div>
             </div>
         )
+    }
+
+    function handleToggleClick() {
+        //toggleTextCall()
+        props.toggleTextCall()
     }
 }
 

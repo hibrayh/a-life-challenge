@@ -373,26 +373,46 @@ class Animation extends React.Component {
 
         if (resource.shape === 'triangle') {
             return (
-                <div
-                    id={resource.resourceId}
-                    style={{
-                        position: 'absolute',
-                        left: `${resource.locationX}px`,
-                        top: `${resource.locationY}px`,
-                        width: '0px',
-                        height: '0px',
+                <div id={resource.resourceId}>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            left: `${resource.locationX}px`,
+                            top: `${resource.locationY}px`,
+                            width: '0px',
+                            height: '0px',
 
-                        borderStyle: 'solid',
-                        borderTopWidth: '0px',
-                        borderLeftWidth: '7.5px',
-                        borderBottomWidth: '13.0px',
-                        borderRightWidth: '7.5px',
+                            borderStyle: 'solid',
+                            borderTopWidth: '0px',
+                            borderLeftWidth: '7.5px',
+                            borderBottomWidth: '13.0px',
+                            borderRightWidth: '7.5px',
 
-                        borderTopColor: 'transparent',
-                        borderRightColor: 'transparent',
-                        borderBottomColor: resource.color,
-                        borderLeftColor: 'transparent',
-                    }}></div>
+                            borderTopColor: 'transparent',
+                            borderRightColor: 'transparent',
+                            borderBottomColor: resource.color,
+                            borderLeftColor: 'transparent',
+                        }}></div>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            left: `${resource.locationX + 2.5}px`,
+                            top: `${resource.locationY + 2.25}px`,
+                            width: '0px',
+                            height: '0px',
+
+                            borderStyle: 'solid',
+                            borderTopWidth: '0px',
+                            borderLeftWidth: '4.5px',
+                            borderBottomWidth: '10px',
+                            borderRightWidth: '4.5px',
+
+                            borderTopColor: 'transparent',
+                            borderRightColor: 'transparent',
+                            borderBottomColor: 'gray',
+                            borderLeftColor: 'transparent',
+                        }}></div>
+                </div>
             )
         } else {
             //return the circle or square
@@ -404,10 +424,12 @@ class Animation extends React.Component {
                             position: 'absolute',
                             left: `${resource.locationX}px`,
                             top: `${resource.locationY}px`,
-                            background: resource.color,
+                            background: 'gray',
                             borderRadius: roundness,
-                            height: grown,
-                            width: grown,
+                            borderColor: resource.color,
+                            borderStyle: 'solid',
+                            height: '1vh',
+                            width: '1vh',
                         }}
                     />
                 </>
@@ -618,11 +640,9 @@ class Animation extends React.Component {
         //we only want to actually display the full animation jsx if the time is slow enough to be stable
         let jsx = []
         this.elementManagement() //manage the elements
+        jsx = this.runFullAnimations()
 
-        if (this.props.simulationSpeed < 4) {
-            // run the full animations at 1, 2, 3 ticks a second
-            jsx = this.runFullAnimations()
-
+        if (!this.props.toggleText) {
             return (
                 <div id="animation-wrapper">
                     {jsx}
@@ -632,10 +652,8 @@ class Animation extends React.Component {
                 </div>
             )
         } else {
-            //we only animate movement
             // here we also include the text, this can easily be moved to a different
             // if statement, so it can be hooked up to a button
-            jsx = this.runQuickAnimation()
 
             return (
                 <div id="animation-wrapper">

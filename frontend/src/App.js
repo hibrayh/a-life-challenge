@@ -20,6 +20,7 @@ function App() {
     const [lightVisibility, setLightVisibility] = useState(1)
 
     const [topographyInfo, setTopographyInfo] = useState([])
+    const [showCreatureText, setShowCreatureText] = useState(true)
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
@@ -115,6 +116,10 @@ function App() {
         })
     }
 
+    const showTextToggle = async () => {
+        setShowCreatureText(!showCreatureText)
+    }
+
     useEffect(() => {
         const handleResize = async () => {
             await axios({
@@ -188,6 +193,7 @@ function App() {
                     creaturesToAnimate={creatureList}
                     resourcesToAnimate={resourceList}
                     simulationSpeed={simulationTicksPerSecond}
+                    toggleText={showCreatureText}
                 />
                 <SimulationNavBar
                     playOrPauseSimulationCallback={playPauseSimulation}
@@ -198,6 +204,7 @@ function App() {
                     ticksPerSecond={simulationTicksPerSecond}
                     hasSimulationStarted={hasSimulationStarted}
                     topographyInfo={topographyInfo}
+                    toggleTextSimulationCallback={showTextToggle}
                 />
 
                 <GiantDayAndNightContainer />
