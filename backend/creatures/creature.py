@@ -49,8 +49,11 @@ class Creature:
             yCoordinate,
             speciesManager,
             environment,
+            decisionNetwork,
             loadExistingSave=False,
             saveData=None):
+        self._decisionNetwork = decisionNetwork
+
         if not loadExistingSave:
             logging.info(f"Initializing new creature with id {id}")
             self.genome = inputGenome
@@ -66,11 +69,6 @@ class Creature:
 
             self.reproductionCoolDown = 50 * self.genome.reproductionCooldown
             self.hasPerformedActionThisTurn = True
-
-            if self.genome.reproductionType == genome.ReproductionType.ASEXUAL:
-                self._decisionNetwork = decision_network.DecisionNetworkAsexual()
-            else:
-                self._decisionNetwork = decision_network.DecisionNetworkSexual()
 
             self.maxHealth = inputGenome.maxHealth * 100
             self.currentHealth = copy.deepcopy(self.maxHealth)
