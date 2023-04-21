@@ -51,6 +51,7 @@ function SimulationNavBar({
             <SettingsPage
                 show={showSettingsPage}
                 toggleSettingsPage={toggleSettingsPage}
+                toggleTextCall={toggleTextSimulationCallback}
             />
 
             <SpeciesRelationshipPage
@@ -121,8 +122,6 @@ function SimulationNavBar({
                     }
                 />
 
-                <ToggleTextButton toggleTextCall={toggleTextSimulationCallback} />
-
                 <SaveButton toggleSavePage={toggleSavePage} />
                 <SettingsButton toggleSettingsPage={toggleSettingsPage} />
             </div>
@@ -182,6 +181,7 @@ function SimulationNavBar({
     }
 
     function toggleSettingsPage() {
+        console.log("toggled")
         setShowSettingsPage(!showSettingsPage)
     }
 }
@@ -347,20 +347,6 @@ function SlowDownButton({ slowDownCall }) {
     }
 }
 
-function ToggleTextButton({ toggleTextCall }) {
-    return (
-        <button
-            onClick={handleClick}
-            id="toggleTextButton"
-            className="navButton buttonHover"
-            title="Toggle Text">
-            T
-        </button>
-    )
 
-    function handleClick() {
-        toggleTextCall()
-    }
-}
 
 export default SimulationNavBar
