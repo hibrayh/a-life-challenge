@@ -181,7 +181,7 @@ function SimulationNavBar({
     }
 
     function toggleSettingsPage() {
-        console.log("toggled")
+        console.log('toggled')
         setShowSettingsPage(!showSettingsPage)
     }
 }
@@ -346,7 +346,5 @@ function SlowDownButton({ slowDownCall }) {
         slowDownCall()
     }
 }
-
-
 
 export default SimulationNavBar

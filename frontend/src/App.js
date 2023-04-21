@@ -117,7 +117,6 @@ function App() {
     }
 
     const showTextToggle = async () => {
-        
         setShowCreatureText(!showCreatureText)
     }
 

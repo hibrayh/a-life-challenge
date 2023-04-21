@@ -22,7 +22,9 @@ function SettingsPage(props) {
                         </h1>
 
                         <label class="switch">
-                            <input type="checkbox" onClick={props.toggleTextCall}></input>
+                            <input
+                                type="checkbox"
+                                onClick={props.toggleTextCall}></input>
                             <span class="slider round"></span>
                         </label>
                     </div>

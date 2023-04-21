@@ -376,42 +376,42 @@ class Animation extends React.Component {
                 <div id={resource.resourceId}>
                     <div
                         style={{
-                        position: 'absolute',
-                        left: `${resource.locationX}px`,
-                        top: `${resource.locationY}px`,
-                        width: '0px',
-                        height: '0px',
+                            position: 'absolute',
+                            left: `${resource.locationX}px`,
+                            top: `${resource.locationY}px`,
+                            width: '0px',
+                            height: '0px',
 
-                        borderStyle: 'solid',
-                        borderTopWidth: '0px',
-                        borderLeftWidth: '7.5px',
-                        borderBottomWidth: '13.0px',
-                        borderRightWidth: '7.5px',
+                            borderStyle: 'solid',
+                            borderTopWidth: '0px',
+                            borderLeftWidth: '7.5px',
+                            borderBottomWidth: '13.0px',
+                            borderRightWidth: '7.5px',
 
-                        borderTopColor: 'transparent',
-                        borderRightColor: 'transparent',
-                        borderBottomColor: resource.color,
-                        borderLeftColor: 'transparent',
-                    }}></div>
-                        <div
+                            borderTopColor: 'transparent',
+                            borderRightColor: 'transparent',
+                            borderBottomColor: resource.color,
+                            borderLeftColor: 'transparent',
+                        }}></div>
+                    <div
                         style={{
-                        position: 'absolute',
-                        left: `${resource.locationX + 2.5}px`,
-                        top: `${resource.locationY + 2.25}px`,
-                        width: '0px',
-                        height: '0px',
+                            position: 'absolute',
+                            left: `${resource.locationX + 2.5}px`,
+                            top: `${resource.locationY + 2.25}px`,
+                            width: '0px',
+                            height: '0px',
 
-                        borderStyle: 'solid',
-                        borderTopWidth: '0px',
-                        borderLeftWidth: '4.5px',
-                        borderBottomWidth: '10px',
-                        borderRightWidth: '4.5px',
+                            borderStyle: 'solid',
+                            borderTopWidth: '0px',
+                            borderLeftWidth: '4.5px',
+                            borderBottomWidth: '10px',
+                            borderRightWidth: '4.5px',
 
-                        borderTopColor: 'transparent',
-                        borderRightColor: 'transparent',
-                        borderBottomColor: "gray",
-                        borderLeftColor: 'transparent',
-                    }}></div>
+                            borderTopColor: 'transparent',
+                            borderRightColor: 'transparent',
+                            borderBottomColor: 'gray',
+                            borderLeftColor: 'transparent',
+                        }}></div>
                 </div>
             )
         } else {
@@ -424,12 +424,12 @@ class Animation extends React.Component {
                             position: 'absolute',
                             left: `${resource.locationX}px`,
                             top: `${resource.locationY}px`,
-                            background: "gray",
+                            background: 'gray',
                             borderRadius: roundness,
                             borderColor: resource.color,
-                            borderStyle: "solid",
-                            height: "1vh",
-                            width: "1vh",
+                            borderStyle: 'solid',
+                            height: '1vh',
+                            width: '1vh',
                         }}
                     />
                 </>
@@ -643,7 +643,6 @@ class Animation extends React.Component {
         jsx = this.runFullAnimations()
 
         if (!this.props.toggleText) {
-
             return (
                 <div id="animation-wrapper">
                     {jsx}
