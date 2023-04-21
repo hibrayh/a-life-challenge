@@ -21,6 +21,150 @@ logging.basicConfig(
 UNIT = 20
 
 
+class PresetTopographies:
+    def __init__(self, rowCount, columnCount):
+        self.rowCount = rowCount
+        self.columnCount = columnCount
+
+    def presetFlat(self, rowCount, columnCount):
+        self.topographyRegistry = []
+        for row in range(rowCount):
+            rowList = []
+            for column in range(columnCount):
+                topographyId = f"topographyColumn{column}_Row{row}"
+                # Define the preset parameters based on the coordinates of the current grid block
+                topLeftXCoordinate = column * 38
+                topLeftYCoordinate = row * 39
+                topRightXCoordinate = (column + 1) * 38
+                topRightYCoordinate = row * 39
+                bottomLeftXCoordinate = column * 38
+                bottomLeftYCoordinate = (row + 1) * 39
+                bottomRightXCoordinate = (column + 1) * 38
+                bottomRightYCoordinate = (row + 1) * 39
+                # Use the preset parameters to create the topography object
+                rowList.append(
+                    topography.Topography(
+                        topLeftXCoordinate,
+                        topLeftYCoordinate,
+                        topRightXCoordinate,
+                        topRightYCoordinate,
+                        bottomLeftXCoordinate,
+                        bottomLeftYCoordinate,
+                        bottomRightXCoordinate,
+                        bottomRightYCoordinate,
+                        topographyId,
+                        column,
+                        row,
+                        topography.TemplateTopography.FLAT,
+                        self))
+            self.topographyRegistry.append(rowList)
+        return self.topographyRegistry
+
+    def presetMild(self, rowCount, columnCount):
+        self.topographyRegistry = []
+        for row in range(rowCount):
+            rowList = []
+            for column in range(columnCount):
+                topographyId = f"topographyColumn{column}_Row{row}"
+                 # Define the preset parameters based on the coordinates of the current grid block
+                topLeftXCoordinate = column * 38
+                topLeftYCoordinate = row * 39
+                topRightXCoordinate = (column + 1) * 38
+                topRightYCoordinate = row * 39
+                bottomLeftXCoordinate = column * 38
+                bottomLeftYCoordinate = (row + 1) * 39
+                bottomRightXCoordinate = (column + 1) * 38
+                bottomRightYCoordinate = (row + 1) * 39
+                # Use the preset parameters to create the topography object
+                rowList.append(
+                    topography.Topography(
+                        topLeftXCoordinate,
+                        topLeftYCoordinate,
+                        topRightXCoordinate,
+                        topRightYCoordinate,
+                        bottomLeftXCoordinate,
+                        bottomLeftYCoordinate,
+                        bottomRightXCoordinate,
+                        bottomRightYCoordinate,
+                        topographyId,
+                        column,
+                        row,
+                        topography.TemplateTopography.MILD,
+                        self))
+            self.topographyRegistry.append(rowList)
+        return self.topographyRegistry
+
+    def presetModerate(self, rowCount, columnCount):
+        self.topographyRegistry = []
+        for row in range(rowCount):
+            rowList = []
+            for column in range(columnCount):
+                topographyId = f"topographyColumn{column}_Row{row}"
+                 # Define the preset parameters based on the coordinates of the current grid block
+                topLeftXCoordinate = column * 38
+                topLeftYCoordinate = row * 39
+                topRightXCoordinate = (column + 1) * 38
+                topRightYCoordinate = row * 39
+                bottomLeftXCoordinate = column * 38
+                bottomLeftYCoordinate = (row + 1) * 39
+                bottomRightXCoordinate = (column + 1) * 38
+                bottomRightYCoordinate = (row + 1) * 39
+                # Use the preset parameters to create the topography object
+                rowList.append(
+                    topography.Topography(
+                        topLeftXCoordinate,
+                        topLeftYCoordinate,
+                        topRightXCoordinate,
+                        topRightYCoordinate,
+                        bottomLeftXCoordinate,
+                        bottomLeftYCoordinate,
+                        bottomRightXCoordinate,
+                        bottomRightYCoordinate,
+                        topographyId,
+                        column,
+                        row,
+                        topography.TemplateTopography.MODERATE,
+                        self))
+            self.topographyRegistry.append(rowList)
+        return self.topographyRegistry
+
+    def presetExtreme(self, rowCount, columnCount):
+        self.topographyRegistry = []
+        for row in range(rowCount):
+            rowList = []
+            for column in range(columnCount):
+                topographyId = f"topographyColumn{column}_Row{row}"
+                 # Define the preset parameters based on the coordinates of the current grid block
+                topLeftXCoordinate = column * 38
+                topLeftYCoordinate = row * 39
+                topRightXCoordinate = (column + 1) * 38
+                topRightYCoordinate = row * 39
+                bottomLeftXCoordinate = column * 38
+                bottomLeftYCoordinate = (row + 1) * 39
+                bottomRightXCoordinate = (column + 1) * 38
+                bottomRightYCoordinate = (row + 1) * 39
+                # Use the preset parameters to create the topography object
+                rowList.append(
+                    topography.Topography(
+                        topLeftXCoordinate,
+                        topLeftYCoordinate,
+                        topRightXCoordinate,
+                        topRightYCoordinate,
+                        bottomLeftXCoordinate,
+                        bottomLeftYCoordinate,
+                        bottomRightXCoordinate,
+                        bottomRightYCoordinate,
+                        topographyId,
+                        column,
+                        row,
+                        topography.TemplateTopography.EXTREME,
+                        self))
+            self.topographyRegistry.append(rowList)
+        return self.topographyRegistry
+
+    def presetSpecial(self, rowCount, columnCount):
+        pass 
+
 class EnvironmentInfo:
     def __init__(
             self,
