@@ -32,7 +32,8 @@ class PresetTopographies:
             rowList = []
             for column in range(columnCount):
                 topographyId = f"topographyColumn{column}_Row{row}"
-                # Define the preset parameters based on the coordinates of the current grid block
+                # Define the preset parameters based on the coordinates of the
+                # current grid block
                 topLeftXCoordinate = column * 38
                 topLeftYCoordinate = row * 39
                 topRightXCoordinate = (column + 1) * 38
@@ -66,7 +67,8 @@ class PresetTopographies:
             rowList = []
             for column in range(columnCount):
                 topographyId = f"topographyColumn{column}_Row{row}"
-                 # Define the preset parameters based on the coordinates of the current grid block
+                # Define the preset parameters based on the coordinates of the
+                # current grid block
                 topLeftXCoordinate = column * 38
                 topLeftYCoordinate = row * 39
                 topRightXCoordinate = (column + 1) * 38
@@ -100,7 +102,8 @@ class PresetTopographies:
             rowList = []
             for column in range(columnCount):
                 topographyId = f"topographyColumn{column}_Row{row}"
-                 # Define the preset parameters based on the coordinates of the current grid block
+                # Define the preset parameters based on the coordinates of the
+                # current grid block
                 topLeftXCoordinate = column * 38
                 topLeftYCoordinate = row * 39
                 topRightXCoordinate = (column + 1) * 38
@@ -134,7 +137,8 @@ class PresetTopographies:
             rowList = []
             for column in range(columnCount):
                 topographyId = f"topographyColumn{column}_Row{row}"
-                 # Define the preset parameters based on the coordinates of the current grid block
+                # Define the preset parameters based on the coordinates of the
+                # current grid block
                 topLeftXCoordinate = column * 38
                 topLeftYCoordinate = row * 39
                 topRightXCoordinate = (column + 1) * 38
@@ -163,7 +167,8 @@ class PresetTopographies:
         return self.topographyRegistry
 
     def presetSpecial(self, rowCount, columnCount):
-        pass 
+        pass
+
 
 class EnvironmentInfo:
     def __init__(
