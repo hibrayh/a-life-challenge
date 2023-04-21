@@ -428,8 +428,8 @@ class Animation extends React.Component {
                             borderRadius: roundness,
                             borderColor: resource.color,
                             borderStyle: "solid",
-                            height: grown,
-                            width: grown,
+                            height: "1vh",
+                            width: "1vh",
                         }}
                     />
                 </>
@@ -640,10 +640,9 @@ class Animation extends React.Component {
         //we only want to actually display the full animation jsx if the time is slow enough to be stable
         let jsx = []
         this.elementManagement() //manage the elements
+        jsx = this.runFullAnimations()
 
-        if (this.props.simulationSpeed < 4) {
-            // run the full animations at 1, 2, 3 ticks a second
-            jsx = this.runFullAnimations()
+        if (!this.props.toggleText) {
 
             return (
                 <div id="animation-wrapper">
@@ -654,10 +653,8 @@ class Animation extends React.Component {
                 </div>
             )
         } else {
-            //we only animate movement
             // here we also include the text, this can easily be moved to a different
             // if statement, so it can be hooked up to a button
-            jsx = this.runQuickAnimation()
 
             return (
                 <div id="animation-wrapper">

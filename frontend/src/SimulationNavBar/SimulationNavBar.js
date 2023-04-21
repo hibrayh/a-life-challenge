@@ -30,6 +30,7 @@ function SimulationNavBar({
     ticksPerSecond,
     hasSimulationStarted,
     topographyInfo,
+    toggleTextSimulationCallback,
 }) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
         useState(false)
@@ -111,6 +112,8 @@ function SimulationNavBar({
                         toggleSpeciesRelationshipPage
                     }
                 />
+
+                <ToggleTextButton toggleTextCall={toggleTextSimulationCallback} />
 
                 <SaveButton toggleSavePage={toggleSavePage} />
             </div>
@@ -312,6 +315,22 @@ function SlowDownButton({ slowDownCall }) {
 
     function handleClick() {
         slowDownCall()
+    }
+}
+
+function ToggleTextButton({ toggleTextCall }) {
+    return (
+        <button
+            onClick={handleClick}
+            id="toggleTextButton"
+            className="navButton buttonHover"
+            title="Toggle Text">
+            T
+        </button>
+    )
+
+    function handleClick() {
+        toggleTextCall()
     }
 }
 
