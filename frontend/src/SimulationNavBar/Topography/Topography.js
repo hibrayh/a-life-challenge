@@ -10,7 +10,7 @@ function TopographyPage(props) {
     const [topography, setTopography] = useState('unselected')
     const [dragging, setDragging] = useState(false)
     const [position, setPosition] = useState({ x: 0, y: 160 })
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(true)
 
     /*async function getSimulationInfo() {
         await axios({
@@ -24,10 +24,12 @@ function TopographyPage(props) {
     }*/
 
     useEffect(() => {
-        axios.get("http://localhost:5000/get-simulation-info").then(response => {
-            topographyInfo = response.data.topographyRegistry
-        });
-      }, []);
+        axios
+            .get('http://localhost:5000/get-simulation-info')
+            .then((response) => {
+                topographyInfo = response.data.topographyRegistry
+            })
+    }, [])
 
     //do not attempt to load the grid or anything else until the topography data is gotten
     if (topographyInfo.length === 0) {
