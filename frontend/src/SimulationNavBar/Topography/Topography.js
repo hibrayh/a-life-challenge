@@ -4,10 +4,24 @@ import { useState, useEffect } from 'react'
 import { FaTimes, FaArrowsAlt } from 'react-icons/fa'
 import axios from 'axios'
 
+let topographyInfo = []
+
 function TopographyPage(props) {
     const [topography, setTopography] = useState('unselected')
     const [dragging, setDragging] = useState(false)
     const [position, setPosition] = useState({ x: 0, y: 160 })
+
+    async function getSimulationInfo() {
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/get-simulation-info',
+        }).then((response) => {
+            const res = response.data
+            topographyInfo = res.topographyRegistry
+        })
+    }
+
+    getSimulationInfo()
 
     const handleDragStart = (e) => {
         setDragging(true)
@@ -120,7 +134,7 @@ function Grid(props) {
 
     let jsx = []
 
-    console.log(props.topographyInfo)
+    console.log(topographyInfo)
 
     for (let i = 0; i < 1250; i++) {
         jsx.push(
