@@ -91,7 +91,6 @@ function App() {
             const res = response.data
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
-            setTopographyInfo(res.topographyRegistry)
         })
     }
 
@@ -203,7 +202,6 @@ function App() {
                     startSimulationCallback={startSimulation}
                     ticksPerSecond={simulationTicksPerSecond}
                     hasSimulationStarted={hasSimulationStarted}
-                    topographyInfo={topographyInfo}
                     toggleTextSimulationCallback={showTextToggle}
                 />
 

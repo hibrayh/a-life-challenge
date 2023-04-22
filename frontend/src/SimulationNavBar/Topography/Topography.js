@@ -29,6 +29,7 @@ function TopographyPage(props) {
         });
       }, []);
 
+    //do not attempt to load the grid or anything else until the topography data is gotten
     if (topographyInfo.length === 0) {
         return <></>
     }

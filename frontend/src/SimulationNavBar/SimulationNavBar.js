@@ -66,7 +66,6 @@ function SimulationNavBar({
                 show={showTopographyPage}
                 closeTopographyPage={closeTopographyPage}
                 showGridBorder={showGridBorder}
-                topographyInfo={topographyInfo}
             />
 
             <NewCreatureOrSpeciesForm
