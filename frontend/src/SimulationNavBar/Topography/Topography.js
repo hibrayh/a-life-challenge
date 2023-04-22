@@ -26,11 +26,10 @@ function TopographyPage(props) {
     useEffect(() => {
         axios.get("http://localhost:5000/get-simulation-info").then(response => {
             topographyInfo = response.data.topographyRegistry
-            setLoading(false)
         });
       }, []);
 
-    if (isLoading) {
+    if (topographyInfo.length === 0) {
         return <></>
     }
 
