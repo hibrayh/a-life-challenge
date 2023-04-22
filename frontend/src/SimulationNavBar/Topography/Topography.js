@@ -10,7 +10,6 @@ function TopographyPage(props) {
     const [topography, setTopography] = useState('unselected')
     const [dragging, setDragging] = useState(false)
     const [position, setPosition] = useState({ x: 0, y: 160 })
-    const [isLoading, setLoading] = useState(true)
 
     /*async function getSimulationInfo() {
         await axios({
