@@ -103,9 +103,12 @@ class Topography:
             self.shape = (int(bottomLeftYCoordinate - topLeftYCoordinate),
                           int(topRightXCoordinate - topLeftXCoordinate))
             self.environment = environment
+            self.elevationEnergyCost = 0
+            self.elevation = 0
 
             # Initialize random geography based on topography type
-            # self.generateRandomGeography()
+            if topographyType != TemplateTopography.UNSELECTED:
+                self.generateRandomGeography()
 
             # Initialize resources based on topography type
             if topographyType != TemplateTopography.UNSELECTED:
@@ -153,6 +156,36 @@ class Topography:
             'shape': self.shape
         }
 
+    # Distinguishes between the elevation values
+    def getElevationOfRegion(self):
+        elevation = self.elevation
+        if elevation <= 54:
+            return "no incline"
+        elif elevation <= 104:
+            return "mild incline"
+        elif elevation <= 164:
+            return "average incline"
+        elif elevation <= 214:
+            return "steep incline"
+        else:
+            return "mountainous/extreme incline"
+
+    # Gets the energy expenditure value based on the level of elevation
+    # Calculates an energy factor used by a creature when moving throughout
+    # various inclines in elevation
+    def getElevationEnergyCost(self):
+        elevation = self.elevation
+        if elevation <= 54:                     # No incline
+            self.elevationEnergyCost = 1.0
+        elif elevation <= 104:                  # Mild incline
+            self.elevationEnergyCost = 0.8
+        elif elevation <= 164:                  # Average incline
+            self.elevationEnergyCost = 0.6
+        elif elevation <= 214:                  # Steep incline
+            self.elevationEnergyCost = 0.4
+        else:                                   # Extreme incline
+            self.elevationEnergyCost = 0.2
+
     # Using perlin-noise to create random geography
     # (https://en.wikipedia.org/wiki/Perlin_noise)
     def generateRandomGeography(self):
@@ -191,6 +224,14 @@ class Topography:
 
         self.geography = np.floor(
             (geography + .5) * 255).astype(np.uint8).tolist()
+        logging.info("Elevation values of the entire environment (50x25):")
+        for row in self.geography:
+            logging.info(row)
+
+        return self.geography
+
+    def getGeography(self):
+        return self.generateRandomGeography()
 
     def generateResources(self):
         rarity = 0.0
@@ -248,7 +289,7 @@ class Topography:
             resourcesToCreate -= 1
 
 
-"""
+'''
 if __name__ == '__main__':
     # (vertical, horizontal)
     shape = (1024, 800)
@@ -269,7 +310,7 @@ if __name__ == '__main__':
                                             persistence=persistence,
                                             lacunarity=lacunarity,
                                             repeatx=1024,
-                                            repeaty=1024,
+                                            repeaty=800,
                                             base=seed)
 
     img = np.floor((geography + .5) * 255).astype(np.uint8)
@@ -281,4 +322,4 @@ if __name__ == '__main__':
             blue_geography[i][j] = [0, 0, img[i][j]]
 
     Image.fromarray(blue_geography.astype('uint8'), mode="RGB").save(f'./sample_{seed}_blue.jpg')
-"""
+'''

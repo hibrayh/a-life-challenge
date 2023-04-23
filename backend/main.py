@@ -376,6 +376,13 @@ def getLightVisibility():
     return jsonify(GOD.getLightVisibility())
 
 
+@api.route('/get-topography-info', methods=['GET'])
+@cross_origin()
+def getTopographyInfo():
+    global GOD
+    return jsonify(GOD.getTopographyInfo())
+
+
 @api.route('/define-new-species-relationship', methods=['POST'])
 @cross_origin()
 def defineNewSpeciesRelationship():
