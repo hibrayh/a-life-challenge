@@ -9,7 +9,7 @@ const debounce = (functionPointer) => {
     let timer
     return () => {
         clearTimeout(timer)
-        timer = setTimeout(_ => {
+        timer = setTimeout((_) => {
             timer = null
             functionPointer()
         }, 250)
