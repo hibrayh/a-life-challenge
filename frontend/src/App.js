@@ -68,6 +68,20 @@ function App() {
         await getLightVisibility()
     }
 
+    const progressSimulationTimeByNTicks = async () => {
+        // Make a call to the backend to progress the simulation by the set tick speed
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/advance-simulation-by-n-ticks',
+            data: {
+                ticks: simulationTicksPerSecond,
+            }
+        })
+
+        await getSimulationInfo()
+        await getLightVisibility()
+    }
+
     const incrementTicksPerSecond = () => {
         setSimulationTicksPerSecond(simulationTicksPerSecond + 1)
 
@@ -136,11 +150,14 @@ function App() {
 
         const interval = setInterval(
             () => {
-                if (simulationTicksPerSecond > 0 && isSimulationRunning) {
+                if (simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4 && isSimulationRunning) {
                     progressSimulationTimeByOneTick()
                 }
+                else if (simulationTicksPerSecond > 0 && isSimulationRunning) {
+                    progressSimulationTimeByNTicks()
+                }
             },
-            simulationTicksPerSecond > 0
+            (simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4)
                 ? 1000 / simulationTicksPerSecond
                 : 1000
         )

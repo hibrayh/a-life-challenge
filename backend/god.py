@@ -303,6 +303,10 @@ class God:
     def advanceSimulation(self):
         logging.info("Advancing simulation by a tick")
         self._environment.simulateCreatureBehavior()
+    
+    def advanceSimulationByNTicks(self, n):
+        logging.info(f"Advancing simulation by {n} ticks")
+        self._environment.simulateCreatureBehaviorByNTicks(n)
 
     def getListOfSpecies(self):
         speciesNames = []
