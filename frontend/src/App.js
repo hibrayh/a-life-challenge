@@ -5,6 +5,17 @@ import Animation from './Animation'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
 import { FaTimes } from 'react-icons/fa'
 
+const debounce = (functionPointer) => {
+    let timer
+    return () => {
+        clearTimeout(timer)
+        timer = setTimeout((_) => {
+            timer = null
+            functionPointer()
+        }, 250)
+    }
+}
+
 function App() {
     const [showMenu, setShowMenu] = useState(true)
     const [showSimulation, setShowSimulation] = useState(false)
@@ -121,7 +132,7 @@ function App() {
     }
 
     useEffect(() => {
-        const handleResize = async () => {
+        const handleResize = debounce(async () => {
             await axios({
                 method: 'POST',
                 url: 'http://localhost:5000/resize-simulation',
@@ -130,7 +141,7 @@ function App() {
                     newHeight: window.innerHeight,
                 },
             })
-        }
+        })
 
         window.addEventListener('resize', handleResize)
 
@@ -145,7 +156,10 @@ function App() {
                 : 1000
         )
 
-        return () => clearInterval(interval)
+        return () => {
+            clearInterval(interval)
+            window.removeEventListener('resize', handleResize)
+        }
     }, [isSimulationRunning, simulationTicksPerSecond])
 
     const Menu = () => {
