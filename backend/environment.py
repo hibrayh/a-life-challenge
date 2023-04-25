@@ -484,13 +484,13 @@ class Environment:
         # simulation if so
         if self.timeOfSimulation % 500 == 0:
             self.daysElapsed += 1
-    
+
     def simulateCreatureBehaviorByNTicks(self, n):
         logging.info("Removing dead creatures from environment")
         for creature in self.creatureRegistry.registry:
             if creature.lastAction is creatures.decision_network.CreatureAction.DEAD:
                 self.creatureRegistry.unregisterDeadCreature(creature)
-        
+
         for i in range(n):
             # Mark each creature to indicate that they have not performed an action
             # this turn

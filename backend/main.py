@@ -269,6 +269,7 @@ def advanceSimulation():
     GOD.advanceSimulation()
     return "Success", 201
 
+
 @api.route('/advance-simulation-by-n-ticks', methods=['POST'])
 @cross_origin()
 def advanceSimulationByNTicks():

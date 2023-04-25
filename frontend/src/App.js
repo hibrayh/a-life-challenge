@@ -75,7 +75,7 @@ function App() {
             url: 'http://localhost:5000/advance-simulation-by-n-ticks',
             data: {
                 ticks: simulationTicksPerSecond,
-            }
+            },
         })
 
         await getSimulationInfo()
@@ -150,14 +150,20 @@ function App() {
 
         const interval = setInterval(
             () => {
-                if (simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4 && isSimulationRunning) {
+                if (
+                    simulationTicksPerSecond > 0 &&
+                    simulationTicksPerSecond <= 4 &&
+                    isSimulationRunning
+                ) {
                     progressSimulationTimeByOneTick()
-                }
-                else if (simulationTicksPerSecond > 0 && isSimulationRunning) {
+                } else if (
+                    simulationTicksPerSecond > 0 &&
+                    isSimulationRunning
+                ) {
                     progressSimulationTimeByNTicks()
                 }
             },
-            (simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4)
+            simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4
                 ? 1000 / simulationTicksPerSecond
                 : 1000
         )
