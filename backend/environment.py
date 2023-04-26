@@ -485,6 +485,36 @@ class Environment:
         if self.timeOfSimulation % 500 == 0:
             self.daysElapsed += 1
 
+    def simulateCreatureBehaviorByNTicks(self, n):
+        logging.info("Removing dead creatures from environment")
+        for creature in self.creatureRegistry.registry:
+            if creature.lastAction is creatures.decision_network.CreatureAction.DEAD:
+                self.creatureRegistry.unregisterDeadCreature(creature)
+
+        for i in range(n):
+            # Mark each creature to indicate that they have not performed an action
+            # this turn
+            for creature in self.creatureRegistry.registry:
+                if creature.hasPerformedActionThisTurn:
+                    creature.hasPerformedActionThisTurn = False
+                creature.hasPerformedActionThisTurn = False
+
+            # Go through each creature, in order of reaction time, and let them
+            # decide and perform their actions
+            logging.info("Simulating all creature actions")
+            for creature in self.creatureRegistry.registry:
+                if not creature.hasPerformedActionThisTurn:
+                    creature.performAction()
+
+            # Increment the simulation time by one tick to track simulation time in
+            # ticks per second
+            self.timeOfSimulation += 1
+
+            # Check if 300 ticks have elapsed and increment daysElapsed in the
+            # simulation if so
+            if self.timeOfSimulation % 500 == 0:
+                self.daysElapsed += 1
+
     def getTimeOfSimulation(self):
         # A day cycle is currently set to 500, so once ticks reach 500, a new
         # day starts

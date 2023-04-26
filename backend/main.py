@@ -270,6 +270,14 @@ def advanceSimulation():
     return "Success", 201
 
 
+@api.route('/advance-simulation-by-n-ticks', methods=['POST'])
+@cross_origin()
+def advanceSimulationByNTicks():
+    global GOD
+    GOD.advanceSimulationByNTicks(int(request.json['ticks']))
+    return "Success", 201
+
+
 @api.route('/get-list-of-species')
 @cross_origin()
 def getListOfSpecies():
