@@ -4,10 +4,36 @@ import { useState, useEffect } from 'react'
 import { FaTimes, FaArrowsAlt } from 'react-icons/fa'
 import axios from 'axios'
 
+let topographyInfo = []
+
 function TopographyPage(props) {
     const [topography, setTopography] = useState('unselected')
     const [dragging, setDragging] = useState(false)
     const [position, setPosition] = useState({ x: 0, y: 160 })
+
+    /*async function getSimulationInfo() {
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/get-simulation-info',
+        }).then((response) => {
+            const res = response.data
+            topographyInfo = res.topographyRegistry
+        })
+        console.log("ran")
+    }*/
+
+    useEffect(() => {
+        axios
+            .get('http://localhost:5000/get-simulation-info')
+            .then((response) => {
+                topographyInfo = response.data.topographyRegistry
+            })
+    }, [])
+
+    //do not attempt to load the grid or anything else until the topography data is gotten
+    if (topographyInfo.length === 0) {
+        return <></>
+    }
 
     const handleDragStart = (e) => {
         setDragging(true)
@@ -36,7 +62,7 @@ function TopographyPage(props) {
                 <Grid
                     showGridBorder={props.showGridBorder}
                     selectTopography={topography}
-                    topographyInfo={props.topographyInfo}
+                    topographyInfo={topographyInfo}
                 />
 
                 <div
@@ -108,7 +134,7 @@ function TopographyPage(props) {
     } else {
         return (
             <Grid
-                topographyInfo={props.topographyInfo}
+                topographyInfo={topographyInfo}
                 showGridBorder={props.showGridBorder}
             />
         )
@@ -120,18 +146,18 @@ function Grid(props) {
 
     let jsx = []
 
-    console.log(props.topographyInfo)
+    console.log(topographyInfo)
 
     for (let i = 0; i < 1250; i++) {
         jsx.push(
             <Node
-                id={props.topographyInfo[i]}
+                id={topographyInfo[i]}
                 toggleSelected={toggleSelected}
-                topography={props.topographyInfo[i].type}
+                topography={topographyInfo[i].type}
                 selectTopography={props.selectTopography}
                 showGridBorder={props.showGridBorder}
-                row={props.topographyInfo[i].row}
-                col={props.topographyInfo[i].column}
+                row={topographyInfo[i].row}
+                col={topographyInfo[i].column}
             />
         )
     }
@@ -170,7 +196,7 @@ function Grid(props) {
 
     async function toggleSelected(row, col) {
         // find the index of the node that was clicked
-        let index = props.topographyInfo.findIndex(function (node) {
+        let index = topographyInfo.findIndex(function (node) {
             if (node.row === row && node.column === col) {
                 return true
             }
@@ -179,10 +205,10 @@ function Grid(props) {
         console.log(row, col)
 
         //if the topography is selected, update the coord, else flip it
-        if (props.topographyInfo[index].type != 'unselected') {
+        if (topographyInfo[index].type != 'unselected') {
             // This is what I had to do to actually change the visuals, unfortunately it wouldn't
             // automatically update after making the backend call
-            props.topographyInfo[index].type = 'unselected'
+            topographyInfo[index].type = 'unselected'
 
             // Delete topography in backend at (col, row) position
             await axios({
@@ -196,7 +222,7 @@ function Grid(props) {
         } else {
             // This is what I had to do to actually change the visuals, unfortunately it wouldn't
             // automatically update after making the backend call
-            props.topographyInfo[index].type = props.selectTopography
+            topographyInfo[index].type = props.selectTopography
 
             // Add new topography in backend at (col, row) position
             await axios({
