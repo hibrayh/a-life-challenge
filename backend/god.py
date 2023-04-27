@@ -482,5 +482,5 @@ class God:
             'topographyRegistry': self._environment.getRegisteredTopography()
         }
 
-myGod = God(1920, 989, 50, 25)
-myGod.addPresetTopography("Randomize")
+#myGod = God(1920, 989, 50, 25)
+#myGod.addPresetTopography("Randomize")

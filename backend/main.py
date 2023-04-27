@@ -377,7 +377,6 @@ def addPresetTopography():
 
     return "Success", 201
 
-
 @api.route('/time-of-simulation')
 @cross_origin()
 def timeOfSimulation():
