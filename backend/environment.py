@@ -68,7 +68,7 @@ class Environment:
                 f"Creating new environment of width {widthInPx} and height {heightInPx}")
             self.creatureRegistry = registry.Registry()
             self.resourceRegistry = []
-            
+
             self.topographyRegistry = []
             for row in range(rowCount):
                 rowList = []
