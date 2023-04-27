@@ -46,6 +46,7 @@ function App() {
             },
         })
         await getSimulationInfo()
+        await getTopographyInfo()
         setHasSimulationStarted(true)
     }
 
@@ -73,6 +74,8 @@ function App() {
         })
 
         await getSimulationInfo()
+
+        await getTopographyInfo()
 
         // Get the updated time of the simulation
         //const simulationTime = await getTimeOfSimulation()
@@ -118,6 +121,16 @@ function App() {
             setResourceList(res.resourceRegistry)
         })
     }
+
+    const getTopographyInfo = async () => {
+            await axios({
+                method: 'GET',
+                url: 'http://localhost:5000/get-topography-info',
+            }).then((response) => {
+                const res = response.data
+                setTopographyInfo(res.topographyRegistry)
+            })
+        }
 
     const getTimeOfSimulation = async () => {
         await axios({
@@ -290,6 +303,7 @@ function App() {
             })
 
             await getSimulationInfo()
+            await getTopographyInfo()
             setShowLoad(false)
             setShowMenu(false)
             setShowSimulation(true)
