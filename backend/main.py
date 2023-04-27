@@ -361,6 +361,14 @@ def removeTopography():
 
     return "Success", 201
 
+@api.route('/add-preset-topography', methods=['POST'])
+@cross_origin()
+def addPresetTopography():
+    global GOD
+    GOD.addPresetTopography(request.json['presetTopographyId'])
+
+    return "Success", 201
+
 
 @api.route('/time-of-simulation')
 @cross_origin()

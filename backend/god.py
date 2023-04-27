@@ -1,4 +1,5 @@
 import logging
+import random
 import environment
 import topography
 import creatures.species_manager
@@ -259,6 +260,124 @@ class God:
 
         self._environment.addToTopographyRegistry(newTopography)
 
+    def addPresetTopography(self, presetTopographyId):
+        logging.info(f"Setting topography type to {presetTopographyId} for the entire environment...")
+        for row in range(self._rowCount):
+            rowList = []
+            for column in range(self._columnCount):
+                # Define the preset parameters based on the coordinates of the
+                # current grid block
+                topLeftXCoordinate = (column) * \
+                    (self._simulationWidth / self._columnCount)
+                topLeftYCoordinate = (row) * \
+                    (self._simulationHeight / self._rowCount)
+                bottomRightXCoordinate = (column + 1) * \
+                    (self._simulationWidth / self._columnCount)
+                bottomRightYCoordinate = (row + 1) * \
+                    (self._simulationHeight / self._rowCount)
+                topRightXCoordinate = bottomRightXCoordinate
+                topRightYCoordinate = topLeftYCoordinate
+                bottomLeftXCoordinate = topLeftXCoordinate
+                bottomLeftYCoordinate = bottomRightYCoordinate
+
+                if presetTopographyId == "Preset1": 
+                    topographyType = topography.TemplateTopography.FLAT
+                    topographyId = f"topography_column{column}_row{row}"
+                    logging.info(
+                        f"Creating new topography of type {topographyType} with id {topographyId}")
+                    newTopography = topography.Topography(topLeftXCoordinate,
+                                                        topLeftYCoordinate,
+                                                        topRightXCoordinate,
+                                                        topRightYCoordinate,
+                                                        bottomLeftXCoordinate,
+                                                        bottomLeftYCoordinate,
+                                                        bottomRightXCoordinate,
+                                                        bottomRightYCoordinate,
+                                                        topographyId,
+                                                        column,
+                                                        row,
+                                                        topographyType,
+                                                        self._environment)
+
+                elif presetTopographyId == "Preset2":
+                    topographyType = topography.TemplateTopography.MILD
+                    topographyId = f"topography_column{column}_row{row}"
+                    logging.info(
+                        f"Creating new topography of type {topographyType} with id {topographyId}")
+                    newTopography = topography.Topography(topLeftXCoordinate,
+                                                        topLeftYCoordinate,
+                                                        topRightXCoordinate,
+                                                        topRightYCoordinate,
+                                                        bottomLeftXCoordinate,
+                                                        bottomLeftYCoordinate,
+                                                        bottomRightXCoordinate,
+                                                        bottomRightYCoordinate,
+                                                        topographyId,
+                                                        column,
+                                                        row,
+                                                        topographyType,
+                                                        self._environment)
+
+                elif presetTopographyId == "Preset3":
+                    topographyType = topography.TemplateTopography.MODERATE
+                    topographyId = f"topography_column{column}_row{row}"
+                    logging.info(
+                        f"Creating new topography of type {topographyType} with id {topographyId}")
+                    newTopography = topography.Topography(topLeftXCoordinate,
+                                                            topLeftYCoordinate,
+                                                            topRightXCoordinate,
+                                                            topRightYCoordinate,
+                                                            bottomLeftXCoordinate,
+                                                            bottomLeftYCoordinate,
+                                                            bottomRightXCoordinate,
+                                                            bottomRightYCoordinate,
+                                                            topographyId,
+                                                            column,
+                                                            row,
+                                                            topographyType,
+                                                            self._environment)
+
+                elif presetTopographyId == "Preset4":
+                    topographyType = topography.TemplateTopography.EXTREME
+                    topographyId = f"topography_column{column}_row{row}"
+                    logging.info(
+                        f"Creating new topography of type {topographyType} with id {topographyId}")
+                    newTopography = topography.Topography(topLeftXCoordinate,
+                                                            topLeftYCoordinate,
+                                                            topRightXCoordinate,
+                                                            topRightYCoordinate,
+                                                            bottomLeftXCoordinate,
+                                                            bottomLeftYCoordinate,
+                                                            bottomRightXCoordinate,
+                                                            bottomRightYCoordinate,
+                                                            topographyId,
+                                                            column,
+                                                            row,
+                                                            topographyType,
+                                                            self._environment)
+                    
+                elif presetTopographyId == "Randomize":
+                    topographyType = random.choice(list([topo for topo in list(topography.TemplateTopography) if topo != topography.TemplateTopography.UNSELECTED]))
+                    topographyId = f"topography_column{column}_row{row}"
+                    logging.info(
+                        f"Creating new topography of type {topographyType} with id {topographyId}")
+                    newTopography = topography.Topography(topLeftXCoordinate,
+                                                            topLeftYCoordinate,
+                                                            topRightXCoordinate,
+                                                            topRightYCoordinate,
+                                                            bottomLeftXCoordinate,
+                                                            bottomLeftYCoordinate,
+                                                            bottomRightXCoordinate,
+                                                            bottomRightYCoordinate,
+                                                            topographyId,
+                                                            column,
+                                                            row,
+                                                            topographyType,
+                                                            self._environment)
+
+                self._environment.addToTopographyRegistry(newTopography)
+            logging.info(f"Topography Preset: '{presetTopographyId}' has been set")
+
     def removeTopography(self, column, row):
         self._environment.removeTopography(column, row)
 
@@ -295,7 +414,6 @@ class God:
         return {
             'creatureRegistry': self._environment.getRegisteredCreatures(),
             'resourceRegistry': self._environment.getRegisteredResources(),
-            'topographyRegistry': self._environment.getRegisteredTopography(),
             'lightVisibility': self._environment.getLightVisibility(),
             'timeOfSimulation': self._environment.getTimeOfSimulation(),
         }
@@ -359,3 +477,6 @@ class God:
             'topographyGeography': topo.getGeography(),
             'topographyRegistry': self._environment.getRegisteredTopography()
         }
+
+myGod = God(1920, 989, 50, 25)
+myGod.addPresetTopography("Randomize")
