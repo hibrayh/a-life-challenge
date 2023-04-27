@@ -369,6 +369,7 @@ def removeTopography():
 
     return "Success", 201
 
+
 @api.route('/add-preset-topography', methods=['POST'])
 @cross_origin()
 def addPresetTopography():
@@ -376,6 +377,7 @@ def addPresetTopography():
     GOD.addPresetTopography(request.json['presetTopographyId'])
 
     return "Success", 201
+
 
 @api.route('/time-of-simulation')
 @cross_origin()
@@ -396,6 +398,7 @@ def getLightVisibility():
 def getTopographyInfo():
     global GOD
     return jsonify(GOD.getTopographyInfo())
+
 
 @api.route('/define-new-species-relationship', methods=['POST'])
 @cross_origin()

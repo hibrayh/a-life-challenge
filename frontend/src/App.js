@@ -123,14 +123,14 @@ function App() {
     }
 
     const getTopographyInfo = async () => {
-            await axios({
-                method: 'GET',
-                url: 'http://localhost:5000/get-topography-info',
-            }).then((response) => {
-                const res = response.data
-                setTopographyInfo(res.topographyRegistry)
-            })
-        }
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/get-topography-info',
+        }).then((response) => {
+            const res = response.data
+            setTopographyInfo(res.topographyRegistry)
+        })
+    }
 
     const getTimeOfSimulation = async () => {
         await axios({
