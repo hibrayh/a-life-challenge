@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import './App.css'
-import Animation from './Animation'
+import Simulation from './Simulation.js'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
 import { FaTimes } from 'react-icons/fa'
 
@@ -45,10 +45,11 @@ function App() {
                 rowCount: 25,
             },
         })
-        await getSimulationInfo()
+        //await getSimulationInfo()
         setHasSimulationStarted(true)
     }
 
+    /*
     const playPauseSimulation = async () => {
         if (isSimulationRunning) {
             setSimulationSpeedBeforePause(simulationTicksPerSecond)
@@ -143,7 +144,7 @@ function App() {
     const showTextToggle = async () => {
         setShowCreatureText(!showCreatureText)
     }
-
+    */
     useEffect(() => {
         const handleResize = debounce(async () => {
             await axios({
@@ -158,31 +159,10 @@ function App() {
 
         window.addEventListener('resize', handleResize)
 
-        const interval = setInterval(
-            () => {
-                if (
-                    simulationTicksPerSecond > 0 &&
-                    simulationTicksPerSecond <= 4 &&
-                    isSimulationRunning
-                ) {
-                    progressSimulationTimeByOneTick()
-                } else if (
-                    simulationTicksPerSecond > 0 &&
-                    isSimulationRunning
-                ) {
-                    progressSimulationTimeByNTicks()
-                }
-            },
-            simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4
-                ? 1000 / simulationTicksPerSecond
-                : 1000
-        )
-
         return () => {
-            clearInterval(interval)
             window.removeEventListener('resize', handleResize)
         }
-    }, [isSimulationRunning, simulationTicksPerSecond])
+    }, [])
 
     const Menu = () => {
         return (
@@ -222,27 +202,11 @@ function App() {
     }
 
     // "Page" that will show the simulation
-    const Simulation = () => {
+    const SimulationPage = () => {
         return (
             <div>
-                <Animation
-                    creaturesToAnimate={creatureList}
-                    resourcesToAnimate={resourceList}
-                    simulationSpeed={simulationTicksPerSecond}
-                    toggleText={showCreatureText}
-                />
-                <SimulationNavBar
-                    playOrPauseSimulationCallback={playPauseSimulation}
-                    speedUpSimulationCallback={incrementTicksPerSecond}
-                    slowDownSimulationCallback={decrementTicksPerSecond}
-                    updateSimulationCallback={getSimulationInfo}
-                    startSimulationCallback={startSimulation}
-                    ticksPerSecond={simulationTicksPerSecond}
-                    hasSimulationStarted={hasSimulationStarted}
-                    toggleTextSimulationCallback={showTextToggle}
-                />
-
-                <GiantDayAndNightContainer />
+                <Simulation/>
+                <SimulationNavBar/>
             </div>
         )
     }
@@ -289,7 +253,7 @@ function App() {
                 },
             })
 
-            await getSimulationInfo()
+            //await getSimulationInfo()
             setShowLoad(false)
             setShowMenu(false)
             setShowSimulation(true)
@@ -334,7 +298,7 @@ function App() {
         */
             }
             {showMenu ? <Menu /> : null}
-            {showSimulation ? <Simulation /> : null}
+            {showSimulation ? <SimulationPage /> : null}
             {showLoad ? <LoadPage show={showLoad} /> : null}
         </>
     )
