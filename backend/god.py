@@ -51,6 +51,7 @@ class God:
             saveData=None):
         self._sexualReproductionDecisionNetwork = DecisionNetworkSexual()
         self._asexualReproductionDecisionNetwork = DecisionNetworkAsexual()
+        self._tickSpeed = 0
 
         if not loadExistingSave:
             logging.info("Initializing new God object")
@@ -326,6 +327,13 @@ class God:
         logging.info(
             "Getting the visible light factor based on time of simulation")
         return self._environment.getLightVisibility()
+    
+    def editTickSpeed(self, ticks):
+        logging.info("tickspeed updated to {ticks}")
+        self._tickSpeed = ticks
+
+    def getTickSpeed(self):
+        return self._tickSpeed
 
     def getTopographyInfo(self):
         column = 0

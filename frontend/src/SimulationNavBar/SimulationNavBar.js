@@ -47,9 +47,9 @@ function SimulationNavBar({
         useState(false)
     const [showSettingsPage, setShowSettingsPage] = useState(false)
 
-    const [hasSimulationStarted, setHasSimulationStarted] = useState(true)
+    const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
-    const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(1)
+    const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
 
@@ -69,6 +69,17 @@ function SimulationNavBar({
         setHasSimulationStarted(true)
     }
 
+    const updateSimulationTickSpeed = async () => {
+        // Make a call to the backend to progress the simulation by the set tick speed
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/update-tick-speed',
+            data: {
+                ticks: simulationTicksPerSecond,
+            },
+        })
+    }
+
     const playPauseSimulation = async () => {
         if (isSimulationRunning) {
             setSimulationSpeedBeforePause(simulationTicksPerSecond)
@@ -83,6 +94,7 @@ function SimulationNavBar({
 
             setIsSimulationRunning(true)
         }
+        await updateSimulationTickSpeed()
     }
 
     const incrementTicksPerSecond = () => {
@@ -90,6 +102,7 @@ function SimulationNavBar({
 
         // Use simulationTicksPerSecond + 1 as the variable will not be updated until after this function exits
         setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
+        
     }
 
     const decrementTicksPerSecond = () => {
@@ -149,7 +162,7 @@ function SimulationNavBar({
 
                 <CurrentTime />
 
-                <CurrentSpeed ticks={ticksPerSecond} />
+                <CurrentSpeed ticks={simulationTicksPerSecond} />
 
                 <SlowDownButton />
 
@@ -379,8 +392,9 @@ function SimulationNavBar({
             </button>
         )
 
-        function handleClick() {
+        async function handleClick() {
             incrementTicksPerSecond()
+            await updateSimulationTickSpeed()
         }
     }
 
@@ -395,8 +409,9 @@ function SimulationNavBar({
             </button>
         )
 
-        function handleClick() {
+        async function handleClick() {
             decrementTicksPerSecond()
+            await updateSimulationTickSpeed()
         }
     }
 

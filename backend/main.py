@@ -23,6 +23,7 @@ api.config["CORS_HEADERS"] = "Content-Type"
 GOD = None
 
 
+
 def _convertRequestToGenome(inputRequest):
     receptorsList = []
 
@@ -276,6 +277,21 @@ def advanceSimulationByNTicks():
     global GOD
     GOD.advanceSimulationByNTicks(int(request.json['ticks']))
     return "Success", 201
+
+
+@api.route('/update-tick-speed', methods=['POST'])
+@cross_origin()
+def updateSimulationTickSpeed():
+    global GOD
+    GOD.editTickSpeed(int(request.json['ticks']))
+    return "Success", 201
+
+
+@api.route('/get-tick-speed')
+@cross_origin()
+def getTickSpeed():
+    logging.info(f"{GOD.getTickSpeed()}")
+    return jsonify(GOD.getTickSpeed())
 
 
 @api.route('/get-list-of-species')

@@ -1038,9 +1038,10 @@ function NewSpeciesForm(props) {
             event.preventDefault()
 
             // Check if simulation has started. If not, start it.
+            /*
             if (!props.hasSimulationStarted) {
                 await props.startSimulationCallback()
-            }
+            }*/
 
             // Define new species
             await axios({

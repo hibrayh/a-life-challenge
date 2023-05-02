@@ -21,7 +21,7 @@ function Simulation() {
     const [showSimulation, setShowSimulation] = useState(false)
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(true)
-    const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(1)
+    const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
     const [creatureList, setCreatureList] = useState([])
@@ -120,6 +120,23 @@ function Simulation() {
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
         })
+        await getTickSpeed()
+    }
+
+    const tickSpeed = async () => {
+        await getTickSpeed()
+    }
+
+
+    const getTickSpeed = async () => {
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/get-tick-speed',
+        }).then((response) => {
+            const res = response.data
+            setSimulationTicksPerSecond(res)
+            console.log("ticks is ", res)
+        })
     }
 
     const getTimeOfSimulation = async () => {
@@ -175,6 +192,10 @@ function Simulation() {
                     isSimulationRunning
                 ) {
                     progressSimulationTimeByNTicks()
+                }
+                else if (simulationTicksPerSecond == 0){
+                    console.log("geep")
+                    tickSpeed()
                 }
             },
             simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4
