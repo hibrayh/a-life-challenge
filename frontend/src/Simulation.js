@@ -21,7 +21,7 @@ function Simulation() {
     const [showSimulation, setShowSimulation] = useState(false)
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
-    const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
+    const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(1)
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
     const [creatureList, setCreatureList] = useState([])
@@ -33,6 +33,7 @@ function Simulation() {
     const [topographyInfo, setTopographyInfo] = useState([])
     const [showCreatureText, setShowCreatureText] = useState(true)
 
+    /*
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
         await axios({
@@ -64,7 +65,7 @@ function Simulation() {
             setIsSimulationRunning(true)
         }
     }
-
+    */
     const progressSimulationTimeByOneTick = async () => {
         // Make a call to the backend to progress the simulation by 1 tick
         await axios({
@@ -78,7 +79,7 @@ function Simulation() {
         //const simulationTime = await getTimeOfSimulation()
         await getLightVisibility()
     }
-
+    
     const progressSimulationTimeByNTicks = async () => {
         // Make a call to the backend to progress the simulation by the set tick speed
         await axios({
@@ -92,7 +93,8 @@ function Simulation() {
         await getSimulationInfo()
         await getLightVisibility()
     }
-
+        
+    /*
     const incrementTicksPerSecond = () => {
         setSimulationTicksPerSecond(simulationTicksPerSecond + 1)
 
@@ -107,6 +109,7 @@ function Simulation() {
 
         setIsSimulationRunning(simulationTicksPerSecond > 0)
     }
+    */
 
     const getSimulationInfo = async () => {
         await axios({

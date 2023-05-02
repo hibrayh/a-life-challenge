@@ -47,6 +47,7 @@ function App() {
         })
         //await getSimulationInfo()
         setHasSimulationStarted(true)
+        setIsSimulationRunning(true)
     }
 
     /*
