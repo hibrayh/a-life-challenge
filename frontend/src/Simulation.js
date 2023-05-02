@@ -20,7 +20,7 @@ function Simulation() {
     const [showMenu, setShowMenu] = useState(true)
     const [showSimulation, setShowSimulation] = useState(false)
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
-    const [isSimulationRunning, setIsSimulationRunning] = useState(false)
+    const [isSimulationRunning, setIsSimulationRunning] = useState(true)
     const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(1)
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
@@ -319,7 +319,7 @@ function Simulation() {
                 simulationSpeed={simulationTicksPerSecond}
                 toggleText={showCreatureText}
             />
-            <GiantDayAndNightContainer />
+            
         </div>
     )
 }
