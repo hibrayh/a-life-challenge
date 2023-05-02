@@ -138,7 +138,7 @@ function Simulation() {
             url: 'http://localhost:5000/get-light-visibility',
         }).then((response) => {
             const res = response.data
-            //console.log(`Light visibility: ${res}`)
+            console.log(`Light visibility: ${res}`)
             setLightVisibility(res)
         })
     }
@@ -319,7 +319,7 @@ function Simulation() {
                 simulationSpeed={simulationTicksPerSecond}
                 toggleText={showCreatureText}
             />
-            
+            <GiantDayAndNightContainer />
         </div>
     )
 }

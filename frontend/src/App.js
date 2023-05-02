@@ -260,6 +260,7 @@ function App() {
             setHasSimulationStarted(true)
         }
     }
+    /*
 
     const GiantDayAndNightContainer = () => {
         let style
@@ -288,6 +289,7 @@ function App() {
 
         return <div className={style} id="giantDayAndNightContainer"></div>
     }
+    */
 
     return (
         <>
