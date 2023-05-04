@@ -135,7 +135,6 @@ function Simulation() {
         }).then((response) => {
             const res = response.data
             setSimulationTicksPerSecond(res)
-            console.log("ticks is ", res)
         })
     }
 

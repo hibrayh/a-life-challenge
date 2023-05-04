@@ -24,6 +24,9 @@ import SavePage from './SavePage/SavePage.js'
 import SpeciesRelationshipPage from './SpeciesRelationshipPage/SpeciesRelationshipPage.js'
 import SettingsPage from './SettingsPage/SettingsPage.js'
 
+let simulationSpeedBeforePause = 0
+let simulationTicksPerSecond = 0
+
 function SimulationNavBar({
     playOrPauseSimulationCallback,
     //speedUpSimulationCallback,
@@ -49,9 +52,9 @@ function SimulationNavBar({
 
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
-    const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
-    const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
-        useState(0)
+    //const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
+    //const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
+        //useState(0)
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
@@ -82,23 +85,24 @@ function SimulationNavBar({
 
     const playPauseSimulation = async () => {
         if (isSimulationRunning) {
-            setSimulationSpeedBeforePause(simulationTicksPerSecond)
-            setSimulationTicksPerSecond(0)
+            simulationSpeedBeforePause = simulationTicksPerSecond
+            simulationTicksPerSecond = 0
             setIsSimulationRunning(false)
+            await updateSimulationTickSpeed(0)
+            console.log("pausing ", simulationTicksPerSecond, simulationSpeedBeforePause)
         } else {
-            if (hasSimulationStarted) {
-                setSimulationTicksPerSecond(simulationSpeedBeforePause)
-            } else {
+            if (!hasSimulationStarted) {
                 await startSimulation()
             }
-
+            simulationTicksPerSecond = simulationSpeedBeforePause
+            console.log("unpausing ", simulationTicksPerSecond, simulationSpeedBeforePause)
             setIsSimulationRunning(true)
         }
         await updateSimulationTickSpeed()
     }
 
     const incrementTicksPerSecond = () => {
-        setSimulationTicksPerSecond(simulationTicksPerSecond + 1)
+        simulationTicksPerSecond += 1
 
         // Use simulationTicksPerSecond + 1 as the variable will not be updated until after this function exits
         setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
@@ -106,9 +110,12 @@ function SimulationNavBar({
     }
 
     const decrementTicksPerSecond = () => {
-        setSimulationTicksPerSecond(
-            simulationTicksPerSecond > 0 ? simulationTicksPerSecond - 1 : 0
-        )
+        if (simulationTicksPerSecond > 0){
+            simulationTicksPerSecond -= 1
+        }
+        else{
+            simulationTicksPerSecond = 0
+        }
 
         setIsSimulationRunning(simulationTicksPerSecond > 0)
     }
@@ -411,7 +418,7 @@ function SimulationNavBar({
 
         async function handleClick() {
             decrementTicksPerSecond()
-            await updateSimulationTickSpeed()
+            await updateSimulationTickSpeed(1) //make up delay by premptively sending in the correct val
         }
     }
 
