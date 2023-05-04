@@ -224,9 +224,10 @@ class Topography:
 
         self.geography = np.floor(
             (geography + .5) * 255).astype(np.uint8).tolist()
-        logging.info("Elevation values of the entire environment (50x25):")
-        for row in self.geography:
-            logging.info(row)
+
+        #logging.info("Elevation values of the entire environment (50x25):")
+        # for row in self.geography:
+        #    print(row)
 
         return self.geography
 

@@ -24,7 +24,7 @@ function TopographyPage(props) {
 
     useEffect(() => {
         axios
-            .get('http://localhost:5000/get-simulation-info')
+            .get('http://localhost:5000/get-topography-info')
             .then((response) => {
                 topographyInfo = response.data.topographyRegistry
             })
