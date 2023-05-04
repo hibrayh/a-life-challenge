@@ -23,7 +23,6 @@ api.config["CORS_HEADERS"] = "Content-Type"
 GOD = None
 
 
-
 def _convertRequestToGenome(inputRequest):
     receptorsList = []
 

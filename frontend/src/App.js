@@ -217,8 +217,8 @@ function App() {
     const SimulationPage = () => {
         return (
             <div>
-                <Simulation/>
-                <SimulationNavBar/>
+                <Simulation />
+                <SimulationNavBar />
             </div>
         )
     }

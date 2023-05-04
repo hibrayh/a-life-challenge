@@ -453,7 +453,7 @@ class God:
         logging.info(
             "Getting the visible light factor based on time of simulation")
         return self._environment.getLightVisibility()
-    
+
     def editTickSpeed(self, ticks):
         logging.info("tickspeed updated to {ticks}")
         self._tickSpeed = ticks

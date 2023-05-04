@@ -79,7 +79,7 @@ function Simulation() {
         //const simulationTime = await getTimeOfSimulation()
         await getLightVisibility()
     }
-    
+
     const progressSimulationTimeByNTicks = async () => {
         // Make a call to the backend to progress the simulation by the set tick speed
         await axios({
@@ -93,7 +93,7 @@ function Simulation() {
         await getSimulationInfo()
         await getLightVisibility()
     }
-        
+
     /*
     const incrementTicksPerSecond = () => {
         setSimulationTicksPerSecond(simulationTicksPerSecond + 1)
@@ -126,7 +126,6 @@ function Simulation() {
     const tickSpeed = async () => {
         await getTickSpeed()
     }
-
 
     const getTickSpeed = async () => {
         await axios({
@@ -164,7 +163,6 @@ function Simulation() {
     }
 
     useEffect(() => {
-        
         /*const handleResize = debounce(async () => {
             await axios({
                 method: 'POST',
@@ -177,7 +175,7 @@ function Simulation() {
         })
 
         window.addEventListener('resize', handleResize)*/
-        
+
         const interval = setInterval(
             () => {
                 if (
@@ -191,9 +189,8 @@ function Simulation() {
                     isSimulationRunning
                 ) {
                     progressSimulationTimeByNTicks()
-                }
-                else if (simulationTicksPerSecond == 0){
-                    console.log("geep")
+                } else if (simulationTicksPerSecond == 0) {
+                    console.log('geep')
                     tickSpeed()
                 }
             },
@@ -248,7 +245,7 @@ function Simulation() {
     */
 
     // "Page" that will show the simulation
-    
+
     /*
 
     const LoadPage = () => {
@@ -329,7 +326,6 @@ function Simulation() {
 
         return <div className={style} id="giantDayAndNightContainer"></div>
     }
-    
 
     return (
         <div>
