@@ -127,6 +127,10 @@ function TopographyPage(props) {
                                 name="topographyRadio"></input>
                             <br></br>
                         </div>
+
+
+                        <div onclick={(event) =>{submitTopography(event)}} id="topographySubmitButton" className="buttonHover buttonBackgroundColor">Submit</div>
+
                     </form>
                 </div>
             </>
@@ -134,10 +138,14 @@ function TopographyPage(props) {
     } else {
         return (
             <Grid
-                topographyInfo={topographyInfo}
                 showGridBorder={props.showGridBorder}
             />
         )
+    }
+
+
+    function submitTopography(e){
+        e.preventDefault()
     }
 }
 
@@ -210,30 +218,30 @@ function Grid(props) {
             // automatically update after making the backend call
             topographyInfo[index].type = 'unselected'
 
-            // Delete topography in backend at (col, row) position
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/remove-topography',
-                data: {
-                    column: col,
-                    row: row,
-                },
-            })
+            // // Delete topography in backend at (col, row) position
+            // await axios({
+            //     method: 'POST',
+            //     url: 'http://localhost:5000/remove-topography',
+            //     data: {
+            //         column: col,
+            //         row: row,
+            //     },
+            // })
         } else {
             // This is what I had to do to actually change the visuals, unfortunately it wouldn't
             // automatically update after making the backend call
             topographyInfo[index].type = props.selectTopography
 
-            // Add new topography in backend at (col, row) position
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/create-new-topography',
-                data: {
-                    topographyType: props.selectTopography,
-                    column: col,
-                    row: row,
-                },
-            })
+            // // Add new topography in backend at (col, row) position
+            // await axios({
+            //     method: 'POST',
+            //     url: 'http://localhost:5000/create-new-topography',
+            //     data: {
+            //         topographyType: props.selectTopography,
+            //         column: col,
+            //         row: row,
+            //     },
+            // })
         }
 
         // this is the only way I was able to get the actual nodes to change color on the

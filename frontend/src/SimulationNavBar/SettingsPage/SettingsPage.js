@@ -1,7 +1,10 @@
 import './SettingsPage.css'
 import { FaTimes } from 'react-icons/fa'
 
+
 function SettingsPage(props) {
+   
+
     if (props.show) {
         return (
             <div id="settingsPageContainer" className="mainBackgroundColor">
@@ -29,17 +32,17 @@ function SettingsPage(props) {
                         </label>
                     </div>
 
-                    <button className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">
+                    <button onClick={() => {
+                        props.toggleSavePage()
+                        props.toggleSettingsPage()
+                        }} className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">
                         Save Simulation
                     </button>
 
-                    <button className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">
+                    <button onClick={props.toggleMenuAndSimulation} className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">
                         Exit To Main Menu
                     </button>
 
-                    <button className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">
-                        Exit Application
-                    </button>
                 </div>
             </div>
         )
@@ -49,6 +52,8 @@ function SettingsPage(props) {
         //toggleTextCall()
         props.toggleTextCall()
     }
+
+
 }
 
 export default SettingsPage

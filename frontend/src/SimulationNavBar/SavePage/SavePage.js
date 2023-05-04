@@ -3,9 +3,17 @@ import './SavePage.css'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
+import { useRef } from 'react'
+
 
 function SavePage(props) {
     const [saveName, setSaveName] = useState('')
+    const saveInputRef = useRef(null)
+    const [filename, setFilename] = useState('test')
+
+    function handleFilenameChange(event) {
+        setFilename(event.target.value)
+    }
 
     if (props.show) {
         return (
@@ -17,13 +25,7 @@ function SavePage(props) {
                 </button>
                 <h1 id="saveTitle">Save Simulation</h1>
 
-                <div id="saveForm">
-                    <label className="saveLabel">Save Name:</label>
-                    <input
-                        onChange={(event) => handleChange(event)}
-                        type="text"
-                        value={saveName}></input>
-                </div>
+                <button onClick={handleSaveClick}>Save JSON File</button>
 
                 <div id="saveButtonContainer">
                     <button
@@ -61,6 +63,24 @@ function SavePage(props) {
 
         props.show = false
     }
+
+
+    function handleSaveClick() {
+        const jsonData = { key: 'value' };
+        const fileName = 'myJsonFile.json';
+        saveJsonFile(jsonData, fileName);
+    };
+
+    function saveJsonFile(jsonData, fileName) {
+        const jsonBlob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
+        const url = URL.createObjectURL(jsonBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
 }
 
 export default SavePage

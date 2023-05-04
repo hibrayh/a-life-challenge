@@ -33,6 +33,7 @@ function SimulationNavBar({
     hasSimulationStarted,
     topographyInfo,
     toggleTextSimulationCallback,
+    toggleMenuAndSimulation
 }) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
         useState(false)
@@ -52,6 +53,8 @@ function SimulationNavBar({
                 show={showSettingsPage}
                 toggleSettingsPage={toggleSettingsPage}
                 toggleTextCall={toggleTextSimulationCallback}
+                toggleMenuAndSimulation={toggleMenuAndSimulation}
+                toggleSavePage={toggleSavePage}
             />
 
             <SpeciesRelationshipPage
@@ -66,6 +69,7 @@ function SimulationNavBar({
                 show={showTopographyPage}
                 closeTopographyPage={closeTopographyPage}
                 showGridBorder={showGridBorder}
+                topographyInfo={topographyInfo}
             />
 
             <NewCreatureOrSpeciesForm
@@ -121,7 +125,6 @@ function SimulationNavBar({
                     }
                 />
 
-                <SaveButton toggleSavePage={toggleSavePage} />
                 <SettingsButton toggleSettingsPage={toggleSettingsPage} />
             </div>
         </>
@@ -233,17 +236,17 @@ function StatsButton(props) {
     }
 }
 
-function SaveButton(props) {
-    return (
-        <button
-            onClick={props.toggleSavePage}
-            id="saveButton"
-            className="navButton buttonHover"
-            title="Save">
-            <FaSave />
-        </button>
-    )
-}
+// function SaveButton(props) {
+//     return (
+//         <button
+//             onClick={props.toggleSavePage}
+//             id="saveButton"
+//             className="navButton buttonHover"
+//             title="Save">
+//             <FaSave />
+//         </button>
+//     )
+// }
 
 function TopographyButton(props) {
     return (
@@ -311,6 +314,7 @@ function CurrentTime(props) {
 }
 
 function CurrentSpeed({ ticks }) {
+    // backend call 
     return <span id="currentSpeed">{ticks} ticks/sec</span>
 }
 

@@ -75,3 +75,17 @@
     padding-top: 0.7vmin;
     cursor: move;
 }
+
+#topographySubmitButton{
+ 
+    font-size: 1.5vmax;
+    width:10vmin;
+    text-align: center;
+    padding:1vmin;
+    border:none;
+    border-radius: 10px;
+    position:absolute;
+    bottom:4vmin;
+    left:calc(50% - 6vmin);
+
+}
