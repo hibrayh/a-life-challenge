@@ -26,6 +26,8 @@ import SettingsPage from './SettingsPage/SettingsPage.js'
 
 let simulationSpeedBeforePause = 0
 let simulationTicksPerSecond = 0
+let toggleText = false
+
 
 function SimulationNavBar({
     playOrPauseSimulationCallback,
@@ -52,6 +54,7 @@ function SimulationNavBar({
 
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
+    const [ticksUpdated, setTicksUpdated] = useState(false)
     //const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
     //const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
     //useState(0)
@@ -83,12 +86,22 @@ function SimulationNavBar({
         })
     }
 
+    const updateTextToggle = async () => {
+        // Make a call to the backend to progress the simulation by the set tick speed
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/update-text-toggle',
+            data: {
+                toggle: toggleText,
+            },
+        })
+    }
+
     const playPauseSimulation = async () => {
         if (isSimulationRunning) {
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
             setIsSimulationRunning(false)
-            await updateSimulationTickSpeed(0)
             console.log(
                 'pausing ',
                 simulationTicksPerSecond,
@@ -111,7 +124,8 @@ function SimulationNavBar({
 
     const incrementTicksPerSecond = () => {
         simulationTicksPerSecond += 1
-
+        console.log("inc got called", simulationTicksPerSecond)
+        setTicksUpdated(!ticksUpdated)
         // Use simulationTicksPerSecond + 1 as the variable will not be updated until after this function exits
         setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
     }
@@ -122,8 +136,13 @@ function SimulationNavBar({
         } else {
             simulationTicksPerSecond = 0
         }
-
+        setTicksUpdated(!ticksUpdated)
         setIsSimulationRunning(simulationTicksPerSecond > 0)
+    }
+
+    const showTextToggle = async () => {
+        toggleText = !toggleText
+        await updateTextToggle()
     }
 
     return (
@@ -131,7 +150,7 @@ function SimulationNavBar({
             <SettingsPage
                 show={showSettingsPage}
                 toggleSettingsPage={toggleSettingsPage}
-                toggleTextCall={toggleTextSimulationCallback}
+                toggleTextCall={showTextToggle}
             />
 
             <SpeciesRelationshipPage
@@ -201,7 +220,6 @@ function SimulationNavBar({
                     }
                 />
 
-                <SaveButton toggleSavePage={toggleSavePage} />
                 <SettingsButton toggleSettingsPage={toggleSettingsPage} />
             </div>
         </>

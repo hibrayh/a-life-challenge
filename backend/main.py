@@ -289,8 +289,22 @@ def updateSimulationTickSpeed():
 @api.route('/get-tick-speed')
 @cross_origin()
 def getTickSpeed():
-    logging.info(f"{GOD.getTickSpeed()}")
     return jsonify(GOD.getTickSpeed())
+
+
+@api.route('/update-text-toggle', methods=['POST'])
+@cross_origin()
+def updateTextToggle():
+    global GOD
+    GOD.editTextToggle(int(request.json['toggle']))
+    return "Success", 201
+
+
+@api.route('/get-text-toggle')
+@cross_origin()
+def getTextToggle():
+    logging.info(f"{GOD.getTextToggle()}")
+    return jsonify(GOD.getTextToggle())
 
 
 @api.route('/get-list-of-species')

@@ -1,6 +1,7 @@
 import './SettingsPage.css'
 import { FaTimes } from 'react-icons/fa'
 
+
 function SettingsPage(props) {
     if (props.show) {
         return (
@@ -24,7 +25,8 @@ function SettingsPage(props) {
                         <label class="switch">
                             <input
                                 type="checkbox"
-                                onClick={props.toggleTextCall}></input>
+                                onClick={props.toggleTextCall}
+                                ></input>
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -46,7 +48,6 @@ function SettingsPage(props) {
     }
 
     function handleToggleClick() {
-        //toggleTextCall()
         props.toggleTextCall()
     }
 }

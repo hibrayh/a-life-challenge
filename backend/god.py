@@ -53,6 +53,7 @@ class God:
         self._sexualReproductionDecisionNetwork = DecisionNetworkSexual()
         self._asexualReproductionDecisionNetwork = DecisionNetworkAsexual()
         self._tickSpeed = 0
+        self._textToggle = False
 
         if not loadExistingSave:
             logging.info("Initializing new God object")
@@ -460,6 +461,13 @@ class God:
 
     def getTickSpeed(self):
         return self._tickSpeed
+    
+    def editTextToggle(self, text):
+        logging.info("Show text is now {text}")
+        self._textToggle = text
+
+    def getTextToggle(self):
+        return self._textToggle
 
     def getTopographyInfo(self):
         column = 0

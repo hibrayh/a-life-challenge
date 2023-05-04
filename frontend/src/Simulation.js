@@ -16,6 +16,8 @@ import { FaTimes } from 'react-icons/fa'
     }
 }*/
 
+let showCreatureText = 0
+
 function Simulation() {
     const [showMenu, setShowMenu] = useState(true)
     const [showSimulation, setShowSimulation] = useState(false)
@@ -31,7 +33,7 @@ function Simulation() {
     const [lightVisibility, setLightVisibility] = useState(1)
 
     const [topographyInfo, setTopographyInfo] = useState([])
-    const [showCreatureText, setShowCreatureText] = useState(true)
+    //const [showCreatureText, setShowCreatureText] = useState(true)
 
     /*
     const startSimulation = async () => {
@@ -111,6 +113,17 @@ function Simulation() {
     }
     */
 
+    const getTextToggle = async () => {
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/get-text-toggle',
+        }).then((response) => {
+            const res = response.data
+            showCreatureText = res
+            console.log("beep ", showCreatureText)
+        })
+    }
+
     const getSimulationInfo = async () => {
         await axios({
             method: 'GET',
@@ -120,6 +133,7 @@ function Simulation() {
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
         })
+        await getTextToggle()
         await getTickSpeed()
     }
 
@@ -135,6 +149,7 @@ function Simulation() {
             const res = response.data
             setSimulationTicksPerSecond(res)
         })
+        await getTextToggle()
     }
 
     const getTimeOfSimulation = async () => {
@@ -153,13 +168,8 @@ function Simulation() {
             url: 'http://localhost:5000/get-light-visibility',
         }).then((response) => {
             const res = response.data
-            console.log(`Light visibility: ${res}`)
             setLightVisibility(res)
         })
-    }
-
-    const showTextToggle = async () => {
-        setShowCreatureText(!showCreatureText)
     }
 
     useEffect(() => {
@@ -190,7 +200,6 @@ function Simulation() {
                 ) {
                     progressSimulationTimeByNTicks()
                 } else if (simulationTicksPerSecond == 0) {
-                    console.log('geep')
                     tickSpeed()
                 }
             },
