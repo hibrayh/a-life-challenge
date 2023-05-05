@@ -54,7 +54,7 @@ function SimulationNavBar({
 
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
-    const [ticksUpdated, setTicksUpdated] = useState(false)
+    const [ticksUpdated, setTicksUpdated] = useState(false) //necessary for visual changes
     //const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
     //const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
     //useState(0)
@@ -76,7 +76,7 @@ function SimulationNavBar({
     }
 
     const updateSimulationTickSpeed = async () => {
-        // Make a call to the backend to progress the simulation by the set tick speed
+        // Make a call to the backend to change the tick speed
         await axios({
             method: 'POST',
             url: 'http://localhost:5000/update-tick-speed',
@@ -87,7 +87,7 @@ function SimulationNavBar({
     }
 
     const updateTextToggle = async () => {
-        // Make a call to the backend to progress the simulation by the set tick speed
+        // Make a call to the backend to update the text toggle
         await axios({
             method: 'POST',
             url: 'http://localhost:5000/update-text-toggle',
@@ -98,7 +98,7 @@ function SimulationNavBar({
     }
 
     const flagSimulationUpdate = async () => {
-        // Make a call to the backend to progress the simulation by the set tick speed
+        // Make a call to the backend to tell the animation to snag the first info
         await axios({
             method: 'POST',
             url: 'http://localhost:5000/flag-simulation-update',
@@ -126,7 +126,6 @@ function SimulationNavBar({
     const incrementTicksPerSecond = () => {
         simulationTicksPerSecond += 1
         setTicksUpdated(!ticksUpdated)
-        // Use simulationTicksPerSecond + 1 as the variable will not be updated until after this function exits
         setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
     }
 
@@ -141,6 +140,7 @@ function SimulationNavBar({
     }
 
     const showTextToggle = async () => {
+        //update the local variable, and send the update to the backend
         toggleText = !toggleText
         await updateTextToggle()
     }

@@ -142,7 +142,6 @@ function Simulation() {
             console.log(flag)
         })
         if(flag){
-            console.log("hacker voice")
             await getSimulationInfo()
         }
     }
@@ -226,6 +225,8 @@ function Simulation() {
                     progressSimulationTimeByNTicks()
                 } else if (simulationTicksPerSecond == 0) {
                     // still have to check if the tick speed has changed, if new creature/species have been added, or text toggle
+                    //this only runs if the tick speed is 0, meaning no calculations are going on in the back end
+                    //thus, while it happens every second, it will not cause lag to the actual running of the simulation
                     tickSpeed()
                     textToggle()
                     updateFlag()
