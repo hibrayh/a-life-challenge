@@ -462,20 +462,20 @@ class God:
 
     def getTickSpeed(self):
         return self._tickSpeed
-    
+
     def editTextToggle(self, text):
         logging.info("Show text is now {text}")
         self._textToggle = text
 
     def getTextToggle(self):
         return self._textToggle
-    
+
     def flagSimulationUpdate(self, update):
         self._updateFlag = update
 
     def getSimulationUpdateFlag(self):
         if self._updateFlag == 1:
-            #un flag
+            # un flag
             self._updateFlag = 0
             return 1
         return self._updateFlag

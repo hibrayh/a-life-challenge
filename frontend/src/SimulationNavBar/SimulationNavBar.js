@@ -28,7 +28,6 @@ let simulationSpeedBeforePause = 0
 let simulationTicksPerSecond = 0
 let toggleText = false
 
-
 function SimulationNavBar({
     playOrPauseSimulationCallback,
     //speedUpSimulationCallback,

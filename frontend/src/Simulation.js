@@ -131,7 +131,6 @@ function Simulation() {
         await getTextToggle()
     }
 
-
     const getUpdateFlag = async () => {
         let flag = 0
         await axios({
@@ -141,7 +140,7 @@ function Simulation() {
             flag = response.data
             console.log(flag)
         })
-        if(flag){
+        if (flag) {
             await getSimulationInfo()
         }
     }
@@ -159,7 +158,6 @@ function Simulation() {
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
         })
-
     }
 
     const tickSpeed = async () => {

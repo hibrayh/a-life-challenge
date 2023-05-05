@@ -317,7 +317,7 @@ def editSimulationUpdate():
 @api.route('/get-simulation-update-flag')
 @cross_origin()
 def getSimulationUpdateFlag():
-    #logging.info(f"{GOD.getSimulationUpdateFlag()}")
+    # logging.info(f"{GOD.getSimulationUpdateFlag()}")
     return jsonify(GOD.getSimulationUpdateFlag())
 
 
