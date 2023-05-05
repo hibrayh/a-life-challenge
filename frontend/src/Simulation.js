@@ -80,6 +80,8 @@ function Simulation() {
         // Get the updated time of the simulation
         //const simulationTime = await getTimeOfSimulation()
         await getLightVisibility()
+        await getTextToggle()
+        await getTickSpeed()
     }
 
     const progressSimulationTimeByNTicks = async () => {
@@ -94,6 +96,8 @@ function Simulation() {
 
         await getSimulationInfo()
         await getLightVisibility()
+        await getTextToggle()
+        await getTickSpeed()
     }
 
     /*
@@ -120,8 +124,31 @@ function Simulation() {
         }).then((response) => {
             const res = response.data
             showCreatureText = res
-            console.log("beep ", showCreatureText)
         })
+    }
+
+    const textToggle = async () => {
+        await getTextToggle()
+    }
+
+
+    const getUpdateFlag = async () => {
+        let flag = 0
+        await axios({
+            method: 'GET',
+            url: 'http://localhost:5000/get-simulation-update-flag',
+        }).then((response) => {
+            flag = response.data
+            console.log(flag)
+        })
+        if(flag){
+            console.log("hacker voice")
+            await getSimulationInfo()
+        }
+    }
+
+    const updateFlag = async () => {
+        await getUpdateFlag()
     }
 
     const getSimulationInfo = async () => {
@@ -133,8 +160,7 @@ function Simulation() {
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
         })
-        await getTextToggle()
-        await getTickSpeed()
+
     }
 
     const tickSpeed = async () => {
@@ -149,7 +175,6 @@ function Simulation() {
             const res = response.data
             setSimulationTicksPerSecond(res)
         })
-        await getTextToggle()
     }
 
     const getTimeOfSimulation = async () => {
@@ -200,7 +225,10 @@ function Simulation() {
                 ) {
                     progressSimulationTimeByNTicks()
                 } else if (simulationTicksPerSecond == 0) {
+                    // still have to check if the tick speed has changed, if new creature/species have been added, or text toggle
                     tickSpeed()
+                    textToggle()
+                    updateFlag()
                 }
             },
             simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4

@@ -97,26 +97,27 @@ function SimulationNavBar({
         })
     }
 
+    const flagSimulationUpdate = async () => {
+        // Make a call to the backend to progress the simulation by the set tick speed
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/flag-simulation-update',
+            data: {
+                update: 1,
+            },
+        })
+    }
+
     const playPauseSimulation = async () => {
         if (isSimulationRunning) {
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
             setIsSimulationRunning(false)
-            console.log(
-                'pausing ',
-                simulationTicksPerSecond,
-                simulationSpeedBeforePause
-            )
         } else {
             if (!hasSimulationStarted) {
                 await startSimulation()
             }
             simulationTicksPerSecond = simulationSpeedBeforePause
-            console.log(
-                'unpausing ',
-                simulationTicksPerSecond,
-                simulationSpeedBeforePause
-            )
             setIsSimulationRunning(true)
         }
         await updateSimulationTickSpeed()
@@ -124,7 +125,6 @@ function SimulationNavBar({
 
     const incrementTicksPerSecond = () => {
         simulationTicksPerSecond += 1
-        console.log("inc got called", simulationTicksPerSecond)
         setTicksUpdated(!ticksUpdated)
         // Use simulationTicksPerSecond + 1 as the variable will not be updated until after this function exits
         setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
@@ -172,17 +172,18 @@ function SimulationNavBar({
                 toggleNewSpeciesForm={toggleNewSpeciesForm}
                 toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm}
                 show={showCreatureOrSpeciesForm}
+                updateSimulationCallback={flagSimulationUpdate}
             />
             <NewCreatureForm
                 show={showNewCreatureForm}
                 toggleNewCreatureForm={toggleNewCreatureForm}
-                updateSimulationCallback={updateSimulationCallback}
+                updateSimulationCallback={flagSimulationUpdate}
             />
 
             <NewSpeciesForm
                 show={showNewSpeciesForm}
                 toggleNewSpeciesForm={toggleNewSpeciesForm}
-                updateSimulationCallback={updateSimulationCallback}
+                updateSimulationCallback={flagSimulationUpdate}
                 hasSimulationStarted={hasSimulationStarted}
                 startSimulationCallback={startSimulationCallback}
             />
@@ -441,7 +442,7 @@ function SimulationNavBar({
 
         async function handleClick() {
             decrementTicksPerSecond()
-            await updateSimulationTickSpeed(1) //make up delay by premptively sending in the correct val
+            await updateSimulationTickSpeed()
         }
     }
 }
