@@ -34,7 +34,6 @@ function Simulation() {
 
     const [topographyInfo, setTopographyInfo] = useState([])
 
-
     const progressSimulationTimeByOneTick = async () => {
         // Make a call to the backend to progress the simulation by 1 tick
         await axios({
@@ -63,7 +62,6 @@ function Simulation() {
         await getTextToggle()
         await getTickSpeed()
     }
-
 
     const getTextToggle = async () => {
         await axios({
@@ -143,7 +141,6 @@ function Simulation() {
     }
 
     useEffect(() => {
-
         const interval = setInterval(
             () => {
                 if (
@@ -176,7 +173,6 @@ function Simulation() {
             //window.removeEventListener('resize', handleResize)
         }
     }, [isSimulationRunning, simulationTicksPerSecond])
-
 
     const GiantDayAndNightContainer = () => {
         let style

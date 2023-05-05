@@ -49,7 +49,6 @@ function App() {
         setHasSimulationStarted(true)
     }
 
-   
     useEffect(() => {
         const handleResize = debounce(async () => {
             await axios({
