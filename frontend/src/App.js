@@ -49,114 +49,7 @@ function App() {
         setHasSimulationStarted(true)
     }
 
-    /*
-    const playPauseSimulation = async () => {
-        if (isSimulationRunning) {
-            setSimulationSpeedBeforePause(simulationTicksPerSecond)
-            setSimulationTicksPerSecond(0)
-            setIsSimulationRunning(false)
-        } else {
-            if (hasSimulationStarted) {
-                setSimulationTicksPerSecond(simulationSpeedBeforePause)
-            } else {
-                await startSimulation()
-            }
-
-            setIsSimulationRunning(true)
-        }
-    }
-
-    const progressSimulationTimeByOneTick = async () => {
-        // Make a call to the backend to progress the simulation by 1 tick
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/advance-simulation',
-        })
-
-        await getSimulationInfo()
-
-        await getTopographyInfo()
-
-        // Get the updated time of the simulation
-        //const simulationTime = await getTimeOfSimulation()
-        await getLightVisibility()
-    }
-
-    const progressSimulationTimeByNTicks = async () => {
-        // Make a call to the backend to progress the simulation by the set tick speed
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/advance-simulation-by-n-ticks',
-            data: {
-                ticks: simulationTicksPerSecond,
-            },
-        })
-
-        await getSimulationInfo()
-        await getLightVisibility()
-    }
-
-    const incrementTicksPerSecond = () => {
-        setSimulationTicksPerSecond(simulationTicksPerSecond + 1)
-
-        // Use simulationTicksPerSecond + 1 as the variable will not be updated until after this function exits
-        setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
-    }
-
-    const decrementTicksPerSecond = () => {
-        setSimulationTicksPerSecond(
-            simulationTicksPerSecond > 0 ? simulationTicksPerSecond - 1 : 0
-        )
-
-        setIsSimulationRunning(simulationTicksPerSecond > 0)
-    }
-
-    const getSimulationInfo = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-simulation-info',
-        }).then((response) => {
-            const res = response.data
-            setCreatureList(res.creatureRegistry)
-            setResourceList(res.resourceRegistry)
-        })
-    }
-
-    const getTopographyInfo = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-topography-info',
-        }).then((response) => {
-            const res = response.data
-            setTopographyInfo(res.topographyRegistry)
-        })
-    }
-
-    const getTimeOfSimulation = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/time-of-simulation',
-        }).then((response) => {
-            const res = response.data
-            console.log(`Time of simulation: ${res}`)
-        })
-    }
-
-    const getLightVisibility = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-light-visibility',
-        }).then((response) => {
-            const res = response.data
-            //console.log(`Light visibility: ${res}`)
-            setLightVisibility(res)
-        })
-    }
-
-    const showTextToggle = async () => {
-        setShowCreatureText(!showCreatureText)
-    }
-    */
+   
     useEffect(() => {
         const handleResize = debounce(async () => {
             await axios({
@@ -265,43 +158,12 @@ function App() {
                 },
             })
 
-            //await getSimulationInfo()
             setShowLoad(false)
             setShowMenu(false)
             setShowSimulation(true)
             setHasSimulationStarted(true)
         }
     }
-    /*
-
-    const GiantDayAndNightContainer = () => {
-        let style
-        switch (lightVisibility) {
-            case 1:
-                style = 'light1-0'
-                break
-            case 0.8:
-                style = 'light0-8'
-                break
-
-            case 0.5:
-                style = 'light0-5'
-                break
-
-            case 0.3:
-                style = 'light0-3'
-                break
-
-            case 0.2:
-                style = 'light0-2'
-                break
-            default:
-                style = 'light1-0'
-        }
-
-        return <div className={style} id="giantDayAndNightContainer"></div>
-    }
-    */
 
     return (
         <>

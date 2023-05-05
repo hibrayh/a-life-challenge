@@ -33,41 +33,8 @@ function Simulation() {
     const [lightVisibility, setLightVisibility] = useState(1)
 
     const [topographyInfo, setTopographyInfo] = useState([])
-    //const [showCreatureText, setShowCreatureText] = useState(true)
 
-    /*
-    const startSimulation = async () => {
-        // Make a call to the backend to notify it to initialize the simulation
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/start-simulation',
-            data: {
-                simulationWidth: window.innerWidth,
-                simulationHeight: window.innerHeight,
-                columnCount: 50,
-                rowCount: 25,
-            },
-        })
-        await getSimulationInfo()
-        setHasSimulationStarted(true)
-    }
 
-    const playPauseSimulation = async () => {
-        if (isSimulationRunning) {
-            setSimulationSpeedBeforePause(simulationTicksPerSecond)
-            setSimulationTicksPerSecond(0)
-            setIsSimulationRunning(false)
-        } else {
-            if (hasSimulationStarted) {
-                setSimulationTicksPerSecond(simulationSpeedBeforePause)
-            } else {
-                await startSimulation()
-            }
-
-            setIsSimulationRunning(true)
-        }
-    }
-    */
     const progressSimulationTimeByOneTick = async () => {
         // Make a call to the backend to progress the simulation by 1 tick
         await axios({
@@ -76,9 +43,6 @@ function Simulation() {
         })
 
         await getSimulationInfo()
-
-        // Get the updated time of the simulation
-        //const simulationTime = await getTimeOfSimulation()
         await getLightVisibility()
         await getTextToggle()
         await getTickSpeed()
@@ -100,22 +64,6 @@ function Simulation() {
         await getTickSpeed()
     }
 
-    /*
-    const incrementTicksPerSecond = () => {
-        setSimulationTicksPerSecond(simulationTicksPerSecond + 1)
-
-        // Use simulationTicksPerSecond + 1 as the variable will not be updated until after this function exits
-        setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
-    }
-
-    const decrementTicksPerSecond = () => {
-        setSimulationTicksPerSecond(
-            simulationTicksPerSecond > 0 ? simulationTicksPerSecond - 1 : 0
-        )
-
-        setIsSimulationRunning(simulationTicksPerSecond > 0)
-    }
-    */
 
     const getTextToggle = async () => {
         await axios({
@@ -195,18 +143,6 @@ function Simulation() {
     }
 
     useEffect(() => {
-        /*const handleResize = debounce(async () => {
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/resize-simulation',
-                data: {
-                    newWidth: window.innerWidth,
-                    newHeight: window.innerHeight,
-                },
-            })
-        })
-
-        window.addEventListener('resize', handleResize)*/
 
         const interval = setInterval(
             () => {
@@ -241,99 +177,6 @@ function Simulation() {
         }
     }, [isSimulationRunning, simulationTicksPerSecond])
 
-    /*
-    const Menu = () => {
-        return (
-            <>
-                <header className="menu">
-                    <h1>A-Life Challenge</h1>
-                </header>
-                <div className="menu">
-                    <div>
-                        <button
-                            id="menuButtonStart"
-                            onClick={async () => {
-                                await startSimulation()
-                                setShowMenu(false)
-                                setShowSimulation(true)
-                            }}>
-                            Start
-                        </button>
-                    </div>
-
-                    <div>
-                        <button
-                            id="menuButtonLoad"
-                            onClick={() => {
-                                setShowLoad(true)
-                            }}>
-                            Load Simulation
-                        </button>
-                    </div>
-
-                    <div>
-                        <button id="menuButtonQuit">Quit</button>
-                    </div>
-                </div>
-            </>
-        )
-    }
-    */
-
-    // "Page" that will show the simulation
-
-    /*
-
-    const LoadPage = () => {
-        const [loadName, setLoadName] = useState('')
-        return (
-            <div id="loadContainer">
-                <button
-                    onClick={() => {
-                        setShowLoad(false)
-                    }}
-                    className="formExitButton buttonHover2">
-                    <FaTimes size={25} />
-                </button>
-                <h1 className="loadTitle">Load Simulation</h1>
-
-                <form id="loadForm">
-                    <label>Simulation Name:</label>
-                    <input
-                        type="text"
-                        value={loadName}
-                        onChange={(event) =>
-                            setLoadName(event.target.value)
-                        }></input>
-
-                    <button
-                        onClick={handleSubmit}
-                        className="loadButton buttonHover2 buttonBackgroundColor">
-                        Load
-                    </button>
-                </form>
-            </div>
-        )
-
-        async function handleSubmit(event) {
-            event.preventDefault()
-            // Load simulation in the backend
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/load-simulation',
-                data: {
-                    filename: loadName,
-                },
-            })
-
-            await getSimulationInfo()
-            setShowLoad(false)
-            setShowMenu(false)
-            setShowSimulation(true)
-            setHasSimulationStarted(true)
-        }
-    }
-    */
 
     const GiantDayAndNightContainer = () => {
         let style
