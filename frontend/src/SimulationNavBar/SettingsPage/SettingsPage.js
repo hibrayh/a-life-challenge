@@ -46,7 +46,6 @@ function SettingsPage(props) {
     }
 
     function handleToggleClick() {
-        //toggleTextCall()
         props.toggleTextCall()
     }
 }

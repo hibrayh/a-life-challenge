@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import './App.css'
-import Animation from './Animation'
+import Simulation from './Simulation.js'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
 import { FaTimes } from 'react-icons/fa'
 
@@ -45,116 +45,8 @@ function App() {
                 rowCount: 25,
             },
         })
-        await getSimulationInfo()
-        await getTopographyInfo()
+        //await getSimulationInfo()
         setHasSimulationStarted(true)
-    }
-
-    const playPauseSimulation = async () => {
-        if (isSimulationRunning) {
-            setSimulationSpeedBeforePause(simulationTicksPerSecond)
-            setSimulationTicksPerSecond(0)
-            setIsSimulationRunning(false)
-        } else {
-            if (hasSimulationStarted) {
-                setSimulationTicksPerSecond(simulationSpeedBeforePause)
-            } else {
-                await startSimulation()
-            }
-
-            setIsSimulationRunning(true)
-        }
-    }
-
-    const progressSimulationTimeByOneTick = async () => {
-        // Make a call to the backend to progress the simulation by 1 tick
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/advance-simulation',
-        })
-
-        await getSimulationInfo()
-
-        await getTopographyInfo()
-
-        // Get the updated time of the simulation
-        //const simulationTime = await getTimeOfSimulation()
-        await getLightVisibility()
-    }
-
-    const progressSimulationTimeByNTicks = async () => {
-        // Make a call to the backend to progress the simulation by the set tick speed
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/advance-simulation-by-n-ticks',
-            data: {
-                ticks: simulationTicksPerSecond,
-            },
-        })
-
-        await getSimulationInfo()
-        await getLightVisibility()
-    }
-
-    const incrementTicksPerSecond = () => {
-        setSimulationTicksPerSecond(simulationTicksPerSecond + 1)
-
-        // Use simulationTicksPerSecond + 1 as the variable will not be updated until after this function exits
-        setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
-    }
-
-    const decrementTicksPerSecond = () => {
-        setSimulationTicksPerSecond(
-            simulationTicksPerSecond > 0 ? simulationTicksPerSecond - 1 : 0
-        )
-
-        setIsSimulationRunning(simulationTicksPerSecond > 0)
-    }
-
-    const getSimulationInfo = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-simulation-info',
-        }).then((response) => {
-            const res = response.data
-            setCreatureList(res.creatureRegistry)
-            setResourceList(res.resourceRegistry)
-        })
-    }
-
-    const getTopographyInfo = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-topography-info',
-        }).then((response) => {
-            const res = response.data
-            setTopographyInfo(res.topographyRegistry)
-        })
-    }
-
-    const getTimeOfSimulation = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/time-of-simulation',
-        }).then((response) => {
-            const res = response.data
-            console.log(`Time of simulation: ${res}`)
-        })
-    }
-
-    const getLightVisibility = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-light-visibility',
-        }).then((response) => {
-            const res = response.data
-            //console.log(`Light visibility: ${res}`)
-            setLightVisibility(res)
-        })
-    }
-
-    const showTextToggle = async () => {
-        setShowCreatureText(!showCreatureText)
     }
 
     useEffect(() => {
@@ -171,31 +63,10 @@ function App() {
 
         window.addEventListener('resize', handleResize)
 
-        const interval = setInterval(
-            () => {
-                if (
-                    simulationTicksPerSecond > 0 &&
-                    simulationTicksPerSecond <= 4 &&
-                    isSimulationRunning
-                ) {
-                    progressSimulationTimeByOneTick()
-                } else if (
-                    simulationTicksPerSecond > 0 &&
-                    isSimulationRunning
-                ) {
-                    progressSimulationTimeByNTicks()
-                }
-            },
-            simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4
-                ? 1000 / simulationTicksPerSecond
-                : 1000
-        )
-
         return () => {
-            clearInterval(interval)
             window.removeEventListener('resize', handleResize)
         }
-    }, [isSimulationRunning, simulationTicksPerSecond])
+    }, [])
 
     const Menu = () => {
         return (
@@ -235,27 +106,11 @@ function App() {
     }
 
     // "Page" that will show the simulation
-    const Simulation = () => {
+    const SimulationPage = () => {
         return (
             <div>
-                <Animation
-                    creaturesToAnimate={creatureList}
-                    resourcesToAnimate={resourceList}
-                    simulationSpeed={simulationTicksPerSecond}
-                    toggleText={showCreatureText}
-                />
-                <SimulationNavBar
-                    playOrPauseSimulationCallback={playPauseSimulation}
-                    speedUpSimulationCallback={incrementTicksPerSecond}
-                    slowDownSimulationCallback={decrementTicksPerSecond}
-                    updateSimulationCallback={getSimulationInfo}
-                    startSimulationCallback={startSimulation}
-                    ticksPerSecond={simulationTicksPerSecond}
-                    hasSimulationStarted={hasSimulationStarted}
-                    toggleTextSimulationCallback={showTextToggle}
-                />
-
-                <GiantDayAndNightContainer />
+                <Simulation />
+                <SimulationNavBar />
             </div>
         )
     }
@@ -302,41 +157,11 @@ function App() {
                 },
             })
 
-            await getSimulationInfo()
-            await getTopographyInfo()
             setShowLoad(false)
             setShowMenu(false)
             setShowSimulation(true)
             setHasSimulationStarted(true)
         }
-    }
-
-    const GiantDayAndNightContainer = () => {
-        let style
-        switch (lightVisibility) {
-            case 1:
-                style = 'light1-0'
-                break
-            case 0.8:
-                style = 'light0-8'
-                break
-
-            case 0.5:
-                style = 'light0-5'
-                break
-
-            case 0.3:
-                style = 'light0-3'
-                break
-
-            case 0.2:
-                style = 'light0-2'
-                break
-            default:
-                style = 'light1-0'
-        }
-
-        return <div className={style} id="giantDayAndNightContainer"></div>
     }
 
     return (
@@ -348,7 +173,7 @@ function App() {
         */
             }
             {showMenu ? <Menu /> : null}
-            {showSimulation ? <Simulation /> : null}
+            {showSimulation ? <SimulationPage /> : null}
             {showLoad ? <LoadPage show={showLoad} /> : null}
         </>
     )

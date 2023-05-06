@@ -278,6 +278,49 @@ def advanceSimulationByNTicks():
     return "Success", 201
 
 
+@api.route('/update-tick-speed', methods=['POST'])
+@cross_origin()
+def updateSimulationTickSpeed():
+    global GOD
+    GOD.editTickSpeed(int(request.json['ticks']))
+    return "Success", 201
+
+
+@api.route('/get-tick-speed')
+@cross_origin()
+def getTickSpeed():
+    return jsonify(GOD.getTickSpeed())
+
+
+@api.route('/update-text-toggle', methods=['POST'])
+@cross_origin()
+def updateTextToggle():
+    global GOD
+    GOD.editTextToggle(int(request.json['toggle']))
+    return "Success", 201
+
+
+@api.route('/get-text-toggle')
+@cross_origin()
+def getTextToggle():
+    return jsonify(GOD.getTextToggle())
+
+
+@api.route('/flag-simulation-update', methods=['POST'])
+@cross_origin()
+def editSimulationUpdate():
+    global GOD
+    GOD.flagSimulationUpdate(int(request.json['update']))
+    return "Success", 201
+
+
+@api.route('/get-simulation-update-flag')
+@cross_origin()
+def getSimulationUpdateFlag():
+    # logging.info(f"{GOD.getSimulationUpdateFlag()}")
+    return jsonify(GOD.getSimulationUpdateFlag())
+
+
 @api.route('/get-list-of-species')
 @cross_origin()
 def getListOfSpecies():
