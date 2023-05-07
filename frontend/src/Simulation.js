@@ -66,13 +66,18 @@ function Simulation() {
     }
 
     const getTextToggle = async () => {
+        let res = 0
         await axios({
             method: 'GET',
             url: 'http://localhost:5000/get-text-toggle',
         }).then((response) => {
-            const res = response.data
-            showCreatureText = res
+            res = response.data
         })
+        if (res != showCreatureText){
+            console.log("toggled")
+            setUpdate(!update)
+        }
+        showCreatureText = res
     }
 
     const textToggle = async () => {
@@ -106,6 +111,11 @@ function Simulation() {
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
         })
+        setUpdate(!update)
+    }
+
+    const getInfo = async () => {
+        await getSimulationInfo()
     }
 
     const tickSpeed = async () => {
@@ -164,7 +174,8 @@ function Simulation() {
                     //thus, while it happens every second, it will not cause lag to the actual running of the simulation
                     tickSpeed()
                     textToggle()
-                    updateFlag()
+                    //updateFlag()
+                    getInfo()
                 }
             },
             simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4

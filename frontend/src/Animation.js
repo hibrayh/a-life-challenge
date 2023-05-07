@@ -599,16 +599,6 @@ class Animation extends React.Component {
             }
         }
 
-        for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
-            let resource = this.props.resourcesToAnimate[i]
-            console.log(resource)
-            jsx.push(
-                <div key={'resource' + { i }}>
-                    {this.CreateResource(resource)}
-                </div>
-            )
-        }
-
         return <div id="animation-wrapper">{jsx}</div>
     }
 
@@ -639,12 +629,23 @@ class Animation extends React.Component {
         //returns the jsx will all its animations, and the elements in the element array for those animations to reference
         //we only want to actually display the full animation jsx if the time is slow enough to be stable
         let jsx = []
+        let resourceJsx = []
         this.elementManagement() //manage the elements
         jsx = this.runFullAnimations()
+
+        for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
+            let resource = this.props.resourcesToAnimate[i]
+            resourceJsx.push(
+                <div key={'resource' + { i }}>
+                    {this.CreateResource(resource)}
+                </div>
+            )
+        }
 
         if (!this.props.toggleText) {
             return (
                 <div id="animation-wrapper">
+                    {resourceJsx}
                     {jsx}
                     {elementsArray.map((element) => (
                         <div key={'map' + keyId++}>{element.elem}</div>
@@ -657,6 +658,7 @@ class Animation extends React.Component {
 
             return (
                 <div id="animation-wrapper">
+                    {resourceJsx}
                     {jsx}
                     {elementsArray.map((element) => (
                         <div key={'map' + keyId++}>{element.elem}</div>
