@@ -83,8 +83,7 @@ function SimulationNavBar({
             },
         })
         setTicksUpdated(!ticksUpdated)
-        console.log("tick speed updated to ", simulationTicksPerSecond)
-
+        console.log('tick speed updated to ', simulationTicksPerSecond)
     }
 
     const updateTextToggle = async () => {
@@ -114,7 +113,7 @@ function SimulationNavBar({
         if (simulationTicksPerSecond > 0) {
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
-        } else if (simulationTicksPerSecond == 0){
+        } else if (simulationTicksPerSecond == 0) {
             if (!hasSimulationStarted) {
                 await startSimulation()
             }

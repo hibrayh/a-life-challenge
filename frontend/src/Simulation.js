@@ -73,8 +73,8 @@ function Simulation() {
         }).then((response) => {
             res = response.data
         })
-        if (res != showCreatureText){
-            console.log("toggled")
+        if (res != showCreatureText) {
+            console.log('toggled')
             setUpdate(!update)
         }
         showCreatureText = res
@@ -130,7 +130,7 @@ function Simulation() {
             const res = response.data
             simulationTicksPerSecond = res
         })
-        console.log("tick speed ", simulationTicksPerSecond)
+        console.log('tick speed ', simulationTicksPerSecond)
     }
 
     const getTimeOfSimulation = async () => {
@@ -154,7 +154,6 @@ function Simulation() {
     }
 
     useEffect(() => {
-
         const interval = setInterval(
             () => {
                 if (
