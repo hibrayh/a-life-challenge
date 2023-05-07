@@ -17,13 +17,14 @@ import { FaTimes } from 'react-icons/fa'
 }*/
 
 let showCreatureText = 0
+let simulationTicksPerSecond = 0
 
 function Simulation() {
     const [showMenu, setShowMenu] = useState(true)
     const [showSimulation, setShowSimulation] = useState(false)
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(true)
-    const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
+    //const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
     const [creatureList, setCreatureList] = useState([])
@@ -33,6 +34,7 @@ function Simulation() {
     const [lightVisibility, setLightVisibility] = useState(1)
 
     const [topographyInfo, setTopographyInfo] = useState([])
+    const [update, setUpdate] = useState(false)
 
     const progressSimulationTimeByOneTick = async () => {
         // Make a call to the backend to progress the simulation by 1 tick
@@ -116,8 +118,9 @@ function Simulation() {
             url: 'http://localhost:5000/get-tick-speed',
         }).then((response) => {
             const res = response.data
-            setSimulationTicksPerSecond(res)
+            simulationTicksPerSecond = res
         })
+        console.log("tick speed ", simulationTicksPerSecond)
     }
 
     const getTimeOfSimulation = async () => {
@@ -141,6 +144,7 @@ function Simulation() {
     }
 
     useEffect(() => {
+
         const interval = setInterval(
             () => {
                 if (
@@ -170,7 +174,6 @@ function Simulation() {
 
         return () => {
             clearInterval(interval)
-            //window.removeEventListener('resize', handleResize)
         }
     }, [isSimulationRunning, simulationTicksPerSecond])
 
