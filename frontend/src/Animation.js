@@ -12,7 +12,6 @@ let elementsArray = []
 let textArray = []
 let changeLogArray = []
 let textChangeLogArray = []
-let removeLogArray = []
 let keyId = 0
 
 class Animation extends React.Component {
@@ -476,34 +475,14 @@ class Animation extends React.Component {
         //this has to happen regardless of whether the animations are running, as we still
         //want the creatures to at least Show on screen
 
-        removeLogArray.forEach((removing) => {
-            elementsArray = elementsArray.filter(
-                (element) => element.key !== removing.key
-            )
-            textArray = textArray.filter(
-                (element) => element.key !== 'text' + removing.key
-            )
-        })
-
-        //if a creature moved, remove the element and create one at the correct spot
-        changeLogArray.forEach((log) => {
-            //go through and remove the elements that have moved or died (gets them via the creature id)
-            elementsArray = elementsArray.filter(
-                (element) => element.key !== log.key
-            )
-        })
-
-        textChangeLogArray.forEach((log) => {
-            textArray = textArray.filter((element) => element.key !== log.key)
-        })
-
         // now re-add the items that moved from changelog at the correct location
+        elementsArray = []
+        textArray = []
         elementsArray = elementsArray.concat(changeLogArray)
         textArray = textArray.concat(textChangeLogArray)
 
         changeLogArray = [] //reset the movement log
         textChangeLogArray = []
-        removeLogArray = []
 
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
@@ -528,10 +507,8 @@ class Animation extends React.Component {
                 })
             }
 
-            if (creature.lastAction === 'DEAD') {
+            if (creature.lastAction !== 'DEAD') {
                 //remove the element After playing the animation
-                removeLogArray.push({ key: creature.creatureId })
-            } else {
                 //move the creatures
                 changeLogArray.push({
                     key: creature.creatureId,
