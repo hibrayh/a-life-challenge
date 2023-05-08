@@ -390,7 +390,13 @@ class God:
             logging.info(
                 f"Topography Preset: '{presetTopographyId}' has been set")
 
-    def addCustomResource(self, resourceIdPrefix, replenishment, color, shape, numOfResources):
+    def addCustomResource(
+            self,
+            resourceIdPrefix,
+            replenishment,
+            color,
+            shape,
+            numOfResources):
         # Randomly spawn in resources with user-specified attributes
         for resourceObj in range(numOfResources):
             locationX = random.randrange(
@@ -400,8 +406,15 @@ class God:
                 0,
                 self._simulationHeight)
             resourceId = f"{resourceIdPrefix}_{resourceObj}"
-            newResource = Resource(resourceId, replenishment, locationX, locationY, color, shape, self._environment)
-            
+            newResource = Resource(
+                resourceId,
+                replenishment,
+                locationX,
+                locationY,
+                color,
+                shape,
+                self._environment)
+
             #print(f"Resource '{resourceId}' created with replenishment value '{replenishment}', color '{color}', shape '{shape}', and placed at coordinates ({locationX}, {locationY})")
 
     def removeTopography(self, column, row):
