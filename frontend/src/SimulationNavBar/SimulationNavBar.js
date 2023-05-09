@@ -52,7 +52,6 @@ function SimulationNavBar({
     const [showSettingsPage, setShowSettingsPage] = useState(false)
 
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
-    const [isSimulationRunning, setIsSimulationRunning] = useState(false)
     const [ticksUpdated, setTicksUpdated] = useState(false) //necessary for visual changes
     //const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
     //const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
@@ -83,6 +82,8 @@ function SimulationNavBar({
                 ticks: simulationTicksPerSecond,
             },
         })
+        setTicksUpdated(!ticksUpdated)
+        console.log('tick speed updated to ', simulationTicksPerSecond)
     }
 
     const updateTextToggle = async () => {
@@ -94,6 +95,7 @@ function SimulationNavBar({
                 toggle: toggleText,
             },
         })
+        setTicksUpdated(!ticksUpdated)
     }
 
     const flagSimulationUpdate = async () => {
@@ -108,24 +110,21 @@ function SimulationNavBar({
     }
 
     const playPauseSimulation = async () => {
-        if (isSimulationRunning) {
+        if (simulationTicksPerSecond > 0) {
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
-            setIsSimulationRunning(false)
-        } else {
+        } else if (simulationTicksPerSecond == 0) {
             if (!hasSimulationStarted) {
                 await startSimulation()
             }
             simulationTicksPerSecond = simulationSpeedBeforePause
-            setIsSimulationRunning(true)
         }
         await updateSimulationTickSpeed()
     }
 
     const incrementTicksPerSecond = () => {
         simulationTicksPerSecond += 1
-        setTicksUpdated(!ticksUpdated)
-        setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
+        //setTicksUpdated(!ticksUpdated)
     }
 
     const decrementTicksPerSecond = () => {
@@ -134,8 +133,7 @@ function SimulationNavBar({
         } else {
             simulationTicksPerSecond = 0
         }
-        setTicksUpdated(!ticksUpdated)
-        setIsSimulationRunning(simulationTicksPerSecond > 0)
+        //setTicksUpdated(!ticksUpdated)
     }
 
     const showTextToggle = async () => {

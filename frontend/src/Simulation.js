@@ -17,13 +17,14 @@ import { FaTimes } from 'react-icons/fa'
 }*/
 
 let showCreatureText = 0
+let simulationTicksPerSecond = 0
 
 function Simulation() {
     const [showMenu, setShowMenu] = useState(true)
     const [showSimulation, setShowSimulation] = useState(false)
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(true)
-    const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
+    //const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
     const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
         useState(0)
     const [creatureList, setCreatureList] = useState([])
@@ -33,6 +34,7 @@ function Simulation() {
     const [lightVisibility, setLightVisibility] = useState(1)
 
     const [topographyInfo, setTopographyInfo] = useState([])
+    const [update, setUpdate] = useState(false)
 
     const progressSimulationTimeByOneTick = async () => {
         // Make a call to the backend to progress the simulation by 1 tick
@@ -64,13 +66,18 @@ function Simulation() {
     }
 
     const getTextToggle = async () => {
+        let res = 0
         await axios({
             method: 'GET',
             url: 'http://localhost:5000/get-text-toggle',
         }).then((response) => {
-            const res = response.data
-            showCreatureText = res
+            res = response.data
         })
+        if (res != showCreatureText) {
+            console.log('toggled')
+            setUpdate(!update)
+        }
+        showCreatureText = res
     }
 
     const textToggle = async () => {
@@ -104,6 +111,11 @@ function Simulation() {
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
         })
+        setUpdate(!update)
+    }
+
+    const getInfo = async () => {
+        await getSimulationInfo()
     }
 
     const tickSpeed = async () => {
@@ -116,8 +128,9 @@ function Simulation() {
             url: 'http://localhost:5000/get-tick-speed',
         }).then((response) => {
             const res = response.data
-            setSimulationTicksPerSecond(res)
+            simulationTicksPerSecond = res
         })
+        console.log('tick speed ', simulationTicksPerSecond)
     }
 
     const getTimeOfSimulation = async () => {
@@ -160,7 +173,8 @@ function Simulation() {
                     //thus, while it happens every second, it will not cause lag to the actual running of the simulation
                     tickSpeed()
                     textToggle()
-                    updateFlag()
+                    //updateFlag()
+                    getInfo()
                 }
             },
             simulationTicksPerSecond > 0 && simulationTicksPerSecond <= 4
@@ -170,7 +184,6 @@ function Simulation() {
 
         return () => {
             clearInterval(interval)
-            //window.removeEventListener('resize', handleResize)
         }
     }, [isSimulationRunning, simulationTicksPerSecond])
 
