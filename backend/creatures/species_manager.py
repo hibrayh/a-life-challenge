@@ -3,6 +3,7 @@ from enum import Enum
 from . import creature, genome
 import random
 import math
+from ..generated_comm_files import backend_api_pb2
 
 logging.basicConfig(
     level=logging.INFO,

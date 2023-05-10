@@ -6,6 +6,7 @@ from resources import Resource
 import creatures.species_manager
 from creatures.decision_network import DecisionNetworkSexual, DecisionNetworkAsexual
 from creatures.genome import ReproductionType
+from generated_comm_files import backend_api_pb2
 
 logging.basicConfig(
     level=logging.INFO,
@@ -449,12 +450,12 @@ class God:
             return speciesManagerOfInterest.getCreatureGenome(creatureId)
 
     def getSimulationInfo(self):
-        return {
-            'creatureRegistry': self._environment.getRegisteredCreatures(),
-            'resourceRegistry': self._environment.getRegisteredResources(),
-            'lightVisibility': self._environment.getLightVisibility(),
-            'timeOfSimulation': self._environment.getTimeOfSimulation(),
-        }
+        logging.info("Fetching simulation info")
+        return backend_api_pb2.GetEnvironmentInfoReply(
+            creatures = self._environment.getRegisteredCreatures(),
+            resources = self._environment.getRegisteredResources(),
+            elevation = self._environment.getElevationLines()
+        )
 
     def advanceSimulation(self):
         logging.info("Advancing simulation by a tick")
@@ -470,9 +471,7 @@ class God:
         for species in self._speciesManagers:
             speciesNames.append(species.speciesName)
 
-        return {
-            "speciesNames": speciesNames
-        }
+        return speciesNames
 
     def getTimeOfSimulation(self):
         logging.info("Getting the current time of simulation")

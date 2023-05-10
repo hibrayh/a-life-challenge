@@ -434,7 +434,7 @@ class Environment:
         creatureList = []
 
         for creature in self.creatureRegistry.registry:
-            creatureList.append(creature.serialize())
+            creatureList.append(creature.getAnimationInfo())
 
         return creatureList
 
@@ -442,9 +442,17 @@ class Environment:
         resourceList = []
 
         for resource in self.resourceRegistry:
-            resourceList.append(resource.serialize())
+            resourceList.append(resource.getAnimationInfo())
 
         return resourceList
+
+    def getElevationLines(self):
+        elevationList = []
+
+        for topography in self.topographyRegistry:
+            elevationList.append(topography.getGeography())
+
+        return elevationList
 
     def getRegisteredTopography(self):
         topographyList = []
