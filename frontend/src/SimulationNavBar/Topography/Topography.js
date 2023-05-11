@@ -10,7 +10,7 @@ function TopographyPage(props) {
     const [topography, setTopography] = useState('unselected')
     const [dragging, setDragging] = useState(false)
     const [position, setPosition] = useState({ x: 0, y: 160 })
-
+    let list = []
     /*async function getSimulationInfo() {
         await axios({
             method: 'GET',
@@ -23,12 +23,21 @@ function TopographyPage(props) {
     }*/
 
     useEffect(() => {
-        axios
-            .get('http://localhost:5000/get-topography-info')
-            .then((response) => {
+
+        async function fetchData(){
+            await axios({
+                method: 'GET',
+                url: 'http://localhost:5000/get-topography-info',
+            }).then((response) => {
+                console.log(response)
                 topographyInfo = response.data.topographyRegistry
+                list = response.data.topographyRegistry
             })
-    }, [])
+        }
+
+        fetchData()
+            
+    }, [props.show])
 
     //do not attempt to load the grid or anything else until the topography data is gotten
     if (topographyInfo.length === 0) {
@@ -129,7 +138,7 @@ function TopographyPage(props) {
                         </div>
 
 
-                        <div onclick={(event) =>{submitTopography(event)}} id="topographySubmitButton" className="buttonHover buttonBackgroundColor">Submit</div>
+                        <div onClick={(event) =>{submitTopography(event)}} id="topographySubmitButton" className="buttonHover buttonBackgroundColor">Submit</div>
 
                     </form>
                 </div>
@@ -139,13 +148,34 @@ function TopographyPage(props) {
         return (
             <Grid
                 showGridBorder={props.showGridBorder}
+                topographyInfo={topographyInfo}
             />
         )
     }
 
+    function updateList(nodeToChange, toDelete){
+        
+        if(toDelete){
 
+            let index = list.findIndex(function(node){
+                if (nodeToChange.row === node.row && nodeToChange.column === node.column) {
+                    return true
+                }
+            })
+
+            list.splice(index, 1)
+        }
+        else{
+
+            
+        }
+    }
     function submitTopography(e){
-        e.preventDefault()
+       
+        // Send all of the topographies to backend
+       
+        console.log("list", list)
+        console.log("topographyInfo", topographyInfo)
     }
 }
 

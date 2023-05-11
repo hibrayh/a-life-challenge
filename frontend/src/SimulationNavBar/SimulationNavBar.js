@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import axios from 'axios'
 import './SimulationNavBar.css'
 import {
     FaPlay,
@@ -23,14 +24,18 @@ import SavePage from './SavePage/SavePage.js'
 import SpeciesRelationshipPage from './SpeciesRelationshipPage/SpeciesRelationshipPage.js'
 import SettingsPage from './SettingsPage/SettingsPage.js'
 
+let simulationSpeedBeforePause = 0
+let simulationTicksPerSecond = 0
+let toggleText = false
+
 function SimulationNavBar({
     playOrPauseSimulationCallback,
-    speedUpSimulationCallback,
-    slowDownSimulationCallback,
+    //speedUpSimulationCallback,
+    //slowDownSimulationCallback,
     updateSimulationCallback,
     startSimulationCallback,
     ticksPerSecond,
-    hasSimulationStarted,
+    //hasSimulationStarted,
     topographyInfo,
     toggleTextSimulationCallback,
     toggleMenuAndSimulation
@@ -46,6 +51,97 @@ function SimulationNavBar({
     const [showSpeciesRelationshipPage, setShowSpeciesRelationshipPage] =
         useState(false)
     const [showSettingsPage, setShowSettingsPage] = useState(false)
+
+    const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
+    const [ticksUpdated, setTicksUpdated] = useState(false) //necessary for visual changes
+    //const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
+    //const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
+    //useState(0)
+
+    const startSimulation = async () => {
+        // Make a call to the backend to notify it to initialize the simulation
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/start-simulation',
+            data: {
+                simulationWidth: window.innerWidth,
+                simulationHeight: window.innerHeight,
+                columnCount: 50,
+                rowCount: 25,
+            },
+        })
+        //await getSimulationInfo()
+        setHasSimulationStarted(true)
+    }
+
+    const updateSimulationTickSpeed = async () => {
+        // Make a call to the backend to change the tick speed
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/update-tick-speed',
+            data: {
+                ticks: simulationTicksPerSecond,
+            },
+        })
+        setTicksUpdated(!ticksUpdated)
+        console.log('tick speed updated to ', simulationTicksPerSecond)
+    }
+
+    const updateTextToggle = async () => {
+        // Make a call to the backend to update the text toggle
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/update-text-toggle',
+            data: {
+                toggle: toggleText,
+            },
+        })
+        setTicksUpdated(!ticksUpdated)
+    }
+
+    const flagSimulationUpdate = async () => {
+        // Make a call to the backend to tell the animation to snag the first info
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/flag-simulation-update',
+            data: {
+                update: 1,
+            },
+        })
+    }
+
+    const playPauseSimulation = async () => {
+        if (simulationTicksPerSecond > 0) {
+            simulationSpeedBeforePause = simulationTicksPerSecond
+            simulationTicksPerSecond = 0
+        } else if (simulationTicksPerSecond == 0) {
+            if (!hasSimulationStarted) {
+                await startSimulation()
+            }
+            simulationTicksPerSecond = simulationSpeedBeforePause
+        }
+        await updateSimulationTickSpeed()
+    }
+
+    const incrementTicksPerSecond = () => {
+        simulationTicksPerSecond += 1
+        //setTicksUpdated(!ticksUpdated)
+    }
+
+    const decrementTicksPerSecond = () => {
+        if (simulationTicksPerSecond > 0) {
+            simulationTicksPerSecond -= 1
+        } else {
+            simulationTicksPerSecond = 0
+        }
+        //setTicksUpdated(!ticksUpdated)
+    }
+
+    const showTextToggle = async () => {
+        //update the local variable, and send the update to the backend
+        toggleText = !toggleText
+        await updateTextToggle()
+    }
 
     return (
         <>
@@ -77,17 +173,18 @@ function SimulationNavBar({
                 toggleNewSpeciesForm={toggleNewSpeciesForm}
                 toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm}
                 show={showCreatureOrSpeciesForm}
+                updateSimulationCallback={flagSimulationUpdate}
             />
             <NewCreatureForm
                 show={showNewCreatureForm}
                 toggleNewCreatureForm={toggleNewCreatureForm}
-                updateSimulationCallback={updateSimulationCallback}
+                updateSimulationCallback={flagSimulationUpdate}
             />
 
             <NewSpeciesForm
                 show={showNewSpeciesForm}
                 toggleNewSpeciesForm={toggleNewSpeciesForm}
-                updateSimulationCallback={updateSimulationCallback}
+                updateSimulationCallback={flagSimulationUpdate}
                 hasSimulationStarted={hasSimulationStarted}
                 startSimulationCallback={startSimulationCallback}
             />
@@ -99,11 +196,11 @@ function SimulationNavBar({
 
                 <CurrentTime />
 
-                <CurrentSpeed ticks={ticksPerSecond} />
+                <CurrentSpeed ticks={simulationTicksPerSecond} />
 
-                <SlowDownButton slowDownCall={slowDownSimulationCallback} />
+                <SlowDownButton />
 
-                <SpeedUpButton speedUpCall={speedUpSimulationCallback} />
+                <SpeedUpButton />
 
                 <AddNewCreatureOrSpeciesButton
                     toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm}
@@ -186,55 +283,54 @@ function SimulationNavBar({
         console.log('toggled')
         setShowSettingsPage(!showSettingsPage)
     }
-}
 
-function SettingsButton(props) {
-    return (
-        <button
-            onClick={handleClick}
-            id="settingsButton"
-            className="navButton buttonHover"
-            title="Settings">
-            <FaRegSun />
-        </button>
-    )
+    function SettingsButton(props) {
+        return (
+            <button
+                onClick={handleClick}
+                id="settingsButton"
+                className="navButton buttonHover"
+                title="Settings">
+                <FaRegSun />
+            </button>
+        )
 
-    function handleClick() {
-        props.toggleSettingsPage()
+        function handleClick() {
+            props.toggleSettingsPage()
+        }
     }
-}
 
-function SpeciesRelationshipButton(props) {
-    return (
-        <button
-            onClick={handleClick}
-            id="speciesRelationshipButton"
-            className="navButton buttonHover biggerIcon"
-            title="Species Relationships">
-            <FaConnectdevelop size={33} />
-        </button>
-    )
+    function SpeciesRelationshipButton(props) {
+        return (
+            <button
+                onClick={handleClick}
+                id="speciesRelationshipButton"
+                className="navButton buttonHover biggerIcon"
+                title="Species Relationships">
+                <FaConnectdevelop size={33} />
+            </button>
+        )
 
-    function handleClick() {
-        props.toggleSpeciesRelationshipPage()
+        function handleClick() {
+            props.toggleSpeciesRelationshipPage()
+        }
     }
-}
 
-function StatsButton(props) {
-    return (
-        <button
-            onClick={handleClick}
-            id="statsButton"
-            className="navButton buttonHover"
-            title="Stats Page">
-            <FaFileAlt />
-        </button>
-    )
+    function StatsButton(props) {
+        return (
+            <button
+                onClick={handleClick}
+                id="statsButton"
+                className="navButton buttonHover"
+                title="Stats Page">
+                <FaFileAlt />
+            </button>
+        )
 
-    function handleClick() {
-        props.toggleStatsPage()
+        function handleClick() {
+            props.toggleStatsPage()
+        }
     }
-}
 
 // function SaveButton(props) {
 //     return (
@@ -248,106 +344,107 @@ function StatsButton(props) {
 //     )
 // }
 
-function TopographyButton(props) {
-    return (
-        <button
-            onClick={() => {
-                props.toggleTopographyPage()
-                props.toggleShowGridBorder()
-            }}
-            id="topographyButton"
-            className="navButton buttonHover"
-            title="Topography">
-            <FaTree />
-        </button>
-    )
-}
-
-function AddNewCreatureOrSpeciesButton(props) {
-    return (
-        <button
-            onClick={() => {
-                props.toggleCreatureOrSpeciesForm()
-                props.closeNewCreatureForm()
-                props.closeNewSpeciesForm()
-            }}
-            id="addNewCreatureOrSpeciesButton"
-            className="navButton buttonHover"
-            title="Create New Creature/Species">
-            <FaPlus />
-        </button>
-    )
-}
-
-function PausePlayButton({ pausePlayCallback }) {
-    const [showPlayButton, setShowPlayButton] = useState(true)
-
-    function handleClick() {
-        setShowPlayButton(!showPlayButton)
-
-        pausePlayCallback()
-    }
-
-    if (showPlayButton) {
+    function TopographyButton(props) {
         return (
             <button
-                onClick={handleClick}
-                id="pausePlayButton"
-                className="navButton buttonHover">
-                <FaPlay />
-            </button>
-        )
-    } else {
-        return (
-            <button
-                onClick={handleClick}
-                id="pausePlayButton"
-                className="navButton buttonHover">
-                <FaPause />
+                onClick={() => {
+                    props.toggleTopographyPage()
+                    props.toggleShowGridBorder()
+                }}
+                id="topographyButton"
+                className="navButton buttonHover"
+                title="Topography">
+                <FaTree />
             </button>
         )
     }
-}
 
-function CurrentTime(props) {
-    return <span id="currentTime">2022-11-28 01:02 pm</span>
-}
+    function AddNewCreatureOrSpeciesButton(props) {
+        return (
+            <button
+                onClick={() => {
+                    props.toggleCreatureOrSpeciesForm()
+                    props.closeNewCreatureForm()
+                    props.closeNewSpeciesForm()
+                }}
+                id="addNewCreatureOrSpeciesButton"
+                className="navButton buttonHover"
+                title="Create New Creature/Species">
+                <FaPlus />
+            </button>
+        )
+    }
 
-function CurrentSpeed({ ticks }) {
-    // backend call 
-    return <span id="currentSpeed">{ticks} ticks/sec</span>
-}
+    function PausePlayButton({ pausePlayCallback }) {
+        const [showPlayButton, setShowPlayButton] = useState(true)
 
-function SpeedUpButton({ speedUpCall }) {
-    return (
-        <button
-            onClick={handleClick}
-            id="speedUpButton"
-            className="navButton buttonHover"
-            title="Speed Up">
-            <FaFastForward />
-        </button>
-    )
+        function handleClick() {
+            setShowPlayButton(!showPlayButton)
 
-    function handleClick() {
-        speedUpCall()
+            playPauseSimulation()
+        }
+
+        if (showPlayButton) {
+            return (
+                <button
+                    onClick={handleClick}
+                    id="pausePlayButton"
+                    className="navButton buttonHover">
+                    <FaPlay />
+                </button>
+            )
+        } else {
+            return (
+                <button
+                    onClick={handleClick}
+                    id="pausePlayButton"
+                    className="navButton buttonHover">
+                    <FaPause />
+                </button>
+            )
+        }
+    }
+
+    function CurrentTime(props) {
+        return <span id="currentTime">2022-11-28 01:02 pm</span>
+    }
+
+    function CurrentSpeed({ ticks }) {
+        return <span id="currentSpeed">{ticks} ticks/sec</span>
+    }
+
+    function SpeedUpButton() {
+        return (
+            <button
+                onClick={handleClick}
+                id="speedUpButton"
+                className="navButton buttonHover"
+                title="Speed Up">
+                <FaFastForward />
+            </button>
+        )
+
+        async function handleClick() {
+            incrementTicksPerSecond()
+            await updateSimulationTickSpeed()
+        }
+    }
+
+    function SlowDownButton() {
+        return (
+            <button
+                onClick={handleClick}
+                id="slowDownButton"
+                className="navButton buttonHover"
+                title="Slow Down">
+                <FaFastBackward />
+            </button>
+        )
+
+        async function handleClick() {
+            decrementTicksPerSecond()
+            await updateSimulationTickSpeed()
+        }
     }
 }
-
-function SlowDownButton({ slowDownCall }) {
-    return (
-        <button
-            onClick={handleClick}
-            id="slowDownButton"
-            className="navButton buttonHover"
-            title="Slow Down">
-            <FaFastBackward />
-        </button>
-    )
-
-    function handleClick() {
-        slowDownCall()
-    }
-}
-
 export default SimulationNavBar
