@@ -452,8 +452,8 @@ class God:
     def getSimulationInfo(self):
         logging.info("Fetching simulation info")
         return backend_api_pb2.GetEnvironmentInfoReply(
-            creatures = self._environment.getRegisteredCreatures(),
-            resources = self._environment.getRegisteredResources(),
+            creatures=self._environment.getRegisteredCreatures(),
+            resources=self._environment.getRegisteredResources(),
         )
 
     def advanceSimulation(self):

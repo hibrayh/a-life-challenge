@@ -1,11 +1,12 @@
 import logging
-from generated_comm_files import backend_api_pb2 ,backend_api_pb2_grpc
+from generated_comm_files import backend_api_pb2, backend_api_pb2_grpc
 from god import God
 from creatures.genome import Genome, Receptors, ReproductionType
 from creatures.species_manager import SpeciesRelationship
 from topography import TemplateTopography
 import grpc
 from concurrent import futures
+
 
 def _convertRequestToGenome(request):
     receptor_list = []
@@ -15,7 +16,7 @@ def _convertRequestToGenome(request):
         receptor_list.append(Receptors.SMELL)
     if request.canHear:
         receptor_list.append(Receptors.HEAR)
-    
+
     reproType = ReproductionType.SEXUAL if request.reproductionType == "sexual" else ReproductionType.ASEXUAL
 
     return Genome(
@@ -59,49 +60,51 @@ def _convertRequestToGenome(request):
         request.color,
     )
 
+
 def _convertGenomeToRequest(inputGenome):
     return backend_api_pb2.GenomeInfo(
-        visibility = inputGenome.visibility,
-        maxHealth = inputGenome.maxHealth,
-        canSee = Receptors.VISION in inputGenome.receptors,
-        canSmell = Receptors.SMELL in inputGenome.receptors,
-        canHear = Receptors.HEAR in inputGenome.receptors,
-        sightAbility = inputGenome.sightAbility,
-        smellAbility = inputGenome.smellAbility,
-        hearingAbility = inputGenome.hearingAbility,
-        sightRange = inputGenome.sightRange,
-        smellRange = inputGenome.smellRange,
-        hearingRange = inputGenome.hearingRange,
-        reactionTime = inputGenome.reactionTime,
-        impulsivity = inputGenome.impulsivity,
-        selfPreservation = inputGenome.selfPreservation,
-        mobility = inputGenome.mobility,
-        reproductionType = inputGenome.reproductionType,
-        reproductionCooldown = inputGenome.reproductionCooldown,
-        offspringAmount = inputGenome.offspringAmount,
-        motivation = inputGenome.motivation,
-        maxEnergy = inputGenome.maxEnergy,
-        metabolism = inputGenome.metabolism,
-        individualism = inputGenome.individualism,
-        territorial = inputGenome.territorial,
-        fightOrFlight = inputGenome.fightOrFlight,
-        hostility = inputGenome.hostility,
-        scent = inputGenome.scent,
-        stealth = inputGenome.stealth,
-        lifeExpectancy = inputGenome.lifeExpectancy,
-        maturity = inputGenome.maturity,
-        offensiveAbility = inputGenome.offensiveAbility,
-        defensiveAbility = inputGenome.defensiveAbility,
-        effectFromHost = inputGenome.effectFromHost,
-        effectFromParasite = inputGenome.effectFromParasite,
-        protecting = inputGenome.protecting,
-        nurturing = inputGenome.nurturing,
-        effectFromBeingNurtured = inputGenome.effectFromBeingNurtured,
-        shortTermMemoryAccuracy = inputGenome.shortTermMemoryAccuracy,
-        shortTermMemoryCapacity = inputGenome.shortTermMemoryCapacity,
-        shape = inputGenome.shape,
-        color = inputGenome.color,
+        visibility=inputGenome.visibility,
+        maxHealth=inputGenome.maxHealth,
+        canSee=Receptors.VISION in inputGenome.receptors,
+        canSmell=Receptors.SMELL in inputGenome.receptors,
+        canHear=Receptors.HEAR in inputGenome.receptors,
+        sightAbility=inputGenome.sightAbility,
+        smellAbility=inputGenome.smellAbility,
+        hearingAbility=inputGenome.hearingAbility,
+        sightRange=inputGenome.sightRange,
+        smellRange=inputGenome.smellRange,
+        hearingRange=inputGenome.hearingRange,
+        reactionTime=inputGenome.reactionTime,
+        impulsivity=inputGenome.impulsivity,
+        selfPreservation=inputGenome.selfPreservation,
+        mobility=inputGenome.mobility,
+        reproductionType=inputGenome.reproductionType,
+        reproductionCooldown=inputGenome.reproductionCooldown,
+        offspringAmount=inputGenome.offspringAmount,
+        motivation=inputGenome.motivation,
+        maxEnergy=inputGenome.maxEnergy,
+        metabolism=inputGenome.metabolism,
+        individualism=inputGenome.individualism,
+        territorial=inputGenome.territorial,
+        fightOrFlight=inputGenome.fightOrFlight,
+        hostility=inputGenome.hostility,
+        scent=inputGenome.scent,
+        stealth=inputGenome.stealth,
+        lifeExpectancy=inputGenome.lifeExpectancy,
+        maturity=inputGenome.maturity,
+        offensiveAbility=inputGenome.offensiveAbility,
+        defensiveAbility=inputGenome.defensiveAbility,
+        effectFromHost=inputGenome.effectFromHost,
+        effectFromParasite=inputGenome.effectFromParasite,
+        protecting=inputGenome.protecting,
+        nurturing=inputGenome.nurturing,
+        effectFromBeingNurtured=inputGenome.effectFromBeingNurtured,
+        shortTermMemoryAccuracy=inputGenome.shortTermMemoryAccuracy,
+        shortTermMemoryCapacity=inputGenome.shortTermMemoryCapacity,
+        shape=inputGenome.shape,
+        color=inputGenome.color,
     )
+
 
 def _convertRequestToTopographyType(inputTopography):
     convertedTopographyType = None
@@ -119,6 +122,7 @@ def _convertRequestToTopographyType(inputTopography):
         convertedTopographyType = TemplateTopography.FLAT
 
     return convertedTopographyType
+
 
 def _convertRequestToSpeciesRelationship(inputRelationship):
     convertedRelationship = None
@@ -149,112 +153,147 @@ def _convertRequestToSpeciesRelationship(inputRelationship):
 
     return convertedRelationship
 
+
 class BackendServicer(backend_api_pb2_grpc.BackendServicer):
     god = None
 
     def StartSimulation(self, request, context):
         logging.info("Starting simulation")
-        self.god = God(request.simulationWidth, request.simulationHeight, request.columnCount, request.rowCount)
+        self.god = God(
+            request.simulationWidth,
+            request.simulationHeight,
+            request.columnCount,
+            request.rowCount)
         return backend_api_pb2.StartSimulationReply(simStarted=True)
-    
+
     def ResizeSimulation(self, request, context):
         logging.info("Loading simulation")
         self.god.resizeSimulation(request.newXDimension, request.newYDimension)
         return backend_api_pb2.ResizeSimulationReply(simResized=True)
-    
+
     def GetEnvironmentInfo(self, request, context):
         logging.info("Getting environment info")
         return self.god.getSimulationInfo()
 
     def GetSimulationProgressionSpeed(self, request, context):
         logging.info("Getting current simulation progression speed")
-        return backend_api_pb2.GetSimulationProgressionSpeedReply(simulationSpeed = self.god.getTickSpeed())
-    
+        return backend_api_pb2.GetSimulationProgressionSpeedReply(
+            simulationSpeed=self.god.getTickSpeed())
+
     def ChangeSimulationProgressionSpeed(self, request, context):
         logging.info("Changing simulation progression speed")
         self.god.editTickSpeed(request.simulationSpeed)
-        return backend_api_pb2.ChangeSimulationProgressionSpeedReply(simulationSpeedChanged = True)
-    
+        return backend_api_pb2.ChangeSimulationProgressionSpeedReply(
+            simulationSpeedChanged=True)
+
     def CreateNewSpecies(self, request, context):
         logging.info("Creating new species")
-        self.god.createNewSpecies(request.speciesName, _convertRequestToGenome(request.initialGenome))
+        self.god.createNewSpecies(
+            request.speciesName,
+            _convertRequestToGenome(
+                request.initialGenome))
         logging.info("Spawning initial creatures of new species")
-        self.god.massCreateCreatures(request.speciesName, request.initialNumberToSpawn)
-        return backend_api_pb2.CreateNewSpeciesReply(speciesCreated = True)
+        self.god.massCreateCreatures(
+            request.speciesName,
+            request.initialNumberToSpawn)
+        return backend_api_pb2.CreateNewSpeciesReply(speciesCreated=True)
 
     def CreateNewCreature(self, request, context):
         logging.info("Creating new creature")
-        self.god.createNewCreature(request.speciesName, _convertRequestToGenome(request.genome))
-        return backend_api_pb2.CreateNewCreatureReply(creatureCreated = True)
-    
+        self.god.createNewCreature(
+            request.speciesName,
+            _convertRequestToGenome(
+                request.genome))
+        return backend_api_pb2.CreateNewCreatureReply(creatureCreated=True)
+
     def GetSpeciesList(self, request, context):
         logging.info("Fetching list of species")
-        return backend_api_pb2.GetSpeciesListReply(species = self.god.getListOfSpecies())
-    
+        return backend_api_pb2.GetSpeciesListReply(
+            species=self.god.getListOfSpecies())
+
     def DefineNewSpeciesRelationship(self, request, context):
         logging.info("Defining new species relationship")
-        self.god.addSpeciesRelationship(request.sourceSpecies, request.destinationSpecies, _convertRequestToSpeciesRelationship(request.relationship))
-        return backend_api_pb2.DefineNewSpeciesRelationshipReply(setNewRelationship = True)
-    
+        self.god.addSpeciesRelationship(
+            request.sourceSpecies,
+            request.destinationSpecies,
+            _convertRequestToSpeciesRelationship(
+                request.relationship))
+        return backend_api_pb2.DefineNewSpeciesRelationshipReply(
+            setNewRelationship=True)
+
     def GetSpeciesInfo(self, request, context):
         logging.info("Fetching species info")
         return backend_api_pb2.SpeciesInfo(
-            speciesName = request.speciesOfInterest,
-            genomeTemplate = _convertGenomeToRequest(self.god.getSpeciesGenome(request.speciesOfInterest)),
-            creatures = self.god.getCreaturesFromSpecies(request.speciesOfInterest)
-        )
-    
+            speciesName=request.speciesOfInterest,
+            genomeTemplate=_convertGenomeToRequest(
+                self.god.getSpeciesGenome(
+                    request.speciesOfInterest)),
+            creatures=self.god.getCreaturesFromSpecies(
+                request.speciesOfInterest))
+
     def GetCreatureInfo(self, request, context):
         logging.info("Fetching creature info")
         return backend_api_pb2.CreatureInfo(
-            id = request.creatureOfInterest,
-            species = request.species,
-            genome = _convertGenomeToRequest(self.god.getCreatureInfo(request.creatureOfInterest, request.species))
-        )
+            id=request.creatureOfInterest,
+            species=request.species,
+            genome=_convertGenomeToRequest(
+                self.god.getCreatureInfo(
+                    request.creatureOfInterest,
+                    request.species)))
 
     def CreateTopography(self, request, context):
         logging.info("Creating new topography")
-        self.god.addNewTopography(_convertRequestToTopographyType(request.type), request.column, request.row)
-        return backend_api_pb2.CreateTopographyReply(topographyAdded = True)
+        self.god.addNewTopography(
+            _convertRequestToTopographyType(
+                request.type),
+            request.column,
+            request.row)
+        return backend_api_pb2.CreateTopographyReply(topographyAdded=True)
 
     def DeleteTopography(self, request, context):
         logging.info("Deleting topography")
         self.god.removeTopography(request.column, request.row)
-        return backend_api_pb2.DeleteTopographyReply(topographyDeleted = True)
+        return backend_api_pb2.DeleteTopographyReply(topographyDeleted=True)
 
     def AdvanceSimulation(self, request, context):
         logging.info("Advancing simulation")
         self.god.advanceSimulationByNTicks(request.stepsToAdvance)
-        return backend_api_pb2.AdvanceSimulationReply(simulationAdvanced = True)
-    
+        return backend_api_pb2.AdvanceSimulationReply(simulationAdvanced=True)
+
     def GetTextToggle(self, request, context):
         logging.info("Getting text toggle mode")
-        return backend_api_pb2.GetTextToggleReply(textToggle = self.god.getTextToggle())
+        return backend_api_pb2.GetTextToggleReply(
+            textToggle=self.god.getTextToggle())
 
     def UpdateTextToggle(self, request, context):
         logging.info("Changing text toggle mode")
         self.god.editTextToggle(request.newTextToggle)
-        return backend_api_pb2.UpdateTextToggleReply(textToggled = True)
+        return backend_api_pb2.UpdateTextToggleReply(textToggled=True)
 
     def GetUpdateFlag(self, request, context):
         logging.info("Getting update flag")
-        return backend_api_pb2.GetUpdateFlagReply(updateFlag = self.god.getSimulationUpdateFlag())
-    
+        return backend_api_pb2.GetUpdateFlagReply(
+            updateFlag=self.god.getSimulationUpdateFlag())
+
     def EditUpdateFlag(self, request, context):
         logging.info("Updating update flag")
         self.god.flagSimulationUpdate(request.newUpdateFlag)
-        return backend_api_pb2.EditUpdateFlagReply(updatedFlag = True)
+        return backend_api_pb2.EditUpdateFlagReply(updatedFlag=True)
 
     def GetTimeOfSimulation(self, request, context):
         logging.info("Fetching simulation time")
-        return backend_api_pb2.GetTimeOfSimulationReply(timeOfSimulation = self.god.getTimeOfSimulation())
+        return backend_api_pb2.GetTimeOfSimulationReply(
+            timeOfSimulation=self.god.getTimeOfSimulation())
+
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    backend_api_pb2_grpc.add_BackendServicer_to_server(BackendServicer(), server)
+    backend_api_pb2_grpc.add_BackendServicer_to_server(
+        BackendServicer(), server)
     server.add_insecure_port('[::]:39516')
     server.start()
     server.wait_for_termination()
+
 
 if __name__ == "__main__":
     serve()

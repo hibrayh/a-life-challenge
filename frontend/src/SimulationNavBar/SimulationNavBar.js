@@ -71,14 +71,17 @@ function SimulationNavBar({
         request.setColumncount(50)
         request.setRowcount(25)
 
-        await backendService.startSimulation(request, {}, function(err, response) {
-            if (response.getSimstarted()) {
-                console.log("Simulation started")
+        await backendService.startSimulation(
+            request,
+            {},
+            function (err, response) {
+                if (response.getSimstarted()) {
+                    console.log('Simulation started')
+                } else {
+                    console.error('There was an issue starting the simulation')
+                }
             }
-            else {
-                console.error("There was an issue starting the simulation")
-            }
-        })
+        )
 
         setHasSimulationStarted(true)
     }
@@ -106,26 +109,28 @@ function SimulationNavBar({
         var request = new UpdateTextToggleRequest()
         request.setNewtexttoggle(toggleText)
 
-        await backendService.updateTextToggle(request, {}, function(error, response) {
-            if (response.getTexttoggled()) {
-                console.log("Toggled text mode")
+        await backendService.updateTextToggle(
+            request,
+            {},
+            function (error, response) {
+                if (response.getTexttoggled()) {
+                    console.log('Toggled text mode')
+                } else {
+                    console.error('Error toggling text mode')
+                }
             }
-            else {
-                console.error("Error toggling text mode")
-            }
-        })
+        )
     }
 
     const flagSimulationUpdate = async () => {
         var request = new EditUpdateFlagRequest()
         request.setNewupdateflag(true)
 
-        backendService.editUpdateFlag(request, {}, function(error, response) {
+        backendService.editUpdateFlag(request, {}, function (error, response) {
             if (response.getUpdatedflag()) {
-                console.log("Edited the update flag")
-            }
-            else {
-                console.error("Error when editing the update flag")
+                console.log('Edited the update flag')
+            } else {
+                console.error('Error when editing the update flag')
             }
         })
     }

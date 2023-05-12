@@ -8,8 +8,11 @@ import ReactAnime from 'react-animejs'
 
 const { Anime } = ReactAnime
 
-import {StartSimulationRequest, ResizeSimulationRequest} from './generated_comm_files/backend_api_pb'
-import {BackendClient} from './generated_comm_files/backend_api_grpc_web_pb'
+import {
+    StartSimulationRequest,
+    ResizeSimulationRequest,
+} from './generated_comm_files/backend_api_pb'
+import { BackendClient } from './generated_comm_files/backend_api_grpc_web_pb'
 
 var backendService = new BackendClient('http://localhost:44039')
 
@@ -53,14 +56,17 @@ function App() {
         request.setColumncount(50)
         request.setRowcount(25)
 
-        await backendService.startSimulation(request, {}, function(err, response) {
-            if (response.getSimstarted()) {
-                console.log("Simulation started")
+        await backendService.startSimulation(
+            request,
+            {},
+            function (err, response) {
+                if (response.getSimstarted()) {
+                    console.log('Simulation started')
+                } else {
+                    console.error('There was an issue starting the simulation')
+                }
             }
-            else {
-                console.error("There was an issue starting the simulation")
-            }
-        })
+        )
 
         setHasSimulationStarted(true)
     }
@@ -72,14 +78,19 @@ function App() {
                 request.setNewxdimension(window.innerWidth)
                 request.setNewydimension(window.innerHeight)
 
-                await backendService.resizeSimulation(request, {}, function(err, response) {
-                    if (response.getSimresized()) {
-                        console.log("Simulation resized")
+                await backendService.resizeSimulation(
+                    request,
+                    {},
+                    function (err, response) {
+                        if (response.getSimresized()) {
+                            console.log('Simulation resized')
+                        } else {
+                            console.error(
+                                'There was an error resizing the simulation'
+                            )
+                        }
                     }
-                    else {
-                        console.error("There was an error resizing the simulation")
-                    }
-                })
+                )
             }
         })
 

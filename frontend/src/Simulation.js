@@ -4,8 +4,16 @@ import Animation from './Animation'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
 import { FaTimes } from 'react-icons/fa'
 
-import {AdvanceSimulationRequest, GetTextToggleRequest, GetUpdateFlagRequest, GetEnvironmentInfoRequest, GetSimulationProgressionSpeedRequest, GetTimeOfSimulationRequest, GetLightVisibilityRequest} from './generated_comm_files/backend_api_pb'
-import {BackendClient} from './generated_comm_files/backend_api_grpc_web_pb'
+import {
+    AdvanceSimulationRequest,
+    GetTextToggleRequest,
+    GetUpdateFlagRequest,
+    GetEnvironmentInfoRequest,
+    GetSimulationProgressionSpeedRequest,
+    GetTimeOfSimulationRequest,
+    GetLightVisibilityRequest,
+} from './generated_comm_files/backend_api_pb'
+import { BackendClient } from './generated_comm_files/backend_api_grpc_web_pb'
 
 var backendService = new BackendClient('http://localhost:44039')
 
@@ -24,15 +32,20 @@ function Simulation() {
         var request = new AdvanceSimulationRequest()
         request.setStepstoadvance(1)
 
-        await backendService.advanceSimulation(request, {}, function(error, response) {
-            if (response.getSimulationadvanced()) {
-                console.log("Simulation advanced successfully")
+        await backendService.advanceSimulation(
+            request,
+            {},
+            function (error, response) {
+                if (response.getSimulationadvanced()) {
+                    console.log('Simulation advanced successfully')
+                } else {
+                    console.error(
+                        'Something went wrong advancing the simulation'
+                    )
+                }
             }
-            else {
-                console.error("Something went wrong advancing the simulation")
-            }
-        })        
-        
+        )
+
         await getSimulationInfo()
         await getLightVisibility()
     }
@@ -41,14 +54,19 @@ function Simulation() {
         var request = new AdvanceSimulationRequest()
         request.setStepstoadvance(simulationTicksPerSecond)
 
-        await backendService.advanceSimulation(request, {}, function(error, response) {
-            if (response.getSimulationadvanced()) {
-                console.log("Simulation advanced successfully")
+        await backendService.advanceSimulation(
+            request,
+            {},
+            function (error, response) {
+                if (response.getSimulationadvanced()) {
+                    console.log('Simulation advanced successfully')
+                } else {
+                    console.error(
+                        'Something went wrong advancing the simulation'
+                    )
+                }
             }
-            else {
-                console.error("Something went wrong advancing the simulation")
-            }
-        })
+        )
 
         await getSimulationInfo()
         await getLightVisibility()
@@ -74,9 +92,13 @@ function Simulation() {
         let flag = 0
 
         var request = new GetUpdateFlagRequest()
-        await backendService.getUpdateFlag(request, {}, function(error, response) {
-            flag = response.getUpdateflag()
-        })
+        await backendService.getUpdateFlag(
+            request,
+            {},
+            function (error, response) {
+                flag = response.getUpdateflag()
+            }
+        )
 
         if (flag) {
             await getSimulationInfo()
@@ -110,25 +132,39 @@ function Simulation() {
     const getTickSpeed = async () => {
         var request = new GetSimulationProgressionSpeedRequest()
 
-        await backendService.getSimulationProgressionSpeed(request, {}, function(error, response) {
-            setSimulationTicksPerSecond(response.getSimulationspeed())
-        })
+        await backendService.getSimulationProgressionSpeed(
+            request,
+            {},
+            function (error, response) {
+                setSimulationTicksPerSecond(response.getSimulationspeed())
+            }
+        )
     }
 
     const getTimeOfSimulation = async () => {
         var request = new GetTimeOfSimulationRequest()
 
-        await backendService.getTimeOfSimulation(request, {}, function(error, response) {
-            console.log(`Time of simulation: ${response.getTimeofsimulation()}`)
-        })
+        await backendService.getTimeOfSimulation(
+            request,
+            {},
+            function (error, response) {
+                console.log(
+                    `Time of simulation: ${response.getTimeofsimulation()}`
+                )
+            }
+        )
     }
 
     const getLightVisibility = async () => {
         var request = new GetLightVisibilityRequest()
 
-        await backendService.getLightVisibility(request, {}, function(error, response) {
-            setLightVisibility(response.getLightvisibility())
-        })
+        await backendService.getLightVisibility(
+            request,
+            {},
+            function (error, response) {
+                setLightVisibility(response.getLightvisibility())
+            }
+        )
     }
 
     useEffect(() => {

@@ -44,12 +44,12 @@ class Resource:
     def getAnimationInfo(self):
         logging.info(f"Fetching animation info for resource {self.id}")
         return backend_api_pb2.ResourceInfo(
-            id = self.id,
-            replenishment = self.replenishment,
-            xCoordinate = self.xCoordinate,
-            yCoordinate = self.yCoordinate,
-            shape = self.shape,
-            color = self.color
+            id=self.id,
+            replenishment=self.replenishment,
+            xCoordinate=self.xCoordinate,
+            yCoordinate=self.yCoordinate,
+            shape=self.shape,
+            color=self.color
         )
 
     def save(self):

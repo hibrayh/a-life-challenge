@@ -5,8 +5,11 @@ import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 import { ChromePicker } from 'react-color'
 
-import {GetSpeciesListRequest, GetSpeciesInfoRequest} from './../../generated_comm_files/backend_api_pb'
-import {BackendClient} from './../../generated_comm_files/backend_api_grpc_web_pb'
+import {
+    GetSpeciesListRequest,
+    GetSpeciesInfoRequest,
+} from './../../generated_comm_files/backend_api_pb'
+import { BackendClient } from './../../generated_comm_files/backend_api_grpc_web_pb'
 
 var backendService = new BackendClient('http://localhost:44039')
 
@@ -60,7 +63,7 @@ function NewCreatureForm(props) {
     const getSpeciesList = async () => {
         var request = new GetSpeciesListRequest()
 
-        backendService.getSpeciesList(request, {}, function(error, response) {
+        backendService.getSpeciesList(request, {}, function (error, response) {
             setAvailableSpecies(response.species)
             setSpeciesName(response.species[0])
         })
@@ -70,51 +73,61 @@ function NewCreatureForm(props) {
         var request = new GetSpeciesInfoRequest()
         request.setSpeciesofinterest(speciesOfInterest)
 
-        await backendService.getSpeciesInfo(request, {}, function(error, response) {
-            let genomeInfo = response.getGenometemplate()
+        await backendService.getSpeciesInfo(
+            request,
+            {},
+            function (error, response) {
+                let genomeInfo = response.getGenometemplate()
 
-            setVisibility(genomeInfo.getVisibility())
-            setMaxHealth(genomeInfo.getMaxhealth())
-            setCanSee(genomeInfo.getCansee())
-            setCanSmell(genomeInfo.getCansmell())
-            setCanHear(genomeInfo.getCanhear())
-            setSightAbility(genomeInfo.getSightability())
-            setSmellAbility(genomeInfo.getSmellability())
-            setHearingAbility(genomeInfo.getHearingability())
-            setSightRange(genomeInfo.getSightrange())
-            setSmellRange(genomeInfo.getSmellrange())
-            setHearingRange(genomeInfo.getHearingrange())
-            setReactionTime(genomeInfo.getReactiontime())
-            setImpulsivity(genomeInfo.getImpulsivity())
-            setSelfPreservation(genomeInfo.getSelfpreservation())
-            setMobility(genomeInfo.getMobility())
-            setReproductionType(genomeInfo.getReproductiontype())
-            setReproductionCooldown(genomeInfo.getReproductioncooldown())
-            setOffSpringAmount(genomeInfo.getOffspringamount())
-            setMotivation(genomeInfo.getMotivation())
-            setMaxEnergy(genomeInfo.getMaxEnergy())
-            setMetabolism(genomeInfo.getMetabolism())
-            setIndividualism(genomeInfo.getIndividualism())
-            setTerritorial(genomeInfo.getTerritorial())
-            setFightOrFlight(genomeInfo.getFightorflight())
-            setHostlity(genomeInfo.getHostility())
-            setScent(genomeInfo.getScent())
-            setStealth(genomeInfo.getStealth())
-            setLifeExpectancy(genomeInfo.getLifeexpectancy())
-            setMaturity(genomeInfo.getMaturity())
-            setOffensiveAbility(genomeInfo.getOffensiveability())
-            setDefensiveAbility(genomeInfo.getDefensiveability())
-            setEffectFromHost(genomeInfo.getEffectfromhost())
-            setEffectFromParasite(genomeInfo.getEffectfromparasite())
-            setProtecting(genomeInfo.getProtecting())
-            setNurturing(genomeInfo.getNurturing())
-            setEffectFromBeingNurtured(genomeInfo.getEffectfrombeingnurtured())
-            setShortTermMemoryAccuracy(genomeInfo.getShorttermmemoryaccuracy())
-            setShortTermMemoryCapacity(genomeInfo.getShorttermmemorycapacity())
-            setShape(genomeInfo.getShape())
-            setColor(genomeInfo.getColor())
-            setSpeciesName(response.getSpeciesname())
-        })
+                setVisibility(genomeInfo.getVisibility())
+                setMaxHealth(genomeInfo.getMaxhealth())
+                setCanSee(genomeInfo.getCansee())
+                setCanSmell(genomeInfo.getCansmell())
+                setCanHear(genomeInfo.getCanhear())
+                setSightAbility(genomeInfo.getSightability())
+                setSmellAbility(genomeInfo.getSmellability())
+                setHearingAbility(genomeInfo.getHearingability())
+                setSightRange(genomeInfo.getSightrange())
+                setSmellRange(genomeInfo.getSmellrange())
+                setHearingRange(genomeInfo.getHearingrange())
+                setReactionTime(genomeInfo.getReactiontime())
+                setImpulsivity(genomeInfo.getImpulsivity())
+                setSelfPreservation(genomeInfo.getSelfpreservation())
+                setMobility(genomeInfo.getMobility())
+                setReproductionType(genomeInfo.getReproductiontype())
+                setReproductionCooldown(genomeInfo.getReproductioncooldown())
+                setOffSpringAmount(genomeInfo.getOffspringamount())
+                setMotivation(genomeInfo.getMotivation())
+                setMaxEnergy(genomeInfo.getMaxEnergy())
+                setMetabolism(genomeInfo.getMetabolism())
+                setIndividualism(genomeInfo.getIndividualism())
+                setTerritorial(genomeInfo.getTerritorial())
+                setFightOrFlight(genomeInfo.getFightorflight())
+                setHostlity(genomeInfo.getHostility())
+                setScent(genomeInfo.getScent())
+                setStealth(genomeInfo.getStealth())
+                setLifeExpectancy(genomeInfo.getLifeexpectancy())
+                setMaturity(genomeInfo.getMaturity())
+                setOffensiveAbility(genomeInfo.getOffensiveability())
+                setDefensiveAbility(genomeInfo.getDefensiveability())
+                setEffectFromHost(genomeInfo.getEffectfromhost())
+                setEffectFromParasite(genomeInfo.getEffectfromparasite())
+                setProtecting(genomeInfo.getProtecting())
+                setNurturing(genomeInfo.getNurturing())
+                setEffectFromBeingNurtured(
+                    genomeInfo.getEffectfrombeingnurtured()
+                )
+                setShortTermMemoryAccuracy(
+                    genomeInfo.getShorttermmemoryaccuracy()
+                )
+                setShortTermMemoryCapacity(
+                    genomeInfo.getShorttermmemorycapacity()
+                )
+                setShape(genomeInfo.getShape())
+                setColor(genomeInfo.getColor())
+                setSpeciesName(response.getSpeciesname())
+            }
+        )
     }
 
     if (props.show) {
