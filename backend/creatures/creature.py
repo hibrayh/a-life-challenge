@@ -4,7 +4,10 @@ import math
 from . import decision_network, species_manager, genome, memory
 import random
 import json
-from ..generated_comm_files import backend_api_pb2
+
+import sys
+sys.path.append("..")
+from generated_comm_files import backend_api_pb2
 
 logging.basicConfig(
     level=logging.INFO,

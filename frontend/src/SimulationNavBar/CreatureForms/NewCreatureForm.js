@@ -5,6 +5,11 @@ import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 import { ChromePicker } from 'react-color'
 
+import {GetSpeciesListRequest, GetSpeciesInfoRequest} from './../../generated_comm_files/backend_api_pb'
+import {BackendClient} from './../../generated_comm_files/backend_api_grpc_web_pb'
+
+var backendService = new BackendClient('http://localhost:44039')
+
 function NewCreatureForm(props) {
     const [showColorPicker, setShowColorPicker] = useState(false)
     const [visibility, setVisibility] = useState(0.5)
@@ -53,67 +58,62 @@ function NewCreatureForm(props) {
     const [availableSpecies, setAvailableSpecies] = useState([])
 
     const getSpeciesList = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-list-of-species',
-        }).then((response) => {
-            const res = response.data
-            setAvailableSpecies(res.speciesNames)
-            setSpeciesName(res.speciesNames[0])
+        var request = new GetSpeciesListRequest()
+
+        backendService.getSpeciesList(request, {}, function(error, response) {
+            setAvailableSpecies(response.species)
+            setSpeciesName(response.species[0])
         })
     }
 
     const getSpeciesDefaults = async (speciesOfInterest) => {
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/get-species-genome',
-            data: {
-                speciesOfInterest: speciesOfInterest,
-            },
-        }).then((response) => {
-            const res = response.data
+        var request = new GetSpeciesInfoRequest()
+        request.setSpeciesofinterest(speciesOfInterest)
 
-            setVisibility(res.visibility)
-            setMaxHealth(res.maxHealth)
-            setCanSee(res.canSee)
-            setCanSmell(res.canSmell)
-            setCanHear(res.canHear)
-            setSightAbility(res.sightAbility)
-            setSmellAbility(res.smellAbility)
-            setHearingAbility(res.hearingAbility)
-            setSightRange(res.sightRange)
-            setSmellRange(res.smellRange)
-            setHearingRange(res.hearingRange)
-            setReactionTime(res.reactionTime)
-            setImpulsivity(res.impulsivity)
-            setSelfPreservation(res.selfPreservation)
-            setMobility(res.mobility)
-            setReproductionType(res.reproductionType)
-            setReproductionCooldown(res.reproductionCoolDown)
-            setOffSpringAmount(res.offSpringAmount)
-            setMotivation(res.motivation)
-            setMaxEnergy(res.maxEnergy)
-            setMetabolism(res.metabolism)
-            setIndividualism(res.individualism)
-            setTerritorial(res.territorial)
-            setFightOrFlight(res.fightOrFlight)
-            setHostility(res.hostility)
-            setScent(res.scent)
-            setStealth(res.stealth)
-            setLifeExpectancy(res.lifeExpectancy)
-            setMaturity(res.maturity)
-            setOffensiveAbility(res.offensiveAbility)
-            setDefensiveAbility(res.defensiveAbility)
-            setEffectFromHost(res.effectFromHost)
-            setEffectFromParasite(res.effectFromParasite)
-            setProtecting(res.protecting)
-            setNurturing(res.nurturing)
-            setEffectFromBeingNurtured(res.effectFromBeingNurtured)
-            setShortTermMemoryAccuracy(res.shortTermMemoryAccuracy)
-            setShortTermMemoryCapacity(res.shortTermMemoryCapacity)
-            setShape(res.shape)
-            setColor(res.color)
-            setSpeciesName(speciesOfInterest)
+        await backendService.getSpeciesInfo(request, {}, function(error, response) {
+            let genomeInfo = response.getGenometemplate()
+
+            setVisibility(genomeInfo.getVisibility())
+            setMaxHealth(genomeInfo.getMaxhealth())
+            setCanSee(genomeInfo.getCansee())
+            setCanSmell(genomeInfo.getCansmell())
+            setCanHear(genomeInfo.getCanhear())
+            setSightAbility(genomeInfo.getSightability())
+            setSmellAbility(genomeInfo.getSmellability())
+            setHearingAbility(genomeInfo.getHearingability())
+            setSightRange(genomeInfo.getSightrange())
+            setSmellRange(genomeInfo.getSmellrange())
+            setHearingRange(genomeInfo.getHearingrange())
+            setReactionTime(genomeInfo.getReactiontime())
+            setImpulsivity(genomeInfo.getImpulsivity())
+            setSelfPreservation(genomeInfo.getSelfpreservation())
+            setMobility(genomeInfo.getMobility())
+            setReproductionType(genomeInfo.getReproductiontype())
+            setReproductionCooldown(genomeInfo.getReproductioncooldown())
+            setOffSpringAmount(genomeInfo.getOffspringamount())
+            setMotivation(genomeInfo.getMotivation())
+            setMaxEnergy(genomeInfo.getMaxEnergy())
+            setMetabolism(genomeInfo.getMetabolism())
+            setIndividualism(genomeInfo.getIndividualism())
+            setTerritorial(genomeInfo.getTerritorial())
+            setFightOrFlight(genomeInfo.getFightorflight())
+            setHostlity(genomeInfo.getHostility())
+            setScent(genomeInfo.getScent())
+            setStealth(genomeInfo.getStealth())
+            setLifeExpectancy(genomeInfo.getLifeexpectancy())
+            setMaturity(genomeInfo.getMaturity())
+            setOffensiveAbility(genomeInfo.getOffensiveability())
+            setDefensiveAbility(genomeInfo.getDefensiveability())
+            setEffectFromHost(genomeInfo.getEffectfromhost())
+            setEffectFromParasite(genomeInfo.getEffectfromparasite())
+            setProtecting(genomeInfo.getProtecting())
+            setNurturing(genomeInfo.getNurturing())
+            setEffectFromBeingNurtured(genomeInfo.getEffectfrombeingnurtured())
+            setShortTermMemoryAccuracy(genomeInfo.getShorttermmemoryaccuracy())
+            setShortTermMemoryCapacity(genomeInfo.getShorttermmemorycapacity())
+            setShape(genomeInfo.getShape())
+            setColor(genomeInfo.getColor())
+            setSpeciesName(response.getSpeciesname())
         })
     }
 

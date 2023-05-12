@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState } from 'react'
-import axios from 'axios'
 import './SimulationNavBar.css'
 import {
     FaPlay,
@@ -23,6 +22,11 @@ import { TopographyPage } from './Topography/Topography.js'
 
 import SpeciesRelationshipPage from './SpeciesRelationshipPage/SpeciesRelationshipPage.js'
 import SettingsPage from './SettingsPage/SettingsPage.js'
+
+import {StartSimulationRequest, ChangeSimulationProgressionSpeedRequest, UpdateTextToggleRequest, EditUpdateFlagRequest} from './../generated_comm_files/backend_api_pb'
+import {BackendClient} from './../generated_comm_files/backend_api_grpc_web_pb'
+
+var backendService = new BackendClient('http://localhost:44039')
 
 let simulationSpeedBeforePause = 0
 let simulationTicksPerSecond = 0
@@ -61,30 +65,37 @@ function SimulationNavBar({
     //useState(0)
 
     const startSimulation = async () => {
-        // Make a call to the backend to notify it to initialize the simulation
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/start-simulation',
-            data: {
-                simulationWidth: window.innerWidth,
-                simulationHeight: window.innerHeight,
-                columnCount: 50,
-                rowCount: 25,
-            },
+        var request = new StartSimulationRequest()
+        request.setSimulationwidth(window.innerWidth)
+        request.setSimulationheight(window.innerHeight)
+        request.setColumncount(50)
+        request.setRowcount(25)
+
+        await backendService.startSimulation(request, {}, function(err, response) {
+            if (response.getSimstarted()) {
+                console.log("Simulation started")
+            }
+            else {
+                console.error("There was an issue starting the simulation")
+            }
         })
-        //await getSimulationInfo()
+
         setHasSimulationStarted(true)
     }
 
     const updateSimulationTickSpeed = async () => {
-        // Make a call to the backend to change the tick speed
         if (!paused) {
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/update-tick-speed',
-                data: {
-                    ticks: simulationTicksPerSecond,
-                },
+
+            var request = new ChangeSimulationProgressionSpeedRequest()
+            request.setNewsimulationspeed(simulationTicksPerSecond)
+            
+            await backendService.changeSimulationProgressionSpeed(request, {}, function(error, response) {
+                if (response.getSimulationspeedchanged()) {
+                    console.log("Changed simulation speed")
+                }
+                else {
+                    console.error("Error changing simulation speed")
+                }
             })
             setTicksUpdated(!ticksUpdated)
             console.log('tick speed updated to ', simulationTicksPerSecond)
@@ -92,15 +103,31 @@ function SimulationNavBar({
     }
 
     const updateTextToggle = async () => {
-        // Make a call to the backend to update the text toggle
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/update-text-toggle',
-            data: {
-                toggle: toggleText,
-            },
+        var request = new UpdateTextToggleRequest()
+        request.setNewtexttoggle(toggleText)
+
+        await backendService.updateTextToggle(request, {}, function(error, response) {
+            if (response.getTexttoggled()) {
+                console.log("Toggled text mode")
+            }
+            else {
+                console.error("Error toggling text mode")
+            }
         })
-        setTicksUpdated(!ticksUpdated)
+    }
+
+    const flagSimulationUpdate = async () => {
+        var request = new EditUpdateFlagRequest()
+        request.setNewupdateflag(true)
+
+        backendService.editUpdateFlag(request, {}, function(error, response) {
+            if (response.getUpdatedflag()) {
+                console.log("Edited the update flag")
+            }
+            else {
+                console.error("Error when editing the update flag")
+            }
+        })
     }
 
     const playPauseSimulation = async () => {

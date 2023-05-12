@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import './App.css'
 import Animation from './Animation'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
 import { FaTimes } from 'react-icons/fa'
+
+import {AdvanceSimulationRequest, GetTextToggleRequest, GetUpdateFlagRequest, GetEnvironmentInfoRequest, GetSimulationProgressionSpeedRequest, GetTimeOfSimulationRequest, GetLightVisibilityRequest} from './generated_comm_files/backend_api_pb'
+import {BackendClient} from './generated_comm_files/backend_api_grpc_web_pb'
+
+var backendService = new BackendClient('http://localhost:44039')
 
 let showCreatureText = 0
 let simulationTicksPerSecond = 0
@@ -17,24 +21,33 @@ function Simulation() {
     const [update, setUpdate] = useState(false)
 
     const progressSimulationTimeByOneTick = async () => {
-        // Make a call to the backend to progress the simulation by 1 tick
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/advance-simulation',
-        })
+        var request = new AdvanceSimulationRequest()
+        request.setStepstoadvance(1)
 
+        await backendService.advanceSimulation(request, {}, function(error, response) {
+            if (response.getSimulationadvanced()) {
+                console.log("Simulation advanced successfully")
+            }
+            else {
+                console.error("Something went wrong advancing the simulation")
+            }
+        })        
+        
         await getSimulationInfo()
         await getLightVisibility()
     }
 
     const progressSimulationTimeByNTicks = async () => {
-        // Make a call to the backend to progress the simulation by the set tick speed
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/advance-simulation-by-n-ticks',
-            data: {
-                ticks: simulationTicksPerSecond,
-            },
+        var request = new AdvanceSimulationRequest()
+        request.setStepstoadvance(simulationTicksPerSecond)
+
+        await backendService.advanceSimulation(request, {}, function(error, response) {
+            if (response.getSimulationadvanced()) {
+                console.log("Simulation advanced successfully")
+            }
+            else {
+                console.error("Something went wrong advancing the simulation")
+            }
         })
 
         await getSimulationInfo()
@@ -42,12 +55,9 @@ function Simulation() {
     }
 
     const getTextToggle = async () => {
-        let res = 0
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-text-toggle',
-        }).then((response) => {
-            res = response.data
+        var request = new GetTextToggleRequest()
+        await backendService.getTextToggle(request, {}, function(error, response) {
+            showCreatureText = response.getTexttoggle();
         })
         if (res != showCreatureText) {
             console.log('toggled')
@@ -60,14 +70,29 @@ function Simulation() {
         await getTextToggle()
     }
 
+    const getUpdateFlag = async () => {
+        let flag = 0
+
+        var request = new GetUpdateFlagRequest()
+        await backendService.getUpdateFlag(request, {}, function(error, response) {
+            flag = response.getUpdateflag()
+        })
+
+        if (flag) {
+            await getSimulationInfo()
+        }
+    }
+
+    const updateFlag = async () => {
+        await getUpdateFlag()
+    }
+
     const getSimulationInfo = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-simulation-info',
-        }).then((response) => {
-            const res = response.data
-            setCreatureList(res.creatureRegistry)
-            setResourceList(res.resourceRegistry)
+        var request = new GetEnvironmentInfoRequest()
+
+        await backendService.getEnvironmentInfo(request, {}, function(error, response) {
+            setCreatureList(response.getCreatures())
+            setResourceList(response.getResources())
         })
         await getTickSpeed()
         await getTextToggle()
@@ -83,32 +108,26 @@ function Simulation() {
     }
 
     const getTickSpeed = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-tick-speed',
-        }).then((response) => {
-            const res = response.data
-            simulationTicksPerSecond = res
+        var request = new GetSimulationProgressionSpeedRequest()
+
+        await backendService.getSimulationProgressionSpeed(request, {}, function(error, response) {
+            setSimulationTicksPerSecond(response.getSimulationspeed())
         })
     }
 
     const getTimeOfSimulation = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/time-of-simulation',
-        }).then((response) => {
-            const res = response.data
-            console.log(`Time of simulation: ${res}`)
+        var request = new GetTimeOfSimulationRequest()
+
+        await backendService.getTimeOfSimulation(request, {}, function(error, response) {
+            console.log(`Time of simulation: ${response.getTimeofsimulation()}`)
         })
     }
 
     const getLightVisibility = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-light-visibility',
-        }).then((response) => {
-            const res = response.data
-            setLightVisibility(res)
+        var request = new GetLightVisibilityRequest()
+
+        await backendService.getLightVisibility(request, {}, function(error, response) {
+            setLightVisibility(response.getLightvisibility())
         })
     }
 

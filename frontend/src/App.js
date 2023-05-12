@@ -8,6 +8,11 @@ import ReactAnime from 'react-animejs'
 
 const { Anime } = ReactAnime
 
+import {StartSimulationRequest, ResizeSimulationRequest} from './generated_comm_files/backend_api_pb'
+import {BackendClient} from './generated_comm_files/backend_api_grpc_web_pb'
+
+var backendService = new BackendClient('http://localhost:44039')
+
 const debounce = (functionPointer) => {
     let timer
     return () => {
@@ -40,38 +45,42 @@ function App() {
     const [showMenu, setShowMenu] = useState(true)
     const [showSimulation, setShowSimulation] = useState(false)
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
-    const [isSimulationRunning, setIsSimulationRunning] = useState(false)
-    const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
-    const [update, setUpdate] = useState(true)
-
-    const [showLoad, setShowLoad] = useState(false)
 
     const startSimulation = async () => {
-        // Make a call to the backend to notify it to initialize the simulation
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/start-simulation',
-            data: {
-                simulationWidth: window.innerWidth,
-                simulationHeight: window.innerHeight,
-                columnCount: 50,
-                rowCount: 25,
-            },
+        var request = new StartSimulationRequest()
+        request.setSimulationwidth(window.innerWidth)
+        request.setSimulationheight(window.innerHeight)
+        request.setColumncount(50)
+        request.setRowcount(25)
+
+        await backendService.startSimulation(request, {}, function(err, response) {
+            if (response.getSimstarted()) {
+                console.log("Simulation started")
+            }
+            else {
+                console.error("There was an issue starting the simulation")
+            }
         })
-        //await getSimulationInfo()
+
         setHasSimulationStarted(true)
     }
 
     useEffect(() => {
         const handleResize = debounce(async () => {
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/resize-simulation',
-                data: {
-                    newWidth: window.innerWidth,
-                    newHeight: window.innerHeight,
-                },
-            })
+            if (hasSimulationStarted) {
+                var request = new ResizeSimulationRequest()
+                request.setNewxdimension(window.innerWidth)
+                request.setNewydimension(window.innerHeight)
+
+                await backendService.resizeSimulation(request, {}, function(err, response) {
+                    if (response.getSimresized()) {
+                        console.log("Simulation resized")
+                    }
+                    else {
+                        console.error("There was an error resizing the simulation")
+                    }
+                })
+            }
         })
 
         const interval = setInterval(() => {
@@ -118,7 +127,7 @@ function App() {
             window.removeEventListener('resize', handleResize)
             clearInterval(interval)
         }
-    })
+    }, [hasSimulationStarted])
 
     function toggleMenuAndSimulation() {
         setShowMenu(!showMenu)

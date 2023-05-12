@@ -454,7 +454,6 @@ class God:
         return backend_api_pb2.GetEnvironmentInfoReply(
             creatures = self._environment.getRegisteredCreatures(),
             resources = self._environment.getRegisteredResources(),
-            elevation = self._environment.getElevationLines()
         )
 
     def advanceSimulation(self):

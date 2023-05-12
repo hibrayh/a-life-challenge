@@ -1,9 +1,11 @@
 import logging
-from generated_comm_files import backend_api_pb2
+from generated_comm_files import backend_api_pb2 ,backend_api_pb2_grpc
 from god import God
 from creatures.genome import Genome, Receptors, ReproductionType
 from creatures.species_manager import SpeciesRelationship
 from topography import TemplateTopography
+import grpc
+from concurrent import futures
 
 def _convertRequestToGenome(request):
     receptor_list = []
@@ -147,7 +149,7 @@ def _convertRequestToSpeciesRelationship(inputRelationship):
 
     return convertedRelationship
 
-class Backend(backend_api_pb2._BACKEND):
+class BackendServicer(backend_api_pb2_grpc.BackendServicer):
     god = None
 
     def StartSimulation(self, request, context):
@@ -224,3 +226,35 @@ class Backend(backend_api_pb2._BACKEND):
         logging.info("Advancing simulation")
         self.god.advanceSimulationByNTicks(request.stepsToAdvance)
         return backend_api_pb2.AdvanceSimulationReply(simulationAdvanced = True)
+    
+    def GetTextToggle(self, request, context):
+        logging.info("Getting text toggle mode")
+        return backend_api_pb2.GetTextToggleReply(textToggle = self.god.getTextToggle())
+
+    def UpdateTextToggle(self, request, context):
+        logging.info("Changing text toggle mode")
+        self.god.editTextToggle(request.newTextToggle)
+        return backend_api_pb2.UpdateTextToggleReply(textToggled = True)
+
+    def GetUpdateFlag(self, request, context):
+        logging.info("Getting update flag")
+        return backend_api_pb2.GetUpdateFlagReply(updateFlag = self.god.getSimulationUpdateFlag())
+    
+    def EditUpdateFlag(self, request, context):
+        logging.info("Updating update flag")
+        self.god.flagSimulationUpdate(request.newUpdateFlag)
+        return backend_api_pb2.EditUpdateFlagReply(updatedFlag = True)
+
+    def GetTimeOfSimulation(self, request, context):
+        logging.info("Fetching simulation time")
+        return backend_api_pb2.GetTimeOfSimulationReply(timeOfSimulation = self.god.getTimeOfSimulation())
+
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    backend_api_pb2_grpc.add_BackendServicer_to_server(BackendServicer(), server)
+    server.add_insecure_port('[::]:39516')
+    server.start()
+    server.wait_for_termination()
+
+if __name__ == "__main__":
+    serve()

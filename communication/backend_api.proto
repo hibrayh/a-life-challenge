@@ -18,6 +18,12 @@ service Backend {
     rpc CreateTopography (CreateTopographyRequest) returns (CreateTopographyReply) {}
     rpc DeleteTopography (DeleteTopographyRequest) returns (DeleteTopographyReply) {}
     rpc AdvanceSimulation (AdvanceSimulationRequest) returns (AdvanceSimulationReply) {}
+    rpc GetTextToggle (GetTextToggleRequest) returns (GetTextToggleReply) {}
+    rpc UpdateTextToggle (UpdateTextToggleRequest) returns (UpdateTextToggleReply) {}
+    rpc GetUpdateFlag (GetUpdateFlagRequest) returns (GetUpdateFlagReply) {}
+    rpc EditUpdateFlag (EditUpdateFlagRequest) returns (EditUpdateFlagReply) {}
+    rpc GetTimeOfSimulation (GetTimeOfSimulationRequest) returns (GetTimeOfSimulationReply) {}
+    rpc GetLightVisibility (GetLightVisibilityRequest) returns (GetLightVisibilityReply) {}
 }
 
 message StartSimulationRequest {
@@ -140,7 +146,6 @@ message GetEnvironmentInfoRequest {
 message GetEnvironmentInfoReply {
     repeated CreatureAnimationInfo creatures = 1;
     repeated ResourceInfo resources = 2;
-    repeated ElevationInfo elevation = 3;
 }
 
 message GetSimulationProgressionSpeedRequest {
@@ -230,4 +235,52 @@ message AdvanceSimulationRequest {
 
 message AdvanceSimulationReply {
     bool simulationAdvanced = 1;
+}
+
+message GetTextToggleRequest {
+
+}
+
+message GetTextToggleReply {
+    bool textToggle = 1;
+}
+
+message UpdateTextToggleRequest {
+    bool newTextToggle = 1;
+}
+
+message UpdateTextToggleReply {
+    bool textToggled = 1;
+}
+
+message GetUpdateFlagRequest {
+
+}
+
+message GetUpdateFlagReply {
+    bool updateFlag = 1;
+}
+
+message EditUpdateFlagRequest {
+    bool newUpdateFlag = 1;
+}
+
+message EditUpdateFlagReply {
+    bool updatedFlag = 1;
+}
+
+message GetTimeOfSimulationRequest {
+
+}
+
+message GetTimeOfSimulationReply {
+    int32 timeOfSimulation = 1;
+}
+
+message GetLightVisibilityRequest {
+
+}
+
+message GetLightVisibilityReply {
+    float lightVisibility = 1;
 }
