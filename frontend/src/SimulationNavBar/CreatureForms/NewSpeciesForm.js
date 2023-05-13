@@ -1102,9 +1102,6 @@ function NewSpeciesForm(props) {
                 },
             })
 
-            // Fetch new info from simulation
-            await props.updateSimulationCallback()
-
             // Hide species form
             props.toggleNewSpeciesForm()
         }

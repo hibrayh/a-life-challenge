@@ -110,7 +110,6 @@ function Simulation() {
             const res = response.data
             simulationTicksPerSecond = res
         })
-        console.log('tick speed ', simulationTicksPerSecond)
     }
 
     const getTimeOfSimulation = async () => {

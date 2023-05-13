@@ -99,31 +99,26 @@ function SimulationNavBar({
         setTicksUpdated(!ticksUpdated)
     }
 
-    const flagSimulationUpdate = async () => {
-        // Make a call to the backend to tell the animation to snag the first info
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/flag-simulation-update',
-            data: {
-                update: 1,
-            },
-        })
-    }
-
     const playPauseSimulation = async () => {
-        if (simulationTicksPerSecond > 0) {
+        if (simulationTicksPerSecond > 0) { //pause
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
-        } else if (simulationTicksPerSecond == 0) {
-
-            simulationTicksPerSecond = simulationSpeedBeforePause
+        } else { //unpause
+            if(simulationSpeedBeforePause != 0){
+                // it was already playing, go back to previous speed
+                simulationTicksPerSecond = simulationSpeedBeforePause
+            }
+            else{
+                //set the speed to one
+                simulationTicksPerSecond = 1
+            }
         }
         await updateSimulationTickSpeed()
     }
 
     const incrementTicksPerSecond = () => {
         simulationTicksPerSecond += 1
-        //setTicksUpdated(!ticksUpdated)
+
     }
 
     const decrementTicksPerSecond = () => {
@@ -132,7 +127,7 @@ function SimulationNavBar({
         } else {
             simulationTicksPerSecond = 0
         }
-        //setTicksUpdated(!ticksUpdated)
+
     }
 
     const showTextToggle = async () => {
@@ -169,18 +164,15 @@ function SimulationNavBar({
                 toggleNewSpeciesForm={toggleNewSpeciesForm}
                 toggleCreatureOrSpeciesForm={toggleCreatureOrSpeciesForm}
                 show={showCreatureOrSpeciesForm}
-                updateSimulationCallback={flagSimulationUpdate}
             />
             <NewCreatureForm
                 show={showNewCreatureForm}
                 toggleNewCreatureForm={toggleNewCreatureForm}
-                updateSimulationCallback={flagSimulationUpdate}
             />
 
             <NewSpeciesForm
                 show={showNewSpeciesForm}
                 toggleNewSpeciesForm={toggleNewSpeciesForm}
-                updateSimulationCallback={flagSimulationUpdate}
                 hasSimulationStarted={hasSimulationStarted}
                 startSimulationCallback={startSimulationCallback}
             />
@@ -272,7 +264,6 @@ function SimulationNavBar({
     }
 
     function toggleSettingsPage() {
-        console.log('toggled')
         setShowSettingsPage(!showSettingsPage)
     }
 
