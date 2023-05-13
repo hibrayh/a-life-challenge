@@ -22,7 +22,7 @@ function StatsPage(props) {
                 setSelectedSpecies(res.speciesNames[0])
             })
         }
-        console.log("useeffect")
+        console.log('useeffect')
         getSpeciesList()
     }, [props.show])
 
@@ -114,7 +114,7 @@ function ListSpeciesGenomeInformation(props) {
             })
         }
 
-        if(props.speciesName){
+        if (props.speciesName) {
             //don't try and call the backend for the species info if there is no info
             getSpeciesInfo()
         }

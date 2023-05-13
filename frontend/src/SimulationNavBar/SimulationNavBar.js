@@ -100,15 +100,16 @@ function SimulationNavBar({
     }
 
     const playPauseSimulation = async () => {
-        if (simulationTicksPerSecond > 0) { //pause
+        if (simulationTicksPerSecond > 0) {
+            //pause
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
-        } else { //unpause
-            if(simulationSpeedBeforePause != 0){
+        } else {
+            //unpause
+            if (simulationSpeedBeforePause != 0) {
                 // it was already playing, go back to previous speed
                 simulationTicksPerSecond = simulationSpeedBeforePause
-            }
-            else{
+            } else {
                 //set the speed to one
                 simulationTicksPerSecond = 1
             }
@@ -118,7 +119,6 @@ function SimulationNavBar({
 
     const incrementTicksPerSecond = () => {
         simulationTicksPerSecond += 1
-
     }
 
     const decrementTicksPerSecond = () => {
@@ -127,7 +127,6 @@ function SimulationNavBar({
         } else {
             simulationTicksPerSecond = 0
         }
-
     }
 
     const showTextToggle = async () => {
