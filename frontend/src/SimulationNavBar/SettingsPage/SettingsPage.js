@@ -1,10 +1,7 @@
 import './SettingsPage.css'
 import { FaTimes } from 'react-icons/fa'
 
-
 function SettingsPage(props) {
-   
-
     if (props.show) {
         return (
             <div id="settingsPageContainer" className="mainBackgroundColor">
@@ -32,14 +29,17 @@ function SettingsPage(props) {
                         </label>
                     </div>
 
-                    <button onClick={handleSaveClick} className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">Save Simulation</button>
-
-                   
-
-                    <button onClick={props.toggleMenuAndSimulation} className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">
-                        Exit To Main Menu
+                    <button
+                        onClick={handleSaveClick}
+                        className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">
+                        Save Simulation
                     </button>
 
+                    <button
+                        onClick={props.toggleMenuAndSimulation}
+                        className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">
+                        Exit To Main Menu
+                    </button>
                 </div>
             </div>
         )
@@ -48,7 +48,7 @@ function SettingsPage(props) {
     function handleSaveClick() {
         // this is where we need to make the backend call to get the simulation data
         // jsonData = resultOfBackendCall
-        const jsonData = {key: 'value'}
+        const jsonData = { key: 'value' }
 
         // this filename is just a filler, the user can change it if they desire
         const fileName = 'mySimulation.json'
@@ -56,8 +56,9 @@ function SettingsPage(props) {
     }
 
     function saveJsonFile(jsonData, fileName) {
-
-        const jsonBlob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' })
+        const jsonBlob = new Blob([JSON.stringify(jsonData)], {
+            type: 'application/json',
+        })
         const url = URL.createObjectURL(jsonBlob)
         const link = document.createElement('a')
         link.href = url
@@ -67,12 +68,9 @@ function SettingsPage(props) {
         document.body.removeChild(link)
     }
 
-
     function handleToggleClick() {
         props.toggleTextCall()
     }
-
-
 }
 
 export default SettingsPage

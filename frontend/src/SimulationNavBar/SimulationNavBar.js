@@ -38,7 +38,7 @@ function SimulationNavBar({
     //hasSimulationStarted,
     topographyInfo,
     toggleTextSimulationCallback,
-    toggleMenuAndSimulation
+    toggleMenuAndSimulation,
 }) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
         useState(false)
@@ -47,7 +47,7 @@ function SimulationNavBar({
     const [showStatsPage, setShowStatsPage] = useState(false)
     const [showTopographyPage, setShowTopographyPage] = useState(false)
     const [showGridBorder, setShowGridBorder] = useState(false)
-    
+
     const [showSpeciesRelationshipPage, setShowSpeciesRelationshipPage] =
         useState(false)
     const [showSettingsPage, setShowSettingsPage] = useState(false)
@@ -150,14 +150,12 @@ function SimulationNavBar({
                 toggleSettingsPage={toggleSettingsPage}
                 toggleTextCall={toggleTextSimulationCallback}
                 toggleMenuAndSimulation={toggleMenuAndSimulation}
-                
             />
 
             <SpeciesRelationshipPage
                 show={showSpeciesRelationshipPage}
                 toggleSpeciesRelationshipPage={toggleSpeciesRelationshipPage}
             />
-            
 
             <StatsPage show={showStatsPage} closeStatsPage={closeStatsPage} />
 
@@ -271,8 +269,6 @@ function SimulationNavBar({
         setShowGridBorder(!showGridBorder)
     }
 
-   
-
     function toggleSpeciesRelationshipPage() {
         setShowSpeciesRelationshipPage(!showSpeciesRelationshipPage)
     }
@@ -329,7 +325,6 @@ function SimulationNavBar({
             props.toggleStatsPage()
         }
     }
-
 
     function TopographyButton(props) {
         return (

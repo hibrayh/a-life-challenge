@@ -34,8 +34,8 @@ app.on('activate', () => {
     }
 })
 
-function closeApplication(){
+function closeApplication() {
     app.quit()
 }
 
-module.exports = {closeApplication}
+module.exports = { closeApplication }

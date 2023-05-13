@@ -80,7 +80,7 @@ function App() {
         }
     }, [isSimulationRunning, simulationTicksPerSecond])
 
-    function toggleMenuAndSimulation(){
+    function toggleMenuAndSimulation() {
         setShowMenu(!showMenu)
         setShowSimulation(!showSimulation)
     }
@@ -110,10 +110,9 @@ function App() {
                             onClick={() => {
                                 setShowLoad(true)
                             }}>
-                            Load 
+                            Load
                         </button>
                     </div>
-
                 </div>
             </>
         )
