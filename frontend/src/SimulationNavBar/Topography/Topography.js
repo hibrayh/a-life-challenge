@@ -7,20 +7,29 @@ import axios from 'axios'
 let topographyInfo = []
 
 function TopographyPage(props) {
-    const [topography, setTopography] = useState('unselected')
+    const [topography, setTopography] = useState('flat')
+    const [forceUpdateMain, setForceUpdateMain] = useState(false)
     const [dragging, setDragging] = useState(false)
     const [position, setPosition] = useState({ x: 0, y: 160 })
+
+
+    // State variables for the custom topography form
+    const [currentForm, setCurrentForm] = useState("topography")
+    const [topographyName, setTopographyName] = useState("")
+    const [resourceShape, setResourceShape] = useState("circle")
+    const [elevation, setElevation] = useState(.5)
+    const [resourceDensity, setResourceDensity] = useState(.5)
+    const [resourceReplenishment, setResourceReplenishment] = useState(.5)
+    const [color, setColor] = useState("red")
+
+
+    // list will be initialized to be equal to topogrpahyInfo
+    // if a user clicks on a topography, it will only update topographyInfo
+    // if a user clicks on the exit button(not the submit button), then topography 
+    //  info will be set equal to list[], which would be the same topography 
+    //  information that was there before the user opened up the form.
     let list = []
-    /*async function getSimulationInfo() {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-simulation-info',
-        }).then((response) => {
-            const res = response.data
-            topographyInfo = res.topographyRegistry
-        })
-        console.log("ran")
-    }*/
+
 
     useEffect(() => {
 
@@ -29,9 +38,9 @@ function TopographyPage(props) {
                 method: 'GET',
                 url: 'http://localhost:5000/get-topography-info',
             }).then((response) => {
-                console.log(response)
                 topographyInfo = response.data.topographyRegistry
                 list = response.data.topographyRegistry
+                console.log("list", list)
             })
         }
 
@@ -65,15 +74,118 @@ function TopographyPage(props) {
         }
     }
 
+    
+
     if (props.show) {
-        return (
-            <>
+
+        if(currentForm == "topography"){
+            return (
+                <>
+                    <Grid
+                        showGridBorder={props.showGridBorder}
+                        selectTopography={topography}
+                        topographyInfo={topographyInfo}
+                        forceUpdateMain={forceUpdateMain}
+                    />
+                    <div
+                        id="topographyContainer"
+                        style={{ left: position.x, top: position.y }}>
+                        <div
+                            id="dragBox"
+                            onDragStart={handleDragStart}
+                            onDragEnd={handleDragEnd}
+                            onDrag={handleDrag}>
+                            <FaArrowsAlt size={22} />
+                        </div>
+    
+                        
+                        <div className="formSwitchContainer">
+                            <div onClick={() => {setCurrentForm("topography")}} className="formSwitchOption buttonHover" style={{backgroundColor: "rgb(61, 61, 61)", color: "white"}}>Topography</div>
+                            <div onClick={() => {setCurrentForm("customTopography")}}className="formSwitchOption buttonHover">Custom Topography</div>
+                        </div>
+                        <button
+                            onClick={() => {
+                                topographyInfo = list
+                                setForceUpdateMain(!forceUpdateMain)
+                                props.closeTopographyPage()
+                            }
+                            }
+                            className="formExitButton buttonHover2">
+                            <FaTimes size={25} />
+                        </button>
+    
+                        {
+                            //swapped to radio buttons, that way a user knows that the most recent topography selected is the one being placed down
+                            //once a radio button is pressed, the topography is updated (using setTopography) to the selected one.
+                        }
+                        <form id="topographyForm">
+
+                            <div className="bottomMargin leftAlign">
+                                <h1 id="topographyDescription">Select the desired topography, then click on the boxes to assign the region.</h1>
+                            </div>
+                            <div className="bottomMargin leftAlign">
+                                <label className="dataTitle">Flat</label>
+                                <input
+                                    onChange={(event) => setTopography('flat')}
+                                    type="radio"
+                                    value="Grass"
+                                    name="topographyRadio"
+                                    defaultChecked={true}></input>
+                                <br></br>
+                            </div>
+    
+                            <div className="bottomMargin leftAlign">
+                                <label className="dataTitle">Mild</label>
+                                <input
+                                    onChange={(event) => setTopography('mild')}
+                                    type="radio"
+                                    value="Rocky"
+                                    name="topographyRadio"></input>
+                                <br></br>
+                            </div>
+    
+                            <div className="bottomMargin leftAlign">
+                                <label className="dataTitle">Moderate</label>
+                                <input
+                                    onChange={(event) => setTopography('moderate')}
+                                    type="radio"
+                                    value="Snowy"
+                                    name="topographyRadio"></input>
+                                <br></br>
+                            </div>
+    
+                            <div className="bottomMargin leftAlign">
+                                <label className="dataTitle">Extreme</label>
+                                <input
+                                    onChange={(event) => setTopography('extreme')}
+                                    type="radio"
+                                    value="Wet"
+                                    name="topographyRadio"></input>
+                                <br></br>
+                            </div>
+    
+    
+                            <div onClick={(event) =>{submitTopography(event)}} className="buttonHover buttonBackgroundColor topographySubmitButton">Submit Changes</div>
+    
+                        </form>
+                    </div>
+                </>
+            )
+
+        }
+
+        if(currentForm == "customTopography"){
+            
+            return(
+               
+                <>
+
                 <Grid
                     showGridBorder={props.showGridBorder}
                     selectTopography={topography}
                     topographyInfo={topographyInfo}
+                    forceUpdateMain={forceUpdateMain}
                 />
-
                 <div
                     id="topographyContainer"
                     style={{ left: position.x, top: position.y }}>
@@ -84,98 +196,209 @@ function TopographyPage(props) {
                         onDrag={handleDrag}>
                         <FaArrowsAlt size={22} />
                     </div>
-
-                    <h1 className="mainTitleFont">Topography</h1>
+                    
+                    <div className="formSwitchContainer">
+                        <div onClick={() => {setCurrentForm("topography")}} className="formSwitchOption buttonHover">Topography</div>
+                        <div onClick={() => {setCurrentForm("customTopography")}}className="formSwitchOption buttonHover" style={{backgroundColor: "rgb(61, 61, 61)", color: "white"}}>Custom Topography</div>
+                    </div>
+                    
+                    
                     <button
-                        onClick={props.closeTopographyPage}
+                        onClick={() => {
+                            topographyInfo = list
+                            setForceUpdateMain(!forceUpdateMain)
+                            props.closeTopographyPage()
+                        }
+                        }
                         className="formExitButton buttonHover2">
                         <FaTimes size={25} />
                     </button>
+                    
 
-                    {
-                        //swapped to radio buttons, that way a user knows that the most recent topography selected is the one being placed down
-                        //once a radio button is pressed, the topography is updated (using setTopography) to the selected one.
-                    }
-                    <form id="topographyForm">
-                        <div className="attributeHolder">
-                            <label className="dataTitle">Flat</label>
-                            <input
-                                onChange={(event) => setTopography('flat')}
-                                type="radio"
-                                value="Grass"
-                                name="topographyRadio"></input>
-                            <br></br>
+                    <form id="customTopographyForm">
+
+
+                        <div className="bottomMargin leftAlign">
+                            <h1 id="resourceTitle">Topography Attributes:</h1>
                         </div>
 
-                        <div className="attributeHolder">
-                            <label className="dataTitle">Mild</label>
-                            <input
-                                onChange={(event) => setTopography('mild')}
-                                type="radio"
-                                value="Rocky"
-                                name="topographyRadio"></input>
-                            <br></br>
-                        </div>
+                        <div className="bottomMargin leftAlign">
 
-                        <div className="attributeHolder">
-                            <label className="dataTitle">Moderate</label>
+                            <span className="topographyDataTitle">Name</span>
                             <input
-                                onChange={(event) => setTopography('moderate')}
-                                type="radio"
-                                value="Snowy"
-                                name="topographyRadio"></input>
-                            <br></br>
-                        </div>
+                                onChange={(event) =>
+                                    setTopographyName(event.target.value)
+                                }
+                                className="topographyDropDownOption"
+                                type="text"
+                                value={topographyName}>
+                                
+                            </input>
 
-                        <div className="attributeHolder">
-                            <label className="dataTitle">Extreme</label>
-                            <input
-                                onChange={(event) => setTopography('extreme')}
-                                type="radio"
-                                value="Wet"
-                                name="topographyRadio"></input>
-                            <br></br>
+
                         </div>
 
 
-                        <div onClick={(event) =>{submitTopography(event)}} id="topographySubmitButton" className="buttonHover buttonBackgroundColor">Submit</div>
+
+
+                        <div className="bottomMargin leftAlign">
+
+                            <span className="topographyDataTitle">Elevation</span>
+                            <input
+                                onChange={(event) =>
+                                    setElevation(event.target.value)
+                                }
+                                className="topographyDataSlider"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step=".01"
+                                value={elevation}></input>
+                            <input
+                                onChange={(event) =>
+                                    setElevation(event.target.value)
+                                }
+                                className="topographyDataText"
+                                type="number"
+                                min="0"
+                                max="1"
+                                step=".01"
+                                value={elevation}></input>
+                            <br></br>
+
+                        </div>
+
+                        
+                        <div className="bottomMargin leftAlign">
+                            <h1 id="resourceTitle">Resource Attributes:</h1>
+                        </div>
+
+                        <div className="bottomMargin leftAlign">
+
+                            <span className="topographyDataTitle">Denisty</span>
+                            <input
+                                onChange={(event) =>
+                                    setResourceDensity(event.target.value)
+                                }
+                                className="topographyDataSlider"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step=".01"
+                                value={resourceDensity}></input>
+                            <input
+                                onChange={(event) =>
+                                    setResourceDensity(event.target.value)
+                                }
+                                className="topographyDataText"
+                                type="number"
+                                min="0"
+                                max="1"
+                                step=".01"
+                                value={resourceDensity}></input>
+                            <br></br>
+
+                        </div>
+                        
+
+
+
+                        <div className="bottomMargin leftAlign">
+
+                            <span className="topographyDataTitle">Replenishment</span>
+                            <input
+                                onChange={(event) =>
+                                    setResourceReplenishment(event.target.value)
+                                }
+                                className="topographyDataSlider"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step=".01"
+                                value={resourceReplenishment}></input>
+                            <input
+                                onChange={(event) =>
+                                    setResourceReplenishment(event.target.value)
+                                }
+                                className="topographyDataText"
+                                type="number"
+                                min="0"
+                                max="1"
+                                step=".01"
+                                value={resourceReplenishment}></input>
+                            <br></br>
+
+                        </div>
+
+
+                        <div className="bottomMargin leftAlign">
+
+                            <label className="topographyDataTitle">Color</label>
+                            <select
+                                onChange={(event) => setColor(event.target.value)}
+                                className="topographyDropDownOption"
+                               
+                                value={color}>
+                                <option value="red">Red</option>
+                                <option value="blue">Blue</option>
+                                <option value="green">Green</option>
+                            </select>
+                            <br></br>
+                        </div>
+
+
+                        <div className="bottomMargin leftAlign">
+
+                            <label className="topographyDataTitle">Shape</label>
+                            <select
+                                onChange={(event) => setResourceShape(event.target.value)}
+                                className="topographyDropDownOption"
+                            
+                                value={resourceShape}>
+                                <option value="circle">Circle</option>
+                                <option value="square">Square</option>
+                                <option value="triangle">Triangle</option>
+                            </select>
+                            <br></br>
+                        </div>
+
 
                     </form>
+                    
+                    <div onClick={(event) =>{createTopography(event)}} className="buttonHover buttonBackgroundColor customTopographySubmitButton">Create Topography</div>
+                    
                 </div>
-            </>
-        )
+                </>
+            )
+            
+
+        }
+        
     } else {
         return (
             <Grid
                 showGridBorder={props.showGridBorder}
                 topographyInfo={topographyInfo}
+                forceUpdateMain={forceUpdateMain}
             />
         )
     }
 
-    function updateList(nodeToChange, toDelete){
-        
-        if(toDelete){
+    function createTopography(e){
+        // create new topography using given data
+        // [topographyName, resourceShape, elevation, resourceDensity, resourceReplenishment, color]
 
-            let index = list.findIndex(function(node){
-                if (nodeToChange.row === node.row && nodeToChange.column === node.column) {
-                    return true
-                }
-            })
-
-            list.splice(index, 1)
-        }
-        else{
-
-            
-        }
     }
     function submitTopography(e){
        
         // Send all of the topographies to backend
+        // topographyInfo contains all correct nodes 
+
+
        
         console.log("list", list)
         console.log("topographyInfo", topographyInfo)
+        props.closeTopographyPage()
     }
 }
 
@@ -200,32 +423,6 @@ function Grid(props) {
         )
     }
 
-    /*
-    let i = 0
-    for (let row = 0; row < 25; row++) {
-        let currentRow = []
-        for (let column = 0; column < 50; column++) {
-            currentRow.push(
-                <Node
-                    id={props.topographyInfo[i]}
-                    toggleSelected={toggleSelected}
-                    topography={props.topographyInfo[i].type}
-                    selectTopography={props.selectTopography}
-                    showGridBorder={props.showGridBorder}
-                    row={props.topographyInfo[i].row}
-                    col={props.topographyInfo[i].column}
-                />
-            )
-            i += 1
-        }
-        jsx.push(
-            <div id={"row" + row} class="flex-container">
-                {currentRow}
-            </div>
-        )
-    }
-    */
-
     return (
         <div>
             <div id="mainGrid">{jsx}</div>
@@ -240,7 +437,7 @@ function Grid(props) {
             }
         })
 
-        console.log(row, col)
+        //props.updateList(row, col, props.selectTopography)
 
         //if the topography is selected, update the coord, else flip it
         if (topographyInfo[index].type != 'unselected') {

@@ -20,7 +20,7 @@ import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 import StatsPage from './StatsPage/StatsPage.js'
 import { TopographyPage } from './Topography/Topography.js'
-import SavePage from './SavePage/SavePage.js'
+
 import SpeciesRelationshipPage from './SpeciesRelationshipPage/SpeciesRelationshipPage.js'
 import SettingsPage from './SettingsPage/SettingsPage.js'
 
@@ -47,7 +47,7 @@ function SimulationNavBar({
     const [showStatsPage, setShowStatsPage] = useState(false)
     const [showTopographyPage, setShowTopographyPage] = useState(false)
     const [showGridBorder, setShowGridBorder] = useState(false)
-    const [showSavePage, setShowSavePage] = useState(false)
+    
     const [showSpeciesRelationshipPage, setShowSpeciesRelationshipPage] =
         useState(false)
     const [showSettingsPage, setShowSettingsPage] = useState(false)
@@ -150,14 +150,14 @@ function SimulationNavBar({
                 toggleSettingsPage={toggleSettingsPage}
                 toggleTextCall={toggleTextSimulationCallback}
                 toggleMenuAndSimulation={toggleMenuAndSimulation}
-                toggleSavePage={toggleSavePage}
+                
             />
 
             <SpeciesRelationshipPage
                 show={showSpeciesRelationshipPage}
                 toggleSpeciesRelationshipPage={toggleSpeciesRelationshipPage}
             />
-            <SavePage show={showSavePage} toggleSavePage={toggleSavePage} />
+            
 
             <StatsPage show={showStatsPage} closeStatsPage={closeStatsPage} />
 
@@ -271,9 +271,7 @@ function SimulationNavBar({
         setShowGridBorder(!showGridBorder)
     }
 
-    function toggleSavePage() {
-        setShowSavePage(!showSavePage)
-    }
+   
 
     function toggleSpeciesRelationshipPage() {
         setShowSpeciesRelationshipPage(!showSpeciesRelationshipPage)
@@ -332,17 +330,6 @@ function SimulationNavBar({
         }
     }
 
-// function SaveButton(props) {
-//     return (
-//         <button
-//             onClick={props.toggleSavePage}
-//             id="saveButton"
-//             className="navButton buttonHover"
-//             title="Save">
-//             <FaSave />
-//         </button>
-//     )
-// }
 
     function TopographyButton(props) {
         return (

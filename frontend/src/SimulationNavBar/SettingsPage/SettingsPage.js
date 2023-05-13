@@ -32,12 +32,9 @@ function SettingsPage(props) {
                         </label>
                     </div>
 
-                    <button onClick={() => {
-                        props.toggleSavePage()
-                        props.toggleSettingsPage()
-                        }} className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">
-                        Save Simulation
-                    </button>
+                    <button onClick={handleSaveClick} className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">Save Simulation</button>
+
+                   
 
                     <button onClick={props.toggleMenuAndSimulation} className="subTitleFont buttonBackgroundColor buttonHover settingsPageButton">
                         Exit To Main Menu
@@ -47,6 +44,29 @@ function SettingsPage(props) {
             </div>
         )
     }
+
+    function handleSaveClick() {
+        // this is where we need to make the backend call to get the simulation data
+        // jsonData = resultOfBackendCall
+        const jsonData = {key: 'value'}
+
+        // this filename is just a filler, the user can change it if they desire
+        const fileName = 'mySimulation.json'
+        saveJsonFile(jsonData, fileName)
+    }
+
+    function saveJsonFile(jsonData, fileName) {
+
+        const jsonBlob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' })
+        const url = URL.createObjectURL(jsonBlob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = fileName
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+    }
+
 
     function handleToggleClick() {
         props.toggleTextCall()
