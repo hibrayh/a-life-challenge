@@ -553,9 +553,9 @@ class God:
             topography.TemplateTopography.MODERATE: "yellow",
             topography.TemplateTopography.EXTREME: "red",
         }
-        return(topographyTypes)
+        return (topographyTypes)
 
 #myGod = God(1920, 989, 50, 25)
 #myGod.addCustomResource("Fish", 0.5,"blue", "circle", 8)
 #myGod.addCustomResource("Berries", 0.1, "red", "triangle", 50)
-#myGod.getTopographyTypes()
+# myGod.getTopographyTypes()
