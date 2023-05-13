@@ -140,7 +140,7 @@ function SimulationNavBar({
             <SettingsPage
                 show={showSettingsPage}
                 toggleSettingsPage={toggleSettingsPage}
-                toggleTextCall={toggleTextSimulationCallback}
+                toggleTextCall={showTextToggle}
                 toggleMenuAndSimulation={toggleMenuAndSimulation}
             />
 

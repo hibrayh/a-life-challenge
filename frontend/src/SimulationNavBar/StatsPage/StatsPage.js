@@ -22,7 +22,6 @@ function StatsPage(props) {
                 setSelectedSpecies(res.speciesNames[0])
             })
         }
-        console.log('useeffect')
         getSpeciesList()
     }, [props.show])
 
