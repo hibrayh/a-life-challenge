@@ -33,3 +33,9 @@ app.on('activate', () => {
         createWindow()
     }
 })
+
+function closeApplication() {
+    app.quit()
+}
+
+module.exports = { closeApplication }

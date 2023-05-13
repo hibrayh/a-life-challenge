@@ -1,10 +1,10 @@
 #settingsPageContainer {
-    height: 40vmin;
+    height: 33vmin;
     width: 40vmin;
 
     position: absolute;
-    left: calc(50% - 22.5vmin);
-    top: calc(50% - 30vmin);
+    left: calc(50% - 20vmin);
+    top: calc(50% - 25vmin);
 }
 
 .settingsPageButton {

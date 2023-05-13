@@ -20,7 +20,7 @@ import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 import StatsPage from './StatsPage/StatsPage.js'
 import { TopographyPage } from './Topography/Topography.js'
-import SavePage from './SavePage/SavePage.js'
+
 import SpeciesRelationshipPage from './SpeciesRelationshipPage/SpeciesRelationshipPage.js'
 import SettingsPage from './SettingsPage/SettingsPage.js'
 
@@ -38,6 +38,7 @@ function SimulationNavBar({
     //hasSimulationStarted,
     topographyInfo,
     toggleTextSimulationCallback,
+    toggleMenuAndSimulation,
 }) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
         useState(false)
@@ -46,7 +47,7 @@ function SimulationNavBar({
     const [showStatsPage, setShowStatsPage] = useState(false)
     const [showTopographyPage, setShowTopographyPage] = useState(false)
     const [showGridBorder, setShowGridBorder] = useState(false)
-    const [showSavePage, setShowSavePage] = useState(false)
+
     const [showSpeciesRelationshipPage, setShowSpeciesRelationshipPage] =
         useState(false)
     const [showSettingsPage, setShowSettingsPage] = useState(false)
@@ -147,14 +148,14 @@ function SimulationNavBar({
             <SettingsPage
                 show={showSettingsPage}
                 toggleSettingsPage={toggleSettingsPage}
-                toggleTextCall={showTextToggle}
+                toggleTextCall={toggleTextSimulationCallback}
+                toggleMenuAndSimulation={toggleMenuAndSimulation}
             />
 
             <SpeciesRelationshipPage
                 show={showSpeciesRelationshipPage}
                 toggleSpeciesRelationshipPage={toggleSpeciesRelationshipPage}
             />
-            <SavePage show={showSavePage} toggleSavePage={toggleSavePage} />
 
             <StatsPage show={showStatsPage} closeStatsPage={closeStatsPage} />
 
@@ -162,6 +163,7 @@ function SimulationNavBar({
                 show={showTopographyPage}
                 closeTopographyPage={closeTopographyPage}
                 showGridBorder={showGridBorder}
+                topographyInfo={topographyInfo}
             />
 
             <NewCreatureOrSpeciesForm
@@ -267,10 +269,6 @@ function SimulationNavBar({
         setShowGridBorder(!showGridBorder)
     }
 
-    function toggleSavePage() {
-        setShowSavePage(!showSavePage)
-    }
-
     function toggleSpeciesRelationshipPage() {
         setShowSpeciesRelationshipPage(!showSpeciesRelationshipPage)
     }
@@ -326,18 +324,6 @@ function SimulationNavBar({
         function handleClick() {
             props.toggleStatsPage()
         }
-    }
-
-    function SaveButton(props) {
-        return (
-            <button
-                onClick={props.toggleSavePage}
-                id="saveButton"
-                className="navButton buttonHover"
-                title="Save">
-                <FaSave />
-            </button>
-        )
     }
 
     function TopographyButton(props) {

@@ -78,7 +78,12 @@ function App() {
         return () => {
             window.removeEventListener('resize', handleResize)
         }
-    }, [])
+    }, [isSimulationRunning, simulationTicksPerSecond])
+
+    function toggleMenuAndSimulation() {
+        setShowMenu(!showMenu)
+        setShowSimulation(!showSimulation)
+    }
 
     const Menu = () => {
         return (
@@ -105,12 +110,8 @@ function App() {
                             onClick={() => {
                                 setShowLoad(true)
                             }}>
-                            Load Simulation
+                            Load
                         </button>
-                    </div>
-
-                    <div>
-                        <button id="menuButtonQuit">Quit</button>
                     </div>
                 </div>
             </>
