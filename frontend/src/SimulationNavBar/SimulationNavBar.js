@@ -20,7 +20,7 @@ import { NewCreatureOrSpeciesForm } from './CreatureForms/NewCreatureForm.js'
 import NewSpeciesForm from './CreatureForms/NewSpeciesForm.js'
 import StatsPage from './StatsPage/StatsPage.js'
 import { TopographyPage } from './Topography/Topography.js'
-import SavePage from './SavePage/SavePage.js'
+
 import SpeciesRelationshipPage from './SpeciesRelationshipPage/SpeciesRelationshipPage.js'
 import SettingsPage from './SettingsPage/SettingsPage.js'
 
@@ -38,6 +38,7 @@ function SimulationNavBar({
     //hasSimulationStarted,
     topographyInfo,
     toggleTextSimulationCallback,
+    toggleMenuAndSimulation,
 }) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
         useState(false)
@@ -46,13 +47,12 @@ function SimulationNavBar({
     const [showStatsPage, setShowStatsPage] = useState(false)
     const [showTopographyPage, setShowTopographyPage] = useState(false)
     const [showGridBorder, setShowGridBorder] = useState(false)
-    const [showSavePage, setShowSavePage] = useState(false)
+
     const [showSpeciesRelationshipPage, setShowSpeciesRelationshipPage] =
         useState(false)
     const [showSettingsPage, setShowSettingsPage] = useState(false)
 
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
-    const [isSimulationRunning, setIsSimulationRunning] = useState(false)
     const [ticksUpdated, setTicksUpdated] = useState(false) //necessary for visual changes
     //const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
     //const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
@@ -83,6 +83,8 @@ function SimulationNavBar({
                 ticks: simulationTicksPerSecond,
             },
         })
+        setTicksUpdated(!ticksUpdated)
+        console.log('tick speed updated to ', simulationTicksPerSecond)
     }
 
     const updateTextToggle = async () => {
@@ -94,6 +96,7 @@ function SimulationNavBar({
                 toggle: toggleText,
             },
         })
+        setTicksUpdated(!ticksUpdated)
     }
 
     const flagSimulationUpdate = async () => {
@@ -108,24 +111,21 @@ function SimulationNavBar({
     }
 
     const playPauseSimulation = async () => {
-        if (isSimulationRunning) {
+        if (simulationTicksPerSecond > 0) {
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
-            setIsSimulationRunning(false)
-        } else {
+        } else if (simulationTicksPerSecond == 0) {
             if (!hasSimulationStarted) {
                 await startSimulation()
             }
             simulationTicksPerSecond = simulationSpeedBeforePause
-            setIsSimulationRunning(true)
         }
         await updateSimulationTickSpeed()
     }
 
     const incrementTicksPerSecond = () => {
         simulationTicksPerSecond += 1
-        setTicksUpdated(!ticksUpdated)
-        setIsSimulationRunning(simulationTicksPerSecond + 1 > 0)
+        //setTicksUpdated(!ticksUpdated)
     }
 
     const decrementTicksPerSecond = () => {
@@ -134,8 +134,7 @@ function SimulationNavBar({
         } else {
             simulationTicksPerSecond = 0
         }
-        setTicksUpdated(!ticksUpdated)
-        setIsSimulationRunning(simulationTicksPerSecond > 0)
+        //setTicksUpdated(!ticksUpdated)
     }
 
     const showTextToggle = async () => {
@@ -149,14 +148,14 @@ function SimulationNavBar({
             <SettingsPage
                 show={showSettingsPage}
                 toggleSettingsPage={toggleSettingsPage}
-                toggleTextCall={showTextToggle}
+                toggleTextCall={toggleTextSimulationCallback}
+                toggleMenuAndSimulation={toggleMenuAndSimulation}
             />
 
             <SpeciesRelationshipPage
                 show={showSpeciesRelationshipPage}
                 toggleSpeciesRelationshipPage={toggleSpeciesRelationshipPage}
             />
-            <SavePage show={showSavePage} toggleSavePage={toggleSavePage} />
 
             <StatsPage show={showStatsPage} closeStatsPage={closeStatsPage} />
 
@@ -164,6 +163,7 @@ function SimulationNavBar({
                 show={showTopographyPage}
                 closeTopographyPage={closeTopographyPage}
                 showGridBorder={showGridBorder}
+                topographyInfo={topographyInfo}
             />
 
             <NewCreatureOrSpeciesForm
@@ -269,10 +269,6 @@ function SimulationNavBar({
         setShowGridBorder(!showGridBorder)
     }
 
-    function toggleSavePage() {
-        setShowSavePage(!showSavePage)
-    }
-
     function toggleSpeciesRelationshipPage() {
         setShowSpeciesRelationshipPage(!showSpeciesRelationshipPage)
     }
@@ -328,18 +324,6 @@ function SimulationNavBar({
         function handleClick() {
             props.toggleStatsPage()
         }
-    }
-
-    function SaveButton(props) {
-        return (
-            <button
-                onClick={props.toggleSavePage}
-                id="saveButton"
-                className="navButton buttonHover"
-                title="Save">
-                <FaSave />
-            </button>
-        )
     }
 
     function TopographyButton(props) {

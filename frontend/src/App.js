@@ -49,6 +49,17 @@ function App() {
         setHasSimulationStarted(true)
     }
 
+    const flagSimulationUpdate = async () => {
+        // Make a call to the backend to tell the animation to snag the first info
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:5000/flag-simulation-update',
+            data: {
+                update: 1,
+            },
+        })
+    }
+
     useEffect(() => {
         const handleResize = debounce(async () => {
             await axios({
@@ -59,6 +70,7 @@ function App() {
                     newHeight: window.innerHeight,
                 },
             })
+            await flagSimulationUpdate()
         })
 
         window.addEventListener('resize', handleResize)
@@ -66,7 +78,12 @@ function App() {
         return () => {
             window.removeEventListener('resize', handleResize)
         }
-    }, [])
+    }, [isSimulationRunning, simulationTicksPerSecond])
+
+    function toggleMenuAndSimulation() {
+        setShowMenu(!showMenu)
+        setShowSimulation(!showSimulation)
+    }
 
     const Menu = () => {
         return (
@@ -93,12 +110,8 @@ function App() {
                             onClick={() => {
                                 setShowLoad(true)
                             }}>
-                            Load Simulation
+                            Load
                         </button>
-                    </div>
-
-                    <div>
-                        <button id="menuButtonQuit">Quit</button>
                     </div>
                 </div>
             </>
