@@ -115,9 +115,7 @@ function SimulationNavBar({
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
         } else if (simulationTicksPerSecond == 0) {
-            if (!hasSimulationStarted) {
-                await startSimulation()
-            }
+
             simulationTicksPerSecond = simulationSpeedBeforePause
         }
         await updateSimulationTickSpeed()

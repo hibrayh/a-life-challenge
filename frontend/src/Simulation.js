@@ -45,8 +45,6 @@ function Simulation() {
 
         await getSimulationInfo()
         await getLightVisibility()
-        await getTextToggle()
-        await getTickSpeed()
     }
 
     const progressSimulationTimeByNTicks = async () => {
@@ -61,8 +59,6 @@ function Simulation() {
 
         await getSimulationInfo()
         await getLightVisibility()
-        await getTextToggle()
-        await getTickSpeed()
     }
 
     const getTextToggle = async () => {
@@ -84,24 +80,6 @@ function Simulation() {
         await getTextToggle()
     }
 
-    const getUpdateFlag = async () => {
-        let flag = 0
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-simulation-update-flag',
-        }).then((response) => {
-            flag = response.data
-            console.log(flag)
-        })
-        if (flag) {
-            await getSimulationInfo()
-        }
-    }
-
-    const updateFlag = async () => {
-        await getUpdateFlag()
-    }
-
     const getSimulationInfo = async () => {
         await axios({
             method: 'GET',
@@ -111,6 +89,8 @@ function Simulation() {
             setCreatureList(res.creatureRegistry)
             setResourceList(res.resourceRegistry)
         })
+        await getTickSpeed()
+        await getTextToggle()
         setUpdate(!update)
     }
 
@@ -171,9 +151,6 @@ function Simulation() {
                     // still have to check if the tick speed has changed, if new creature/species have been added, or text toggle
                     //this only runs if the tick speed is 0, meaning no calculations are going on in the back end
                     //thus, while it happens every second, it will not cause lag to the actual running of the simulation
-                    tickSpeed()
-                    textToggle()
-                    //updateFlag()
                     getInfo()
                 }
             },
