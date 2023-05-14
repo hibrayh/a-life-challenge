@@ -560,5 +560,3 @@ class God:
 #myGod.addCustomResource("Berries", 0.1, "red", "triangle", 50)
 
 # myGod.getTopographyTypes()
-
-

@@ -470,11 +470,8 @@ def addCustomResource():
     return "Success", 201
 
 
-
 @api.route('/get-topography-types', methods=['GET'])
 @cross_origin()
 def getTopographyTypes():
     global GOD
     return jsonify(GOD.getTopographyTypes())
-
-
