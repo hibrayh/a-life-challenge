@@ -22,9 +22,8 @@ function StatsPage(props) {
                 setSelectedSpecies(res.speciesNames[0])
             })
         }
-
         getSpeciesList()
-    }, [])
+    }, [props.show])
 
     if (props.show) {
         return (
@@ -114,7 +113,10 @@ function ListSpeciesGenomeInformation(props) {
             })
         }
 
-        getSpeciesInfo()
+        if (props.speciesName) {
+            //don't try and call the backend for the species info if there is no info
+            getSpeciesInfo()
+        }
     }, [props.speciesName])
 
     if (showCreatureData) {
@@ -199,7 +201,6 @@ function ListCreatureGenomeInfo(props) {
                 setCreatureGenomeInfo(res)
             })
         }
-
         getCreatureInfo()
     }, [props.creatureName])
 

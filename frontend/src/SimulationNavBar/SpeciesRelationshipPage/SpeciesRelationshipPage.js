@@ -42,7 +42,7 @@ function SpeciesRelationshipPage(props) {
             })
         }
         init()
-    }, [])
+    }, [props.show])
 
     // This will disable the submit button unless all values are valid
     let submitButtonDisabled
