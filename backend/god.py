@@ -542,9 +542,21 @@ class God:
                                      self._environment)
         return {
             'topographyGeography': topo.getGeography(),
-            'topographyRegistry': self._environment.getRegisteredTopography()
+            'topographyRegistry': self._environment.getRegisteredTopography(),
+            'topographyTypes': self.getTopographyTypes()
         }
+
+    def getTopographyTypes(self):
+        topographyTypes = {
+            topography.TemplateTopography.FLAT: "blue",
+            topography.TemplateTopography.MILD: "purple",
+            topography.TemplateTopography.MODERATE: "yellow",
+            topography.TemplateTopography.EXTREME: "red",
+        }
+        return (topographyTypes)
 
 #myGod = God(1920, 989, 50, 25)
 #myGod.addCustomResource("Fish", 0.5,"blue", "circle", 8)
 #myGod.addCustomResource("Berries", 0.1, "red", "triangle", 50)
+
+# myGod.getTopographyTypes()
