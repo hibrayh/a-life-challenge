@@ -306,21 +306,6 @@ def getTextToggle():
     return jsonify(GOD.getTextToggle())
 
 
-@api.route('/flag-simulation-update', methods=['POST'])
-@cross_origin()
-def editSimulationUpdate():
-    global GOD
-    GOD.flagSimulationUpdate(int(request.json['update']))
-    return "Success", 201
-
-
-@api.route('/get-simulation-update-flag')
-@cross_origin()
-def getSimulationUpdateFlag():
-    # logging.info(f"{GOD.getSimulationUpdateFlag()}")
-    return jsonify(GOD.getSimulationUpdateFlag())
-
-
 @api.route('/get-list-of-species')
 @cross_origin()
 def getListOfSpecies():
