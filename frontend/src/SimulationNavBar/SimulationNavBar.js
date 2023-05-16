@@ -78,7 +78,7 @@ function SimulationNavBar({
 
     const updateSimulationTickSpeed = async () => {
         // Make a call to the backend to change the tick speed
-        if(!paused){
+        if (!paused) {
             await axios({
                 method: 'POST',
                 url: 'http://localhost:5000/update-tick-speed',
@@ -104,8 +104,8 @@ function SimulationNavBar({
     }
 
     const playPauseSimulation = async () => {
-
-        if(!paused){ //don't allow the user to unpause if a form is opened
+        if (!paused) {
+            //don't allow the user to unpause if a form is opened
 
             if (simulationTicksPerSecond > 0) {
                 //pause
@@ -121,7 +121,7 @@ function SimulationNavBar({
                     simulationTicksPerSecond = 1
                 }
             }
-        } 
+        }
 
         await updateSimulationTickSpeed()
     }
@@ -129,7 +129,15 @@ function SimulationNavBar({
     // manages unpausing when ALL are closed
     const formsOpenUnpause = async () => {
         // all forms have to be closed for the simulation to unpause
-        if(!creatureOrSpeciesFormOpen && !newCreatureFormOpen && !newSpeciesFormOpen && !statsPageOpen && !topographyPageOpen && !speciesRelationshipPageOpen && !settingsPageOpen){
+        if (
+            !creatureOrSpeciesFormOpen &&
+            !newCreatureFormOpen &&
+            !newSpeciesFormOpen &&
+            !statsPageOpen &&
+            !topographyPageOpen &&
+            !speciesRelationshipPageOpen &&
+            !settingsPageOpen
+        ) {
             paused = false
 
             if (simulationSpeedBeforePause !== 0) {
@@ -143,17 +151,17 @@ function SimulationNavBar({
             //pause
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
-        } 
+        }
     }
 
     const incrementTicksPerSecond = () => {
-        if(!paused){
+        if (!paused) {
             simulationTicksPerSecond += 1
         }
     }
 
     const decrementTicksPerSecond = () => {
-        if(!paused){
+        if (!paused) {
             if (simulationTicksPerSecond > 0) {
                 simulationTicksPerSecond -= 1
             } else {
@@ -253,7 +261,6 @@ function SimulationNavBar({
         creatureOrSpeciesFormOpen = !creatureOrSpeciesFormOpen
         paused = true
         formsOpenUnpause()
-
     }
 
     function toggleNewCreatureForm() {
