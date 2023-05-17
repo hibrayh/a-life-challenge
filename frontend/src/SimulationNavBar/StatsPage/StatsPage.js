@@ -2,7 +2,15 @@ import React from 'react'
 import './StatsPage.css'
 import { useState, useEffect } from 'react'
 import { FaTimes, FaArrowLeft } from 'react-icons/fa'
-import axios from 'axios'
+
+import {
+    GetSpeciesListRequest,
+    GetSpeciesInfoRequest,
+    GetCreatureInfoRequest,
+} from './../../generated_comm_files/backend_api_pb'
+import { BackendClient } from '../../generated_comm_files/backend_api_grpc_web_pb'
+
+var backendService = new BackendClient('http://localhost:44039')
 
 function StatsPage(props) {
     const [list, setList] = useState([])
@@ -13,13 +21,11 @@ function StatsPage(props) {
 
     useEffect(() => {
         const getSpeciesList = async () => {
-            await axios({
-                method: 'GET',
-                url: 'http://localhost:5000/get-list-of-species',
-            }).then((response) => {
-                const res = response.data
-                setList(res.speciesNames)
-                setSelectedSpecies(res.speciesNames[0])
+            var request = new GetSpeciesListRequest()
+
+            backendService.getSpeciesList(request, {}, function (error, response) {
+                setList(request.getSpecies())
+                setSelectedSpecies(request.getSpecies()[0])
             })
         }
         getSpeciesList()
@@ -89,27 +95,12 @@ function ListSpeciesGenomeInformation(props) {
 
     useEffect(() => {
         const getSpeciesInfo = async () => {
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/get-species-genome',
-                data: {
-                    speciesOfInterest: props.speciesName,
-                },
-            }).then((response) => {
-                const res = response.data
+            var request = new GetSpeciesInfoRequest()
+            request.setSpeciesofinterest(props.speciesName)
 
-                setSpeciesGenomeInfo(res)
-            })
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/get-creature-list-from-species',
-                data: {
-                    speciesOfInterest: props.speciesName,
-                },
-            }).then((response) => {
-                const res = response.data
-
-                setCreatureNames(res.creatures)
+            backendService.getSpeciesInfo(request, {}, function(err, response) {
+                setSpeciesGenomeInfo(response.getGenometemplate())
+                setCreatureNames(response.getCreatures())
             })
         }
 
@@ -188,17 +179,12 @@ function ListCreatureGenomeInfo(props) {
 
     useEffect(() => {
         const getCreatureInfo = async () => {
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/get-creature-genome',
-                data: {
-                    speciesOfInterest: props.speciesName,
-                    creatureOfInterest: props.creatureName,
-                },
-            }).then((response) => {
-                const res = response.data
+            var request = new GetCreatureInfoRequest()
+            request.setCreatureofinterest(props.creatureName)
+            request.setSpecies(props.speciesName)
 
-                setCreatureGenomeInfo(res)
+            await backendService.getCreatureInfo(request, {}, function(err, response) {
+                setCreatureGenomeInfo(response.getGenome())
             })
         }
         getCreatureInfo()

@@ -2,12 +2,12 @@ import './NewCreatureForm.css'
 import React from 'react'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
-import axios from 'axios'
-import { ChromePicker } from 'react-color'
 
 import {
     GetSpeciesListRequest,
     GetSpeciesInfoRequest,
+    GenomeInfo,
+    CreateNewCreatureRequest,
 } from './../../generated_comm_files/backend_api_pb'
 import { BackendClient } from './../../generated_comm_files/backend_api_grpc_web_pb'
 
@@ -63,9 +63,9 @@ function NewCreatureForm(props) {
     const getSpeciesList = async () => {
         var request = new GetSpeciesListRequest()
 
-        backendService.getSpeciesList(request, {}, function (error, response) {
-            setAvailableSpecies(response.species)
-            setSpeciesName(response.species[0])
+        await backendService.getSpeciesList(request, {}, function (error, response) {
+            setAvailableSpecies(response.getSpecies())
+            setSpeciesName(response.getSpecies()[0])
         })
     }
 
@@ -582,53 +582,58 @@ function NewCreatureForm(props) {
 
             console.log(speciesName)
 
-            // Define new species
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/create-new-creature',
-                data: {
-                    visibility: visibility,
-                    maxHealth: maxHealth,
-                    canSee: canSee,
-                    canSmell: canSmell,
-                    canHear: canHear,
-                    sightAbility: sightAbility,
-                    smellAbility: smellAbility,
-                    hearingAbility: hearingAbility,
-                    sightRange: sightRange,
-                    smellRange: smellRange,
-                    hearingRange: hearingRange,
-                    reactionTime: reactionTime,
-                    impulsivity: impulsivity,
-                    selfPreservation: selfPreservation,
-                    mobility: mobility,
-                    reproductionType: reproductionType,
-                    reproductionCooldown: reproductionCoolDown,
-                    offspringAmount: offSpringAmount,
-                    motivation: motivation,
-                    maxEnergy: maxEnergy,
-                    metabolism: metabolism,
-                    individualism: individualism,
-                    territorial: territorial,
-                    fightOrFlight: fightOrFlight,
-                    hostility: hostility,
-                    scent: scent,
-                    stealth: stealth,
-                    lifeExpectancy: lifeExpectancy,
-                    maturity: maturity,
-                    offensiveAbility: offensiveAbility,
-                    defensiveAbility: defensiveAbility,
-                    effectFromHost: effectFromHost,
-                    effectFromParasite: effectFromParasite,
-                    protecting: protecting,
-                    nurturing: nurturing,
-                    effectFromBeingNurtured: effectFromBeingNurtured,
-                    shortTermMemoryAccuracy: shortTermMemoryAccuracy,
-                    shortTermMemoryCapacity: shortTermMemoryCapacity,
-                    shape: shape,
-                    color: color,
-                    speciesName: speciesName,
-                },
+            var genomeRequest = new GenomeInfo()
+            genomeRequest.setVisibility(visibility)
+            genomeRequest.setMaxhealth(maxHealth)
+            genomeRequest.setCansee(canSee)
+            genomeRequest.setCansmell(canSmell)
+            genomeRequest.setCanhear(canHear)
+            genomeRequest.setSightability(sightAbility)
+            genomeRequest.setSmellability(smellAbility)
+            genomeRequest.setHearingability(hearingAbility)
+            genomeRequest.setSightrange(sightRange)
+            genomeRequest.setSmellrange(smellRange)
+            genomeRequest.setHearingrange(hearingRange)
+            genomeRequest.setReactiontime(reactionTime)
+            genomeRequest.setImpulsivity(impulsivity)
+            genomeRequest.setSelfpreservation(selfPreservation)
+            genomeRequest.setMobility(mobility)
+            genomeRequest.setReproductioncooldown(reproductionCoolDown)
+            genomeRequest.setOffspringamount(offSpringAmount)
+            genomeRequest.setMotivation(motivation)
+            genomeRequest.setMaxenergy(maxEnergy)
+            genomeRequest.setMetabolism(metabolism)
+            genomeRequest.setIndividualism(individualism)
+            genomeRequest.setTerritorial(territorial)
+            genomeRequest.setFightorflight(fightOrFlight)
+            genomeRequest.setHostlity(hostility)
+            genomeRequest.setScent(scent)
+            genomeRequest.setStealth(stealth)
+            genomeRequest.setLifeexpectancy(lifeExpectancy)
+            genomeRequest.setMaturity(maturity)
+            genomeRequest.setOffensiveability(offensiveAbility)
+            genomeRequest.setDefensiveability(defensiveAbility)
+            genomeRequest.setEffectfromhost(effectFromHost)
+            genomeRequest.setEffectfromparasite(effectFromParasite)
+            genomeRequest.setProtecting(protecting)
+            genomeRequest.setNurturing(nurturing)
+            genomeRequest.setEffectfrombeingnurtured(effectFromBeingNurtured)
+            genomeRequest.setShorttermmemoryaccuracy(shortTermMemoryAccuracy)
+            genomeRequest.setShorttermmemorycapacity(shortTermMemoryCapacity)
+            genomeRequest.setShape(shape)
+            genomeRequest.setColor(color)
+
+            var request = new CreateNewCreatureRequest()
+            request.setSpeciesname(speciesName)
+            request.setGenome(genomeRequest)
+
+            await backendService.createNewCreature(request, {}, function(err, response) {
+                if (response.getCreaturecreated()) {
+                    console.log("Successfully created new creature")
+                }
+                else {
+                    console.error("Something went wrong defining the new creature")
+                }
             })
 
             // Hide creatures form

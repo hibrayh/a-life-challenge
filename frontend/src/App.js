@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import './App.css'
 import Simulation from './Simulation.js'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
@@ -11,6 +10,7 @@ const { Anime } = ReactAnime
 import {
     StartSimulationRequest,
     ResizeSimulationRequest,
+    LoadSimulationRequest,
 } from './generated_comm_files/backend_api_pb'
 import { BackendClient } from './generated_comm_files/backend_api_grpc_web_pb'
 
@@ -284,13 +284,17 @@ function App() {
 
         async function handleSubmit(event) {
             event.preventDefault()
-            // Load simulation in the backend
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/load-simulation',
-                data: {
-                    filename: loadName,
-                },
+
+            var request = new LoadSimulationRequest()
+            request.setFilepath(loadName)
+
+            await backendService.loadSimulation(request, {}, function(error, response) {
+                if (response.getSimloaded()) {
+                    console.log("Simulation loaded successfully")
+                }
+                else {
+                    console.error("Something went wrong loading the simulation")
+                }
             })
 
             setShowLoad(false)

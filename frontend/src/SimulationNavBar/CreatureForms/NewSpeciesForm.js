@@ -483,69 +483,59 @@ function NewSpeciesForm(props) {
         async function handleSubmit(event) {
             event.preventDefault()
 
-            // Check if simulation has started. If not, start it.
-            /*
-            if (!props.hasSimulationStarted) {
-                await props.startSimulationCallback()
-            }*/
+            var genomeRequest = new GenomeInfo()
+            genomeRequest.setVisibility(visibility)
+            genomeRequest.setMaxhealth(maxHealth)
+            genomeRequest.setCansee(canSee)
+            genomeRequest.setCansmell(canSmell)
+            genomeRequest.setCanhear(canHear)
+            genomeRequest.setSightability(sightAbility)
+            genomeRequest.setSmellability(smellAbility)
+            genomeRequest.setHearingability(hearingAbility)
+            genomeRequest.setSightrange(sightRange)
+            genomeRequest.setSmellrange(smellRange)
+            genomeRequest.setHearingrange(hearingRange)
+            genomeRequest.setReactiontime(reactionTime)
+            genomeRequest.setImpulsivity(impulsivity)
+            genomeRequest.setSelfpreservation(selfPreservation)
+            genomeRequest.setMobility(mobility)
+            genomeRequest.setReproductioncooldown(reproductionCoolDown)
+            genomeRequest.setOffspringamount(offSpringAmount)
+            genomeRequest.setMotivation(motivation)
+            genomeRequest.setMaxenergy(maxEnergy)
+            genomeRequest.setMetabolism(metabolism)
+            genomeRequest.setIndividualism(individualism)
+            genomeRequest.setTerritorial(territorial)
+            genomeRequest.setFightorflight(fightOrFlight)
+            genomeRequest.setHostlity(hostility)
+            genomeRequest.setScent(scent)
+            genomeRequest.setStealth(stealth)
+            genomeRequest.setLifeexpectancy(lifeExpectancy)
+            genomeRequest.setMaturity(maturity)
+            genomeRequest.setOffensiveability(offensiveAbility)
+            genomeRequest.setDefensiveability(defensiveAbility)
+            genomeRequest.setEffectfromhost(effectFromHost)
+            genomeRequest.setEffectfromparasite(effectFromParasite)
+            genomeRequest.setProtecting(protecting)
+            genomeRequest.setNurturing(nurturing)
+            genomeRequest.setEffectfrombeingnurtured(effectFromBeingNurtured)
+            genomeRequest.setShorttermmemoryaccuracy(shortTermMemoryAccuracy)
+            genomeRequest.setShorttermmemorycapacity(shortTermMemoryCapacity)
+            genomeRequest.setShape(shape)
+            genomeRequest.setColor(color)
 
-            // Define new species
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/create-new-species',
-                data: {
-                    visibility: visibility,
-                    maxHealth: maxHealth,
-                    canSee: canSee,
-                    canSmell: canSmell,
-                    canHear: canHear,
-                    sightAbility: sightAbility,
-                    smellAbility: smellAbility,
-                    hearingAbility: hearingAbility,
-                    sightRange: sightRange,
-                    smellRange: smellRange,
-                    hearingRange: hearingRange,
-                    reactionTime: reactionTime,
-                    impulsivity: impulsivity,
-                    selfPreservation: selfPreservation,
-                    mobility: mobility,
-                    reproductionType: reproductionType,
-                    reproductionCooldown: reproductionCoolDown,
-                    offspringAmount: offSpringAmount,
-                    motivation: motivation,
-                    maxEnergy: maxEnergy,
-                    metabolism: metabolism,
-                    individualism: individualism,
-                    territorial: territorial,
-                    fightOrFlight: fightOrFlight,
-                    hostility: hostility,
-                    scent: scent,
-                    stealth: stealth,
-                    lifeExpectancy: lifeExpectancy,
-                    maturity: maturity,
-                    offensiveAbility: offensiveAbility,
-                    defensiveAbility: defensiveAbility,
-                    effectFromHost: effectFromHost,
-                    effectFromParasite: effectFromParasite,
-                    protecting: protecting,
-                    nurturing: nurturing,
-                    effectFromBeingNurtured: effectFromBeingNurtured,
-                    shortTermMemoryAccuracy: shortTermMemoryAccuracy,
-                    shortTermMemoryCapacity: shortTermMemoryCapacity,
-                    shape: shape,
-                    color: color,
-                    speciesName: speciesName,
-                },
-            })
+            var request = new CreateNewSpeciesRequest()
+            request.setSpeciesname(speciesName)
+            request.setInitialnumbertospawn(numberToSpawn)
+            request.setInitialgenome(genomeRequest)
 
-            // Spawn in initial creatures for this species
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/mass-create-more-creatures',
-                data: {
-                    speciesName: speciesName,
-                    numberOfNewCreatures: numberToSpawn,
-                },
+            await backendService.createNewSpecies(request, {}, function(err, response) {
+                if (request.getSpeciescreated()) {
+                    console.log("Successfully created new species")
+                }
+                else {
+                    console.error("There was an error creating a new species")
+                }
             })
 
             // Hide species form
