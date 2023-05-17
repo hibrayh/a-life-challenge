@@ -2,8 +2,15 @@ import './NewCreatureForm.css'
 import React from 'react'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
-import axios from 'axios'
 import { ChromePicker } from 'react-color'
+
+import {
+    GenomeInfo,
+    CreateNewSpeciesRequest,
+} from './../../generated_comm_files/backend_api_pb'
+import { BackendClient } from '../../generated_comm_files/backend_api_grpc_web_pb'
+
+var backendService = new BackendClient('http://localhost:44039')
 
 function NewSpeciesForm(props) {
     const [showColorPicker, setShowColorPicker] = useState(false)
@@ -529,14 +536,19 @@ function NewSpeciesForm(props) {
             request.setInitialnumbertospawn(numberToSpawn)
             request.setInitialgenome(genomeRequest)
 
-            await backendService.createNewSpecies(request, {}, function(err, response) {
-                if (request.getSpeciescreated()) {
-                    console.log("Successfully created new species")
+            await backendService.createNewSpecies(
+                request,
+                {},
+                function (err, response) {
+                    if (request.getSpeciescreated()) {
+                        console.log('Successfully created new species')
+                    } else {
+                        console.error(
+                            'There was an error creating a new species'
+                        )
+                    }
                 }
-                else {
-                    console.error("There was an error creating a new species")
-                }
-            })
+            )
 
             // Hide species form
             props.toggleNewSpeciesForm()

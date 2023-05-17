@@ -23,10 +23,14 @@ function StatsPage(props) {
         const getSpeciesList = async () => {
             var request = new GetSpeciesListRequest()
 
-            backendService.getSpeciesList(request, {}, function (error, response) {
-                setList(request.getSpecies())
-                setSelectedSpecies(request.getSpecies()[0])
-            })
+            backendService.getSpeciesList(
+                request,
+                {},
+                function (error, response) {
+                    setList(request.getSpecies())
+                    setSelectedSpecies(request.getSpecies()[0])
+                }
+            )
         }
         getSpeciesList()
     }, [props.show])
@@ -98,10 +102,14 @@ function ListSpeciesGenomeInformation(props) {
             var request = new GetSpeciesInfoRequest()
             request.setSpeciesofinterest(props.speciesName)
 
-            backendService.getSpeciesInfo(request, {}, function(err, response) {
-                setSpeciesGenomeInfo(response.getGenometemplate())
-                setCreatureNames(response.getCreatures())
-            })
+            backendService.getSpeciesInfo(
+                request,
+                {},
+                function (err, response) {
+                    setSpeciesGenomeInfo(response.getGenometemplate())
+                    setCreatureNames(response.getCreatures())
+                }
+            )
         }
 
         if (props.speciesName) {
@@ -183,9 +191,13 @@ function ListCreatureGenomeInfo(props) {
             request.setCreatureofinterest(props.creatureName)
             request.setSpecies(props.speciesName)
 
-            await backendService.getCreatureInfo(request, {}, function(err, response) {
-                setCreatureGenomeInfo(response.getGenome())
-            })
+            await backendService.getCreatureInfo(
+                request,
+                {},
+                function (err, response) {
+                    setCreatureGenomeInfo(response.getGenome())
+                }
+            )
         }
         getCreatureInfo()
     }, [props.creatureName])

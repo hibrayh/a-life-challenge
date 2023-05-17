@@ -288,14 +288,19 @@ function App() {
             var request = new LoadSimulationRequest()
             request.setFilepath(loadName)
 
-            await backendService.loadSimulation(request, {}, function(error, response) {
-                if (response.getSimloaded()) {
-                    console.log("Simulation loaded successfully")
+            await backendService.loadSimulation(
+                request,
+                {},
+                function (error, response) {
+                    if (response.getSimloaded()) {
+                        console.log('Simulation loaded successfully')
+                    } else {
+                        console.error(
+                            'Something went wrong loading the simulation'
+                        )
+                    }
                 }
-                else {
-                    console.error("Something went wrong loading the simulation")
-                }
-            })
+            )
 
             setShowLoad(false)
             setShowMenu(false)

@@ -63,10 +63,14 @@ function NewCreatureForm(props) {
     const getSpeciesList = async () => {
         var request = new GetSpeciesListRequest()
 
-        await backendService.getSpeciesList(request, {}, function (error, response) {
-            setAvailableSpecies(response.getSpecies())
-            setSpeciesName(response.getSpecies()[0])
-        })
+        await backendService.getSpeciesList(
+            request,
+            {},
+            function (error, response) {
+                setAvailableSpecies(response.getSpecies())
+                setSpeciesName(response.getSpecies()[0])
+            }
+        )
     }
 
     const getSpeciesDefaults = async (speciesOfInterest) => {
@@ -627,14 +631,19 @@ function NewCreatureForm(props) {
             request.setSpeciesname(speciesName)
             request.setGenome(genomeRequest)
 
-            await backendService.createNewCreature(request, {}, function(err, response) {
-                if (response.getCreaturecreated()) {
-                    console.log("Successfully created new creature")
+            await backendService.createNewCreature(
+                request,
+                {},
+                function (err, response) {
+                    if (response.getCreaturecreated()) {
+                        console.log('Successfully created new creature')
+                    } else {
+                        console.error(
+                            'Something went wrong defining the new creature'
+                        )
+                    }
                 }
-                else {
-                    console.error("Something went wrong defining the new creature")
-                }
-            })
+            )
 
             // Hide creatures form
             props.toggleNewCreatureForm()

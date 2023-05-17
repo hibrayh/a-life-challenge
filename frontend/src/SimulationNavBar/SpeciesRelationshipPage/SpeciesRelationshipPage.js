@@ -42,9 +42,13 @@ function SpeciesRelationshipPage(props) {
 
             var request = new GetSpeciesListRequest()
 
-            backendService.getSpeciesList(request, {}, function (error, response) {
-                setSpeciesList([''].concat(request.getSpecies()))
-            })
+            backendService.getSpeciesList(
+                request,
+                {},
+                function (error, response) {
+                    setSpeciesList([''].concat(request.getSpecies()))
+                }
+            )
         }
         init()
     }, [props.show])
@@ -150,14 +154,17 @@ function SpeciesRelationshipPage(props) {
             request.setDestinationspecies(species2)
             request.setRelationship(relationship)
 
-            await backendService.defineNewSpeciesRelationship(request, {}, function(err, response) {
-                if (response.getSetnewrelationship()) {
-                    console.log("Successfully defined new relationship")
+            await backendService.defineNewSpeciesRelationship(
+                request,
+                {},
+                function (err, response) {
+                    if (response.getSetnewrelationship()) {
+                        console.log('Successfully defined new relationship')
+                    } else {
+                        console.error('Issue defining new relationship')
+                    }
                 }
-                else {
-                    console.error("Issue defining new relationship")
-                }
-            })
+            )
 
             props.toggleSpeciesRelationshipPage()
         }
