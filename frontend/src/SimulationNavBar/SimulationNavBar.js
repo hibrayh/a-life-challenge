@@ -139,9 +139,8 @@ function SimulationNavBar({
             !settingsPageOpen
         ) {
             paused = false
-                // go back to previous speed
+            // go back to previous speed
             simulationTicksPerSecond = simulationSpeedBeforePause
-
         } else {
             //pause
             simulationSpeedBeforePause = simulationTicksPerSecond
