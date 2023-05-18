@@ -319,4 +319,5 @@ def serve():
 
 
 if __name__ == "__main__":
+    print("Simulation started on port 39516")
     serve()

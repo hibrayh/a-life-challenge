@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import backend_api_pb2 as backend__api__pb2
+from . import backend_api_pb2 as backend__api__pb2
 
 
 class BackendStub(object):
