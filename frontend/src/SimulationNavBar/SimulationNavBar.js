@@ -139,24 +139,23 @@ function SimulationNavBar({
             !settingsPageOpen
         ) {
             paused = false
+                // go back to previous speed
+            simulationTicksPerSecond = simulationSpeedBeforePause
 
-            if (simulationSpeedBeforePause !== 0) {
-                // it was already playing, go back to previous speed
-                simulationTicksPerSecond = simulationSpeedBeforePause
-            } else {
-                //don't auto-play, users might want to do more before starting
-                simulationTicksPerSecond = 0
-            }
-        } else if (simulationTicksPerSecond > 0) {
+        } else {
             //pause
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
         }
+
+        await updateSimulationTickSpeed()
     }
 
     const incrementTicksPerSecond = () => {
         if (!paused) {
             simulationTicksPerSecond += 1
+            // a change has been made, the previous saved speed is now invalid
+            simulationSpeedBeforePause = 0
         }
     }
 
@@ -167,6 +166,7 @@ function SimulationNavBar({
             } else {
                 simulationTicksPerSecond = 0
             }
+            simulationSpeedBeforePause = 0
         }
     }
 
@@ -279,8 +279,9 @@ function SimulationNavBar({
 
     function toggleNewSpeciesForm() {
         setShowNewSpeciesForm(!showNewSpeciesForm)
-        newSpeciesFormOpen = !newCreatureFormOpen
+        newSpeciesFormOpen = !newSpeciesFormOpen
         paused = true
+
         formsOpenUnpause()
     }
 
