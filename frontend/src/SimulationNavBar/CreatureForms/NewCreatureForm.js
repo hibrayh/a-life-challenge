@@ -1178,9 +1178,6 @@ function NewCreatureForm(props) {
                 },
             })
 
-            // Fetch new info from simulation
-            await props.updateSimulationCallback()
-
             // Hide creatures form
             props.toggleNewCreatureForm()
         }

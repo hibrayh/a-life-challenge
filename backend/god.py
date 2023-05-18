@@ -2,6 +2,7 @@ import logging
 import random
 import environment
 import topography
+from resources import Resource
 import creatures.species_manager
 from creatures.decision_network import DecisionNetworkSexual, DecisionNetworkAsexual
 from creatures.genome import ReproductionType
@@ -54,7 +55,6 @@ class God:
         self._asexualReproductionDecisionNetwork = DecisionNetworkAsexual()
         self._tickSpeed = 0
         self._textToggle = False
-        self._updateFlag = 0
 
         if not loadExistingSave:
             logging.info("Initializing new God object")
@@ -389,6 +389,33 @@ class God:
             logging.info(
                 f"Topography Preset: '{presetTopographyId}' has been set")
 
+    def addCustomResource(
+            self,
+            resourceIdPrefix,
+            replenishment,
+            color,
+            shape,
+            numOfResources):
+        # Randomly spawn in resources with user-specified attributes
+        for resourceObj in range(numOfResources):
+            locationX = random.randrange(
+                0,
+                self._simulationWidth)
+            locationY = random.randrange(
+                0,
+                self._simulationHeight)
+            resourceId = f"{resourceIdPrefix}_{resourceObj}"
+            newResource = Resource(
+                resourceId,
+                replenishment,
+                locationX,
+                locationY,
+                color,
+                shape,
+                self._environment)
+
+            #print(f"Resource '{resourceId}' created with replenishment value '{replenishment}', color '{color}', shape '{shape}', and placed at coordinates ({locationX}, {locationY})")
+
     def removeTopography(self, column, row):
         self._environment.removeTopography(column, row)
 
@@ -470,16 +497,6 @@ class God:
     def getTextToggle(self):
         return self._textToggle
 
-    def flagSimulationUpdate(self, update):
-        self._updateFlag = update
-
-    def getSimulationUpdateFlag(self):
-        if self._updateFlag == 1:
-            # un flag
-            self._updateFlag = 0
-            return 1
-        return self._updateFlag
-
     def getTopographyInfo(self):
         column = 0
         row = 0
@@ -514,8 +531,21 @@ class God:
                                      self._environment)
         return {
             'topographyGeography': topo.getGeography(),
-            'topographyRegistry': self._environment.getRegisteredTopography()
+            'topographyRegistry': self._environment.getRegisteredTopography(),
+            'topographyTypes': self.getTopographyTypes()
         }
 
+    def getTopographyTypes(self):
+        topographyTypes = {
+            topography.TemplateTopography.FLAT: "blue",
+            topography.TemplateTopography.MILD: "purple",
+            topography.TemplateTopography.MODERATE: "yellow",
+            topography.TemplateTopography.EXTREME: "red",
+        }
+        return (topographyTypes)
+
 #myGod = God(1920, 989, 50, 25)
-# myGod.addPresetTopography("Randomize")
+#myGod.addCustomResource("Fish", 0.5,"blue", "circle", 8)
+#myGod.addCustomResource("Berries", 0.1, "red", "triangle", 50)
+
+# myGod.getTopographyTypes()
