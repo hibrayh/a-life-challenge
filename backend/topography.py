@@ -6,6 +6,7 @@ import noise
 import numpy as np
 from PIL import Image
 import time
+from generated_comm_files import backend_api_pb2
 
 
 logging.basicConfig(
@@ -145,6 +146,14 @@ class Topography:
             'row': self.row,
             'type': self.type,
         }
+    
+    def getDetails(self):
+        return backend_api_pb2.TopographyInfo(
+            id = self.id,
+            row = self.row,
+            column = self.column,
+            type = self.type,
+        )
 
     def save(self):
         logging.info(f"Saving topography {self.id}")

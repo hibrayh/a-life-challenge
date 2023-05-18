@@ -126,7 +126,7 @@ function SimulationNavBar({
         var request = new EditUpdateFlagRequest()
         request.setNewupdateflag(true)
 
-        backendService.editUpdateFlag(request, {}, function (error, response) {
+        await backendService.editUpdateFlag(request, {}, function (error, response) {
             if (response.getUpdatedflag()) {
                 console.log('Edited the update flag')
             } else {

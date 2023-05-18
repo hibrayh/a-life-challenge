@@ -12,6 +12,8 @@ import random
 import datetime
 import copy
 
+from generated_comm_files import backend_api_pb2
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -455,14 +457,15 @@ class Environment:
         return elevationList
 
     def getRegisteredTopography(self):
-        topographyList = []
-
+        topographyTableRows = []
         for row in range(self.rowCount):
+            currentRow = []
             for column in range(self.columnCount):
-                topographyList.append(
-                    self.topographyRegistry[row][column].serialize())
-
-        return topographyList
+                currentRow.append(self.topographyRegistry[row][column].getDetails())
+            
+            topographyTableRows.append(backend_api_pb2.TopograpyRow(item = copy.deepcopy(currentRow)))
+        
+        return backend_api_pb2.TopographyTable(row = copy.deepcopy(topographyTableRows))
 
     def simulateCreatureBehavior(self):
         logging.info("Removing dead creatures from environment")

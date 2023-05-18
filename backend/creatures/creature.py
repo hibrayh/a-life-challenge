@@ -1,3 +1,6 @@
+import sys
+sys.path.append("..")
+
 from generated_comm_files import backend_api_pb2
 import logging
 import copy
@@ -5,9 +8,6 @@ import math
 from . import decision_network, species_manager, genome, memory
 import random
 import json
-
-import sys
-sys.path.append("..")
 
 logging.basicConfig(
     level=logging.INFO,

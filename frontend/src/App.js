@@ -47,6 +47,7 @@ const minRange = 5
 function App() {
     const [showMenu, setShowMenu] = useState(true)
     const [showSimulation, setShowSimulation] = useState(false)
+    const [showLoad, setShowLoad] = useState(false)
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
 
     const startSimulation = async () => {
@@ -56,10 +57,13 @@ function App() {
         request.setColumncount(50)
         request.setRowcount(25)
 
+        var start_time = Date.now()
         await backendService.startSimulation(
             request,
             {},
             function (err, response) {
+                var end_time = Date.now()
+                console.log("Took " + (end_time - start_time) + "ms")
                 if (response.getSimstarted()) {
                     console.log('Simulation started')
                 } else {

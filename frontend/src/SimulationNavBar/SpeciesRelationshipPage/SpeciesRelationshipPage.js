@@ -42,11 +42,11 @@ function SpeciesRelationshipPage(props) {
 
             var request = new GetSpeciesListRequest()
 
-            backendService.getSpeciesList(
+            await backendService.getSpeciesList(
                 request,
                 {},
                 function (error, response) {
-                    setSpeciesList([''].concat(request.getSpecies()))
+                    setSpeciesList([''].concat(response.getSpecies()))
                 }
             )
         }

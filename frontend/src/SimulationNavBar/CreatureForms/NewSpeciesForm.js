@@ -514,7 +514,7 @@ function NewSpeciesForm(props) {
             genomeRequest.setIndividualism(individualism)
             genomeRequest.setTerritorial(territorial)
             genomeRequest.setFightorflight(fightOrFlight)
-            genomeRequest.setHostlity(hostility)
+            genomeRequest.setHostility(hositlity)
             genomeRequest.setScent(scent)
             genomeRequest.setStealth(stealth)
             genomeRequest.setLifeexpectancy(lifeExpectancy)
@@ -540,7 +540,7 @@ function NewSpeciesForm(props) {
                 request,
                 {},
                 function (err, response) {
-                    if (request.getSpeciescreated()) {
+                    if (response.getSpeciescreated()) {
                         console.log('Successfully created new species')
                     } else {
                         console.error(

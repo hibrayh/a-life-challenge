@@ -5,6 +5,13 @@ import { FaTimes, FaArrowsAlt } from 'react-icons/fa'
 import axios from 'axios'
 import { ChromePicker } from 'react-color'
 
+import {
+    GetTopographyRequest
+} from './../../generated_comm_files/backend_api_pb'
+import { BackendClient } from '../../generated_comm_files/backend_api_grpc_web_pb'
+
+var backendService = new BackendClient('http://localhost:44039')
+
 let topographyInfo = []
 
 function TopographyPage(props) {
@@ -41,13 +48,10 @@ function TopographyPage(props) {
 
     useEffect(() => {
         async function fetchData() {
-            await axios({
-                method: 'GET',
-                url: 'http://localhost:5000/get-topography-info',
-            }).then((response) => {
-                topographyInfo = response.data.topographyRegistry
-                list = response.data.topographyRegistry
-                //console.log('list', list)
+            var request = new GetTopographyRequest()
+
+            await backendService.getTopography(request, {}, function(err, response) {
+                topographyInfo = response.getRow()
             })
 
             // get list of topographies
@@ -331,8 +335,6 @@ function TopographyPage(props) {
         // Send all of the topographies to backend
         // topographyInfo contains all correct nodes
 
-        console.log('list', list)
-        console.log('topographyInfo', topographyInfo)
         props.closeTopographyPage()
     }
 }

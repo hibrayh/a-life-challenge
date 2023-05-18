@@ -205,7 +205,7 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
 
     def ChangeSimulationProgressionSpeed(self, request, context):
         logging.info("Changing simulation progression speed")
-        self.god.editTickSpeed(request.simulationSpeed)
+        self.god.editTickSpeed(request.newSimulationSpeed)
         return backend_api_pb2.ChangeSimulationProgressionSpeedReply(
             simulationSpeedChanged=True)
 
@@ -277,6 +277,10 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
         logging.info("Deleting topography")
         self.god.removeTopography(request.column, request.row)
         return backend_api_pb2.DeleteTopographyReply(topographyDeleted=True)
+
+    def GetTopography(self, request, context):
+        logging.info("Fetching topography")
+        return self.god.getTopographyInfo()
 
     def AdvanceSimulation(self, request, context):
         logging.info("Advancing simulation")

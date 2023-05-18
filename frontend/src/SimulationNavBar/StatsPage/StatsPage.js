@@ -23,12 +23,12 @@ function StatsPage(props) {
         const getSpeciesList = async () => {
             var request = new GetSpeciesListRequest()
 
-            backendService.getSpeciesList(
+            await backendService.getSpeciesList(
                 request,
                 {},
                 function (error, response) {
-                    setList(request.getSpecies())
-                    setSelectedSpecies(request.getSpecies()[0])
+                    setList(response.getSpecies())
+                    setSelectedSpecies(response.getSpecies()[0])
                 }
             )
         }
@@ -102,7 +102,7 @@ function ListSpeciesGenomeInformation(props) {
             var request = new GetSpeciesInfoRequest()
             request.setSpeciesofinterest(props.speciesName)
 
-            backendService.getSpeciesInfo(
+            await backendService.getSpeciesInfo(
                 request,
                 {},
                 function (err, response) {

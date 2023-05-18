@@ -17,6 +17,7 @@ service Backend {
     rpc GetCreatureInfo (GetCreatureInfoRequest) returns (CreatureInfo) {}
     rpc CreateTopography (CreateTopographyRequest) returns (CreateTopographyReply) {}
     rpc DeleteTopography (DeleteTopographyRequest) returns (DeleteTopographyReply) {}
+    rpc GetTopography (GetTopographyRequest) returns (TopographyTable) {}
     rpc AdvanceSimulation (AdvanceSimulationRequest) returns (AdvanceSimulationReply) {}
     rpc GetTextToggle (GetTextToggleRequest) returns (GetTextToggleReply) {}
     rpc UpdateTextToggle (UpdateTextToggleRequest) returns (UpdateTextToggleReply) {}
@@ -119,7 +120,7 @@ message ElevationInfo {
 }
 
 message CreatureAnimationInfo {
-    int32 id = 1;
+    string id = 1;
     float xCoordinate = 3;
     float yCoordinate = 4;
     string shape = 5;
@@ -227,6 +228,25 @@ message DeleteTopographyRequest {
 
 message DeleteTopographyReply {
     bool topographyDeleted = 1;
+}
+
+message TopographyInfo {
+    int32 id = 1;
+    int32 row = 2;
+    int32 column = 3;
+    string type = 4;
+}
+
+message TopographyRow {
+    repeated TopographyInfo item = 1;
+}
+
+message TopographyTable {
+    repeated TopographyRow row = 1;
+}
+
+message GetTopographyRequest {
+    
 }
 
 message AdvanceSimulationRequest {
