@@ -520,7 +520,7 @@ class Environment:
         seasonList = ["spring", "summer", "autumn", "winter"]
         # Split the days evenly from the 365 days in a year
         daysPerSeason = [91, 91, 91, 92]
-        elapsedTicks = self.timeOfSimulation % 500  
+        elapsedTicks = self.timeOfSimulation % 500
         elapsedDays = self.daysElapsed % 365
         elapsedYears = self.daysElapsed // 365
 
@@ -638,7 +638,7 @@ class Environment:
         # Adjust the temperature based on the offset
         currentTemperature = avgTemperature + temperatureOffset
 
-        return(f"Time: {timeOfDay}, Season: {currentSeason}, Temperature: {currentTemperature}, Ticks elapsed: {elapsedTicks}, Days elapsed: {elapsedDays}, Years elapsed: {elapsedYears}")
+        return (f"Time: {timeOfDay}, Season: {currentSeason}, Temperature: {currentTemperature}, Ticks elapsed: {elapsedTicks}, Days elapsed: {elapsedDays}, Years elapsed: {elapsedYears}")
 
     def getLightVisibility(self):
         elapsedTicks = self.timeOfSimulation % 500
@@ -661,6 +661,7 @@ class Environment:
         else:                           # Ticks 440-500, Midnight
             self.lightVisibility = 0.2
         return self.lightVisibility
+
 
 '''
 if __name__ == '__main__':
