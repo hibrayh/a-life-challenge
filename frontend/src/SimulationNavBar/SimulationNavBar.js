@@ -27,17 +27,19 @@ import SettingsPage from './SettingsPage/SettingsPage.js'
 let simulationSpeedBeforePause = 0
 let simulationTicksPerSecond = 0
 let toggleText = false
+let paused = false //to indicate if a form is open
+let creatureOrSpeciesFormOpen = false
+let newCreatureFormOpen = false
+let newSpeciesFormOpen = false
+let statsPageOpen = false
+let topographyPageOpen = false
+let speciesRelationshipPageOpen = false
+let settingsPageOpen = false
 
 function SimulationNavBar({
     playOrPauseSimulationCallback,
-    //speedUpSimulationCallback,
-    //slowDownSimulationCallback,
-    updateSimulationCallback,
     startSimulationCallback,
-    ticksPerSecond,
-    //hasSimulationStarted,
     topographyInfo,
-    toggleTextSimulationCallback,
     toggleMenuAndSimulation,
 }) {
     const [showCreatureOrSpeciesForm, setShowCreatureOrSpeciesForm] =
@@ -76,15 +78,17 @@ function SimulationNavBar({
 
     const updateSimulationTickSpeed = async () => {
         // Make a call to the backend to change the tick speed
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/update-tick-speed',
-            data: {
-                ticks: simulationTicksPerSecond,
-            },
-        })
-        setTicksUpdated(!ticksUpdated)
-        console.log('tick speed updated to ', simulationTicksPerSecond)
+        if (!paused) {
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:5000/update-tick-speed',
+                data: {
+                    ticks: simulationTicksPerSecond,
+                },
+            })
+            setTicksUpdated(!ticksUpdated)
+            console.log('tick speed updated to ', simulationTicksPerSecond)
+        }
     }
 
     const updateTextToggle = async () => {
@@ -100,32 +104,68 @@ function SimulationNavBar({
     }
 
     const playPauseSimulation = async () => {
-        if (simulationTicksPerSecond > 0) {
+        if (!paused) {
+            //don't allow the user to unpause if a form is opened
+
+            if (simulationTicksPerSecond > 0) {
+                //pause
+                simulationSpeedBeforePause = simulationTicksPerSecond
+                simulationTicksPerSecond = 0
+            } else {
+                //unpause
+                if (simulationSpeedBeforePause !== 0) {
+                    // it was already playing, go back to previous speed
+                    simulationTicksPerSecond = simulationSpeedBeforePause
+                } else {
+                    //user just presses the play button, make the tick speed 1
+                    simulationTicksPerSecond = 1
+                }
+            }
+        }
+
+        await updateSimulationTickSpeed()
+    }
+
+    // manages unpausing when ALL are closed
+    const formsOpenUnpause = async () => {
+        // all forms have to be closed for the simulation to unpause
+        if (
+            !creatureOrSpeciesFormOpen &&
+            !newCreatureFormOpen &&
+            !newSpeciesFormOpen &&
+            !statsPageOpen &&
+            !topographyPageOpen &&
+            !speciesRelationshipPageOpen &&
+            !settingsPageOpen
+        ) {
+            paused = false
+            // go back to previous speed
+            simulationTicksPerSecond = simulationSpeedBeforePause
+        } else {
             //pause
             simulationSpeedBeforePause = simulationTicksPerSecond
             simulationTicksPerSecond = 0
-        } else {
-            //unpause
-            if (simulationSpeedBeforePause != 0) {
-                // it was already playing, go back to previous speed
-                simulationTicksPerSecond = simulationSpeedBeforePause
-            } else {
-                //set the speed to one
-                simulationTicksPerSecond = 1
-            }
         }
+
         await updateSimulationTickSpeed()
     }
 
     const incrementTicksPerSecond = () => {
-        simulationTicksPerSecond += 1
+        if (!paused) {
+            simulationTicksPerSecond += 1
+            // a change has been made, the previous saved speed is now invalid
+            simulationSpeedBeforePause = 0
+        }
     }
 
     const decrementTicksPerSecond = () => {
-        if (simulationTicksPerSecond > 0) {
-            simulationTicksPerSecond -= 1
-        } else {
-            simulationTicksPerSecond = 0
+        if (!paused) {
+            if (simulationTicksPerSecond > 0) {
+                simulationTicksPerSecond -= 1
+            } else {
+                simulationTicksPerSecond = 0
+            }
+            simulationSpeedBeforePause = 0
         }
     }
 
@@ -217,53 +257,89 @@ function SimulationNavBar({
     // functions for all creature/species related forms
     function toggleCreatureOrSpeciesForm() {
         setShowCreatureOrSpeciesForm(!showCreatureOrSpeciesForm)
+        creatureOrSpeciesFormOpen = !creatureOrSpeciesFormOpen
+        paused = true
+        formsOpenUnpause()
     }
 
     function toggleNewCreatureForm() {
         setShowNewCreatureForm(!showNewCreatureForm)
+        newCreatureFormOpen = !newCreatureFormOpen
+        paused = true
+        formsOpenUnpause()
     }
 
     function closeNewCreatureForm() {
         setShowNewCreatureForm(false)
+        newCreatureFormOpen = false
+        paused = true
+        formsOpenUnpause()
     }
 
     function toggleNewSpeciesForm() {
         setShowNewSpeciesForm(!showNewSpeciesForm)
+        newSpeciesFormOpen = !newSpeciesFormOpen
+        paused = true
+
+        formsOpenUnpause()
     }
 
     function closeNewSpeciesForm() {
         setShowNewSpeciesForm(false)
+        newSpeciesFormOpen = false
+        paused = true
+        formsOpenUnpause()
     }
 
     // functions for stats page
     function closeStatsPage() {
         setShowStatsPage(false)
+        statsPageOpen = false
+        paused = true
+        formsOpenUnpause()
     }
 
     function toggleStatsPage() {
         setShowStatsPage(!showStatsPage)
+        statsPageOpen = !statsPageOpen
+        paused = true
+        formsOpenUnpause()
     }
 
     // functions for topography page
     function closeTopographyPage() {
         setShowTopographyPage(false)
         setShowGridBorder(false)
+        topographyPageOpen = false
+        paused = true
+        formsOpenUnpause()
     }
 
     function toggleTopographyPage() {
         setShowTopographyPage(!showTopographyPage)
+        topographyPageOpen = !topographyPageOpen
+        paused = true
+        formsOpenUnpause()
     }
 
     function toggleShowGridBorder() {
         setShowGridBorder(!showGridBorder)
+        paused = true
+        formsOpenUnpause()
     }
 
     function toggleSpeciesRelationshipPage() {
         setShowSpeciesRelationshipPage(!showSpeciesRelationshipPage)
+        speciesRelationshipPageOpen = !speciesRelationshipPageOpen
+        paused = true
+        formsOpenUnpause()
     }
 
     function toggleSettingsPage() {
         setShowSettingsPage(!showSettingsPage)
+        settingsPageOpen = !settingsPageOpen
+        paused = true
+        formsOpenUnpause()
     }
 
     function SettingsButton(props) {
@@ -354,7 +430,7 @@ function SimulationNavBar({
             playPauseSimulation()
         }
 
-        if (showPlayButton) {
+        if (simulationTicksPerSecond === 0) {
             return (
                 <button
                     onClick={handleClick}
