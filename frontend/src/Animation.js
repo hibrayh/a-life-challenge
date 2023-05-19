@@ -29,16 +29,16 @@ class Animation extends React.Component {
     CreateText(creature) {
         return (
             <div
-                id={'text' + creature.creatureId}
+                id={'text' + creature.getId()}
                 style={{
                     position: 'absolute',
-                    left: `${creature.locationX - textOffsetSide}px`,
-                    top: `${creature.locationY - textOffsetUp}px`,
+                    left: `${creature.getXcoordinate() - textOffsetSide}px`,
+                    top: `${creature.getYcoordinate() - textOffsetUp}px`,
                     fontSize: '1.5vh',
                 }}>
-                {creature.creatureId + ': '}
+                {creature.getId()+ ': '}
 
-                {creature.lastAction}
+                {creature.getLastaction()}
             </div>
         )
     }
@@ -46,18 +46,18 @@ class Animation extends React.Component {
     CreateCreature(creature) {
         //creates the elements for creatures
         let roundness = '0%'
-        if (creature.shape === 'circle') {
+        if (creature.getShape() === 'circle') {
             roundness = '50%'
         }
 
-        if (creature.shape === 'triangle') {
+        if (creature.getShape() === 'triangle') {
             return (
                 <div
-                    id={creature.creatureId}
+                    id={creature.getId()}
                     style={{
                         position: 'absolute',
-                        left: `${creature.locationX}px`,
-                        top: `${creature.locationY}px`,
+                        left: `${creature.getXcoordinate()}px`,
+                        top: `${creature.getYcoordinate()}px`,
                         width: '0px',
                         height: '0px',
 
@@ -69,7 +69,7 @@ class Animation extends React.Component {
 
                         borderTopColor: 'transparent',
                         borderRightColor: 'transparent',
-                        borderBottomColor: creature.color,
+                        borderBottomColor: creature.getColor(),
                         borderLeftColor: 'transparent',
                     }}></div>
             )
@@ -78,12 +78,12 @@ class Animation extends React.Component {
             return (
                 <>
                     <div
-                        id={creature.creatureId}
+                        id={creature.getId()}
                         style={{
                             position: 'absolute',
-                            left: `${creature.locationX}px`,
-                            top: `${creature.locationY}px`,
-                            background: creature.color,
+                            left: `${creature.getXcoordinate()}px`,
+                            top: `${creature.getYcoordinate()}px`,
+                            background: creature.getColor(),
                             borderRadius: roundness,
                             height: grown,
                             width: grown,
@@ -101,7 +101,7 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creature.creatureId,
+                            targets: '#' + creature.getId(),
                             scale: [0, 1],
                             rotate: 360,
                             easing: 'linear',
@@ -119,7 +119,7 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creature.creatureId,
+                            targets: '#' + creature.getId(),
                             opacity: '0',
                             easing: 'easeInOutElastic(8, 1)',
                             duration: 1000 / this.props.simulationSpeed,
@@ -136,7 +136,7 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creature.creatureId,
+                            targets: '#' + creature.getId(),
                             keyframes: [
                                 {
                                     translateY: '-=2vh',
@@ -222,7 +222,7 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creature.creatureId,
+                            targets: '#' + creature.getId(),
                             keyframes: [
                                 {
                                     opacity: '0.2',
@@ -254,9 +254,9 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creature.creatureId,
-                            left: `${creature.locationX}px`,
-                            top: `${creature.locationY}px`,
+                            targets: '#' + creature.getId(),
+                            left: `${creature.getXcoordinate()}px`,
+                            top: `${creature.getYcoordinate()}px`,
                             easing: 'linear',
                             duration: 1000 / this.props.simulationSpeed,
                         },
@@ -264,9 +264,9 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#text' + creature.creatureId,
-                            left: `${creature.locationX - textOffsetSide}px`,
-                            top: `${creature.locationY - textOffsetUp}px`,
+                            targets: '#text' + creature.getId(),
+                            left: `${creature.getXcoordinate() - textOffsetSide}px`,
+                            top: `${creature.getYcoordinate() - textOffsetUp}px`,
                             easing: 'linear',
                             duration: 1000 / this.props.simulationSpeed,
                         },
@@ -282,7 +282,7 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creature.creatureId,
+                            targets: '#' + creature.getId(),
                             keyframes: [
                                 {
                                     scale: [1, 1.1],
@@ -316,7 +316,7 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creature.creatureId,
+                            targets: '#' + creature.getId(),
                             keyframes: [
                                 {
                                     translateX: '+=0.5vw',
@@ -344,7 +344,7 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + creature.creatureId,
+                            targets: '#' + creature.getId(),
                             keyframes: [
                                 {
                                     scale: [1, 0.5],
@@ -366,18 +366,18 @@ class Animation extends React.Component {
     CreateResource(resource) {
         //creates the elements for creatures
         let roundness = '0%'
-        if (resource.shape === 'circle') {
+        if (resource.getShape() === 'circle') {
             roundness = '50%'
         }
 
-        if (resource.shape === 'triangle') {
+        if (resource.getShape() === 'triangle') {
             return (
-                <div id={resource.resourceId}>
+                <div id={resource.getId()}>
                     <div
                         style={{
                             position: 'absolute',
-                            left: `${resource.locationX}px`,
-                            top: `${resource.locationY}px`,
+                            left: `${resource.getXcoordinate()}px`,
+                            top: `${resource.getYcoordinate()}px`,
                             width: '0px',
                             height: '0px',
 
@@ -389,14 +389,14 @@ class Animation extends React.Component {
 
                             borderTopColor: 'transparent',
                             borderRightColor: 'transparent',
-                            borderBottomColor: resource.color,
+                            borderBottomColor: resource.getColor(),
                             borderLeftColor: 'transparent',
                         }}></div>
                     <div
                         style={{
                             position: 'absolute',
-                            left: `${resource.locationX + 2.5}px`,
-                            top: `${resource.locationY + 2.25}px`,
+                            left: `${resource.getXcoordinate() + 2.5}px`,
+                            top: `${resource.getYcoordinate() + 2.25}px`,
                             width: '0px',
                             height: '0px',
 
@@ -418,14 +418,14 @@ class Animation extends React.Component {
             return (
                 <>
                     <div
-                        id={resource.resourceId}
+                        id={resource.getId()}
                         style={{
                             position: 'absolute',
-                            left: `${resource.locationX}px`,
-                            top: `${resource.locationY}px`,
+                            left: `${resource.getXcoordinate()}px`,
+                            top: `${resource.getYcoordinate()}px`,
                             background: 'gray',
                             borderRadius: roundness,
-                            borderColor: resource.color,
+                            borderColor: resource.getColor(),
                             borderStyle: 'solid',
                             height: '1vh',
                             width: '1vh',
@@ -443,7 +443,7 @@ class Animation extends React.Component {
                 <Anime
                     initial={[
                         {
-                            targets: '#' + resource.resourceId,
+                            targets: '#' + resource.getId(),
                             scale: [0, 1],
                             rotate: 360,
                             easing: 'linear',
@@ -487,10 +487,10 @@ class Animation extends React.Component {
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
 
-            if (creature.lastAction === 'BIRTHED') {
+            if (creature.getLastaction() === 'BIRTHED') {
                 //make the elements for both the animation and the text
                 elementsArray.push({
-                    key: creature.creatureId,
+                    key: creature.getId(),
                     elem: (
                         <div key={'creature' + keyId++}>
                             {this.CreateCreature(creature)}
@@ -498,7 +498,7 @@ class Animation extends React.Component {
                     ),
                 })
                 textArray.push({
-                    key: 'text' + creature.creatureId,
+                    key: 'text' + creature.getId(),
                     elem: (
                         <div key={'text' + keyId++}>
                             {this.CreateText(creature)}
@@ -507,11 +507,11 @@ class Animation extends React.Component {
                 })
             }
 
-            if (creature.lastAction !== 'DEAD') {
+            if (creature.getLastaction() !== 'DEAD') {
                 //remove the element After playing the animation
                 //move the creatures
                 changeLogArray.push({
-                    key: creature.creatureId,
+                    key: creature.getId(),
                     elem: (
                         <div key={'movement' + keyId++}>
                             {this.CreateCreature(creature)}
@@ -520,7 +520,7 @@ class Animation extends React.Component {
                 })
 
                 textChangeLogArray.push({
-                    key: 'text' + creature.creatureId,
+                    key: 'text' + creature.getId(),
                     elem: (
                         <div key={'text' + keyId++}>
                             {this.CreateText(creature)}
@@ -538,37 +538,39 @@ class Animation extends React.Component {
 
         let jsx = []
 
+        console.log(this.props.creaturesToAnimate)
+
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
 
-            if (creature.lastAction === 'BIRTHED') {
+            if (creature.getLastaction() === 'BIRTHED') {
                 jsx.push(<div key={keyId++}>{this.AnimateBirth(creature)}</div>)
-            } else if (creature.lastAction === 'DEAD') {
+            } else if (creature.getLastaction() === 'DEAD') {
                 //remove the element After playing the animation
                 jsx.push(
                     <div key={keyId++}>{this.AnimateKilled(creature)}</div>
                 )
-            } else if (creature.lastAction === 'REPRODUCE') {
+            } else if (creature.getLastaction() === 'REPRODUCE') {
                 jsx.push(
                     <div key={keyId++}>{this.AnimateReproduce(creature)}</div>
                 )
-            } else if (creature.lastAction === 'HIDE_FROM_CREATURE') {
+            } else if (creature.getLastaction() === 'HIDE_FROM_CREATURE') {
                 jsx.push(<div key={keyId++}>{this.AnimateHide(creature)}</div>)
-            } else if (creature.lastAction === 'HURT') {
+            } else if (creature.getLastaction() === 'HURT') {
                 jsx.push(
                     <div key={keyId++}>{this.AnimateDamage(creature)}</div>
                 )
-            } else if (creature.lastAction === 'ATTACK_A_CREATURE') {
+            } else if (creature.getLastaction() === 'ATTACK_A_CREATURE') {
                 jsx.push(
                     <div key={keyId++}>{this.AnimateAttack(creature)}</div>
                 )
-            } else if (creature.lastAction === 'MATURE') {
+            } else if (creature.getLastaction() === 'MATURE') {
                 jsx.push(
                     <div key={keyId++}>{this.AnimateMaturing(creature)}</div>
                 )
             }
 
-            if (creature.lastAction !== 'DEAD') {
+            if (creature.getLastaction() !== 'DEAD') {
                 //move the creatures only if they aren't dead
                 jsx.push(
                     <div key={keyId++}>{this.AnimateMovement(creature)}</div>
@@ -591,7 +593,6 @@ class Animation extends React.Component {
 
         for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
             let resource = this.props.resourcesToAnimate[i]
-            console.log(resource)
             jsx.push(
                 <div key={'resource' + { i }}>
                     {this.CreateResource(resource)}
@@ -603,6 +604,10 @@ class Animation extends React.Component {
     }
 
     render() {
+        console.log("Rendering new frame")        
+        console.log(this.props.creaturesToAnimate)
+        console.log(this.props.resourcesToAnimate)
+
         //returns the jsx will all its animations, and the elements in the element array for those animations to reference
         //we only want to actually display the full animation jsx if the time is slow enough to be stable
         let jsx = []

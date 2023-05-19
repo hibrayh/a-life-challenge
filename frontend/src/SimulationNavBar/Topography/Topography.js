@@ -6,7 +6,9 @@ import axios from 'axios'
 import { ChromePicker } from 'react-color'
 
 import {
-    GetTopographyRequest
+    GetTopographyRequest,
+    CreateTopographyRequest,
+    DeleteTopographyRequest,
 } from './../../generated_comm_files/backend_api_pb'
 import { BackendClient } from '../../generated_comm_files/backend_api_grpc_web_pb'
 
@@ -51,7 +53,16 @@ function TopographyPage(props) {
             var request = new GetTopographyRequest()
 
             await backendService.getTopography(request, {}, function(err, response) {
-                topographyInfo = response.getRow()
+                let topoRows = response.getRowList()
+                topographyInfo = []
+
+                for (let i = 0; i < topoRows.length; i += 1) {
+                    for (let j = 0; j < topoRows[i].getItemList().length; j += 1) {
+                        topographyInfo.push(topoRows[i].getItemList()[j])
+                    }
+                }
+
+                console.log(topographyInfo)
             })
 
             // get list of topographies
@@ -392,16 +403,20 @@ function Grid(props) {
     //console.log(topographyInfo)
 
     for (let i = 0; i < 1250; i++) {
+        console.log(topographyInfo[i].getId())
+        console.log(topographyInfo[i].getType())
+        console.log(topographyInfo[i].getRow())
+        console.log(topographyInfo[i].getColumn())
         jsx.push(
             <Node
-                id={topographyInfo[i]}
+                key={topographyInfo[i].getId()}
+                id={topographyInfo[i].getId()}
                 toggleSelected={toggleSelected}
-                topography={topographyInfo[i].type}
+                topography={topographyInfo[i].getType()}
                 selectTopography={props.selectTopography}
                 showGridBorder={props.showGridBorder}
-                row={topographyInfo[i].row}
-                col={topographyInfo[i].column}
-                listOfTopographies={props.listOfTopographies}
+                row={topographyInfo[i].getRow()}
+                col={topographyInfo[i].getColumn()}
             />
         )
     }
@@ -415,7 +430,7 @@ function Grid(props) {
     async function toggleSelected(row, col) {
         // find the index of the node that was clicked
         let index = topographyInfo.findIndex(function (node) {
-            if (node.row === row && node.column === col) {
+            if (node.getRow() === row && node.getColumn() === col) {
                 return true
             }
         })
@@ -423,35 +438,41 @@ function Grid(props) {
         //props.updateList(row, col, props.selectTopography)
 
         //if the topography is selected, update the coord, else flip it
-        if (topographyInfo[index].type != 'unselected') {
+        if (topographyInfo[index].getType() != 'unselected') {
             // This is what I had to do to actually change the visuals, unfortunately it wouldn't
             // automatically update after making the backend call
-            topographyInfo[index].type = 'unselected'
+            // topographyInfo[index].getType() = 'unselected'
 
-            // // Delete topography in backend at (col, row) position
-            // await axios({
-            //     method: 'POST',
-            //     url: 'http://localhost:5000/remove-topography',
-            //     data: {
-            //         column: col,
-            //         row: row,
-            //     },
-            // })
+            var request = new DeleteTopographyRequest()
+            request.setRow(row)
+            request.setColumn(col)
+
+            await backendService.deleteTopography(request, {}, function(err, response) {
+                console.log(response)
+                if (response.getTopographydeleted()) {
+                    console.log("Successfully deleted topography")
+                }
+                else {
+                    console.log("Something went wrong deleting the topography")
+                }
+            })
         } else {
             // This is what I had to do to actually change the visuals, unfortunately it wouldn't
             // automatically update after making the backend call
-            topographyInfo[index].type = props.selectTopography
+            // topographyInfo[index].type = props.selectTopography
 
-            // // Add new topography in backend at (col, row) position
-            // await axios({
-            //     method: 'POST',
-            //     url: 'http://localhost:5000/create-new-topography',
-            //     data: {
-            //         topographyType: props.selectTopography,
-            //         column: col,
-            //         row: row,
-            //     },
-            // })
+            var request = new CreateTopographyRequest()
+            request.setType(props.selectTopography)
+            request.setRow(row)
+            request.setColumn(col)
+
+            await backendService.createTopography(request, {}, function(err, response) {
+                if (response.getTopographyadded()) {
+                    console.log("Successfully added topography")
+                } else {
+                    console.log("Something went wrong adding the topography")
+                }
+            })
         }
 
         // this is the only way I was able to get the actual nodes to change color on the

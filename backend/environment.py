@@ -463,7 +463,7 @@ class Environment:
             for column in range(self.columnCount):
                 currentRow.append(self.topographyRegistry[row][column].getDetails())
             
-            topographyTableRows.append(backend_api_pb2.TopograpyRow(item = copy.deepcopy(currentRow)))
+            topographyTableRows.append(backend_api_pb2.TopographyRow(item = copy.deepcopy(currentRow)))
         
         return backend_api_pb2.TopographyTable(row = copy.deepcopy(topographyTableRows))
 

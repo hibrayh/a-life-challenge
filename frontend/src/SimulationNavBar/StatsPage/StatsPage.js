@@ -27,8 +27,8 @@ function StatsPage(props) {
                 request,
                 {},
                 function (error, response) {
-                    setList(response.getSpecies())
-                    setSelectedSpecies(response.getSpecies()[0])
+                    setList(response.getSpeciesList())
+                    setSelectedSpecies(response.getSpeciesList()[0])
                 }
             )
         }
@@ -107,7 +107,7 @@ function ListSpeciesGenomeInformation(props) {
                 {},
                 function (err, response) {
                     setSpeciesGenomeInfo(response.getGenometemplate())
-                    setCreatureNames(response.getCreatures())
+                    setCreatureNames(response.getCreaturesList())
                 }
             )
         }

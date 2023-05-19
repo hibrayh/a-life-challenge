@@ -46,7 +46,7 @@ function SpeciesRelationshipPage(props) {
                 request,
                 {},
                 function (error, response) {
-                    setSpeciesList([''].concat(response.getSpecies()))
+                    setSpeciesList([''].concat(response.getSpeciesList()))
                 }
             )
         }

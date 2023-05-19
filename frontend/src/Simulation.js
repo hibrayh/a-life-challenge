@@ -136,7 +136,7 @@ function Simulation() {
             request,
             {},
             function (error, response) {
-                setSimulationSpeedBeforePause(response.getSimulationspeed())
+                simulationTicksPerSecond = response.getSimulationspeed()
             }
         )
     }

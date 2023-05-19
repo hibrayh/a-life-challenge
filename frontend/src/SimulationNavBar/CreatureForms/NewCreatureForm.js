@@ -67,8 +67,8 @@ function NewCreatureForm(props) {
             request,
             {},
             function (error, response) {
-                setAvailableSpecies(response.getSpecies())
-                setSpeciesName(response.getSpecies()[0])
+                setAvailableSpecies(response.getSpeciesList())
+                setSpeciesName(response.getSpeciesList()[0])
             }
         )
     }
@@ -584,8 +584,6 @@ function NewCreatureForm(props) {
         async function handleSubmit(event) {
             event.preventDefault()
 
-            console.log(speciesName)
-
             var genomeRequest = new GenomeInfo()
             genomeRequest.setVisibility(visibility)
             genomeRequest.setMaxhealth(maxHealth)
@@ -610,7 +608,7 @@ function NewCreatureForm(props) {
             genomeRequest.setIndividualism(individualism)
             genomeRequest.setTerritorial(territorial)
             genomeRequest.setFightorflight(fightOrFlight)
-            genomeRequest.setHostlity(hostility)
+            genomeRequest.setHostility(hostility)
             genomeRequest.setScent(scent)
             genomeRequest.setStealth(stealth)
             genomeRequest.setLifeexpectancy(lifeExpectancy)

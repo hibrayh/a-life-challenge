@@ -7808,7 +7808,7 @@ proto.backend.TopographyInfo.prototype.toObject = function(opt_includeInstance) 
  */
 proto.backend.TopographyInfo.toObject = function(includeInstance, msg) {
   var f, obj = {
-    id: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    id: jspb.Message.getFieldWithDefault(msg, 1, ""),
     row: jspb.Message.getFieldWithDefault(msg, 2, 0),
     column: jspb.Message.getFieldWithDefault(msg, 3, 0),
     type: jspb.Message.getFieldWithDefault(msg, 4, "")
@@ -7849,7 +7849,7 @@ proto.backend.TopographyInfo.deserializeBinaryFromReader = function(msg, reader)
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setId(value);
       break;
     case 2:
@@ -7894,8 +7894,8 @@ proto.backend.TopographyInfo.prototype.serializeBinary = function() {
 proto.backend.TopographyInfo.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getId();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -7925,20 +7925,20 @@ proto.backend.TopographyInfo.serializeBinaryToWriter = function(message, writer)
 
 
 /**
- * optional int32 id = 1;
- * @return {number}
+ * optional string id = 1;
+ * @return {string}
  */
 proto.backend.TopographyInfo.prototype.getId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.backend.TopographyInfo} returns this
  */
 proto.backend.TopographyInfo.prototype.setId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 

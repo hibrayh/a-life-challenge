@@ -231,7 +231,7 @@ message DeleteTopographyReply {
 }
 
 message TopographyInfo {
-    int32 id = 1;
+    string id = 1;
     int32 row = 2;
     int32 column = 3;
     string type = 4;
