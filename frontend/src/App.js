@@ -63,7 +63,7 @@ function App() {
             {},
             function (err, response) {
                 var end_time = Date.now()
-                console.log("Took " + (end_time - start_time) + "ms")
+                console.log('Took ' + (end_time - start_time) + 'ms')
                 if (response.getSimstarted()) {
                     console.log('Simulation started')
                 } else {

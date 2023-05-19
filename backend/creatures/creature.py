@@ -1,13 +1,13 @@
+import json
+import random
+from . import decision_network, species_manager, genome, memory
+import math
+import copy
+import logging
+from generated_comm_files import backend_api_pb2
 import sys
 sys.path.append("..")
 
-from generated_comm_files import backend_api_pb2
-import logging
-import copy
-import math
-from . import decision_network, species_manager, genome, memory
-import random
-import json
 
 logging.basicConfig(
     level=logging.INFO,

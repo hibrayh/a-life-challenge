@@ -23,8 +23,13 @@ import { TopographyPage } from './Topography/Topography.js'
 import SpeciesRelationshipPage from './SpeciesRelationshipPage/SpeciesRelationshipPage.js'
 import SettingsPage from './SettingsPage/SettingsPage.js'
 
-import {StartSimulationRequest, ChangeSimulationProgressionSpeedRequest, UpdateTextToggleRequest, EditUpdateFlagRequest} from './../generated_comm_files/backend_api_pb'
-import {BackendClient} from './../generated_comm_files/backend_api_grpc_web_pb'
+import {
+    StartSimulationRequest,
+    ChangeSimulationProgressionSpeedRequest,
+    UpdateTextToggleRequest,
+    EditUpdateFlagRequest,
+} from './../generated_comm_files/backend_api_pb'
+import { BackendClient } from './../generated_comm_files/backend_api_grpc_web_pb'
 
 var backendService = new BackendClient('http://localhost:44039')
 
@@ -88,18 +93,20 @@ function SimulationNavBar({
 
     const updateSimulationTickSpeed = async () => {
         if (!paused) {
-
             var request = new ChangeSimulationProgressionSpeedRequest()
             request.setNewsimulationspeed(simulationTicksPerSecond)
-            
-            await backendService.changeSimulationProgressionSpeed(request, {}, function(error, response) {
-                if (response.getSimulationspeedchanged()) {
-                    console.log("Changed simulation speed")
+
+            await backendService.changeSimulationProgressionSpeed(
+                request,
+                {},
+                function (error, response) {
+                    if (response.getSimulationspeedchanged()) {
+                        console.log('Changed simulation speed')
+                    } else {
+                        console.error('Error changing simulation speed')
+                    }
                 }
-                else {
-                    console.error("Error changing simulation speed")
-                }
-            })
+            )
             setTicksUpdated(!ticksUpdated)
             console.log('tick speed updated to ', simulationTicksPerSecond)
         }
@@ -126,13 +133,17 @@ function SimulationNavBar({
         var request = new EditUpdateFlagRequest()
         request.setNewupdateflag(true)
 
-        await backendService.editUpdateFlag(request, {}, function (error, response) {
-            if (response.getUpdatedflag()) {
-                console.log('Edited the update flag')
-            } else {
-                console.error('Error when editing the update flag')
+        await backendService.editUpdateFlag(
+            request,
+            {},
+            function (error, response) {
+                if (response.getUpdatedflag()) {
+                    console.log('Edited the update flag')
+                } else {
+                    console.error('Error when editing the update flag')
+                }
             }
-        })
+        )
     }
 
     const playPauseSimulation = async () => {

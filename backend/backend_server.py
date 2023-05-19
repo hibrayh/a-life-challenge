@@ -311,10 +311,11 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
         logging.info("Fetching simulation time")
         return backend_api_pb2.GetTimeOfSimulationReply(
             timeOfSimulation=self.god.getTimeOfSimulation())
-    
+
     def GetLightVisibility(self, request, context):
         logging.info("Fetching light visibility")
-        return backend_api_pb2.GetLightVisibilityReply(lightVisibility = self.god.getLightVisibility())
+        return backend_api_pb2.GetLightVisibilityReply(
+            lightVisibility=self.god.getLightVisibility())
 
 
 def serve():

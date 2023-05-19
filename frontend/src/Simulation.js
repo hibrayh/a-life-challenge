@@ -74,14 +74,18 @@ function Simulation() {
 
     const getTextToggle = async () => {
         var request = new GetTextToggleRequest()
-        await backendService.getTextToggle(request, {}, function(error, response) {
-            if (response.getTexttoggle() != showCreatureText) {
-                console.log("toggled")
-                setUpdate(!update)
-            }
+        await backendService.getTextToggle(
+            request,
+            {},
+            function (error, response) {
+                if (response.getTexttoggle() != showCreatureText) {
+                    console.log('toggled')
+                    setUpdate(!update)
+                }
 
-            showCreatureText = response.getTexttoggle();
-        })
+                showCreatureText = response.getTexttoggle()
+            }
+        )
     }
 
     const textToggle = async () => {
@@ -112,10 +116,14 @@ function Simulation() {
     const getSimulationInfo = async () => {
         var request = new GetEnvironmentInfoRequest()
 
-        await backendService.getEnvironmentInfo(request, {}, function(error, response) {
-            setCreatureList(response.getCreaturesList())
-            setResourceList(response.getResourcesList())
-        })
+        await backendService.getEnvironmentInfo(
+            request,
+            {},
+            function (error, response) {
+                setCreatureList(response.getCreaturesList())
+                setResourceList(response.getResourcesList())
+            }
+        )
         await getTickSpeed()
         await getTextToggle()
         setUpdate(!update)

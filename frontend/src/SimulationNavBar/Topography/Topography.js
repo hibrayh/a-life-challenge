@@ -52,24 +52,26 @@ function TopographyPage(props) {
         async function fetchData() {
             var request = new GetTopographyRequest()
 
-            await backendService.getTopography(request, {}, function(err, response) {
-                let topoRows = response.getRowList()
-                topographyInfo = []
+            await backendService.getTopography(
+                request,
+                {},
+                function (err, response) {
+                    let topoRows = response.getRowList()
+                    topographyInfo = []
 
-                for (let i = 0; i < topoRows.length; i += 1) {
-                    for (let j = 0; j < topoRows[i].getItemList().length; j += 1) {
-                        topographyInfo.push(topoRows[i].getItemList()[j])
+                    for (let i = 0; i < topoRows.length; i += 1) {
+                        for (
+                            let j = 0;
+                            j < topoRows[i].getItemList().length;
+                            j += 1
+                        ) {
+                            topographyInfo.push(topoRows[i].getItemList()[j])
+                        }
                     }
+
+                    console.log(topographyInfo)
                 }
-
-                console.log(topographyInfo)
-            })
-
-            // get list of topographies
-            // await axios({
-            //     method: 'GET',
-            //     url: 'http://localhost:5000/'
-            // })
+            )
         }
 
         fetchData()
@@ -441,15 +443,20 @@ function Grid(props) {
             request.setRow(row)
             request.setColumn(col)
 
-            await backendService.deleteTopography(request, {}, function(err, response) {
-                console.log(response)
-                if (response.getTopographydeleted()) {
-                    console.log("Successfully deleted topography")
+            await backendService.deleteTopography(
+                request,
+                {},
+                function (err, response) {
+                    console.log(response)
+                    if (response.getTopographydeleted()) {
+                        console.log('Successfully deleted topography')
+                    } else {
+                        console.log(
+                            'Something went wrong deleting the topography'
+                        )
+                    }
                 }
-                else {
-                    console.log("Something went wrong deleting the topography")
-                }
-            })
+            )
         } else {
             // This is what I had to do to actually change the visuals, unfortunately it wouldn't
             // automatically update after making the backend call
@@ -460,13 +467,19 @@ function Grid(props) {
             request.setRow(row)
             request.setColumn(col)
 
-            await backendService.createTopography(request, {}, function(err, response) {
-                if (response.getTopographyadded()) {
-                    console.log("Successfully added topography")
-                } else {
-                    console.log("Something went wrong adding the topography")
+            await backendService.createTopography(
+                request,
+                {},
+                function (err, response) {
+                    if (response.getTopographyadded()) {
+                        console.log('Successfully added topography')
+                    } else {
+                        console.log(
+                            'Something went wrong adding the topography'
+                        )
+                    }
                 }
-            })
+            )
         }
 
         // this is the only way I was able to get the actual nodes to change color on the

@@ -175,7 +175,8 @@ function ListSpeciesGenomeInformation(props) {
                             smell ability: {speciesGenomeInfo.getSmellability()}
                         </li>
                         <li className="genomeStat">
-                            hearing ability: {speciesGenomeInfo.getHearingability()}
+                            hearing ability:{' '}
+                            {speciesGenomeInfo.getHearingability()}
                         </li>
                         <li className="genomeStat">
                             sight range: {speciesGenomeInfo.getSightrange()}
@@ -193,19 +194,23 @@ function ListSpeciesGenomeInformation(props) {
                             impulsivity: {speciesGenomeInfo.getImpulsivity()}
                         </li>
                         <li className="genomeStat">
-                            self preservation: {speciesGenomeInfo.getSelfpreservation()}
+                            self preservation:{' '}
+                            {speciesGenomeInfo.getSelfpreservation()}
                         </li>
                         <li className="genomeStat">
                             mobility: {speciesGenomeInfo.getMobility()}
                         </li>
                         <li className="genomeStat">
-                            reproduction type: {speciesGenomeInfo.getReproductiontype()}
+                            reproduction type:{' '}
+                            {speciesGenomeInfo.getReproductiontype()}
                         </li>
                         <li className="genomeStat">
-                            reproduction cooldown: {speciesGenomeInfo.getReproductioncooldown()}
+                            reproduction cooldown:{' '}
+                            {speciesGenomeInfo.getReproductioncooldown()}
                         </li>
                         <li className="genomeStat">
-                            offspring amount: {speciesGenomeInfo.getOffspringamount()}
+                            offspring amount:{' '}
+                            {speciesGenomeInfo.getOffspringamount()}
                         </li>
                         <li className="genomeStat">
                             motivation: {speciesGenomeInfo.getMotivation()}
@@ -217,13 +222,15 @@ function ListSpeciesGenomeInformation(props) {
                             metabolism: {speciesGenomeInfo.getMetabolism()}
                         </li>
                         <li className="genomeStat">
-                            individualism: {speciesGenomeInfo.getIndividualism()}
+                            individualism:{' '}
+                            {speciesGenomeInfo.getIndividualism()}
                         </li>
                         <li className="genomeStat">
                             territorial: {speciesGenomeInfo.getTerritorial()}
                         </li>
                         <li className="genomeStat">
-                            fight or flight: {speciesGenomeInfo.getFightorflight()}
+                            fight or flight:{' '}
+                            {speciesGenomeInfo.getFightorflight()}
                         </li>
                         <li className="genomeStat">
                             hostility: {speciesGenomeInfo.getHostility()}
@@ -235,22 +242,27 @@ function ListSpeciesGenomeInformation(props) {
                             stealth: {speciesGenomeInfo.getStealth()}
                         </li>
                         <li className="genomeStat">
-                            life expectancy: {speciesGenomeInfo.getLifeexpectancy()}
+                            life expectancy:{' '}
+                            {speciesGenomeInfo.getLifeexpectancy()}
                         </li>
                         <li className="genomeStat">
                             maturity: {speciesGenomeInfo.getMaturity()}
                         </li>
                         <li className="genomeStat">
-                            offensive ability: {speciesGenomeInfo.getOffensiveability()}
+                            offensive ability:{' '}
+                            {speciesGenomeInfo.getOffensiveability()}
                         </li>
                         <li className="genomeStat">
-                            defensive ability: {speciesGenomeInfo.getDefensiveability()}
+                            defensive ability:{' '}
+                            {speciesGenomeInfo.getDefensiveability()}
                         </li>
                         <li className="genomeStat">
-                            effect from host: {speciesGenomeInfo.getEffectfromhost()}
+                            effect from host:{' '}
+                            {speciesGenomeInfo.getEffectfromhost()}
                         </li>
                         <li className="genomeStat">
-                            effect from parasite: {speciesGenomeInfo.getEffectfromparasite()}
+                            effect from parasite:{' '}
+                            {speciesGenomeInfo.getEffectfromparasite()}
                         </li>
                         <li className="genomeStat">
                             protecting: {speciesGenomeInfo.getProtecting()}
@@ -259,13 +271,16 @@ function ListSpeciesGenomeInformation(props) {
                             nurturing: {speciesGenomeInfo.getNurturing()}
                         </li>
                         <li className="genomeStat">
-                            effect from being nurtured: {speciesGenomeInfo.getEffectfrombeingnurtured()}
+                            effect from being nurtured:{' '}
+                            {speciesGenomeInfo.getEffectfrombeingnurtured()}
                         </li>
                         <li className="genomeStat">
-                            short term memory accuracy: {speciesGenomeInfo.getShorttermmemoryaccuracy()}
+                            short term memory accuracy:{' '}
+                            {speciesGenomeInfo.getShorttermmemoryaccuracy()}
                         </li>
                         <li className="genomeStat">
-                            short term memory capacity: {speciesGenomeInfo.getShorttermmemorycapacity()}
+                            short term memory capacity:{' '}
+                            {speciesGenomeInfo.getShorttermmemorycapacity()}
                         </li>
                         <li className="genomeStat">
                             shape: {speciesGenomeInfo.getShape()}
@@ -359,16 +374,19 @@ function ListCreatureGenomeInfo(props) {
                     impulsivity: {creatureGenomeInfo.getImpulsivity()}
                 </li>
                 <li className="genomeStat">
-                    self preservation: {creatureGenomeInfo.getSelfpreservation()}
+                    self preservation:{' '}
+                    {creatureGenomeInfo.getSelfpreservation()}
                 </li>
                 <li className="genomeStat">
                     mobility: {creatureGenomeInfo.getMobility()}
                 </li>
                 <li className="genomeStat">
-                    reproduction type: {creatureGenomeInfo.getReproductiontype()}
+                    reproduction type:{' '}
+                    {creatureGenomeInfo.getReproductiontype()}
                 </li>
                 <li className="genomeStat">
-                    reproduction cooldown: {creatureGenomeInfo.getReproductioncooldown()}
+                    reproduction cooldown:{' '}
+                    {creatureGenomeInfo.getReproductioncooldown()}
                 </li>
                 <li className="genomeStat">
                     offspring amount: {creatureGenomeInfo.getOffspringamount()}
@@ -407,16 +425,19 @@ function ListCreatureGenomeInfo(props) {
                     maturity: {creatureGenomeInfo.getMaturity()}
                 </li>
                 <li className="genomeStat">
-                    offensive ability: {creatureGenomeInfo.getOffensiveability()}
+                    offensive ability:{' '}
+                    {creatureGenomeInfo.getOffensiveability()}
                 </li>
                 <li className="genomeStat">
-                    defensive ability: {creatureGenomeInfo.getDefensiveability()}
+                    defensive ability:{' '}
+                    {creatureGenomeInfo.getDefensiveability()}
                 </li>
                 <li className="genomeStat">
                     effect from host: {creatureGenomeInfo.getEffectfromhost()}
                 </li>
                 <li className="genomeStat">
-                    effect from parasite: {creatureGenomeInfo.getEffectfromparasite()}
+                    effect from parasite:{' '}
+                    {creatureGenomeInfo.getEffectfromparasite()}
                 </li>
                 <li className="genomeStat">
                     protecting: {creatureGenomeInfo.getProtecting()}
@@ -425,13 +446,16 @@ function ListCreatureGenomeInfo(props) {
                     nurturing: {creatureGenomeInfo.getNurturing()}
                 </li>
                 <li className="genomeStat">
-                    effect from being nurtured: {creatureGenomeInfo.getEffectfrombeingnurtured()}
+                    effect from being nurtured:{' '}
+                    {creatureGenomeInfo.getEffectfrombeingnurtured()}
                 </li>
                 <li className="genomeStat">
-                    short term memory accuracy: {creatureGenomeInfo.getShorttermmemoryaccuracy()}
+                    short term memory accuracy:{' '}
+                    {creatureGenomeInfo.getShorttermmemoryaccuracy()}
                 </li>
                 <li className="genomeStat">
-                    short term memory capacity: {creatureGenomeInfo.getShorttermmemorycapacity()}
+                    short term memory capacity:{' '}
+                    {creatureGenomeInfo.getShorttermmemorycapacity()}
                 </li>
                 <li className="genomeStat">
                     shape: {creatureGenomeInfo.getShape()}

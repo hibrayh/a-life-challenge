@@ -146,13 +146,13 @@ class Topography:
             'row': self.row,
             'type': self.type,
         }
-    
+
     def getDetails(self):
         return backend_api_pb2.TopographyInfo(
-            id = self.id,
-            row = self.row,
-            column = self.column,
-            type = str(self.type),
+            id=self.id,
+            row=self.row,
+            column=self.column,
+            type=str(self.type),
         )
 
     def save(self):

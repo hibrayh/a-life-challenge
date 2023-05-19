@@ -36,7 +36,7 @@ class Animation extends React.Component {
                     top: `${creature.getYcoordinate() - textOffsetUp}px`,
                     fontSize: '1.5vh',
                 }}>
-                {creature.getId()+ ': '}
+                {creature.getId() + ': '}
 
                 {creature.getLastaction()}
             </div>
@@ -265,8 +265,12 @@ class Animation extends React.Component {
                     initial={[
                         {
                             targets: '#text' + creature.getId(),
-                            left: `${creature.getXcoordinate() - textOffsetSide}px`,
-                            top: `${creature.getYcoordinate() - textOffsetUp}px`,
+                            left: `${
+                                creature.getXcoordinate() - textOffsetSide
+                            }px`,
+                            top: `${
+                                creature.getYcoordinate() - textOffsetUp
+                            }px`,
                             easing: 'linear',
                             duration: 1000 / this.props.simulationSpeed,
                         },
@@ -604,7 +608,7 @@ class Animation extends React.Component {
     }
 
     render() {
-        console.log("Rendering new frame")        
+        console.log('Rendering new frame')
         console.log(this.props.creaturesToAnimate)
         console.log(this.props.resourcesToAnimate)
 
