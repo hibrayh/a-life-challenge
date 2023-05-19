@@ -400,13 +400,7 @@ function Grid(props) {
 
     let jsx = []
 
-    //console.log(topographyInfo)
-
     for (let i = 0; i < 1250; i++) {
-        console.log(topographyInfo[i].getId())
-        console.log(topographyInfo[i].getType())
-        console.log(topographyInfo[i].getRow())
-        console.log(topographyInfo[i].getColumn())
         jsx.push(
             <Node
                 key={topographyInfo[i].getId()}
