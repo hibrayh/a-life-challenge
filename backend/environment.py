@@ -516,28 +516,129 @@ class Environment:
                 self.daysElapsed += 1
 
     def getTimeOfSimulation(self):
-        # A day cycle is currently set to 500, so once ticks reach 500, a new
-        # day starts
+        # A day cycle is 500 ticks, once reached, a new day begins
+        seasonList = ["spring", "summer", "autumn", "winter"]
+        # Split the days evenly from the 365 days in a year
+        daysPerSeason = [91, 91, 91, 92]
         elapsedTicks = self.timeOfSimulation % 500
+        elapsedDays = self.daysElapsed % 365
+        elapsedYears = self.daysElapsed // 365
+
+        # Calculate the current season based on elapsedDays
+        totalDays = 0
+        currentSeason = ''
+        currentTemperature = 0
+        for i in range(len(daysPerSeason)):
+            totalDays += daysPerSeason[i]
+            if elapsedDays < totalDays:
+                currentSeason = seasonList[i]
+                break
+
+        # Determine the current time of the simulation
         if elapsedTicks < 30:
-            timeOfSimulation = 'midnight'
+            timeOfDay = 'midnight'
         elif elapsedTicks < 60:
-            timeOfSimulation = 'dawn'
+            timeOfDay = 'dawn'
         elif elapsedTicks < 130:
-            timeOfSimulation = 'early morning'
+            timeOfDay = 'early morning'
         elif elapsedTicks < 200:
-            timeOfSimulation = 'late morning'
+            timeOfDay = 'late morning'
         elif elapsedTicks < 270:
-            timeOfSimulation = 'noon'
+            timeOfDay = 'noon'
         elif elapsedTicks < 340:
-            timeOfSimulation = 'afternoon'
+            timeOfDay = 'afternoon'
         elif elapsedTicks < 410:
-            timeOfSimulation = 'evening'
+            timeOfDay = 'evening'
         elif elapsedTicks < 440:
-            timeOfSimulation = 'dusk'
+            timeOfDay = 'dusk'
         else:
-            timeOfSimulation = 'midnight'
-        return f"{timeOfSimulation}, {elapsedTicks} ticks elapsed, {self.daysElapsed} days elapsed"
+            timeOfDay = 'midnight'
+
+        # Calculate temperature based on the season and time of day
+        temperatureOffset = 0
+        if currentSeason == "spring":
+            if timeOfDay == "midnight":
+                temperatureOffset = -4
+            elif timeOfDay == "dawn":
+                temperatureOffset = -2
+            elif timeOfDay == "early morning":
+                temperatureOffset = 1
+            elif timeOfDay == "late morning":
+                temperatureOffset = 3
+            elif timeOfDay == "noon":
+                temperatureOffset = 5
+            elif timeOfDay == "afternoon":
+                temperatureOffset = 3
+            elif timeOfDay == "evening":
+                temperatureOffset = 0
+            elif timeOfDay == "dusk":
+                temperatureOffset = -1
+        elif currentSeason == "summer":
+            if timeOfDay == "midnight":
+                temperatureOffset = -4
+            elif timeOfDay == "dawn":
+                temperatureOffset = -1
+            elif timeOfDay == "early morning":
+                temperatureOffset = 2
+            elif timeOfDay == "late morning":
+                temperatureOffset = 4
+            elif timeOfDay == "noon":
+                temperatureOffset = 8
+            elif timeOfDay == "afternoon":
+                temperatureOffset = 6
+            elif timeOfDay == "evening":
+                temperatureOffset = 4
+            elif timeOfDay == "dusk":
+                temperatureOffset = 0
+        elif currentSeason == "autumn":
+            if timeOfDay == "midnight":
+                temperatureOffset = -3
+            elif timeOfDay == "dawn":
+                temperatureOffset = -2
+            elif timeOfDay == "early morning":
+                temperatureOffset = 0
+            elif timeOfDay == "late morning":
+                temperatureOffset = 1
+            elif timeOfDay == "noon":
+                temperatureOffset = 2
+            elif timeOfDay == "afternoon":
+                temperatureOffset = 1
+            elif timeOfDay == "evening":
+                temperatureOffset = 0
+            elif timeOfDay == "dusk":
+                temperatureOffset = -1
+        elif currentSeason == "winter":
+            if timeOfDay == "midnight":
+                temperatureOffset = -4
+            elif timeOfDay == "dawn":
+                temperatureOffset = -2
+            elif timeOfDay == "early morning":
+                temperatureOffset = 2
+            elif timeOfDay == "late morning":
+                temperatureOffset = 4
+            elif timeOfDay == "noon":
+                temperatureOffset = 6
+            elif timeOfDay == "afternoon":
+                temperatureOffset = 4
+            elif timeOfDay == "evening":
+                temperatureOffset = 2
+            elif timeOfDay == "dusk":
+                temperatureOffset = -2
+
+        # Calculate average temperature based on the season
+        if currentSeason == "spring":
+            avgTemperature = 58
+        elif currentSeason == "summer":
+            avgTemperature = 66
+        elif currentSeason == "autumn":
+            avgTemperature = 50
+        elif currentSeason == "winter":
+            avgTemperature = 42
+
+        # Adjust the temperature based on the offset
+        currentTemperature = avgTemperature + temperatureOffset
+
+        return (f"Time: {timeOfDay}, Season: {currentSeason}, Temperature: {currentTemperature}, Ticks elapsed: {elapsedTicks}, Days elapsed: {elapsedDays}, Years elapsed: {elapsedYears}")
 
     def getLightVisibility(self):
         elapsedTicks = self.timeOfSimulation % 500
@@ -560,3 +661,10 @@ class Environment:
         else:                           # Ticks 440-500, Midnight
             self.lightVisibility = 0.2
         return self.lightVisibility
+
+
+'''
+if __name__ == '__main__':
+    myEnv = Environment(1920, 1080, 50, 25)
+    myEnv.getTimeOfSimulation()
+'''
