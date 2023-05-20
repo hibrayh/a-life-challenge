@@ -19,24 +19,20 @@ const debounce = (functionPointer) => {
     }
 }
 
+let modelCreaturePositions = [30, 30, 40, 50]
+let modelCreatureMovement = [0, 0, 0, 0]
+const size = '8vh'
+const max = 30
+
 function App() {
     const [showMenu, setShowMenu] = useState(true)
     const [showSimulation, setShowSimulation] = useState(false)
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(false)
     const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
-    const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
-        useState(0)
-    const [creatureList, setCreatureList] = useState([])
+    const [update, setUpdate] = useState(true)
+
     const [showLoad, setShowLoad] = useState(false)
-    const [resourceList, setResourceList] = useState([])
-    const [timeOfDay, setTimeOfDay] = useState('')
-    const [lightVisibility, setLightVisibility] = useState(1)
-
-    const [topographyInfo, setTopographyInfo] = useState([])
-    const [showCreatureText, setShowCreatureText] = useState(true)
-
-    let modelCreaturePositions = [30, 30, 40, 50]
 
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
@@ -65,18 +61,44 @@ function App() {
                 },
             })
         })
-
+        
         const interval = setInterval(() => {
-            console.log("beep")
-          }, 1000);
+
+            //only do this is the menu is being shown
+            if(showMenu){
+
+                modelCreaturePositions[0] += modelCreatureMovement[0]
+                modelCreaturePositions[1] += modelCreatureMovement[1]
+                //get random movement values
+                for(let i = 0; i < modelCreaturePositions.length; i++){
+                    if(Math.floor(Math.random() * (2 + 1)) === 1){
+                        modelCreatureMovement[i] = -1*Math.floor(Math.random() * (max + 1))
+                        //keep it above 0
+                        if (modelCreatureMovement[i] + modelCreaturePositions[i] < 0){
+                            modelCreatureMovement[i] = -1*modelCreaturePositions[i]
+                        }
+                    }
+                    else{
+                        modelCreatureMovement[i] = Math.floor(Math.random() * (max + 1))
+                        //keep it below 100
+                        if (modelCreatureMovement[i] + modelCreaturePositions[i] > 100){
+                            modelCreatureMovement[i] = 100 - modelCreaturePositions[i]
+                        }
+                    }
+                }
+                console.log(modelCreaturePositions[0], modelCreatureMovement[0])
+                setUpdate(!update)
+            }
+          }, 2000);
 
         window.addEventListener('resize', handleResize)
 
         return () => {
             window.removeEventListener('resize', handleResize)
             clearInterval(interval)
+
         }
-    }, [isSimulationRunning, simulationTicksPerSecond])
+    }, )
 
     function toggleMenuAndSimulation() {
         setShowMenu(!showMenu)
@@ -94,8 +116,8 @@ function App() {
                         top: `${modelCreaturePositions[1]}vh`,
                         background: "red",
                         borderRadius: 100,
-                        height: "4vh",
-                        width: "4vh",
+                        height: size,
+                        width: size,
                     }}
                 />
 
@@ -107,22 +129,20 @@ function App() {
                         top: `${modelCreaturePositions[3]}vh`,
                         background: "red",
                         borderRadius: 100,
-                        height: "4vh",
-                        width: "4vh",
+                        height: size,
+                        width: size,
                     }}
                 />
-
                 <Anime
                     initial={[
                         {
                             targets: '#modelCreature0',
-                            left: '40',
-                            top: '40',
+                            left: `${modelCreaturePositions[0] + modelCreatureMovement[0]}vw`,
+                            top: `${modelCreaturePositions[1] + modelCreatureMovement[1]}vh`,
                             easing: 'linear',
-                            duration: 1000,
+                            duration: 2000,
                         },
-                    ]}>
-                </Anime>
+                ]}></Anime>
 
             </>
             
