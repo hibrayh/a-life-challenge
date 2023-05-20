@@ -4,6 +4,9 @@ import './App.css'
 import Simulation from './Simulation.js'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
 import { FaTimes } from 'react-icons/fa'
+import ReactAnime from 'react-animejs'
+
+const { Anime } = ReactAnime
 
 const debounce = (functionPointer) => {
     let timer
@@ -33,6 +36,8 @@ function App() {
     const [topographyInfo, setTopographyInfo] = useState([])
     const [showCreatureText, setShowCreatureText] = useState(true)
 
+    let modelCreaturePositions = [30, 30, 40, 50]
+
     const startSimulation = async () => {
         // Make a call to the backend to notify it to initialize the simulation
         await axios({
@@ -61,10 +66,15 @@ function App() {
             })
         })
 
+        const interval = setInterval(() => {
+            console.log("beep")
+          }, 1000);
+
         window.addEventListener('resize', handleResize)
 
         return () => {
             window.removeEventListener('resize', handleResize)
+            clearInterval(interval)
         }
     }, [isSimulationRunning, simulationTicksPerSecond])
 
@@ -73,7 +83,54 @@ function App() {
         setShowSimulation(!showSimulation)
     }
 
+    const ModelCreatures = () => {
+        return (
+            <>
+                <div
+                    id="modelCreature0"
+                    style={{
+                        position: 'absolute',
+                        left: `${modelCreaturePositions[0]}vw`,
+                        top: `${modelCreaturePositions[1]}vh`,
+                        background: "red",
+                        borderRadius: 100,
+                        height: "4vh",
+                        width: "4vh",
+                    }}
+                />
+
+                <div
+                    id="modelCreature1"
+                    style={{
+                        position: 'absolute',
+                        left: `${modelCreaturePositions[2]}vw`,
+                        top: `${modelCreaturePositions[3]}vh`,
+                        background: "red",
+                        borderRadius: 100,
+                        height: "4vh",
+                        width: "4vh",
+                    }}
+                />
+
+                <Anime
+                    initial={[
+                        {
+                            targets: '#modelCreature0',
+                            left: '40',
+                            top: '40',
+                            easing: 'linear',
+                            duration: 1000,
+                        },
+                    ]}>
+                </Anime>
+
+            </>
+            
+        )
+    }
+
     const Menu = () => {
+
         return (
             <>
                 <header className="menu">
@@ -101,6 +158,7 @@ function App() {
                             Load
                         </button>
                     </div>
+                    <ModelCreatures />
                 </div>
             </>
         )
