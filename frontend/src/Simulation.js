@@ -9,7 +9,6 @@ let showCreatureText = 0
 let simulationTicksPerSecond = 0
 
 function Simulation() {
-
     const [isSimulationRunning, setIsSimulationRunning] = useState(true)
     //const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
     const [creatureList, setCreatureList] = useState([])

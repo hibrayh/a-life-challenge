@@ -21,8 +21,14 @@ const debounce = (functionPointer) => {
 // here is where we can add/remove model creatures
 let modelCreaturePositions = [30, 30, 40, 50, 70, 80, 80, 20, 10, 85] //index 0 = model creature0 left, index 1 = model creature0 top, repeat
 let modelCreatureMovement = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-let modelCreatureIds = ["modelCreature0", "modelCreature1", "modelCreature2", "modelCreature3", "modelCreature4"]
-let modelCreatureColor = ["red", "red", "red", "blue", "blue"]
+let modelCreatureIds = [
+    'modelCreature0',
+    'modelCreature1',
+    'modelCreature2',
+    'modelCreature3',
+    'modelCreature4',
+]
+let modelCreatureColor = ['red', 'red', 'red', 'blue', 'blue']
 let modelCreatureShape = [100, 100, 100, 0, 0] //100 = round, 0 = square, not going to worry about triangles
 const size = '9vh'
 const maxMovement = 30
@@ -66,44 +72,52 @@ function App() {
                 },
             })
         })
-        
+
         const interval = setInterval(() => {
-
             //only do this is the menu is being shown
-            if(showMenu){
-
+            if (showMenu) {
                 //get random movement values
-                for(let i = 0; i < modelCreaturePositions.length; i++){
-
+                for (let i = 0; i < modelCreaturePositions.length; i++) {
                     modelCreaturePositions[i] += modelCreatureMovement[i]
 
-                    if(Math.floor(Math.random() * (2 + 1)) === 1){
-                        modelCreatureMovement[i] = -1*Math.floor(Math.random() * (maxMovement + 1))
+                    if (Math.floor(Math.random() * (2 + 1)) === 1) {
+                        modelCreatureMovement[i] =
+                            -1 * Math.floor(Math.random() * (maxMovement + 1))
                         //keep it above the min range
-                        if (modelCreatureMovement[i] + modelCreaturePositions[i] < minRange){
-                            modelCreatureMovement[i] = -1*modelCreaturePositions[i]
+                        if (
+                            modelCreatureMovement[i] +
+                                modelCreaturePositions[i] <
+                            minRange
+                        ) {
+                            modelCreatureMovement[i] =
+                                -1 * modelCreaturePositions[i]
                         }
-                    }
-                    else{
-                        modelCreatureMovement[i] = Math.floor(Math.random() * (maxMovement + 1))
+                    } else {
+                        modelCreatureMovement[i] = Math.floor(
+                            Math.random() * (maxMovement + 1)
+                        )
                         //keep it below max range
-                        if (modelCreatureMovement[i] + modelCreaturePositions[i] > maxRange){
-                            modelCreatureMovement[i] = maxRange - modelCreaturePositions[i]
+                        if (
+                            modelCreatureMovement[i] +
+                                modelCreaturePositions[i] >
+                            maxRange
+                        ) {
+                            modelCreatureMovement[i] =
+                                maxRange - modelCreaturePositions[i]
                         }
                     }
                 }
                 setUpdate(!update)
             }
-          }, 2000);
+        }, 2000)
 
         window.addEventListener('resize', handleResize)
 
         return () => {
             window.removeEventListener('resize', handleResize)
             clearInterval(interval)
-
         }
-    }, )
+    })
 
     function toggleMenuAndSimulation() {
         setShowMenu(!showMenu)
@@ -111,29 +125,33 @@ function App() {
     }
 
     const ModelCreatures = () => {
-
         let modelAnimationJsx = []
         let modelJsx = []
 
-        function modelMovement(modelId, left, top){
-            return(
+        function modelMovement(modelId, left, top) {
+            return (
                 <Anime
-                initial={[
-                    {
-                        targets: '#' + modelId,
-                        left: `${modelCreaturePositions[left] + modelCreatureMovement[left]}vw`,
-                        top: `${modelCreaturePositions[top] + modelCreatureMovement[top]}vh`,
-                        easing: 'linear',
-                        duration: 2000,
-                    },
-            ]}></Anime>
+                    initial={[
+                        {
+                            targets: '#' + modelId,
+                            left: `${
+                                modelCreaturePositions[left] +
+                                modelCreatureMovement[left]
+                            }vw`,
+                            top: `${
+                                modelCreaturePositions[top] +
+                                modelCreatureMovement[top]
+                            }vh`,
+                            easing: 'linear',
+                            duration: 2000,
+                        },
+                    ]}></Anime>
             )
-
         }
 
         let idIndex = 0
 
-        for(let i = 0; i < modelCreatureMovement.length; i += 2){
+        for (let i = 0; i < modelCreatureMovement.length; i += 2) {
             //create the elements
             modelJsx.push(
                 <div
@@ -141,18 +159,19 @@ function App() {
                     style={{
                         position: 'absolute',
                         left: `${modelCreaturePositions[i]}vw`,
-                        top: `${modelCreaturePositions[i+1]}vh`,
+                        top: `${modelCreaturePositions[i + 1]}vh`,
                         background: modelCreatureColor[idIndex],
                         borderRadius: modelCreatureShape[idIndex],
                         height: size,
                         width: size,
                     }}
                 />
-
             )
 
             //animate the movement
-            modelAnimationJsx.push(modelMovement(modelCreatureIds[idIndex], i, i+1))
+            modelAnimationJsx.push(
+                modelMovement(modelCreatureIds[idIndex], i, i + 1)
+            )
             idIndex++
         }
 
@@ -160,15 +179,11 @@ function App() {
             <>
                 {modelJsx}
                 {modelAnimationJsx}
-
             </>
-            
         )
     }
 
-
     const Menu = () => {
-
         return (
             <>
                 <header className="menu">
