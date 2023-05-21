@@ -542,8 +542,6 @@ class Animation extends React.Component {
 
         let jsx = []
 
-        console.log(this.props.creaturesToAnimate)
-
         for (let i = 0; i < this.props.creaturesToAnimate.length; i++) {
             let creature = this.props.creaturesToAnimate[i]
 
@@ -608,10 +606,6 @@ class Animation extends React.Component {
     }
 
     render() {
-        console.log('Rendering new frame')
-        console.log(this.props.creaturesToAnimate)
-        console.log(this.props.resourcesToAnimate)
-
         //returns the jsx will all its animations, and the elements in the element array for those animations to reference
         //we only want to actually display the full animation jsx if the time is slow enough to be stable
         let jsx = []

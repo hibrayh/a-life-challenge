@@ -68,8 +68,6 @@ function TopographyPage(props) {
                             topographyInfo.push(topoRows[i].getItemList()[j])
                         }
                     }
-
-                    console.log(topographyInfo)
                 }
             )
         }
@@ -528,7 +526,7 @@ function Node(props) {
 
     return (
         <div
-            className={'defaultNode' + gridBorder}
+            className='defaultNode'
             onClick={handleClick}
             style={{ backgroundColor: topographyOption.color }}
             row={props.row}

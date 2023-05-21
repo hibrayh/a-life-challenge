@@ -57,13 +57,10 @@ function App() {
         request.setColumncount(50)
         request.setRowcount(25)
 
-        var start_time = Date.now()
         await backendService.startSimulation(
             request,
             {},
             function (err, response) {
-                var end_time = Date.now()
-                console.log('Took ' + (end_time - start_time) + 'ms')
                 if (response.getSimstarted()) {
                     console.log('Simulation started')
                 } else {

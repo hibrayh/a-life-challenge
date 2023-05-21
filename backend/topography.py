@@ -152,7 +152,7 @@ class Topography:
             id=self.id,
             row=self.row,
             column=self.column,
-            type=str(self.type),
+            type=f'{self.type}',
         )
 
     def save(self):

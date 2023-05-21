@@ -107,7 +107,6 @@ function ListSpeciesGenomeInformation(props) {
                 request,
                 {},
                 function (err, response) {
-                    console.log(response)
                     setSpeciesGenomeInfo(response.getGenometemplate())
                     setCreatureNames(response.getCreaturesList())
                 }
@@ -328,8 +327,6 @@ function ListCreatureGenomeInfo(props) {
         }
         getCreatureInfo()
     }, [props.creatureName])
-
-    console.log(creatureGenomeInfo)
 
     return (
         <>

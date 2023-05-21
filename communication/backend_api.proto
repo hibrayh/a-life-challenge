@@ -99,7 +99,7 @@ message GenomeInfo {
 }
 
 message ResourceInfo {
-    int32 id = 1;
+    string id = 1;
     float replenishment = 2;
     float xCoordinate = 3;
     float yCoordinate = 4;

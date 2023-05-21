@@ -217,7 +217,7 @@ class Environment:
 
     def removeTopography(self, column, row):
         logging.info(f"Removing topography from column: {column}, row: {row}")
-        self.topographyRegistry[column][row] = topography.Topography(
+        self.topographyRegistry[row][column] = topography.Topography(
             0,
             0,
             0,
