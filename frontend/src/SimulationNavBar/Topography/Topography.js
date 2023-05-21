@@ -526,7 +526,7 @@ function Node(props) {
 
     return (
         <div
-            className='defaultNode'
+            className="defaultNode"
             onClick={handleClick}
             style={{ backgroundColor: topographyOption.color }}
             row={props.row}
