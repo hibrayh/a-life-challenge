@@ -18,11 +18,16 @@ const debounce = (functionPointer) => {
         }, 250)
     }
 }
-
-let modelCreaturePositions = [30, 30, 40, 50]
-let modelCreatureMovement = [0, 0, 0, 0]
-const size = '8vh'
-const max = 30
+// here is where we can add/remove model creatures
+let modelCreaturePositions = [30, 30, 40, 50, 70, 80, 80, 20, 10, 85] //index 0 = model creature0 left, index 1 = model creature0 top, repeat
+let modelCreatureMovement = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let modelCreatureIds = ["modelCreature0", "modelCreature1", "modelCreature2", "modelCreature3", "modelCreature4"]
+let modelCreatureColor = ["red", "red", "red", "blue", "blue"]
+let modelCreatureShape = [100, 100, 100, 0, 0] //100 = round, 0 = square, not going to worry about triangles
+const size = '9vh'
+const maxMovement = 30
+const maxRange = 90
+const minRange = 5
 
 function App() {
     const [showMenu, setShowMenu] = useState(true)
@@ -67,26 +72,26 @@ function App() {
             //only do this is the menu is being shown
             if(showMenu){
 
-                modelCreaturePositions[0] += modelCreatureMovement[0]
-                modelCreaturePositions[1] += modelCreatureMovement[1]
                 //get random movement values
                 for(let i = 0; i < modelCreaturePositions.length; i++){
+
+                    modelCreaturePositions[i] += modelCreatureMovement[i]
+
                     if(Math.floor(Math.random() * (2 + 1)) === 1){
-                        modelCreatureMovement[i] = -1*Math.floor(Math.random() * (max + 1))
-                        //keep it above 0
-                        if (modelCreatureMovement[i] + modelCreaturePositions[i] < 0){
+                        modelCreatureMovement[i] = -1*Math.floor(Math.random() * (maxMovement + 1))
+                        //keep it above the min range
+                        if (modelCreatureMovement[i] + modelCreaturePositions[i] < minRange){
                             modelCreatureMovement[i] = -1*modelCreaturePositions[i]
                         }
                     }
                     else{
-                        modelCreatureMovement[i] = Math.floor(Math.random() * (max + 1))
-                        //keep it below 100
-                        if (modelCreatureMovement[i] + modelCreaturePositions[i] > 100){
-                            modelCreatureMovement[i] = 100 - modelCreaturePositions[i]
+                        modelCreatureMovement[i] = Math.floor(Math.random() * (maxMovement + 1))
+                        //keep it below max range
+                        if (modelCreatureMovement[i] + modelCreaturePositions[i] > maxRange){
+                            modelCreatureMovement[i] = maxRange - modelCreaturePositions[i]
                         }
                     }
                 }
-                console.log(modelCreaturePositions[0], modelCreatureMovement[0])
                 setUpdate(!update)
             }
           }, 2000);
@@ -106,48 +111,61 @@ function App() {
     }
 
     const ModelCreatures = () => {
-        return (
-            <>
+
+        let modelAnimationJsx = []
+        let modelJsx = []
+
+        function modelMovement(modelId, left, top){
+            return(
+                <Anime
+                initial={[
+                    {
+                        targets: '#' + modelId,
+                        left: `${modelCreaturePositions[left] + modelCreatureMovement[left]}vw`,
+                        top: `${modelCreaturePositions[top] + modelCreatureMovement[top]}vh`,
+                        easing: 'linear',
+                        duration: 2000,
+                    },
+            ]}></Anime>
+            )
+
+        }
+
+        let idIndex = 0
+
+        for(let i = 0; i < modelCreatureMovement.length; i += 2){
+            //create the elements
+            modelJsx.push(
                 <div
-                    id="modelCreature0"
+                    id={modelCreatureIds[idIndex]}
                     style={{
                         position: 'absolute',
-                        left: `${modelCreaturePositions[0]}vw`,
-                        top: `${modelCreaturePositions[1]}vh`,
-                        background: "red",
-                        borderRadius: 100,
+                        left: `${modelCreaturePositions[i]}vw`,
+                        top: `${modelCreaturePositions[i+1]}vh`,
+                        background: modelCreatureColor[idIndex],
+                        borderRadius: modelCreatureShape[idIndex],
                         height: size,
                         width: size,
                     }}
                 />
 
-                <div
-                    id="modelCreature1"
-                    style={{
-                        position: 'absolute',
-                        left: `${modelCreaturePositions[2]}vw`,
-                        top: `${modelCreaturePositions[3]}vh`,
-                        background: "red",
-                        borderRadius: 100,
-                        height: size,
-                        width: size,
-                    }}
-                />
-                <Anime
-                    initial={[
-                        {
-                            targets: '#modelCreature0',
-                            left: `${modelCreaturePositions[0] + modelCreatureMovement[0]}vw`,
-                            top: `${modelCreaturePositions[1] + modelCreatureMovement[1]}vh`,
-                            easing: 'linear',
-                            duration: 2000,
-                        },
-                ]}></Anime>
+            )
+
+            //animate the movement
+            modelAnimationJsx.push(modelMovement(modelCreatureIds[idIndex], i, i+1))
+            idIndex++
+        }
+
+        return (
+            <>
+                {modelJsx}
+                {modelAnimationJsx}
 
             </>
             
         )
     }
+
 
     const Menu = () => {
 
@@ -156,6 +174,7 @@ function App() {
                 <header className="menu">
                     <h1>A-Life Challenge</h1>
                 </header>
+                <ModelCreatures />
                 <div className="menu">
                     <div>
                         <button
@@ -178,7 +197,6 @@ function App() {
                             Load
                         </button>
                     </div>
-                    <ModelCreatures />
                 </div>
             </>
         )
