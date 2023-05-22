@@ -19,17 +19,18 @@ const debounce = (functionPointer) => {
     }
 }
 // here is where we can add/remove model creatures
-let modelCreaturePositions = [30, 30, 40, 50, 70, 80, 80, 20, 10, 85] //index 0 = model creature0 left, index 1 = model creature0 top, repeat
-let modelCreatureMovement = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let modelCreaturePositions = [30, 30, 40, 50, 70, 80, 80, 20, 10, 85, 60, 70] //index 0 = model creature0 left, index 1 = model creature0 top, repeat
+let modelCreatureMovement = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 let modelCreatureIds = [
     'modelCreature0',
     'modelCreature1',
     'modelCreature2',
     'modelCreature3',
     'modelCreature4',
+    'modelCreature5',
 ]
-let modelCreatureColor = ['red', 'red', 'red', 'blue', 'blue']
-let modelCreatureShape = [100, 100, 100, 0, 0] //100 = round, 0 = square, not going to worry about triangles
+let modelCreatureColor = ['red', 'red', 'red', 'blue', 'blue', 'green']
+let modelCreatureShape = [100, 100, 100, 0, 0, 100] //100 = round, 0 = square, not going to worry about triangles
 const size = '9vh'
 const maxMovement = 30
 const maxRange = 90
