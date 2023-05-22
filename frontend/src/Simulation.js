@@ -5,35 +5,15 @@ import Animation from './Animation'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
 import { FaTimes } from 'react-icons/fa'
 
-/*const debounce = (functionPointer) => {
-    let timer
-    return () => {
-        clearTimeout(timer)
-        timer = setTimeout((_) => {
-            timer = null
-            functionPointer()
-        }, 250)
-    }
-}*/
-
 let showCreatureText = 0
 let simulationTicksPerSecond = 0
 
 function Simulation() {
-    const [showMenu, setShowMenu] = useState(true)
-    const [showSimulation, setShowSimulation] = useState(false)
-    const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
     const [isSimulationRunning, setIsSimulationRunning] = useState(true)
     //const [simulationTicksPerSecond, setSimulationTicksPerSecond] = useState(0)
-    const [simulationSpeedBeforePause, setSimulationSpeedBeforePause] =
-        useState(0)
     const [creatureList, setCreatureList] = useState([])
-    const [showLoad, setShowLoad] = useState(false)
     const [resourceList, setResourceList] = useState([])
-    const [timeOfDay, setTimeOfDay] = useState('')
     const [lightVisibility, setLightVisibility] = useState(1)
-
-    const [topographyInfo, setTopographyInfo] = useState([])
     const [update, setUpdate] = useState(false)
 
     const progressSimulationTimeByOneTick = async () => {
