@@ -82,6 +82,7 @@ function App() {
                     modelCreaturePositions[i] += modelCreatureMovement[i]
 
                     if (Math.floor(Math.random() * (2 + 1)) === 1) {
+                        
                         modelCreatureMovement[i] =
                             -1 * Math.floor(Math.random() * (maxMovement + 1))
                         //keep it above the min range
@@ -93,6 +94,7 @@ function App() {
                             modelCreatureMovement[i] =
                                 -1 * modelCreaturePositions[i]
                         }
+                        
                     } else {
                         modelCreatureMovement[i] = Math.floor(
                             Math.random() * (maxMovement + 1)
@@ -104,9 +106,11 @@ function App() {
                             maxRange
                         ) {
                             modelCreatureMovement[i] =
-                                maxRange - modelCreaturePositions[i]
+                                -1*modelCreatureMovement[i] //this is to stop them from getting stuck in the bottom right corner
                         }
+                        
                     }
+                    console.log(modelCreatureMovement[i])
                 }
                 setUpdate(!update)
             }
@@ -165,6 +169,7 @@ function App() {
                         borderRadius: modelCreatureShape[idIndex],
                         height: size,
                         width: size,
+                        zIndex: -100
                     }}
                 />
             )
@@ -190,7 +195,6 @@ function App() {
                 <header className="menu">
                     <h1>A-Life Challenge</h1>
                 </header>
-                <ModelCreatures />
                 <div className="menu">
                     <div>
                         <button
@@ -213,6 +217,7 @@ function App() {
                             Load
                         </button>
                     </div>
+                    <ModelCreatures />
                 </div>
             </>
         )
