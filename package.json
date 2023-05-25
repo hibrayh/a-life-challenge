@@ -3,6 +3,7 @@
     "prettier": "2.7.1"
   },
   "dependencies": {
+    "react-color": "^2.19.3",
     "react-icons": "^4.7.1"
   }
 }
