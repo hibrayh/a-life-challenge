@@ -32,35 +32,6 @@
     box-sizing: border-box;
     height: calc(100% / 25);
     width: calc(100% / 50);
-    background-color: rgb(172, 172, 172);
-}
-
-.flat {
-    box-sizing: border-box;
-    height: calc(100% / 25);
-    width: calc(100% / 50);
-    background-color: rgb(35, 155, 11);
-}
-
-.extreme {
-    box-sizing: border-box;
-    height: calc(100% / 25);
-    width: calc(100% / 50);
-    background-color: rgb(82, 79, 79);
-}
-
-.mild {
-    box-sizing: border-box;
-    height: calc(100% / 25);
-    width: calc(100% / 50);
-    background-color: rgb(243, 237, 237);
-}
-
-.moderate {
-    box-sizing: border-box;
-    height: calc(100% / 25);
-    width: calc(100% / 50);
-    background-color: rgb(42, 59, 214);
 }
 
 .gridBorder {
@@ -172,4 +143,11 @@
 #topographyDescription {
     font-size: 1.5vmin;
     padding-left: 15px;
+}
+
+
+.colorPicker{
+    z-index: 99999;
+    position:absolute;
+    left:9vmin;
 }

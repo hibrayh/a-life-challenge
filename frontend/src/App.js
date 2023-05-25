@@ -107,7 +107,6 @@ function App() {
                                 -1 * modelCreatureMovement[i] //this is to stop them from getting stuck in the bottom right corner
                         }
                     }
-                    console.log(modelCreatureMovement[i])
                 }
                 setUpdate(!update)
             }
@@ -225,7 +224,7 @@ function App() {
         return (
             <div>
                 <Simulation />
-                <SimulationNavBar />
+                <SimulationNavBar toggleMenuAndSimulation={toggleMenuAndSimulation}/>
             </div>
         )
     }
