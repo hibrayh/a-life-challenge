@@ -82,7 +82,6 @@ function App() {
                     modelCreaturePositions[i] += modelCreatureMovement[i]
 
                     if (Math.floor(Math.random() * (2 + 1)) === 1) {
-                        
                         modelCreatureMovement[i] =
                             -1 * Math.floor(Math.random() * (maxMovement + 1))
                         //keep it above the min range
@@ -94,7 +93,6 @@ function App() {
                             modelCreatureMovement[i] =
                                 -1 * modelCreaturePositions[i]
                         }
-                        
                     } else {
                         modelCreatureMovement[i] = Math.floor(
                             Math.random() * (maxMovement + 1)
@@ -106,9 +104,8 @@ function App() {
                             maxRange
                         ) {
                             modelCreatureMovement[i] =
-                                -1*modelCreatureMovement[i] //this is to stop them from getting stuck in the bottom right corner
+                                -1 * modelCreatureMovement[i] //this is to stop them from getting stuck in the bottom right corner
                         }
-                        
                     }
                     console.log(modelCreatureMovement[i])
                 }
@@ -169,7 +166,7 @@ function App() {
                         borderRadius: modelCreatureShape[idIndex],
                         height: size,
                         width: size,
-                        zIndex: -100
+                        zIndex: -100,
                     }}
                 />
             )
