@@ -224,7 +224,9 @@ function App() {
         return (
             <div>
                 <Simulation />
-                <SimulationNavBar toggleMenuAndSimulation={toggleMenuAndSimulation}/>
+                <SimulationNavBar
+                    toggleMenuAndSimulation={toggleMenuAndSimulation}
+                />
             </div>
         )
     }

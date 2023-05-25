@@ -136,7 +136,7 @@ function NewCreatureForm(props) {
         return (
             <div className="newCreatureOrSpeciesForm">
                 <button
-                    onClick={ () =>{
+                    onClick={() => {
                         setShowColorPicker(false)
                         props.toggleNewCreatureForm()
                     }}
@@ -163,16 +163,21 @@ function NewCreatureForm(props) {
 
                     <div className="attributeHolder">
                         <label className="dataTitle">Color</label>
-                        <button onClick={ (event) => {
+                        <button
+                            onClick={(event) => {
                                 setShowColorPicker(!showColorPicker)
                                 event.preventDefault()
-                            }
-                        } 
-                        className="dropDownOption">Pick Color
+                            }}
+                            className="dropDownOption">
+                            Pick Color
                         </button>
-                        {
-                            showColorPicker ? <ChromePicker color={color} onChange={(event) => setColor(event.hex)} className="colorPicker" /> : null
-                        }
+                        {showColorPicker ? (
+                            <ChromePicker
+                                color={color}
+                                onChange={(event) => setColor(event.hex)}
+                                className="colorPicker"
+                            />
+                        ) : null}
                         <br></br>
                     </div>
 
@@ -190,25 +195,131 @@ function NewCreatureForm(props) {
                         <br></br>
                     </div>
 
-                    <DataSlider name="Visibility" setAttribute={setVisibility} attribute={visibility} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Max-Health" setAttribute={setMaxHealth} attribute={maxHealth} min={0} max={1} step={.01} isLongName={false}/>
-                
-                    <DataCheckbox name="Can See?" setAttribute={setCanSee} attribute={canSee} />
-                    <DataCheckbox name="Can Smell?" setAttribute={setCanSmell} attribute={canSmell} />
-                    <DataCheckbox name="Can Hear?" setAttribute={setCanHear} attribute={canHear} />
-                    
-                    <DataSlider name="Sight Ability" setAttribute={setSightAbility} attribute={sightAbility} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Smell Ability" setAttribute={setSmellAbility} attribute={smellAbility} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Hearing Ability" setAttribute={setHearingAbility} attribute={hearingAbility} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Sight Range" setAttribute={setSightRange} attribute={sightRange} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Smell Range" setAttribute={setSmellRange} attribute={smellRange} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Hearing Range" setAttribute={setHearingRange} attribute={hearingRange} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Reaction Time" setAttribute={setReactionTime} attribute={reactionTime} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Impulsivity" setAttribute={setImpulsivity} attribute={impulsivity} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Self Preservation" setAttribute={setSelfPreservation} attribute={selfPreservation} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Mobility" setAttribute={setMobility} attribute={mobility} min={0} max={1} step={.01} isLongName={false}/>
-                    
+                    <DataSlider
+                        name="Visibility"
+                        setAttribute={setVisibility}
+                        attribute={visibility}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Max-Health"
+                        setAttribute={setMaxHealth}
+                        attribute={maxHealth}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
 
+                    <DataCheckbox
+                        name="Can See?"
+                        setAttribute={setCanSee}
+                        attribute={canSee}
+                    />
+                    <DataCheckbox
+                        name="Can Smell?"
+                        setAttribute={setCanSmell}
+                        attribute={canSmell}
+                    />
+                    <DataCheckbox
+                        name="Can Hear?"
+                        setAttribute={setCanHear}
+                        attribute={canHear}
+                    />
+
+                    <DataSlider
+                        name="Sight Ability"
+                        setAttribute={setSightAbility}
+                        attribute={sightAbility}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Smell Ability"
+                        setAttribute={setSmellAbility}
+                        attribute={smellAbility}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Hearing Ability"
+                        setAttribute={setHearingAbility}
+                        attribute={hearingAbility}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Sight Range"
+                        setAttribute={setSightRange}
+                        attribute={sightRange}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Smell Range"
+                        setAttribute={setSmellRange}
+                        attribute={smellRange}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Hearing Range"
+                        setAttribute={setHearingRange}
+                        attribute={hearingRange}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Reaction Time"
+                        setAttribute={setReactionTime}
+                        attribute={reactionTime}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Impulsivity"
+                        setAttribute={setImpulsivity}
+                        attribute={impulsivity}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Self Preservation"
+                        setAttribute={setSelfPreservation}
+                        attribute={selfPreservation}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Mobility"
+                        setAttribute={setMobility}
+                        attribute={mobility}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
 
                     <div className="attributeHolder">
                         <label className="dataTitle">Reproduction Type</label>
@@ -225,30 +336,214 @@ function NewCreatureForm(props) {
                         <br></br>
                     </div>
 
-                    <DataSlider name="Reproduction Cooldown" setAttribute={setReproductionCooldown} attribute={reproductionCoolDown} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Number Of Offspring" setAttribute={setOffSpringAmount} attribute={offSpringAmount} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Motivation" setAttribute={setMotivation} attribute={motivation} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Max-Energy" setAttribute={setMaxEnergy} attribute={maxEnergy} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Metabolism" setAttribute={setMetabolism} attribute={metabolism} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Individualism" setAttribute={setIndividualism} attribute={individualism} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Territorial" setAttribute={setTerritorial} attribute={territorial} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Fight-Or-Flight" setAttribute={setFightOrFlight} attribute={fightOrFlight} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Hostility" setAttribute={setHostility} attribute={hostility} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Scent" setAttribute={setScent} attribute={scent} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Stealth" setAttribute={setStealth} attribute={stealth} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Life Expectancy" setAttribute={setLifeExpectancy} attribute={lifeExpectancy} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Maturity" setAttribute={setMaturity} attribute={maturity} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Offensive Ability" setAttribute={setOffensiveAbility} attribute={offensiveAbility} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Defensive Ability" setAttribute={setDefensiveAbility} attribute={defensiveAbility} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Effect From Host" setAttribute={setEffectFromHost} attribute={effectFromHost} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Effect From Parasite" setAttribute={setEffectFromParasite} attribute={effectFromParasite} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Protecting" setAttribute={setProtecting} attribute={protecting} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Nurturing" setAttribute={setNurturing} attribute={nurturing} min={0} max={1} step={.01} isLongName={false}/>
-                    <DataSlider name="Effect From Being Nurtured" setAttribute={setEffectFromBeingNurtured} attribute={effectFromBeingNurtured} min={0} max={1} step={.01} isLongName={true}/>
-                    <DataSlider name="Short Term Memory Accuracy" setAttribute={setShortTermMemoryAccuracy} attribute={shortTermMemoryAccuracy} min={0} max={1} step={.01} isLongName={true}/>
-                    <DataSlider name="Short Term Memory Capacity" setAttribute={setShortTermMemoryCapacity} attribute={shortTermMemoryCapacity} min={0} max={1} step={.01} isLongName={true}/>
-                    <DataSlider name="Number to Spawn In" setAttribute={setNumberToSpawn} attribute={numberToSpawn} min={0} max={20} step={1} isLongName={false}/>
-                    
+                    <DataSlider
+                        name="Reproduction Cooldown"
+                        setAttribute={setReproductionCooldown}
+                        attribute={reproductionCoolDown}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Number Of Offspring"
+                        setAttribute={setOffSpringAmount}
+                        attribute={offSpringAmount}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Motivation"
+                        setAttribute={setMotivation}
+                        attribute={motivation}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Max-Energy"
+                        setAttribute={setMaxEnergy}
+                        attribute={maxEnergy}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Metabolism"
+                        setAttribute={setMetabolism}
+                        attribute={metabolism}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Individualism"
+                        setAttribute={setIndividualism}
+                        attribute={individualism}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Territorial"
+                        setAttribute={setTerritorial}
+                        attribute={territorial}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Fight-Or-Flight"
+                        setAttribute={setFightOrFlight}
+                        attribute={fightOrFlight}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Hostility"
+                        setAttribute={setHostility}
+                        attribute={hostility}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Scent"
+                        setAttribute={setScent}
+                        attribute={scent}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Stealth"
+                        setAttribute={setStealth}
+                        attribute={stealth}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Life Expectancy"
+                        setAttribute={setLifeExpectancy}
+                        attribute={lifeExpectancy}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Maturity"
+                        setAttribute={setMaturity}
+                        attribute={maturity}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Offensive Ability"
+                        setAttribute={setOffensiveAbility}
+                        attribute={offensiveAbility}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Defensive Ability"
+                        setAttribute={setDefensiveAbility}
+                        attribute={defensiveAbility}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Effect From Host"
+                        setAttribute={setEffectFromHost}
+                        attribute={effectFromHost}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Effect From Parasite"
+                        setAttribute={setEffectFromParasite}
+                        attribute={effectFromParasite}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Protecting"
+                        setAttribute={setProtecting}
+                        attribute={protecting}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Nurturing"
+                        setAttribute={setNurturing}
+                        attribute={nurturing}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={false}
+                    />
+                    <DataSlider
+                        name="Effect From Being Nurtured"
+                        setAttribute={setEffectFromBeingNurtured}
+                        attribute={effectFromBeingNurtured}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={true}
+                    />
+                    <DataSlider
+                        name="Short Term Memory Accuracy"
+                        setAttribute={setShortTermMemoryAccuracy}
+                        attribute={shortTermMemoryAccuracy}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={true}
+                    />
+                    <DataSlider
+                        name="Short Term Memory Capacity"
+                        setAttribute={setShortTermMemoryCapacity}
+                        attribute={shortTermMemoryCapacity}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        isLongName={true}
+                    />
+                    <DataSlider
+                        name="Number to Spawn In"
+                        setAttribute={setNumberToSpawn}
+                        attribute={numberToSpawn}
+                        min={0}
+                        max={20}
+                        step={1}
+                        isLongName={false}
+                    />
+
                     <div id="buttonContainer">
                         <button
                             className="formButton"
@@ -334,31 +629,32 @@ function NewCreatureForm(props) {
     }
 }
 
+function DataSlider({
+    name,
+    setAttribute,
+    attribute,
+    min,
+    max,
+    step,
+    isLongName,
+}) {
+    let longNameClass = ''
+    if (isLongName) longNameClass = ' longName'
 
-
-
-function DataSlider({name, setAttribute, attribute, min, max, step, isLongName}){
-    let longNameClass = ""
-    if(isLongName) longNameClass = " longName"
-    
-    return(
-        <div className={"attributeHolder" + longNameClass}>
+    return (
+        <div className={'attributeHolder' + longNameClass}>
             <span className="dataTitle">{name}</span>
             <input
-                onChange={(event) =>
-                    setAttribute(event.target.value)
-                }
-                className={"dataSlider" + longNameClass}
+                onChange={(event) => setAttribute(event.target.value)}
+                className={'dataSlider' + longNameClass}
                 type="range"
                 min={min}
                 max={max}
                 step={step}
                 value={attribute}></input>
             <input
-                onChange={(event) =>
-                    setAttribute(event.target.value)
-                }
-                className={"dataText" + longNameClass}
+                onChange={(event) => setAttribute(event.target.value)}
+                className={'dataText' + longNameClass}
                 type="number"
                 min={min}
                 max={max}
@@ -369,8 +665,8 @@ function DataSlider({name, setAttribute, attribute, min, max, step, isLongName})
     )
 }
 
-function DataCheckbox({name, setAttribute, attribute}){
-    return(
+function DataCheckbox({ name, setAttribute, attribute }) {
+    return (
         <div className="attributeHolder">
             <span className="dataTitle">{name}</span>
             <input

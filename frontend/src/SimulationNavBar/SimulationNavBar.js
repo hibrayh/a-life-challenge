@@ -366,7 +366,7 @@ function SimulationNavBar({
                 className="navButton buttonHover biggerIcon"
                 title="Species Relationships">
                 {
-                    // size={33} would be ideal! 
+                    // size={33} would be ideal!
                 }
                 <FaConnectdevelop />
             </button>

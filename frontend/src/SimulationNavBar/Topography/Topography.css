@@ -145,9 +145,8 @@
     padding-left: 15px;
 }
 
-
-.colorPicker{
+.colorPicker {
     z-index: 99999;
-    position:absolute;
-    left:9vmin;
+    position: absolute;
+    left: 9vmin;
 }

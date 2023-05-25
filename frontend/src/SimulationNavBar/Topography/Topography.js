@@ -5,7 +5,6 @@ import { FaTimes, FaArrowsAlt } from 'react-icons/fa'
 import axios from 'axios'
 import { ChromePicker } from 'react-color'
 
-
 let topographyInfo = []
 
 function TopographyPage(props) {
@@ -16,7 +15,7 @@ function TopographyPage(props) {
 
     //color picker variables
     const [showColorPicker, setShowColorPicker] = useState(false)
-    const [color, setColor] = useState("#524f4f")
+    const [color, setColor] = useState('#524f4f')
 
     // State variables for the custom topography form
     const [currentForm, setCurrentForm] = useState('topography')
@@ -25,7 +24,6 @@ function TopographyPage(props) {
     const [elevation, setElevation] = useState(0.5)
     const [resourceDensity, setResourceDensity] = useState(0.5)
     const [resourceReplenishment, setResourceReplenishment] = useState(0.5)
-    
 
     // list will be initialized to be equal to topogrpahyInfo
     // if a user clicks on a topography, it will only update topographyInfo
@@ -34,8 +32,13 @@ function TopographyPage(props) {
     //  information that was there before the user opened up the form.
     let list = []
 
-    let dummyListOfTopographyTypes = [{type: "flat", color: "#239b0b"}, {type:"mild", color:"#f3eded"}, {type: "moderate", color: "#2a3bd6"}, {type: "extreme", color: "#524f4f"}]
-   
+    let dummyListOfTopographyTypes = [
+        { type: 'flat', color: '#239b0b' },
+        { type: 'mild', color: '#f3eded' },
+        { type: 'moderate', color: '#2a3bd6' },
+        { type: 'extreme', color: '#524f4f' },
+    ]
+
     useEffect(() => {
         async function fetchData() {
             await axios({
@@ -46,7 +49,7 @@ function TopographyPage(props) {
                 list = response.data.topographyRegistry
                 //console.log('list', list)
             })
-            
+
             // get list of topographies
             // await axios({
             //     method: 'GET',
@@ -96,15 +99,13 @@ function TopographyPage(props) {
                     />
                     <div
                         id="topographyContainer"
-                       
-                        style={{ left: position.x, top: position.y}}
-                        >
+                        style={{ left: position.x, top: position.y }}>
                         <div
                             id="dragBox"
                             onDragStart={handleDragStart}
                             onDragEnd={handleDragEnd}
                             onDrag={handleDrag}
-                            style={{userSelect: true}}>
+                            style={{ userSelect: true }}>
                             <FaArrowsAlt size={22} />
                         </div>
 
@@ -139,9 +140,13 @@ function TopographyPage(props) {
                         </button>
 
                         {
-                           // This Form makes up all of the topography options
+                            // This Form makes up all of the topography options
                         }
-                        <TopographyForm setTopography={setCurrentTopography} submitTopography={submitTopography} topographyList={dummyListOfTopographyTypes}/>
+                        <TopographyForm
+                            setTopography={setCurrentTopography}
+                            submitTopography={submitTopography}
+                            topographyList={dummyListOfTopographyTypes}
+                        />
                     </div>
                 </>
             )
@@ -156,7 +161,6 @@ function TopographyPage(props) {
                         topographyInfo={topographyInfo}
                         forceUpdateMain={forceUpdateMain}
                         listOfTopographies={dummyListOfTopographyTypes}
-
                     />
                     <div
                         id="topographyContainer"
@@ -219,32 +223,59 @@ function TopographyPage(props) {
                                     type="text"
                                     value={topographyName}></input>
                             </div>
-                            
-                            <DataSlider name="Elevation" setAttribute={setElevation} attribute={elevation} min={0} max={1} step={.01} />
-                        
+
+                            <DataSlider
+                                name="Elevation"
+                                setAttribute={setElevation}
+                                attribute={elevation}
+                                min={0}
+                                max={1}
+                                step={0.01}
+                            />
+
                             <div className="bottomMargin leftAlign">
                                 <h1 id="resourceTitle">Resource Attributes:</h1>
                             </div>
-                            
 
-                            <DataSlider name="Denisty" setAttribute={setResourceDensity} attribute={resourceDensity} min={0} max={1} step={.01} />
-                            <DataSlider name="Replenishment" setAttribute={setResourceReplenishment} attribute={resourceReplenishment} min={0} max={1} step={.01} />
+                            <DataSlider
+                                name="Denisty"
+                                setAttribute={setResourceDensity}
+                                attribute={resourceDensity}
+                                min={0}
+                                max={1}
+                                step={0.01}
+                            />
+                            <DataSlider
+                                name="Replenishment"
+                                setAttribute={setResourceReplenishment}
+                                attribute={resourceReplenishment}
+                                min={0}
+                                max={1}
+                                step={0.01}
+                            />
 
                             <div className="bottomMargin leftAlign">
                                 <label className="topographyDataTitle">
                                     Color
                                 </label>
-                        
-                                <button onClick={ (event) => {
+
+                                <button
+                                    onClick={(event) => {
                                         setShowColorPicker(!showColorPicker)
                                         event.preventDefault()
-                                    }
-                                    } 
-                                    className="topographyDropDownOption">Pick Color
+                                    }}
+                                    className="topographyDropDownOption">
+                                    Pick Color
                                 </button>
-                                {
-                                    showColorPicker ? <ChromePicker color={color} onChange={(event) => setColor(event.hex)} className="colorPicker" /> : null
-                                }
+                                {showColorPicker ? (
+                                    <ChromePicker
+                                        color={color}
+                                        onChange={(event) =>
+                                            setColor(event.hex)
+                                        }
+                                        className="colorPicker"
+                                    />
+                                ) : null}
                                 <br></br>
                             </div>
 
@@ -288,13 +319,9 @@ function TopographyPage(props) {
         )
     }
 
-
-   
-    function setCurrentTopography(topography){
+    function setCurrentTopography(topography) {
         setTopography(topography)
     }
-
-
 
     function createTopography(e) {
         // create new topography using given data
@@ -310,47 +337,40 @@ function TopographyPage(props) {
     }
 }
 
-
-function TopographyOption(props){
-
-    return(
+function TopographyOption(props) {
+    return (
         <div className="bottomMargin leftAlign">
             <label className="dataTitle">{props.name}</label>
             <input
-                
                 type="radio"
                 value={props.name}
-                onClick={(event) =>(
-                    props.setTopography(props.name)
-                )
-                }
+                onClick={(event) => props.setTopography(props.name)}
                 name="topographyRadio"></input>
             <br></br>
         </div>
     )
 }
 
-
-function TopographyForm(props){
-
-    return(
+function TopographyForm(props) {
+    return (
         <form id="topographyForm">
             <div className="bottomMargin leftAlign">
                 <h1 id="topographyDescription">
-                    Select the desired topography, then click on
-                    the boxes to assign the region.
+                    Select the desired topography, then click on the boxes to
+                    assign the region.
                 </h1>
             </div>
-
 
             {
                 //dynamically populate the list of topographies with topography list
             }
-            {props.topographyList.map((topography) =>(
-                <TopographyOption name={topography.type} setTopography={props.setTopography} />
+            {props.topographyList.map((topography) => (
+                <TopographyOption
+                    name={topography.type}
+                    setTopography={props.setTopography}
+                />
             ))}
-            
-        
+
             <div
                 onClick={(event) => {
                     props.submitTopography(event)
@@ -361,8 +381,6 @@ function TopographyForm(props){
         </form>
     )
 }
-
-
 
 function Grid(props) {
     const [forceUpdate, setForceUpdate] = useState(false)
@@ -441,7 +459,6 @@ function Grid(props) {
     }
 }
 
-
 let gridBorder = ''
 
 function Node(props) {
@@ -461,14 +478,16 @@ function Node(props) {
     // else {
     //     currentClass = props.topography
     // }
-  
+
     // new way to render the topography colors
     let topographyOption = null
 
-    if(props.topography == "unselected"){
-        topographyOption = {color:"#ACACAC"}
-    }else{
-        topographyOption = props.listOfTopographies.find( (option) => option.type == props.topography)
+    if (props.topography == 'unselected') {
+        topographyOption = { color: '#ACACAC' }
+    } else {
+        topographyOption = props.listOfTopographies.find(
+            (option) => option.type == props.topography
+        )
     }
 
     const handleClick = () => {
@@ -479,45 +498,36 @@ function Node(props) {
 
     return (
         <div
-            className={"defaultNode" + gridBorder}
+            className={'defaultNode' + gridBorder}
             onClick={handleClick}
-            style={{backgroundColor: topographyOption.color }}
+            style={{ backgroundColor: topographyOption.color }}
             row={props.row}
             col={props.col}></div>
     )
 }
 
-
-function DataSlider({name, setAttribute, attribute, min, max, step}){
-  
-    
-    return(
+function DataSlider({ name, setAttribute, attribute, min, max, step }) {
+    return (
         <div className="bottomMargin leftAlign">
-        <span className="topographyDataTitle">
-            {name}
-        </span>
-        <input
-            onChange={(event) =>
-                setAttribute(event.target.value)
-            }
-            className="topographyDataSlider"
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={attribute}></input>
-        <input
-            onChange={(event) =>
-                setAttribute(event.target.value)
-            }
-            className="topographyDataText"
-            type="number"
-            min={min}
-            max={max}
-            step={step}
-            value={attribute}></input>
-        <br></br>
-    </div>
+            <span className="topographyDataTitle">{name}</span>
+            <input
+                onChange={(event) => setAttribute(event.target.value)}
+                className="topographyDataSlider"
+                type="range"
+                min={min}
+                max={max}
+                step={step}
+                value={attribute}></input>
+            <input
+                onChange={(event) => setAttribute(event.target.value)}
+                className="topographyDataText"
+                type="number"
+                min={min}
+                max={max}
+                step={step}
+                value={attribute}></input>
+            <br></br>
+        </div>
     )
 }
 
