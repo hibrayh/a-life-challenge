@@ -24,9 +24,11 @@ def buildBackendImage():
     os.chdir("backend/")
     backendImageProcess = 0
     if os.name == 'nt':
-        backendImageProcess = subprocess.Popen(["docker", "build", "-t", "backend-image", "."], shell=True)
+        backendImageProcess = subprocess.Popen(
+            ["docker", "build", "-t", "backend-image", "."], shell=True)
     else:
-        backendImageProcess = subprocess.Popen(["docker", "build", "-t", "backend-image", "."])
+        backendImageProcess = subprocess.Popen(
+            ["docker", "build", "-t", "backend-image", "."])
 
     backendImageProcess.wait()
     print("Backend docker image finished")
@@ -39,10 +41,12 @@ def buildReactImage():
     os.chdir("frontend/")
     reactImageProcess = 0
     if os.name == 'nt':
-        reactImageProcess = subprocess.Popen(["docker", "build", "-t", "frontend-image", "."], shell=True)
+        reactImageProcess = subprocess.Popen(
+            ["docker", "build", "-t", "frontend-image", "."], shell=True)
     else:
-        reactImageProcess = subprocess.Popen(["docker", "build", "-t", "frontend-image", "."])
-    
+        reactImageProcess = subprocess.Popen(
+            ["docker", "build", "-t", "frontend-image", "."])
+
     reactImageProcess.wait()
     print("React docker image finished")
     os.chdir('../')
@@ -54,10 +58,12 @@ def buildProxyImage():
     os.chdir("proxy/")
     proxyImageProcess = 0
     if os.name == 'nt':
-        proxyImageProcess = subprocess.Popen(["docker", "build", "-t", "proxy-image", "."], shell=True)
+        proxyImageProcess = subprocess.Popen(
+            ["docker", "build", "-t", "proxy-image", "."], shell=True)
     else:
-        proxyImageProcess = subprocess.Popen(["docker", "build", "-t", "proxy-image", "."])
-    
+        proxyImageProcess = subprocess.Popen(
+            ["docker", "build", "-t", "proxy-image", "."])
+
     proxyImageProcess.wait()
     print("proxy docker image finished")
     os.chdir('../')
@@ -77,10 +83,11 @@ def startContainerNetwork():
     print("Creating new docker network to run A-Life Challenge applications within")
 
     if os.name == 'nt':
-        subprocess.Popen(["docker", "network", "create", "a-life-network"], shell=True)
+        subprocess.Popen(["docker", "network", "create",
+                         "a-life-network"], shell=True)
     else:
         subprocess.Popen(["docker", "network", "create", "a-life-network"])
-    
+
     print("Docker network `a-life-network` has been created")
 
 
@@ -88,10 +95,11 @@ def destroyContainerNetwork():
     print("Shutting down `a-life-network`")
 
     if os.name == 'nt':
-        subprocess.Popen(["docker", "network", "rm", "a-life-network"], shell=True)
+        subprocess.Popen(["docker", "network", "rm",
+                         "a-life-network"], shell=True)
     else:
         subprocess.Popen(["docker", "network", "rm", "a-life-network"])
-    
+
     print("Network has been shutdown")
 
 
@@ -100,9 +108,22 @@ def startBackendContainer():
 
     os.chdir("backend/")
     if os.name == 'nt':
-        subprocess.Popen(["docker", "run", "--name", "backend-service", "--net", "a-life-network", "backend-image"], shell=True)
+        subprocess.Popen(["docker",
+                          "run",
+                          "--name",
+                          "backend-service",
+                          "--net",
+                          "a-life-network",
+                          "backend-image"],
+                         shell=True)
     else:
-        subprocess.Popen(["docker", "run", "--name", "backend-service", "--net", "a-life-network", "backend-image"])
+        subprocess.Popen(["docker",
+                          "run",
+                          "--name",
+                          "backend-service",
+                          "--net",
+                          "a-life-network",
+                          "backend-image"])
 
     print("Container `backend-service` has been started")
 
@@ -114,10 +135,25 @@ def startReactContainer():
 
     os.chdir("frontend/")
     if os.name == 'nt':
-        subprocess.Popen(["docker", "run", "-d", "-p", "3000:3000", "--name", "frontend-service", "frontend-image"], shell=True)
+        subprocess.Popen(["docker",
+                          "run",
+                          "-d",
+                          "-p",
+                          "3000:3000",
+                          "--name",
+                          "frontend-service",
+                          "frontend-image"],
+                         shell=True)
     else:
-        subprocess.Popen(["docker", "run", "-d", "-p", "3000:3000", "--name", "frontend-service", "frontend-image"])
-    
+        subprocess.Popen(["docker",
+                          "run",
+                          "-d",
+                          "-p",
+                          "3000:3000",
+                          "--name",
+                          "frontend-service",
+                          "frontend-image"])
+
     print("Container `frontend-service` has been started")
 
     os.chdir("../")
@@ -128,10 +164,27 @@ def startProxyContainer():
 
     os.chdir("proxy/")
     if os.name == 'nt':
-        subprocess.Popen(["docker", "run", "-p", "44039:44039", "--name", "proxy-service", "--net", "a-life-network", "proxy-image"], shell=True)
+        subprocess.Popen(["docker",
+                          "run",
+                          "-p",
+                          "44039:44039",
+                          "--name",
+                          "proxy-service",
+                          "--net",
+                          "a-life-network",
+                          "proxy-image"],
+                         shell=True)
     else:
-        subprocess.Popen(["docker", "run", "-p", "44039:44039", "--name", "proxy-service", "--net", "a-life-network", "proxy-image"])
-    
+        subprocess.Popen(["docker",
+                          "run",
+                          "-p",
+                          "44039:44039",
+                          "--name",
+                          "proxy-service",
+                          "--net",
+                          "a-life-network",
+                          "proxy-image"])
+
     print("Container `proxy-service` has been started")
 
     os.chdir("../")
@@ -149,17 +202,23 @@ def terminateContainers():
     print("Terminating containers")
 
     if os.name == 'nt':
-        process = subprocess.Popen(["docker", "kill", "backend-service"], shell=True)
+        process = subprocess.Popen(
+            ["docker", "kill", "backend-service"], shell=True)
         process.wait()
-        process = subprocess.Popen(["docker", "kill", "frontend-service"], shell=True)
+        process = subprocess.Popen(
+            ["docker", "kill", "frontend-service"], shell=True)
         process.wait()
-        process = subprocess.Popen(["docker", "kill", "proxy-service"], shell=True)
+        process = subprocess.Popen(
+            ["docker", "kill", "proxy-service"], shell=True)
         process.wait()
-        process = subprocess.Popen(["docker", "rm", "backend-service"], shell=True)
+        process = subprocess.Popen(
+            ["docker", "rm", "backend-service"], shell=True)
         process.wait()
-        process = subprocess.Popen(["docker", "rm", "frontend-service"], shell=True)
+        process = subprocess.Popen(
+            ["docker", "rm", "frontend-service"], shell=True)
         process.wait()
-        process = subprocess.Popen(["docker", "rm", "proxy-service"], shell=True)
+        process = subprocess.Popen(
+            ["docker", "rm", "proxy-service"], shell=True)
         process.wait()
     else:
         process = subprocess.Popen(["docker", "kill", "backend-service"])
@@ -174,7 +233,7 @@ def terminateContainers():
         process.wait()
         process = subprocess.Popen(["docker", "rm", "proxy-service"])
         process.wait()
-    
+
     print("Containers terminated")
 
 
@@ -198,5 +257,6 @@ def runApp():
 
     terminateContainers()
     destroyContainerNetwork()
+
 
 runApp()
