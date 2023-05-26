@@ -12,6 +12,8 @@ import random
 import datetime
 import copy
 
+from generated_comm_files import backend_api_pb2
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -96,7 +98,7 @@ class Environment:
             self.height = heightInPx
             self.columnCount = columnCount
             self.rowCount = rowCount
-            self.timeOfSimulation = 201
+            self.timeOfSimulation = 0
             self.daysElapsed = 0
         else:
             logging.info("Loading existing environment")
@@ -215,7 +217,7 @@ class Environment:
 
     def removeTopography(self, column, row):
         logging.info(f"Removing topography from column: {column}, row: {row}")
-        self.topographyRegistry[column][row] = topography.Topography(
+        self.topographyRegistry[row][column] = topography.Topography(
             0,
             0,
             0,
@@ -434,7 +436,7 @@ class Environment:
         creatureList = []
 
         for creature in self.creatureRegistry.registry:
-            creatureList.append(creature.serialize())
+            creatureList.append(creature.getAnimationInfo())
 
         return creatureList
 
@@ -442,19 +444,32 @@ class Environment:
         resourceList = []
 
         for resource in self.resourceRegistry:
-            resourceList.append(resource.serialize())
+            resourceList.append(resource.getAnimationInfo())
 
         return resourceList
 
+    def getElevationLines(self):
+        elevationList = []
+
+        for topography in self.topographyRegistry:
+            elevationList.append(topography.getGeography())
+
+        return elevationList
+
     def getRegisteredTopography(self):
-        topographyList = []
-
+        topographyTableRows = []
         for row in range(self.rowCount):
+            currentRow = []
             for column in range(self.columnCount):
-                topographyList.append(
-                    self.topographyRegistry[row][column].serialize())
+                currentRow.append(
+                    self.topographyRegistry[row][column].getDetails())
 
-        return topographyList
+            topographyTableRows.append(
+                backend_api_pb2.TopographyRow(
+                    item=copy.deepcopy(currentRow)))
+
+        return backend_api_pb2.TopographyTable(
+            row=copy.deepcopy(topographyTableRows))
 
     def simulateCreatureBehavior(self):
         logging.info("Removing dead creatures from environment")

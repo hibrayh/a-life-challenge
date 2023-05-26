@@ -1,0 +1,306 @@
+syntax = "proto3";
+
+package backend;
+
+service Backend {
+    rpc StartSimulation (StartSimulationRequest) returns (StartSimulationReply) {}
+    rpc LoadSimulation (LoadSimulationRequest) returns (LoadSimulationReply) {}
+    rpc ResizeSimulation (ResizeSimulationRequest) returns (ResizeSimulationReply) {}
+    rpc GetEnvironmentInfo (GetEnvironmentInfoRequest) returns (GetEnvironmentInfoReply) {}
+    rpc GetSimulationProgressionSpeed (GetSimulationProgressionSpeedRequest) returns (GetSimulationProgressionSpeedReply) {}
+    rpc ChangeSimulationProgressionSpeed (ChangeSimulationProgressionSpeedRequest) returns (ChangeSimulationProgressionSpeedReply) {}
+    rpc CreateNewSpecies (CreateNewSpeciesRequest) returns (CreateNewSpeciesReply) {}
+    rpc CreateNewCreature (CreateNewCreatureRequest) returns (CreateNewCreatureReply) {}
+    rpc GetSpeciesList (GetSpeciesListRequest) returns (GetSpeciesListReply) {}
+    rpc DefineNewSpeciesRelationship (DefineNewSpeciesRelationshipRequest) returns (DefineNewSpeciesRelationshipReply) {}
+    rpc GetSpeciesInfo (GetSpeciesInfoRequest) returns (SpeciesInfo) {}
+    rpc GetCreatureInfo (GetCreatureInfoRequest) returns (CreatureInfo) {}
+    rpc CreateTopography (CreateTopographyRequest) returns (CreateTopographyReply) {}
+    rpc DeleteTopography (DeleteTopographyRequest) returns (DeleteTopographyReply) {}
+    rpc GetTopography (GetTopographyRequest) returns (TopographyTable) {}
+    rpc AdvanceSimulation (AdvanceSimulationRequest) returns (AdvanceSimulationReply) {}
+    rpc GetTextToggle (GetTextToggleRequest) returns (GetTextToggleReply) {}
+    rpc UpdateTextToggle (UpdateTextToggleRequest) returns (UpdateTextToggleReply) {}
+    rpc GetUpdateFlag (GetUpdateFlagRequest) returns (GetUpdateFlagReply) {}
+    rpc EditUpdateFlag (EditUpdateFlagRequest) returns (EditUpdateFlagReply) {}
+    rpc GetTimeOfSimulation (GetTimeOfSimulationRequest) returns (GetTimeOfSimulationReply) {}
+    rpc GetLightVisibility (GetLightVisibilityRequest) returns (GetLightVisibilityReply) {}
+}
+
+message StartSimulationRequest {
+    int32 simulationWidth = 1;
+    int32 simulationHeight = 2;
+    int32 columnCount = 3;
+    int32 rowCount = 4;
+}
+
+message StartSimulationReply {
+    bool simStarted = 1;
+}
+
+message LoadSimulationRequest {
+    string filePath = 1;
+}
+
+message LoadSimulationReply {
+    bool simLoaded = 1;
+}
+
+message ResizeSimulationRequest {
+    int32 newXDimension = 1;
+    int32 newYDimension = 2;
+}
+
+message ResizeSimulationReply {
+    bool simResized = 1;
+}
+
+message GenomeInfo {
+    float visibility = 1;
+    float maxHealth = 2;
+    bool canSee = 3;
+    bool canSmell = 4;
+    bool canHear = 5;
+    float sightAbility = 6;
+    float smellAbility = 7;
+    float hearingAbility = 8;
+    float sightRange = 9;
+    float smellRange = 10;
+    float hearingRange = 11;
+    float reactionTime = 12;
+    float impulsivity = 13;
+    float selfPreservation = 14;
+    float mobility = 15;
+    string reproductionType = 16;
+    float reproductionCooldown = 17;
+    float offspringAmount = 18;
+    float motivation = 19;
+    float maxEnergy = 20;
+    float metabolism = 21;
+    float individualism = 22;
+    float territorial = 23;
+    float fightOrFlight = 24;
+    float hostility = 25;
+    float scent = 26;
+    float stealth = 27;
+    float lifeExpectancy = 28;
+    float maturity = 29;
+    float offensiveAbility = 30;
+    float defensiveAbility = 31;
+    float effectFromHost = 32;
+    float effectFromParasite = 33;
+    float protecting = 34;
+    float nurturing = 35;
+    float effectFromBeingNurtured = 36;
+    float shortTermMemoryAccuracy = 37;
+    float shortTermMemoryCapacity = 38;
+    string shape = 39;
+    string color = 40;
+}
+
+message ResourceInfo {
+    string id = 1;
+    float replenishment = 2;
+    float xCoordinate = 3;
+    float yCoordinate = 4;
+    string shape = 5;
+    string color = 6;
+}
+
+message Array {
+    repeated int32 items = 1;
+}
+
+message Table {
+    repeated Array items = 1;
+}
+
+message ElevationInfo {
+    repeated Table elevation = 1;
+}
+
+message CreatureAnimationInfo {
+    string id = 1;
+    float xCoordinate = 3;
+    float yCoordinate = 4;
+    string shape = 5;
+    string color = 6;
+    string lastAction = 7;
+}
+
+message CreatureInfo {
+    int32 id = 1;
+    string species = 2;
+    GenomeInfo genome = 3;
+}
+
+message SpeciesInfo {
+    string speciesName = 1;
+    GenomeInfo genomeTemplate = 2;
+    repeated string creatures = 3;
+}
+
+message GetEnvironmentInfoRequest {
+
+}
+
+message GetEnvironmentInfoReply {
+    repeated CreatureAnimationInfo creatures = 1;
+    repeated ResourceInfo resources = 2;
+}
+
+message GetSimulationProgressionSpeedRequest {
+
+}
+
+message GetSimulationProgressionSpeedReply {
+    int32 simulationSpeed = 1;
+}
+
+message ChangeSimulationProgressionSpeedRequest {
+    int32 newSimulationSpeed = 1;
+}
+
+message ChangeSimulationProgressionSpeedReply {
+    bool simulationSpeedChanged = 1;
+}
+
+message CreateNewSpeciesRequest {
+    string speciesName = 1;
+    GenomeInfo initialGenome = 2;
+    int32 initialNumberToSpawn = 3;
+}
+
+message CreateNewSpeciesReply {
+    bool speciesCreated = 1;
+}
+
+message CreateNewCreatureRequest {
+    string speciesName = 1;
+    GenomeInfo genome = 2;
+}
+
+message CreateNewCreatureReply {
+    bool creatureCreated = 1;
+}
+
+message GetSpeciesListRequest {
+
+}
+
+message GetSpeciesListReply {
+    repeated string species = 1;
+}
+
+message DefineNewSpeciesRelationshipRequest {
+    string sourceSpecies = 1;
+    string destinationSpecies = 2;
+    string relationship = 3;
+}
+
+message DefineNewSpeciesRelationshipReply {
+    bool setNewRelationship = 1;
+}
+
+message GetSpeciesInfoRequest {
+    string speciesOfInterest = 1;
+}
+
+message GetCreatureInfoRequest {
+    string creatureOfInterest = 1;
+    string species = 2;
+}
+
+message CreateTopographyRequest {
+    string type = 1;
+    int32 row = 2;
+    int32 column = 3;
+}
+
+message CreateTopographyReply {
+    bool topographyAdded = 1;
+}
+
+message DeleteTopographyRequest {
+    int32 row = 1;
+    int32 column = 2;
+}
+
+message DeleteTopographyReply {
+    bool topographyDeleted = 1;
+}
+
+message TopographyInfo {
+    string id = 1;
+    int32 row = 2;
+    int32 column = 3;
+    string type = 4;
+}
+
+message TopographyRow {
+    repeated TopographyInfo item = 1;
+}
+
+message TopographyTable {
+    repeated TopographyRow row = 1;
+}
+
+message GetTopographyRequest {
+    
+}
+
+message AdvanceSimulationRequest {
+    int32 stepsToAdvance = 1;
+}
+
+message AdvanceSimulationReply {
+    bool simulationAdvanced = 1;
+}
+
+message GetTextToggleRequest {
+
+}
+
+message GetTextToggleReply {
+    bool textToggle = 1;
+}
+
+message UpdateTextToggleRequest {
+    bool newTextToggle = 1;
+}
+
+message UpdateTextToggleReply {
+    bool textToggled = 1;
+}
+
+message GetUpdateFlagRequest {
+
+}
+
+message GetUpdateFlagReply {
+    bool updateFlag = 1;
+}
+
+message EditUpdateFlagRequest {
+    bool newUpdateFlag = 1;
+}
+
+message EditUpdateFlagReply {
+    bool updatedFlag = 1;
+}
+
+message GetTimeOfSimulationRequest {
+
+}
+
+message GetTimeOfSimulationReply {
+    int32 timeOfSimulation = 1;
+}
+
+message GetLightVisibilityRequest {
+
+}
+
+message GetLightVisibilityReply {
+    float lightVisibility = 1;
+}

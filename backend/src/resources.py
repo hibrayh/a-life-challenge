@@ -1,4 +1,5 @@
 import logging
+from generated_comm_files import backend_api_pb2
 
 
 logging.basicConfig(
@@ -39,6 +40,17 @@ class Resource:
             'color': self.color,
             'shape': self.shape
         }
+
+    def getAnimationInfo(self):
+        logging.info(f"Fetching animation info for resource {self.id}")
+        return backend_api_pb2.ResourceInfo(
+            id=self.id,
+            replenishment=self.replenishment,
+            xCoordinate=self.xCoordinate,
+            yCoordinate=self.yCoordinate,
+            shape=self.shape,
+            color=self.color
+        )
 
     def save(self):
         logging.info(f"Saving resource {self.id}")

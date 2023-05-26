@@ -1,9 +1,13 @@
-import logging
-import copy
-import math
-from . import decision_network, species_manager, genome, memory
-import random
 import json
+import random
+from . import decision_network, species_manager, genome, memory
+import math
+import copy
+import logging
+from generated_comm_files import backend_api_pb2
+import sys
+sys.path.append("..")
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -210,6 +214,17 @@ class Creature:
             'currentAge': self.currentAge,
             'memory': self.memory.save()
         }
+
+    def getAnimationInfo(self):
+        logging.info(f"Getting animation info for creature {self.id}")
+        return backend_api_pb2.CreatureAnimationInfo(
+            id=self.id,
+            xCoordinate=self.xCoordinate,
+            yCoordinate=self.yCoordinate,
+            shape=self.genome.shape,
+            color=self.genome.color,
+            lastAction=self.lastAction
+        )
 
     def canReproduce(self):
         return (self.reproductionCoolDown == 0) \

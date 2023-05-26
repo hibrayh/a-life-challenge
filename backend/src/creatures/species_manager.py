@@ -280,13 +280,11 @@ class SpeciesManager:
         self.speciesRelations[speciesName] = newRelationship
 
     def getSpeciesGenome(self):
-        return self._startingGenome.serialize()
+        return self._startingGenome
 
     def getCreatures(self):
         creatureIdList = []
         for creature in self._creatures:
             creatureIdList.append(creature.id)
 
-        return {
-            'creatures': creatureIdList
-        }
+        return creatureIdList

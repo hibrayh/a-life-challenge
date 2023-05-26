@@ -2,8 +2,17 @@ import './NewCreatureForm.css'
 import React from 'react'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
-import axios from 'axios'
 import { ChromePicker } from 'react-color'
+
+import {
+    GetSpeciesListRequest,
+    GetSpeciesInfoRequest,
+    GenomeInfo,
+    CreateNewCreatureRequest,
+} from './../../generated_comm_files/backend_api_pb'
+import { BackendClient } from './../../generated_comm_files/backend_api_grpc_web_pb'
+
+var backendService = new BackendClient('http://localhost:44039')
 
 function NewCreatureForm(props) {
     const [showColorPicker, setShowColorPicker] = useState(false)
@@ -53,68 +62,77 @@ function NewCreatureForm(props) {
     const [availableSpecies, setAvailableSpecies] = useState([])
 
     const getSpeciesList = async () => {
-        await axios({
-            method: 'GET',
-            url: 'http://localhost:5000/get-list-of-species',
-        }).then((response) => {
-            const res = response.data
-            setAvailableSpecies(res.speciesNames)
-            setSpeciesName(res.speciesNames[0])
-        })
+        var request = new GetSpeciesListRequest()
+
+        await backendService.getSpeciesList(
+            request,
+            {},
+            function (error, response) {
+                setAvailableSpecies(response.getSpeciesList())
+                setSpeciesName(response.getSpeciesList()[0])
+            }
+        )
     }
 
     const getSpeciesDefaults = async (speciesOfInterest) => {
-        await axios({
-            method: 'POST',
-            url: 'http://localhost:5000/get-species-genome',
-            data: {
-                speciesOfInterest: speciesOfInterest,
-            },
-        }).then((response) => {
-            const res = response.data
+        var request = new GetSpeciesInfoRequest()
+        request.setSpeciesofinterest(speciesOfInterest)
 
-            setVisibility(res.visibility)
-            setMaxHealth(res.maxHealth)
-            setCanSee(res.canSee)
-            setCanSmell(res.canSmell)
-            setCanHear(res.canHear)
-            setSightAbility(res.sightAbility)
-            setSmellAbility(res.smellAbility)
-            setHearingAbility(res.hearingAbility)
-            setSightRange(res.sightRange)
-            setSmellRange(res.smellRange)
-            setHearingRange(res.hearingRange)
-            setReactionTime(res.reactionTime)
-            setImpulsivity(res.impulsivity)
-            setSelfPreservation(res.selfPreservation)
-            setMobility(res.mobility)
-            setReproductionType(res.reproductionType)
-            setReproductionCooldown(res.reproductionCoolDown)
-            setOffSpringAmount(res.offSpringAmount)
-            setMotivation(res.motivation)
-            setMaxEnergy(res.maxEnergy)
-            setMetabolism(res.metabolism)
-            setIndividualism(res.individualism)
-            setTerritorial(res.territorial)
-            setFightOrFlight(res.fightOrFlight)
-            setHostility(res.hostility)
-            setScent(res.scent)
-            setStealth(res.stealth)
-            setLifeExpectancy(res.lifeExpectancy)
-            setMaturity(res.maturity)
-            setOffensiveAbility(res.offensiveAbility)
-            setDefensiveAbility(res.defensiveAbility)
-            setEffectFromHost(res.effectFromHost)
-            setEffectFromParasite(res.effectFromParasite)
-            setProtecting(res.protecting)
-            setNurturing(res.nurturing)
-            setEffectFromBeingNurtured(res.effectFromBeingNurtured)
-            setShortTermMemoryAccuracy(res.shortTermMemoryAccuracy)
-            setShortTermMemoryCapacity(res.shortTermMemoryCapacity)
-            setShape(res.shape)
-            setColor(res.color)
-            setSpeciesName(speciesOfInterest)
-        })
+        await backendService.getSpeciesInfo(
+            request,
+            {},
+            function (error, response) {
+                let genomeInfo = response.getGenometemplate()
+
+                setVisibility(genomeInfo.getVisibility())
+                setMaxHealth(genomeInfo.getMaxhealth())
+                setCanSee(genomeInfo.getCansee())
+                setCanSmell(genomeInfo.getCansmell())
+                setCanHear(genomeInfo.getCanhear())
+                setSightAbility(genomeInfo.getSightability())
+                setSmellAbility(genomeInfo.getSmellability())
+                setHearingAbility(genomeInfo.getHearingability())
+                setSightRange(genomeInfo.getSightrange())
+                setSmellRange(genomeInfo.getSmellrange())
+                setHearingRange(genomeInfo.getHearingrange())
+                setReactionTime(genomeInfo.getReactiontime())
+                setImpulsivity(genomeInfo.getImpulsivity())
+                setSelfPreservation(genomeInfo.getSelfpreservation())
+                setMobility(genomeInfo.getMobility())
+                setReproductionType(genomeInfo.getReproductiontype())
+                setReproductionCooldown(genomeInfo.getReproductioncooldown())
+                setOffSpringAmount(genomeInfo.getOffspringamount())
+                setMotivation(genomeInfo.getMotivation())
+                setMaxEnergy(genomeInfo.getMaxEnergy())
+                setMetabolism(genomeInfo.getMetabolism())
+                setIndividualism(genomeInfo.getIndividualism())
+                setTerritorial(genomeInfo.getTerritorial())
+                setFightOrFlight(genomeInfo.getFightorflight())
+                setHostility(genomeInfo.getHostility())
+                setScent(genomeInfo.getScent())
+                setStealth(genomeInfo.getStealth())
+                setLifeExpectancy(genomeInfo.getLifeexpectancy())
+                setMaturity(genomeInfo.getMaturity())
+                setOffensiveAbility(genomeInfo.getOffensiveability())
+                setDefensiveAbility(genomeInfo.getDefensiveability())
+                setEffectFromHost(genomeInfo.getEffectfromhost())
+                setEffectFromParasite(genomeInfo.getEffectfromparasite())
+                setProtecting(genomeInfo.getProtecting())
+                setNurturing(genomeInfo.getNurturing())
+                setEffectFromBeingNurtured(
+                    genomeInfo.getEffectfrombeingnurtured()
+                )
+                setShortTermMemoryAccuracy(
+                    genomeInfo.getShorttermmemoryaccuracy()
+                )
+                setShortTermMemoryCapacity(
+                    genomeInfo.getShorttermmemorycapacity()
+                )
+                setShape(genomeInfo.getShape())
+                setColor(genomeInfo.getColor())
+                setSpeciesName(response.getSpeciesname())
+            }
+        )
     }
 
     if (props.show) {
@@ -567,56 +585,64 @@ function NewCreatureForm(props) {
         async function handleSubmit(event) {
             event.preventDefault()
 
-            console.log(speciesName)
+            var genomeRequest = new GenomeInfo()
+            genomeRequest.setVisibility(visibility)
+            genomeRequest.setMaxhealth(maxHealth)
+            genomeRequest.setCansee(canSee)
+            genomeRequest.setCansmell(canSmell)
+            genomeRequest.setCanhear(canHear)
+            genomeRequest.setSightability(sightAbility)
+            genomeRequest.setSmellability(smellAbility)
+            genomeRequest.setHearingability(hearingAbility)
+            genomeRequest.setSightrange(sightRange)
+            genomeRequest.setSmellrange(smellRange)
+            genomeRequest.setHearingrange(hearingRange)
+            genomeRequest.setReactiontime(reactionTime)
+            genomeRequest.setImpulsivity(impulsivity)
+            genomeRequest.setSelfpreservation(selfPreservation)
+            genomeRequest.setMobility(mobility)
+            genomeRequest.setReproductioncooldown(reproductionCoolDown)
+            genomeRequest.setOffspringamount(offSpringAmount)
+            genomeRequest.setMotivation(motivation)
+            genomeRequest.setMaxenergy(maxEnergy)
+            genomeRequest.setMetabolism(metabolism)
+            genomeRequest.setIndividualism(individualism)
+            genomeRequest.setTerritorial(territorial)
+            genomeRequest.setFightorflight(fightOrFlight)
+            genomeRequest.setHostility(hostility)
+            genomeRequest.setScent(scent)
+            genomeRequest.setStealth(stealth)
+            genomeRequest.setLifeexpectancy(lifeExpectancy)
+            genomeRequest.setMaturity(maturity)
+            genomeRequest.setOffensiveability(offensiveAbility)
+            genomeRequest.setDefensiveability(defensiveAbility)
+            genomeRequest.setEffectfromhost(effectFromHost)
+            genomeRequest.setEffectfromparasite(effectFromParasite)
+            genomeRequest.setProtecting(protecting)
+            genomeRequest.setNurturing(nurturing)
+            genomeRequest.setEffectfrombeingnurtured(effectFromBeingNurtured)
+            genomeRequest.setShorttermmemoryaccuracy(shortTermMemoryAccuracy)
+            genomeRequest.setShorttermmemorycapacity(shortTermMemoryCapacity)
+            genomeRequest.setShape(shape)
+            genomeRequest.setColor(color)
 
-            // Define new species
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/create-new-creature',
-                data: {
-                    visibility: visibility,
-                    maxHealth: maxHealth,
-                    canSee: canSee,
-                    canSmell: canSmell,
-                    canHear: canHear,
-                    sightAbility: sightAbility,
-                    smellAbility: smellAbility,
-                    hearingAbility: hearingAbility,
-                    sightRange: sightRange,
-                    smellRange: smellRange,
-                    hearingRange: hearingRange,
-                    reactionTime: reactionTime,
-                    impulsivity: impulsivity,
-                    selfPreservation: selfPreservation,
-                    mobility: mobility,
-                    reproductionType: reproductionType,
-                    reproductionCooldown: reproductionCoolDown,
-                    offspringAmount: offSpringAmount,
-                    motivation: motivation,
-                    maxEnergy: maxEnergy,
-                    metabolism: metabolism,
-                    individualism: individualism,
-                    territorial: territorial,
-                    fightOrFlight: fightOrFlight,
-                    hostility: hostility,
-                    scent: scent,
-                    stealth: stealth,
-                    lifeExpectancy: lifeExpectancy,
-                    maturity: maturity,
-                    offensiveAbility: offensiveAbility,
-                    defensiveAbility: defensiveAbility,
-                    effectFromHost: effectFromHost,
-                    effectFromParasite: effectFromParasite,
-                    protecting: protecting,
-                    nurturing: nurturing,
-                    effectFromBeingNurtured: effectFromBeingNurtured,
-                    shortTermMemoryAccuracy: shortTermMemoryAccuracy,
-                    shortTermMemoryCapacity: shortTermMemoryCapacity,
-                    shape: shape,
-                    color: color,
-                    speciesName: speciesName,
-                },
-            })
+            var request = new CreateNewCreatureRequest()
+            request.setSpeciesname(speciesName)
+            request.setGenome(genomeRequest)
+
+            await backendService.createNewCreature(
+                request,
+                {},
+                function (err, response) {
+                    if (response.getCreaturecreated()) {
+                        console.log('Successfully created new creature')
+                    } else {
+                        console.error(
+                            'Something went wrong defining the new creature'
+                        )
+                    }
+                }
+            )
 
             // Hide creatures form
             props.toggleNewCreatureForm()

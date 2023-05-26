@@ -2,7 +2,14 @@ import React from 'react'
 import './SpeciesRelationshipPage.css'
 import { useState, useEffect } from 'react'
 import { FaTimes } from 'react-icons/fa'
-import axios from 'axios'
+
+import {
+    GetSpeciesListRequest,
+    DefineNewSpeciesRelationshipRequest,
+} from './../../generated_comm_files/backend_api_pb'
+import { BackendClient } from '../../generated_comm_files/backend_api_grpc_web_pb'
+
+var backendService = new BackendClient('http://localhost:44039')
 
 function SpeciesRelationshipPage(props) {
     // I think it would be smart to have the value "" prepended to the list of species so that when you
@@ -33,13 +40,15 @@ function SpeciesRelationshipPage(props) {
             setSpecies2('')
             setRelationship('')
 
-            await axios({
-                method: 'GET',
-                url: 'http://localhost:5000/get-list-of-species',
-            }).then((response) => {
-                const res = response.data
-                setSpeciesList([''].concat(res.speciesNames))
-            })
+            var request = new GetSpeciesListRequest()
+
+            await backendService.getSpeciesList(
+                request,
+                {},
+                function (error, response) {
+                    setSpeciesList([''].concat(response.getSpeciesList()))
+                }
+            )
         }
         init()
     }, [props.show])
@@ -140,16 +149,22 @@ function SpeciesRelationshipPage(props) {
             //console.log(relationship)
             //console.log(species2)
 
-            // Make call to backend to add new species relationship
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:5000/define-new-species-relationship',
-                data: {
-                    species1: species1,
-                    species2: species2,
-                    relationship: relationship,
-                },
-            })
+            var request = new DefineNewSpeciesRelationshipRequest()
+            request.setSourcespecies(species1)
+            request.setDestinationspecies(species2)
+            request.setRelationship(relationship)
+
+            await backendService.defineNewSpeciesRelationship(
+                request,
+                {},
+                function (err, response) {
+                    if (response.getSetnewrelationship()) {
+                        console.log('Successfully defined new relationship')
+                    } else {
+                        console.error('Issue defining new relationship')
+                    }
+                }
+            )
 
             props.toggleSpeciesRelationshipPage()
         }

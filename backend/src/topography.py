@@ -6,6 +6,7 @@ import noise
 import numpy as np
 from PIL import Image
 import time
+from generated_comm_files import backend_api_pb2
 
 
 logging.basicConfig(
@@ -146,6 +147,14 @@ class Topography:
             'type': self.type,
         }
 
+    def getDetails(self):
+        return backend_api_pb2.TopographyInfo(
+            id=self.id,
+            row=self.row,
+            column=self.column,
+            type=f'{self.type}',
+        )
+
     def save(self):
         logging.info(f"Saving topography {self.id}")
         return {
@@ -225,14 +234,8 @@ class Topography:
         self.geography = np.floor(
             (geography + .5) * 255).astype(np.uint8).tolist()
 
-        #logging.info("Elevation values of the entire environment (50x25):")
-        # for row in self.geography:
-        #    print(row)
-
-        return self.geography
-
     def getGeography(self):
-        return self.generateRandomGeography()
+        return self.geography
 
     def generateResources(self):
         rarity = 0.0

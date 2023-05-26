@@ -6,6 +6,7 @@ from resources import Resource
 import creatures.species_manager
 from creatures.decision_network import DecisionNetworkSexual, DecisionNetworkAsexual
 from creatures.genome import ReproductionType
+from generated_comm_files import backend_api_pb2
 
 logging.basicConfig(
     level=logging.INFO,
@@ -449,12 +450,11 @@ class God:
             return speciesManagerOfInterest.getCreatureGenome(creatureId)
 
     def getSimulationInfo(self):
-        return {
-            'creatureRegistry': self._environment.getRegisteredCreatures(),
-            'resourceRegistry': self._environment.getRegisteredResources(),
-            'lightVisibility': self._environment.getLightVisibility(),
-            'timeOfSimulation': self._environment.getTimeOfSimulation(),
-        }
+        logging.info("Fetching simulation info")
+        return backend_api_pb2.GetEnvironmentInfoReply(
+            creatures=self._environment.getRegisteredCreatures(),
+            resources=self._environment.getRegisteredResources(),
+        )
 
     def advanceSimulation(self):
         logging.info("Advancing simulation by a tick")
@@ -470,9 +470,7 @@ class God:
         for species in self._speciesManagers:
             speciesNames.append(species.speciesName)
 
-        return {
-            "speciesNames": speciesNames
-        }
+        return speciesNames
 
     def getTimeOfSimulation(self):
         logging.info("Getting the current time of simulation")
@@ -484,56 +482,21 @@ class God:
         return self._environment.getLightVisibility()
 
     def editTickSpeed(self, ticks):
-        logging.info("tickspeed updated to {ticks}")
+        logging.info(f"tickspeed updated to {ticks}")
         self._tickSpeed = ticks
 
     def getTickSpeed(self):
         return self._tickSpeed
 
     def editTextToggle(self, text):
-        logging.info("Show text is now {text}")
+        logging.info(f"Show text is now {text}")
         self._textToggle = text
 
     def getTextToggle(self):
         return self._textToggle
 
     def getTopographyInfo(self):
-        column = 0
-        row = 0
-        topographyType = topography.TemplateTopography.UNSELECTED
-        logging.info(
-            "Getting the elevation values of the entire environment region")
-        topLeftXCoordinate = (column) * \
-            (self._simulationWidth / self._columnCount)
-        topLeftYCoordinate = (row) * \
-            (self._simulationHeight / self._rowCount)
-        bottomRightXCoordinate = (column + 1) * \
-            (self._simulationWidth / self._columnCount)
-        bottomRightYCoordinate = (row + 1) * \
-            (self._simulationHeight / self._rowCount)
-        topRightXCoordinate = bottomRightXCoordinate
-        topRightYCoordinate = topLeftYCoordinate
-        bottomLeftXCoordinate = topLeftXCoordinate
-        bottomLeftYCoordinate = bottomRightYCoordinate
-        topographyId = f"topography_column{column}_row{row}"
-        topo = topography.Topography(topLeftXCoordinate,
-                                     topLeftYCoordinate,
-                                     topRightXCoordinate,
-                                     topRightYCoordinate,
-                                     bottomLeftXCoordinate,
-                                     bottomLeftYCoordinate,
-                                     bottomRightXCoordinate,
-                                     bottomRightYCoordinate,
-                                     topographyId,
-                                     topographyType,
-                                     column,
-                                     row,
-                                     self._environment)
-        return {
-            'topographyGeography': topo.getGeography(),
-            'topographyRegistry': self._environment.getRegisteredTopography(),
-            'topographyTypes': self.getTopographyTypes()
-        }
+        return self._environment.getRegisteredTopography()
 
     def getTopographyTypes(self):
         topographyTypes = {
