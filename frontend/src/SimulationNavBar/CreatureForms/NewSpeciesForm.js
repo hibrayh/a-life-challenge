@@ -514,7 +514,7 @@ function NewSpeciesForm(props) {
             genomeRequest.setIndividualism(individualism)
             genomeRequest.setTerritorial(territorial)
             genomeRequest.setFightorflight(fightOrFlight)
-            genomeRequest.setHostility(hositlity)
+            genomeRequest.setHostility(hostility)
             genomeRequest.setScent(scent)
             genomeRequest.setStealth(stealth)
             genomeRequest.setLifeexpectancy(lifeExpectancy)

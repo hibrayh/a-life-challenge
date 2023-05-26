@@ -195,6 +195,7 @@ def startContainers():
     startBackendContainer()
     startReactContainer()
     startProxyContainer()
+    time.sleep(5)
     print("All containers have been started")
 
 

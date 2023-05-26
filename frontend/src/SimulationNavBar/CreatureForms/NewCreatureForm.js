@@ -2,6 +2,7 @@ import './NewCreatureForm.css'
 import React from 'react'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
+import { ChromePicker } from 'react-color'
 
 import {
     GetSpeciesListRequest,
@@ -107,7 +108,7 @@ function NewCreatureForm(props) {
                 setIndividualism(genomeInfo.getIndividualism())
                 setTerritorial(genomeInfo.getTerritorial())
                 setFightOrFlight(genomeInfo.getFightorflight())
-                setHostlity(genomeInfo.getHostility())
+                setHostility(genomeInfo.getHostility())
                 setScent(genomeInfo.getScent())
                 setStealth(genomeInfo.getStealth())
                 setLifeExpectancy(genomeInfo.getLifeexpectancy())

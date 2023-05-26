@@ -4,15 +4,14 @@ import Simulation from './Simulation.js'
 import SimulationNavBar from './SimulationNavBar/SimulationNavBar.js'
 import { FaTimes } from 'react-icons/fa'
 import ReactAnime from 'react-animejs'
-
-const { Anime } = ReactAnime
-
 import {
     StartSimulationRequest,
     ResizeSimulationRequest,
     LoadSimulationRequest,
 } from './generated_comm_files/backend_api_pb'
 import { BackendClient } from './generated_comm_files/backend_api_grpc_web_pb'
+
+const { Anime } = ReactAnime
 
 var backendService = new BackendClient('http://localhost:44039')
 
@@ -49,6 +48,7 @@ function App() {
     const [showSimulation, setShowSimulation] = useState(false)
     const [showLoad, setShowLoad] = useState(false)
     const [hasSimulationStarted, setHasSimulationStarted] = useState(false)
+    const [update, setUpdate] = useState(true)
 
     const startSimulation = async () => {
         var request = new StartSimulationRequest()
