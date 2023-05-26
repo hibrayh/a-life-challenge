@@ -82,11 +82,14 @@ def buildDockerImages():
 def startContainerNetwork():
     print("Creating new docker network to run A-Life Challenge applications within")
 
+    startContainerProcess = 0
     if os.name == 'nt':
-        subprocess.Popen(["docker", "network", "create",
+        startContainerProcess = subprocess.Popen(["docker", "network", "create",
                          "a-life-network"], shell=True)
     else:
-        subprocess.Popen(["docker", "network", "create", "a-life-network"])
+        startContainerProcess = subprocess.Popen(["docker", "network", "create", "a-life-network"])
+    
+    startContainerProcess.wait()
 
     print("Docker network `a-life-network` has been created")
 
