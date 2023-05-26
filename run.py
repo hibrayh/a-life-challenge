@@ -84,11 +84,12 @@ def startContainerNetwork():
 
     startContainerProcess = 0
     if os.name == 'nt':
-        startContainerProcess = subprocess.Popen(["docker", "network", "create",
-                         "a-life-network"], shell=True)
+        startContainerProcess = subprocess.Popen(
+            ["docker", "network", "create", "a-life-network"], shell=True)
     else:
-        startContainerProcess = subprocess.Popen(["docker", "network", "create", "a-life-network"])
-    
+        startContainerProcess = subprocess.Popen(
+            ["docker", "network", "create", "a-life-network"])
+
     startContainerProcess.wait()
 
     print("Docker network `a-life-network` has been created")
