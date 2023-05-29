@@ -84,6 +84,7 @@ class Topography:
             column,
             row,
             topographyType,
+            color,
             environment,
             loadExistingSave=False, saveData=None):
         if not loadExistingSave:
@@ -92,6 +93,7 @@ class Topography:
             self.column = column
             self.row = row
             self.type = topographyType
+            self.color = color
             self.region = Region(
                 topLeftXCoordinate,
                 topLeftYCoordinate,
@@ -124,6 +126,7 @@ class Topography:
             self.column = saveData['column']
             self.row = saveData['row']
             self.type = TemplateTopography(saveData['type'])
+            self.color = saveData['color']
             """
             self.region = Region(saveData['region']['topLeftXCoordinate'],
                                  saveData['region']['topLeftYCoordinate'],
@@ -145,6 +148,7 @@ class Topography:
             'column': self.column,
             'row': self.row,
             'type': self.type,
+            'color': self.color,
         }
 
     def getDetails(self):
@@ -153,6 +157,7 @@ class Topography:
             row=self.row,
             column=self.column,
             type=f'{self.type}',
+            color=self.color
         )
 
     def save(self):
@@ -162,7 +167,8 @@ class Topography:
             'column': self.column,
             'row': self.row,
             'type': self.type,
-            'shape': self.shape
+            'shape': self.shape,
+            'color': self.color,
         }
 
     # Distinguishes between the elevation values
