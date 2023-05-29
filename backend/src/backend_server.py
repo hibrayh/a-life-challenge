@@ -282,7 +282,7 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
     def GetTopography(self, request, context):
         logging.info("Fetching topography")
         return self.god.getTopographyInfo()
-    
+
     def SetTopography(self, request, context):
         logging.info("Setting entire topography registry")
         self.god.setTopographyInfo(request)

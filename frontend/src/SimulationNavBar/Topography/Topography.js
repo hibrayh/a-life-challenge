@@ -11,7 +11,7 @@ import {
     DeleteTopographyRequest,
     TopographyTable,
     TopographyRow,
-    TopographyInfo
+    TopographyInfo,
 } from './../../generated_comm_files/backend_api_pb'
 import { BackendClient } from '../../generated_comm_files/backend_api_grpc_web_pb'
 
@@ -366,14 +366,19 @@ function TopographyPage(props) {
 
         newTopographyTable.setRowList(rows)
 
-        backendService.setTopography(newTopographyTable, {}, function(err, response) {
-            if (response.getTopographyset()) {
-                console.log("Topography submitted successfully")
+        backendService.setTopography(
+            newTopographyTable,
+            {},
+            function (err, response) {
+                if (response.getTopographyset()) {
+                    console.log('Topography submitted successfully')
+                } else {
+                    console.error(
+                        'Something went wrong submitting the topography'
+                    )
+                }
             }
-            else {
-                console.error("Something went wrong submitting the topography")
-            }
-        })
+        )
 
         props.closeTopographyPage()
     }

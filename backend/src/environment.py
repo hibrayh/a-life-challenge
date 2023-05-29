@@ -471,14 +471,30 @@ class Environment:
 
         return backend_api_pb2.TopographyTable(
             row=copy.deepcopy(topographyTableRows))
-    
+
     def setRegisteredTopography(self, newTopographyTable):
         self.topographyRegistry = []
         for row in newTopographyTable.row:
             newRow = []
             for item in row.item:
-                newRow.append(topography.Topography(0,0,0,0,0,0,0,0, item.id, item.column, item.row, topography.TemplateTopography(item.type), item.color, self))
-            
+                newRow.append(
+                    topography.Topography(
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        item.id,
+                        item.column,
+                        item.row,
+                        topography.TemplateTopography(
+                            item.type),
+                        item.color,
+                        self))
+
             self.topographyRegistry.append(copy.deepcopy(newRow))
 
     def simulateCreatureBehavior(self):

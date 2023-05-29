@@ -495,10 +495,10 @@ class God:
 
     def getTextToggle(self):
         return self._textToggle
-    
+
     def setTopographyInfo(self, newTopographyTable):
         # Call the environment to set the topography
-        self._environment.setRegisteredTopography(newTopographyTable) 
+        self._environment.setRegisteredTopography(newTopographyTable)
 
     def getTopographyInfo(self):
         return self._environment.getRegisteredTopography()
