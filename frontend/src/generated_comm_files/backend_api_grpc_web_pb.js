@@ -1041,6 +1041,71 @@ proto.backend.BackendPromiseClient.prototype.getTopography = function (
 /**
  * @const
  * @type {!grpc.web.MethodDescriptor<
+ *   !proto.backend.TopographyTable,
+ *   !proto.backend.SetTopographyReply>}
+ */
+const methodDescriptor_Backend_SetTopography = new grpc.web.MethodDescriptor(
+    '/backend.Backend/SetTopography',
+    grpc.web.MethodType.UNARY,
+    proto.backend.TopographyTable,
+    proto.backend.SetTopographyReply,
+    /**
+     * @param {!proto.backend.TopographyTable} request
+     * @return {!Uint8Array}
+     */
+    function (request) {
+        return request.serializeBinary()
+    },
+    proto.backend.SetTopographyReply.deserializeBinary
+)
+
+/**
+ * @param {!proto.backend.TopographyTable} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.backend.SetTopographyReply)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.backend.SetTopographyReply>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.backend.BackendClient.prototype.setTopography = function (
+    request,
+    metadata,
+    callback
+) {
+    return this.client_.rpcCall(
+        this.hostname_ + '/backend.Backend/SetTopography',
+        request,
+        metadata || {},
+        methodDescriptor_Backend_SetTopography,
+        callback
+    )
+}
+
+/**
+ * @param {!proto.backend.TopographyTable} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.backend.SetTopographyReply>}
+ *     Promise that resolves to the response
+ */
+proto.backend.BackendPromiseClient.prototype.setTopography = function (
+    request,
+    metadata
+) {
+    return this.client_.unaryCall(
+        this.hostname_ + '/backend.Backend/SetTopography',
+        request,
+        metadata || {},
+        methodDescriptor_Backend_SetTopography
+    )
+}
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
  *   !proto.backend.AdvanceSimulationRequest,
  *   !proto.backend.AdvanceSimulationReply>}
  */

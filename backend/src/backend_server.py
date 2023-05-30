@@ -270,7 +270,8 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
             _convertRequestToTopographyType(
                 request.type),
             request.column,
-            request.row)
+            request.row,
+            request.color)
         return backend_api_pb2.CreateTopographyReply(topographyAdded=True)
 
     def DeleteTopography(self, request, context):
@@ -281,6 +282,11 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
     def GetTopography(self, request, context):
         logging.info("Fetching topography")
         return self.god.getTopographyInfo()
+
+    def SetTopography(self, request, context):
+        logging.info("Setting entire topography registry")
+        self.god.setTopographyInfo(request)
+        return backend_api_pb2.CreateSetTopographyReply(topographySet=True)
 
     def AdvanceSimulation(self, request, context):
         logging.info("Advancing simulation")

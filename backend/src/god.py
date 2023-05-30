@@ -230,7 +230,7 @@ class God:
         else:
             speciesManagerOfInterest.editCreatureGenome(creatureId, newGenome)
 
-    def addNewTopography(self, topographyType, column, row):
+    def addNewTopography(self, topographyType, column, row, color):
         topographyId = f"topography_column{column}_row{row}"
         logging.info(
             f"Creating new topography of type {topographyType} with id {topographyId}")
@@ -260,6 +260,7 @@ class God:
                                               column,
                                               row,
                                               topographyType,
+                                              color,
                                               self._environment)
 
         self._environment.addToTopographyRegistry(newTopography)
@@ -494,6 +495,10 @@ class God:
 
     def getTextToggle(self):
         return self._textToggle
+
+    def setTopographyInfo(self, newTopographyTable):
+        # Call the environment to set the topography
+        self._environment.setRegisteredTopography(newTopographyTable)
 
     def getTopographyInfo(self):
         return self._environment.getRegisteredTopography()

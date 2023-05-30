@@ -18,6 +18,7 @@ service Backend {
     rpc CreateTopography (CreateTopographyRequest) returns (CreateTopographyReply) {}
     rpc DeleteTopography (DeleteTopographyRequest) returns (DeleteTopographyReply) {}
     rpc GetTopography (GetTopographyRequest) returns (TopographyTable) {}
+    rpc SetTopography (TopographyTable) returns (SetTopographyReply) {}
     rpc AdvanceSimulation (AdvanceSimulationRequest) returns (AdvanceSimulationReply) {}
     rpc GetTextToggle (GetTextToggleRequest) returns (GetTextToggleReply) {}
     rpc UpdateTextToggle (UpdateTextToggleRequest) returns (UpdateTextToggleReply) {}
@@ -235,6 +236,7 @@ message TopographyInfo {
     int32 row = 2;
     int32 column = 3;
     string type = 4;
+    string color = 5;
 }
 
 message TopographyRow {
@@ -247,6 +249,10 @@ message TopographyTable {
 
 message GetTopographyRequest {
     
+}
+
+message SetTopographyReply {
+    bool topographySet = 1;
 }
 
 message AdvanceSimulationRequest {

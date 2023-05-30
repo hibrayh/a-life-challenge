@@ -89,6 +89,11 @@ class BackendStub(object):
             request_serializer=backend__api__pb2.GetTopographyRequest.SerializeToString,
             response_deserializer=backend__api__pb2.TopographyTable.FromString,
         )
+        self.SetTopography = channel.unary_unary(
+            '/backend.Backend/SetTopography',
+            request_serializer=backend__api__pb2.TopographyTable.SerializeToString,
+            response_deserializer=backend__api__pb2.SetTopographyReply.FromString,
+        )
         self.AdvanceSimulation = channel.unary_unary(
             '/backend.Backend/AdvanceSimulation',
             request_serializer=backend__api__pb2.AdvanceSimulationRequest.SerializeToString,
@@ -219,6 +224,12 @@ class BackendServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SetTopography(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def AdvanceSimulation(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -338,6 +349,11 @@ def add_BackendServicer_to_server(servicer, server):
             servicer.GetTopography,
             request_deserializer=backend__api__pb2.GetTopographyRequest.FromString,
             response_serializer=backend__api__pb2.TopographyTable.SerializeToString,
+        ),
+        'SetTopography': grpc.unary_unary_rpc_method_handler(
+            servicer.SetTopography,
+            request_deserializer=backend__api__pb2.TopographyTable.FromString,
+            response_serializer=backend__api__pb2.SetTopographyReply.SerializeToString,
         ),
         'AdvanceSimulation': grpc.unary_unary_rpc_method_handler(
             servicer.AdvanceSimulation,
@@ -766,6 +782,32 @@ class Backend(object):
             '/backend.Backend/GetTopography',
             backend__api__pb2.GetTopographyRequest.SerializeToString,
             backend__api__pb2.TopographyTable.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata)
+
+    @staticmethod
+    def SetTopography(request,
+                      target,
+                      options=(),
+                      channel_credentials=None,
+                      call_credentials=None,
+                      insecure=False,
+                      compression=None,
+                      wait_for_ready=None,
+                      timeout=None,
+                      metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/backend.Backend/SetTopography',
+            backend__api__pb2.TopographyTable.SerializeToString,
+            backend__api__pb2.SetTopographyReply.FromString,
             options,
             channel_credentials,
             insecure,
