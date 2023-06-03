@@ -15,7 +15,7 @@ def installDependencies():
             ["npm", "install", "--force"], shell=True)
     else:
         reactDepProcess = subprocess.Popen(["npm", "install", "--force"])
-    
+
     reactDepProcess.wait()
 
     os.chdir("../")
@@ -289,7 +289,7 @@ def runFast():
     else:
         react_app = subprocess.Popen(["npm", "start"])
         electron_app = subprocess.Popen(["npm", "run", "electron-dev"])
-    
+
     electron_app.wait()
 
     print("Terminating containers")
