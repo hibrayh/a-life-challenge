@@ -2,6 +2,7 @@ import subprocess
 import os
 import signal
 import time
+import sys
 
 
 def installDependencies():
@@ -14,6 +15,8 @@ def installDependencies():
             ["npm", "install", "--force"], shell=True)
     else:
         reactDepProcess = subprocess.Popen(["npm", "install", "--force"])
+    
+    reactDepProcess.wait()
 
     os.chdir("../")
 
@@ -264,4 +267,71 @@ def runApp():
     destroyContainerNetwork()
 
 
-runApp()
+def runFast():
+    installDependencies()
+    buildBackendImage()
+    buildProxyImage()
+    startContainerNetwork()
+    startBackendContainer()
+    startProxyContainer()
+
+    # Start React and Electron
+    print("Starting React and Electron")
+    os.chdir("frontend/")
+    react_app = 0
+    electron_app = 0
+    if os.name == 'nt':
+        react_app = subprocess.Popen(
+            ["npm", "start"], shell=True
+        )
+        electron_app = subprocess.Popen(
+            ["npm", "run", "electron-dev"], shell=True)
+    else:
+        react_app = subprocess.Popen(["npm", "start"])
+        electron_app = subprocess.Popen(["npm", "run", "electron-dev"])
+    
+    electron_app.wait()
+
+    print("Terminating containers")
+
+    if os.name == 'nt':
+        process = subprocess.Popen(
+            ["docker", "kill", "backend-service"], shell=True)
+        process.wait()
+        process = subprocess.Popen(
+            ["docker", "kill", "proxy-service"], shell=True)
+        process.wait()
+        process = subprocess.Popen(
+            ["docker", "rm", "backend-service"], shell=True)
+        process.wait()
+        process = subprocess.Popen(
+            ["docker", "rm", "proxy-service"], shell=True)
+        process.wait()
+    else:
+        process = subprocess.Popen(["docker", "kill", "backend-service"])
+        process.wait()
+        process = subprocess.Popen(["docker", "kill", "proxy-service"])
+        process.wait()
+        process = subprocess.Popen(["docker", "rm", "backend-service"])
+        process.wait()
+        process = subprocess.Popen(["docker", "rm", "proxy-service"])
+        process.wait()
+
+    print("Containers terminated")
+    destroyContainerNetwork()
+
+    if os.name == 'nt':
+        os.kill(react_app.pid, signal.CTRL_C_EVENT)
+    else:
+        os.killpg(os.getpgid(react_app.pid), signal.SIGTERM)
+
+
+if len(sys.argv) == 1:
+    runApp()
+    time.sleep(1)
+else:
+    if sys.argv[1] == "-f":
+        runFast()
+        time.sleep(1)
+    else:
+        print(f"Unrecognized input {sys.argv[1]}")
