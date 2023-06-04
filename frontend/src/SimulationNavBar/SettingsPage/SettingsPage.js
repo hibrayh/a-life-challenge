@@ -55,7 +55,7 @@ function SettingsPage(props) {
         // jsonData = resultOfBackendCall
         var request = new SaveSimulationRequest()
 
-        backendService.saveSimulation(request, {}, function(err, response) {
+        backendService.saveSimulation(request, {}, function (err, response) {
             const jsonData = response.getSaveinfo()
 
             const fileName = 'mySimulation.json'
