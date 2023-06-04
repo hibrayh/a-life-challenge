@@ -4,6 +4,7 @@ package backend;
 
 service Backend {
     rpc StartSimulation (StartSimulationRequest) returns (StartSimulationReply) {}
+    rpc SaveSimulation (SaveSimulationRequest) returns (SaveSimulationReply) {}
     rpc LoadSimulation (LoadSimulationRequest) returns (LoadSimulationReply) {}
     rpc ResizeSimulation (ResizeSimulationRequest) returns (ResizeSimulationReply) {}
     rpc GetEnvironmentInfo (GetEnvironmentInfoRequest) returns (GetEnvironmentInfoReply) {}
@@ -37,6 +38,14 @@ message StartSimulationRequest {
 
 message StartSimulationReply {
     bool simStarted = 1;
+}
+
+message SaveSimulationRequest {
+
+}
+
+message SaveSimulationReply {
+    string saveInfo = 1;
 }
 
 message LoadSimulationRequest {

@@ -10,37 +10,17 @@
 // 	protoc              v3.12.4
 // source: backend_api.proto
 
+
 /* eslint-disable */
 // @ts-nocheck
 
-const grpc = {}
-grpc.web = require('grpc-web')
 
-const proto = {}
-proto.backend = require('./backend_api_pb.js')
 
-/**
- * @param {string} hostname
- * @param {?Object} credentials
- * @param {?grpc.web.ClientOptions} options
- * @constructor
- * @struct
- * @final
- */
-proto.backend.BackendClient = function (hostname, credentials, options) {
-    if (!options) options = {}
-    options.format = 'text'
+const grpc = {};
+grpc.web = require('grpc-web');
 
-    /**
-     * @private @const {!grpc.web.GrpcWebClientBase} The client
-     */
-    this.client_ = new grpc.web.GrpcWebClientBase(options)
-
-    /**
-     * @private @const {string} The hostname
-     */
-    this.hostname_ = hostname.replace(/\/+$/, '')
-}
+const proto = {};
+proto.backend = require('./backend_api_pb.js');
 
 /**
  * @param {string} hostname
@@ -50,20 +30,49 @@ proto.backend.BackendClient = function (hostname, credentials, options) {
  * @struct
  * @final
  */
-proto.backend.BackendPromiseClient = function (hostname, credentials, options) {
-    if (!options) options = {}
-    options.format = 'text'
+proto.backend.BackendClient =
+    function(hostname, credentials, options) {
+  if (!options) options = {};
+  options.format = 'text';
 
-    /**
-     * @private @const {!grpc.web.GrpcWebClientBase} The client
-     */
-    this.client_ = new grpc.web.GrpcWebClientBase(options)
+  /**
+   * @private @const {!grpc.web.GrpcWebClientBase} The client
+   */
+  this.client_ = new grpc.web.GrpcWebClientBase(options);
 
-    /**
-     * @private @const {string} The hostname
-     */
-    this.hostname_ = hostname.replace(/\/+$/, '')
-}
+  /**
+   * @private @const {string} The hostname
+   */
+  this.hostname_ = hostname.replace(/\/+$/, '');
+
+};
+
+
+/**
+ * @param {string} hostname
+ * @param {?Object} credentials
+ * @param {?grpc.web.ClientOptions} options
+ * @constructor
+ * @struct
+ * @final
+ */
+proto.backend.BackendPromiseClient =
+    function(hostname, credentials, options) {
+  if (!options) options = {};
+  options.format = 'text';
+
+  /**
+   * @private @const {!grpc.web.GrpcWebClientBase} The client
+   */
+  this.client_ = new grpc.web.GrpcWebClientBase(options);
+
+  /**
+   * @private @const {string} The hostname
+   */
+  this.hostname_ = hostname.replace(/\/+$/, '');
+
+};
+
 
 /**
  * @const
@@ -72,19 +81,20 @@ proto.backend.BackendPromiseClient = function (hostname, credentials, options) {
  *   !proto.backend.StartSimulationReply>}
  */
 const methodDescriptor_Backend_StartSimulation = new grpc.web.MethodDescriptor(
-    '/backend.Backend/StartSimulation',
-    grpc.web.MethodType.UNARY,
-    proto.backend.StartSimulationRequest,
-    proto.backend.StartSimulationReply,
-    /**
-     * @param {!proto.backend.StartSimulationRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.StartSimulationReply.deserializeBinary
-)
+  '/backend.Backend/StartSimulation',
+  grpc.web.MethodType.UNARY,
+  proto.backend.StartSimulationRequest,
+  proto.backend.StartSimulationReply,
+  /**
+   * @param {!proto.backend.StartSimulationRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.StartSimulationReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.StartSimulationRequest} request The
@@ -96,19 +106,16 @@ const methodDescriptor_Backend_StartSimulation = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.StartSimulationReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.startSimulation = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/StartSimulation',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_StartSimulation,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.startSimulation =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/StartSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_StartSimulation,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.StartSimulationRequest} request The
@@ -118,17 +125,76 @@ proto.backend.BackendClient.prototype.startSimulation = function (
  * @return {!Promise<!proto.backend.StartSimulationReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.startSimulation = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/StartSimulation',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_StartSimulation
-    )
-}
+proto.backend.BackendPromiseClient.prototype.startSimulation =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/StartSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_StartSimulation);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.backend.SaveSimulationRequest,
+ *   !proto.backend.SaveSimulationReply>}
+ */
+const methodDescriptor_Backend_SaveSimulation = new grpc.web.MethodDescriptor(
+  '/backend.Backend/SaveSimulation',
+  grpc.web.MethodType.UNARY,
+  proto.backend.SaveSimulationRequest,
+  proto.backend.SaveSimulationReply,
+  /**
+   * @param {!proto.backend.SaveSimulationRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.SaveSimulationReply.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.backend.SaveSimulationRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.backend.SaveSimulationReply)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.backend.SaveSimulationReply>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.backend.BackendClient.prototype.saveSimulation =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/SaveSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_SaveSimulation,
+      callback);
+};
+
+
+/**
+ * @param {!proto.backend.SaveSimulationRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.backend.SaveSimulationReply>}
+ *     Promise that resolves to the response
+ */
+proto.backend.BackendPromiseClient.prototype.saveSimulation =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/SaveSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_SaveSimulation);
+};
+
 
 /**
  * @const
@@ -137,19 +203,20 @@ proto.backend.BackendPromiseClient.prototype.startSimulation = function (
  *   !proto.backend.LoadSimulationReply>}
  */
 const methodDescriptor_Backend_LoadSimulation = new grpc.web.MethodDescriptor(
-    '/backend.Backend/LoadSimulation',
-    grpc.web.MethodType.UNARY,
-    proto.backend.LoadSimulationRequest,
-    proto.backend.LoadSimulationReply,
-    /**
-     * @param {!proto.backend.LoadSimulationRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.LoadSimulationReply.deserializeBinary
-)
+  '/backend.Backend/LoadSimulation',
+  grpc.web.MethodType.UNARY,
+  proto.backend.LoadSimulationRequest,
+  proto.backend.LoadSimulationReply,
+  /**
+   * @param {!proto.backend.LoadSimulationRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.LoadSimulationReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.LoadSimulationRequest} request The
@@ -161,19 +228,16 @@ const methodDescriptor_Backend_LoadSimulation = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.LoadSimulationReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.loadSimulation = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/LoadSimulation',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_LoadSimulation,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.loadSimulation =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/LoadSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_LoadSimulation,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.LoadSimulationRequest} request The
@@ -183,17 +247,15 @@ proto.backend.BackendClient.prototype.loadSimulation = function (
  * @return {!Promise<!proto.backend.LoadSimulationReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.loadSimulation = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/LoadSimulation',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_LoadSimulation
-    )
-}
+proto.backend.BackendPromiseClient.prototype.loadSimulation =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/LoadSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_LoadSimulation);
+};
+
 
 /**
  * @const
@@ -202,19 +264,20 @@ proto.backend.BackendPromiseClient.prototype.loadSimulation = function (
  *   !proto.backend.ResizeSimulationReply>}
  */
 const methodDescriptor_Backend_ResizeSimulation = new grpc.web.MethodDescriptor(
-    '/backend.Backend/ResizeSimulation',
-    grpc.web.MethodType.UNARY,
-    proto.backend.ResizeSimulationRequest,
-    proto.backend.ResizeSimulationReply,
-    /**
-     * @param {!proto.backend.ResizeSimulationRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.ResizeSimulationReply.deserializeBinary
-)
+  '/backend.Backend/ResizeSimulation',
+  grpc.web.MethodType.UNARY,
+  proto.backend.ResizeSimulationRequest,
+  proto.backend.ResizeSimulationReply,
+  /**
+   * @param {!proto.backend.ResizeSimulationRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.ResizeSimulationReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.ResizeSimulationRequest} request The
@@ -226,19 +289,16 @@ const methodDescriptor_Backend_ResizeSimulation = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.ResizeSimulationReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.resizeSimulation = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/ResizeSimulation',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_ResizeSimulation,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.resizeSimulation =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/ResizeSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_ResizeSimulation,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.ResizeSimulationRequest} request The
@@ -248,17 +308,15 @@ proto.backend.BackendClient.prototype.resizeSimulation = function (
  * @return {!Promise<!proto.backend.ResizeSimulationReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.resizeSimulation = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/ResizeSimulation',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_ResizeSimulation
-    )
-}
+proto.backend.BackendPromiseClient.prototype.resizeSimulation =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/ResizeSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_ResizeSimulation);
+};
+
 
 /**
  * @const
@@ -266,21 +324,21 @@ proto.backend.BackendPromiseClient.prototype.resizeSimulation = function (
  *   !proto.backend.GetEnvironmentInfoRequest,
  *   !proto.backend.GetEnvironmentInfoReply>}
  */
-const methodDescriptor_Backend_GetEnvironmentInfo =
-    new grpc.web.MethodDescriptor(
-        '/backend.Backend/GetEnvironmentInfo',
-        grpc.web.MethodType.UNARY,
-        proto.backend.GetEnvironmentInfoRequest,
-        proto.backend.GetEnvironmentInfoReply,
-        /**
-         * @param {!proto.backend.GetEnvironmentInfoRequest} request
-         * @return {!Uint8Array}
-         */
-        function (request) {
-            return request.serializeBinary()
-        },
-        proto.backend.GetEnvironmentInfoReply.deserializeBinary
-    )
+const methodDescriptor_Backend_GetEnvironmentInfo = new grpc.web.MethodDescriptor(
+  '/backend.Backend/GetEnvironmentInfo',
+  grpc.web.MethodType.UNARY,
+  proto.backend.GetEnvironmentInfoRequest,
+  proto.backend.GetEnvironmentInfoReply,
+  /**
+   * @param {!proto.backend.GetEnvironmentInfoRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.GetEnvironmentInfoReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.GetEnvironmentInfoRequest} request The
@@ -292,19 +350,16 @@ const methodDescriptor_Backend_GetEnvironmentInfo =
  * @return {!grpc.web.ClientReadableStream<!proto.backend.GetEnvironmentInfoReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.getEnvironmentInfo = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/GetEnvironmentInfo',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetEnvironmentInfo,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.getEnvironmentInfo =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/GetEnvironmentInfo',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetEnvironmentInfo,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.GetEnvironmentInfoRequest} request The
@@ -314,17 +369,15 @@ proto.backend.BackendClient.prototype.getEnvironmentInfo = function (
  * @return {!Promise<!proto.backend.GetEnvironmentInfoReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.getEnvironmentInfo = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/GetEnvironmentInfo',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetEnvironmentInfo
-    )
-}
+proto.backend.BackendPromiseClient.prototype.getEnvironmentInfo =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/GetEnvironmentInfo',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetEnvironmentInfo);
+};
+
 
 /**
  * @const
@@ -332,21 +385,21 @@ proto.backend.BackendPromiseClient.prototype.getEnvironmentInfo = function (
  *   !proto.backend.GetSimulationProgressionSpeedRequest,
  *   !proto.backend.GetSimulationProgressionSpeedReply>}
  */
-const methodDescriptor_Backend_GetSimulationProgressionSpeed =
-    new grpc.web.MethodDescriptor(
-        '/backend.Backend/GetSimulationProgressionSpeed',
-        grpc.web.MethodType.UNARY,
-        proto.backend.GetSimulationProgressionSpeedRequest,
-        proto.backend.GetSimulationProgressionSpeedReply,
-        /**
-         * @param {!proto.backend.GetSimulationProgressionSpeedRequest} request
-         * @return {!Uint8Array}
-         */
-        function (request) {
-            return request.serializeBinary()
-        },
-        proto.backend.GetSimulationProgressionSpeedReply.deserializeBinary
-    )
+const methodDescriptor_Backend_GetSimulationProgressionSpeed = new grpc.web.MethodDescriptor(
+  '/backend.Backend/GetSimulationProgressionSpeed',
+  grpc.web.MethodType.UNARY,
+  proto.backend.GetSimulationProgressionSpeedRequest,
+  proto.backend.GetSimulationProgressionSpeedReply,
+  /**
+   * @param {!proto.backend.GetSimulationProgressionSpeedRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.GetSimulationProgressionSpeedReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.GetSimulationProgressionSpeedRequest} request The
@@ -358,19 +411,16 @@ const methodDescriptor_Backend_GetSimulationProgressionSpeed =
  * @return {!grpc.web.ClientReadableStream<!proto.backend.GetSimulationProgressionSpeedReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.getSimulationProgressionSpeed = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/GetSimulationProgressionSpeed',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetSimulationProgressionSpeed,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.getSimulationProgressionSpeed =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/GetSimulationProgressionSpeed',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetSimulationProgressionSpeed,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.GetSimulationProgressionSpeedRequest} request The
@@ -381,14 +431,14 @@ proto.backend.BackendClient.prototype.getSimulationProgressionSpeed = function (
  *     Promise that resolves to the response
  */
 proto.backend.BackendPromiseClient.prototype.getSimulationProgressionSpeed =
-    function (request, metadata) {
-        return this.client_.unaryCall(
-            this.hostname_ + '/backend.Backend/GetSimulationProgressionSpeed',
-            request,
-            metadata || {},
-            methodDescriptor_Backend_GetSimulationProgressionSpeed
-        )
-    }
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/GetSimulationProgressionSpeed',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetSimulationProgressionSpeed);
+};
+
 
 /**
  * @const
@@ -396,21 +446,21 @@ proto.backend.BackendPromiseClient.prototype.getSimulationProgressionSpeed =
  *   !proto.backend.ChangeSimulationProgressionSpeedRequest,
  *   !proto.backend.ChangeSimulationProgressionSpeedReply>}
  */
-const methodDescriptor_Backend_ChangeSimulationProgressionSpeed =
-    new grpc.web.MethodDescriptor(
-        '/backend.Backend/ChangeSimulationProgressionSpeed',
-        grpc.web.MethodType.UNARY,
-        proto.backend.ChangeSimulationProgressionSpeedRequest,
-        proto.backend.ChangeSimulationProgressionSpeedReply,
-        /**
-         * @param {!proto.backend.ChangeSimulationProgressionSpeedRequest} request
-         * @return {!Uint8Array}
-         */
-        function (request) {
-            return request.serializeBinary()
-        },
-        proto.backend.ChangeSimulationProgressionSpeedReply.deserializeBinary
-    )
+const methodDescriptor_Backend_ChangeSimulationProgressionSpeed = new grpc.web.MethodDescriptor(
+  '/backend.Backend/ChangeSimulationProgressionSpeed',
+  grpc.web.MethodType.UNARY,
+  proto.backend.ChangeSimulationProgressionSpeedRequest,
+  proto.backend.ChangeSimulationProgressionSpeedReply,
+  /**
+   * @param {!proto.backend.ChangeSimulationProgressionSpeedRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.ChangeSimulationProgressionSpeedReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.ChangeSimulationProgressionSpeedRequest} request The
@@ -423,16 +473,15 @@ const methodDescriptor_Backend_ChangeSimulationProgressionSpeed =
  *     The XHR Node Readable Stream
  */
 proto.backend.BackendClient.prototype.changeSimulationProgressionSpeed =
-    function (request, metadata, callback) {
-        return this.client_.rpcCall(
-            this.hostname_ +
-                '/backend.Backend/ChangeSimulationProgressionSpeed',
-            request,
-            metadata || {},
-            methodDescriptor_Backend_ChangeSimulationProgressionSpeed,
-            callback
-        )
-    }
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/ChangeSimulationProgressionSpeed',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_ChangeSimulationProgressionSpeed,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.ChangeSimulationProgressionSpeedRequest} request The
@@ -443,15 +492,14 @@ proto.backend.BackendClient.prototype.changeSimulationProgressionSpeed =
  *     Promise that resolves to the response
  */
 proto.backend.BackendPromiseClient.prototype.changeSimulationProgressionSpeed =
-    function (request, metadata) {
-        return this.client_.unaryCall(
-            this.hostname_ +
-                '/backend.Backend/ChangeSimulationProgressionSpeed',
-            request,
-            metadata || {},
-            methodDescriptor_Backend_ChangeSimulationProgressionSpeed
-        )
-    }
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/ChangeSimulationProgressionSpeed',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_ChangeSimulationProgressionSpeed);
+};
+
 
 /**
  * @const
@@ -460,19 +508,20 @@ proto.backend.BackendPromiseClient.prototype.changeSimulationProgressionSpeed =
  *   !proto.backend.CreateNewSpeciesReply>}
  */
 const methodDescriptor_Backend_CreateNewSpecies = new grpc.web.MethodDescriptor(
-    '/backend.Backend/CreateNewSpecies',
-    grpc.web.MethodType.UNARY,
-    proto.backend.CreateNewSpeciesRequest,
-    proto.backend.CreateNewSpeciesReply,
-    /**
-     * @param {!proto.backend.CreateNewSpeciesRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.CreateNewSpeciesReply.deserializeBinary
-)
+  '/backend.Backend/CreateNewSpecies',
+  grpc.web.MethodType.UNARY,
+  proto.backend.CreateNewSpeciesRequest,
+  proto.backend.CreateNewSpeciesReply,
+  /**
+   * @param {!proto.backend.CreateNewSpeciesRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.CreateNewSpeciesReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.CreateNewSpeciesRequest} request The
@@ -484,19 +533,16 @@ const methodDescriptor_Backend_CreateNewSpecies = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.CreateNewSpeciesReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.createNewSpecies = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/CreateNewSpecies',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_CreateNewSpecies,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.createNewSpecies =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/CreateNewSpecies',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_CreateNewSpecies,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.CreateNewSpeciesRequest} request The
@@ -506,17 +552,15 @@ proto.backend.BackendClient.prototype.createNewSpecies = function (
  * @return {!Promise<!proto.backend.CreateNewSpeciesReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.createNewSpecies = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/CreateNewSpecies',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_CreateNewSpecies
-    )
-}
+proto.backend.BackendPromiseClient.prototype.createNewSpecies =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/CreateNewSpecies',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_CreateNewSpecies);
+};
+
 
 /**
  * @const
@@ -524,21 +568,21 @@ proto.backend.BackendPromiseClient.prototype.createNewSpecies = function (
  *   !proto.backend.CreateNewCreatureRequest,
  *   !proto.backend.CreateNewCreatureReply>}
  */
-const methodDescriptor_Backend_CreateNewCreature =
-    new grpc.web.MethodDescriptor(
-        '/backend.Backend/CreateNewCreature',
-        grpc.web.MethodType.UNARY,
-        proto.backend.CreateNewCreatureRequest,
-        proto.backend.CreateNewCreatureReply,
-        /**
-         * @param {!proto.backend.CreateNewCreatureRequest} request
-         * @return {!Uint8Array}
-         */
-        function (request) {
-            return request.serializeBinary()
-        },
-        proto.backend.CreateNewCreatureReply.deserializeBinary
-    )
+const methodDescriptor_Backend_CreateNewCreature = new grpc.web.MethodDescriptor(
+  '/backend.Backend/CreateNewCreature',
+  grpc.web.MethodType.UNARY,
+  proto.backend.CreateNewCreatureRequest,
+  proto.backend.CreateNewCreatureReply,
+  /**
+   * @param {!proto.backend.CreateNewCreatureRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.CreateNewCreatureReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.CreateNewCreatureRequest} request The
@@ -550,19 +594,16 @@ const methodDescriptor_Backend_CreateNewCreature =
  * @return {!grpc.web.ClientReadableStream<!proto.backend.CreateNewCreatureReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.createNewCreature = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/CreateNewCreature',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_CreateNewCreature,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.createNewCreature =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/CreateNewCreature',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_CreateNewCreature,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.CreateNewCreatureRequest} request The
@@ -572,17 +613,15 @@ proto.backend.BackendClient.prototype.createNewCreature = function (
  * @return {!Promise<!proto.backend.CreateNewCreatureReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.createNewCreature = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/CreateNewCreature',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_CreateNewCreature
-    )
-}
+proto.backend.BackendPromiseClient.prototype.createNewCreature =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/CreateNewCreature',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_CreateNewCreature);
+};
+
 
 /**
  * @const
@@ -591,19 +630,20 @@ proto.backend.BackendPromiseClient.prototype.createNewCreature = function (
  *   !proto.backend.GetSpeciesListReply>}
  */
 const methodDescriptor_Backend_GetSpeciesList = new grpc.web.MethodDescriptor(
-    '/backend.Backend/GetSpeciesList',
-    grpc.web.MethodType.UNARY,
-    proto.backend.GetSpeciesListRequest,
-    proto.backend.GetSpeciesListReply,
-    /**
-     * @param {!proto.backend.GetSpeciesListRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.GetSpeciesListReply.deserializeBinary
-)
+  '/backend.Backend/GetSpeciesList',
+  grpc.web.MethodType.UNARY,
+  proto.backend.GetSpeciesListRequest,
+  proto.backend.GetSpeciesListReply,
+  /**
+   * @param {!proto.backend.GetSpeciesListRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.GetSpeciesListReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.GetSpeciesListRequest} request The
@@ -615,19 +655,16 @@ const methodDescriptor_Backend_GetSpeciesList = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.GetSpeciesListReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.getSpeciesList = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/GetSpeciesList',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetSpeciesList,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.getSpeciesList =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/GetSpeciesList',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetSpeciesList,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.GetSpeciesListRequest} request The
@@ -637,17 +674,15 @@ proto.backend.BackendClient.prototype.getSpeciesList = function (
  * @return {!Promise<!proto.backend.GetSpeciesListReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.getSpeciesList = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/GetSpeciesList',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetSpeciesList
-    )
-}
+proto.backend.BackendPromiseClient.prototype.getSpeciesList =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/GetSpeciesList',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetSpeciesList);
+};
+
 
 /**
  * @const
@@ -655,21 +690,21 @@ proto.backend.BackendPromiseClient.prototype.getSpeciesList = function (
  *   !proto.backend.DefineNewSpeciesRelationshipRequest,
  *   !proto.backend.DefineNewSpeciesRelationshipReply>}
  */
-const methodDescriptor_Backend_DefineNewSpeciesRelationship =
-    new grpc.web.MethodDescriptor(
-        '/backend.Backend/DefineNewSpeciesRelationship',
-        grpc.web.MethodType.UNARY,
-        proto.backend.DefineNewSpeciesRelationshipRequest,
-        proto.backend.DefineNewSpeciesRelationshipReply,
-        /**
-         * @param {!proto.backend.DefineNewSpeciesRelationshipRequest} request
-         * @return {!Uint8Array}
-         */
-        function (request) {
-            return request.serializeBinary()
-        },
-        proto.backend.DefineNewSpeciesRelationshipReply.deserializeBinary
-    )
+const methodDescriptor_Backend_DefineNewSpeciesRelationship = new grpc.web.MethodDescriptor(
+  '/backend.Backend/DefineNewSpeciesRelationship',
+  grpc.web.MethodType.UNARY,
+  proto.backend.DefineNewSpeciesRelationshipRequest,
+  proto.backend.DefineNewSpeciesRelationshipReply,
+  /**
+   * @param {!proto.backend.DefineNewSpeciesRelationshipRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.DefineNewSpeciesRelationshipReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.DefineNewSpeciesRelationshipRequest} request The
@@ -681,19 +716,16 @@ const methodDescriptor_Backend_DefineNewSpeciesRelationship =
  * @return {!grpc.web.ClientReadableStream<!proto.backend.DefineNewSpeciesRelationshipReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.defineNewSpeciesRelationship = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/DefineNewSpeciesRelationship',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_DefineNewSpeciesRelationship,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.defineNewSpeciesRelationship =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/DefineNewSpeciesRelationship',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_DefineNewSpeciesRelationship,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.DefineNewSpeciesRelationshipRequest} request The
@@ -704,14 +736,14 @@ proto.backend.BackendClient.prototype.defineNewSpeciesRelationship = function (
  *     Promise that resolves to the response
  */
 proto.backend.BackendPromiseClient.prototype.defineNewSpeciesRelationship =
-    function (request, metadata) {
-        return this.client_.unaryCall(
-            this.hostname_ + '/backend.Backend/DefineNewSpeciesRelationship',
-            request,
-            metadata || {},
-            methodDescriptor_Backend_DefineNewSpeciesRelationship
-        )
-    }
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/DefineNewSpeciesRelationship',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_DefineNewSpeciesRelationship);
+};
+
 
 /**
  * @const
@@ -720,19 +752,20 @@ proto.backend.BackendPromiseClient.prototype.defineNewSpeciesRelationship =
  *   !proto.backend.SpeciesInfo>}
  */
 const methodDescriptor_Backend_GetSpeciesInfo = new grpc.web.MethodDescriptor(
-    '/backend.Backend/GetSpeciesInfo',
-    grpc.web.MethodType.UNARY,
-    proto.backend.GetSpeciesInfoRequest,
-    proto.backend.SpeciesInfo,
-    /**
-     * @param {!proto.backend.GetSpeciesInfoRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.SpeciesInfo.deserializeBinary
-)
+  '/backend.Backend/GetSpeciesInfo',
+  grpc.web.MethodType.UNARY,
+  proto.backend.GetSpeciesInfoRequest,
+  proto.backend.SpeciesInfo,
+  /**
+   * @param {!proto.backend.GetSpeciesInfoRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.SpeciesInfo.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.GetSpeciesInfoRequest} request The
@@ -744,19 +777,16 @@ const methodDescriptor_Backend_GetSpeciesInfo = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.SpeciesInfo>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.getSpeciesInfo = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/GetSpeciesInfo',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetSpeciesInfo,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.getSpeciesInfo =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/GetSpeciesInfo',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetSpeciesInfo,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.GetSpeciesInfoRequest} request The
@@ -766,17 +796,15 @@ proto.backend.BackendClient.prototype.getSpeciesInfo = function (
  * @return {!Promise<!proto.backend.SpeciesInfo>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.getSpeciesInfo = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/GetSpeciesInfo',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetSpeciesInfo
-    )
-}
+proto.backend.BackendPromiseClient.prototype.getSpeciesInfo =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/GetSpeciesInfo',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetSpeciesInfo);
+};
+
 
 /**
  * @const
@@ -785,19 +813,20 @@ proto.backend.BackendPromiseClient.prototype.getSpeciesInfo = function (
  *   !proto.backend.CreatureInfo>}
  */
 const methodDescriptor_Backend_GetCreatureInfo = new grpc.web.MethodDescriptor(
-    '/backend.Backend/GetCreatureInfo',
-    grpc.web.MethodType.UNARY,
-    proto.backend.GetCreatureInfoRequest,
-    proto.backend.CreatureInfo,
-    /**
-     * @param {!proto.backend.GetCreatureInfoRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.CreatureInfo.deserializeBinary
-)
+  '/backend.Backend/GetCreatureInfo',
+  grpc.web.MethodType.UNARY,
+  proto.backend.GetCreatureInfoRequest,
+  proto.backend.CreatureInfo,
+  /**
+   * @param {!proto.backend.GetCreatureInfoRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.CreatureInfo.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.GetCreatureInfoRequest} request The
@@ -809,19 +838,16 @@ const methodDescriptor_Backend_GetCreatureInfo = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.CreatureInfo>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.getCreatureInfo = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/GetCreatureInfo',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetCreatureInfo,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.getCreatureInfo =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/GetCreatureInfo',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetCreatureInfo,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.GetCreatureInfoRequest} request The
@@ -831,17 +857,15 @@ proto.backend.BackendClient.prototype.getCreatureInfo = function (
  * @return {!Promise<!proto.backend.CreatureInfo>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.getCreatureInfo = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/GetCreatureInfo',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetCreatureInfo
-    )
-}
+proto.backend.BackendPromiseClient.prototype.getCreatureInfo =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/GetCreatureInfo',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetCreatureInfo);
+};
+
 
 /**
  * @const
@@ -850,19 +874,20 @@ proto.backend.BackendPromiseClient.prototype.getCreatureInfo = function (
  *   !proto.backend.CreateTopographyReply>}
  */
 const methodDescriptor_Backend_CreateTopography = new grpc.web.MethodDescriptor(
-    '/backend.Backend/CreateTopography',
-    grpc.web.MethodType.UNARY,
-    proto.backend.CreateTopographyRequest,
-    proto.backend.CreateTopographyReply,
-    /**
-     * @param {!proto.backend.CreateTopographyRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.CreateTopographyReply.deserializeBinary
-)
+  '/backend.Backend/CreateTopography',
+  grpc.web.MethodType.UNARY,
+  proto.backend.CreateTopographyRequest,
+  proto.backend.CreateTopographyReply,
+  /**
+   * @param {!proto.backend.CreateTopographyRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.CreateTopographyReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.CreateTopographyRequest} request The
@@ -874,19 +899,16 @@ const methodDescriptor_Backend_CreateTopography = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.CreateTopographyReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.createTopography = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/CreateTopography',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_CreateTopography,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.createTopography =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/CreateTopography',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_CreateTopography,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.CreateTopographyRequest} request The
@@ -896,17 +918,15 @@ proto.backend.BackendClient.prototype.createTopography = function (
  * @return {!Promise<!proto.backend.CreateTopographyReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.createTopography = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/CreateTopography',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_CreateTopography
-    )
-}
+proto.backend.BackendPromiseClient.prototype.createTopography =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/CreateTopography',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_CreateTopography);
+};
+
 
 /**
  * @const
@@ -915,19 +935,20 @@ proto.backend.BackendPromiseClient.prototype.createTopography = function (
  *   !proto.backend.DeleteTopographyReply>}
  */
 const methodDescriptor_Backend_DeleteTopography = new grpc.web.MethodDescriptor(
-    '/backend.Backend/DeleteTopography',
-    grpc.web.MethodType.UNARY,
-    proto.backend.DeleteTopographyRequest,
-    proto.backend.DeleteTopographyReply,
-    /**
-     * @param {!proto.backend.DeleteTopographyRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.DeleteTopographyReply.deserializeBinary
-)
+  '/backend.Backend/DeleteTopography',
+  grpc.web.MethodType.UNARY,
+  proto.backend.DeleteTopographyRequest,
+  proto.backend.DeleteTopographyReply,
+  /**
+   * @param {!proto.backend.DeleteTopographyRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.DeleteTopographyReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.DeleteTopographyRequest} request The
@@ -939,19 +960,16 @@ const methodDescriptor_Backend_DeleteTopography = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.DeleteTopographyReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.deleteTopography = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/DeleteTopography',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_DeleteTopography,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.deleteTopography =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/DeleteTopography',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_DeleteTopography,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.DeleteTopographyRequest} request The
@@ -961,17 +979,15 @@ proto.backend.BackendClient.prototype.deleteTopography = function (
  * @return {!Promise<!proto.backend.DeleteTopographyReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.deleteTopography = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/DeleteTopography',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_DeleteTopography
-    )
-}
+proto.backend.BackendPromiseClient.prototype.deleteTopography =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/DeleteTopography',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_DeleteTopography);
+};
+
 
 /**
  * @const
@@ -980,19 +996,20 @@ proto.backend.BackendPromiseClient.prototype.deleteTopography = function (
  *   !proto.backend.TopographyTable>}
  */
 const methodDescriptor_Backend_GetTopography = new grpc.web.MethodDescriptor(
-    '/backend.Backend/GetTopography',
-    grpc.web.MethodType.UNARY,
-    proto.backend.GetTopographyRequest,
-    proto.backend.TopographyTable,
-    /**
-     * @param {!proto.backend.GetTopographyRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.TopographyTable.deserializeBinary
-)
+  '/backend.Backend/GetTopography',
+  grpc.web.MethodType.UNARY,
+  proto.backend.GetTopographyRequest,
+  proto.backend.TopographyTable,
+  /**
+   * @param {!proto.backend.GetTopographyRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.TopographyTable.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.GetTopographyRequest} request The
@@ -1004,19 +1021,16 @@ const methodDescriptor_Backend_GetTopography = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.TopographyTable>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.getTopography = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/GetTopography',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetTopography,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.getTopography =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/GetTopography',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetTopography,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.GetTopographyRequest} request The
@@ -1026,17 +1040,15 @@ proto.backend.BackendClient.prototype.getTopography = function (
  * @return {!Promise<!proto.backend.TopographyTable>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.getTopography = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/GetTopography',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetTopography
-    )
-}
+proto.backend.BackendPromiseClient.prototype.getTopography =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/GetTopography',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetTopography);
+};
+
 
 /**
  * @const
@@ -1045,19 +1057,20 @@ proto.backend.BackendPromiseClient.prototype.getTopography = function (
  *   !proto.backend.SetTopographyReply>}
  */
 const methodDescriptor_Backend_SetTopography = new grpc.web.MethodDescriptor(
-    '/backend.Backend/SetTopography',
-    grpc.web.MethodType.UNARY,
-    proto.backend.TopographyTable,
-    proto.backend.SetTopographyReply,
-    /**
-     * @param {!proto.backend.TopographyTable} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.SetTopographyReply.deserializeBinary
-)
+  '/backend.Backend/SetTopography',
+  grpc.web.MethodType.UNARY,
+  proto.backend.TopographyTable,
+  proto.backend.SetTopographyReply,
+  /**
+   * @param {!proto.backend.TopographyTable} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.SetTopographyReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.TopographyTable} request The
@@ -1069,19 +1082,16 @@ const methodDescriptor_Backend_SetTopography = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.SetTopographyReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.setTopography = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/SetTopography',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_SetTopography,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.setTopography =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/SetTopography',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_SetTopography,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.TopographyTable} request The
@@ -1091,17 +1101,15 @@ proto.backend.BackendClient.prototype.setTopography = function (
  * @return {!Promise<!proto.backend.SetTopographyReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.setTopography = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/SetTopography',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_SetTopography
-    )
-}
+proto.backend.BackendPromiseClient.prototype.setTopography =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/SetTopography',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_SetTopography);
+};
+
 
 /**
  * @const
@@ -1109,21 +1117,21 @@ proto.backend.BackendPromiseClient.prototype.setTopography = function (
  *   !proto.backend.AdvanceSimulationRequest,
  *   !proto.backend.AdvanceSimulationReply>}
  */
-const methodDescriptor_Backend_AdvanceSimulation =
-    new grpc.web.MethodDescriptor(
-        '/backend.Backend/AdvanceSimulation',
-        grpc.web.MethodType.UNARY,
-        proto.backend.AdvanceSimulationRequest,
-        proto.backend.AdvanceSimulationReply,
-        /**
-         * @param {!proto.backend.AdvanceSimulationRequest} request
-         * @return {!Uint8Array}
-         */
-        function (request) {
-            return request.serializeBinary()
-        },
-        proto.backend.AdvanceSimulationReply.deserializeBinary
-    )
+const methodDescriptor_Backend_AdvanceSimulation = new grpc.web.MethodDescriptor(
+  '/backend.Backend/AdvanceSimulation',
+  grpc.web.MethodType.UNARY,
+  proto.backend.AdvanceSimulationRequest,
+  proto.backend.AdvanceSimulationReply,
+  /**
+   * @param {!proto.backend.AdvanceSimulationRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.AdvanceSimulationReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.AdvanceSimulationRequest} request The
@@ -1135,19 +1143,16 @@ const methodDescriptor_Backend_AdvanceSimulation =
  * @return {!grpc.web.ClientReadableStream<!proto.backend.AdvanceSimulationReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.advanceSimulation = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/AdvanceSimulation',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_AdvanceSimulation,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.advanceSimulation =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/AdvanceSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_AdvanceSimulation,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.AdvanceSimulationRequest} request The
@@ -1157,17 +1162,15 @@ proto.backend.BackendClient.prototype.advanceSimulation = function (
  * @return {!Promise<!proto.backend.AdvanceSimulationReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.advanceSimulation = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/AdvanceSimulation',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_AdvanceSimulation
-    )
-}
+proto.backend.BackendPromiseClient.prototype.advanceSimulation =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/AdvanceSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_AdvanceSimulation);
+};
+
 
 /**
  * @const
@@ -1176,19 +1179,20 @@ proto.backend.BackendPromiseClient.prototype.advanceSimulation = function (
  *   !proto.backend.GetTextToggleReply>}
  */
 const methodDescriptor_Backend_GetTextToggle = new grpc.web.MethodDescriptor(
-    '/backend.Backend/GetTextToggle',
-    grpc.web.MethodType.UNARY,
-    proto.backend.GetTextToggleRequest,
-    proto.backend.GetTextToggleReply,
-    /**
-     * @param {!proto.backend.GetTextToggleRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.GetTextToggleReply.deserializeBinary
-)
+  '/backend.Backend/GetTextToggle',
+  grpc.web.MethodType.UNARY,
+  proto.backend.GetTextToggleRequest,
+  proto.backend.GetTextToggleReply,
+  /**
+   * @param {!proto.backend.GetTextToggleRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.GetTextToggleReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.GetTextToggleRequest} request The
@@ -1200,19 +1204,16 @@ const methodDescriptor_Backend_GetTextToggle = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.GetTextToggleReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.getTextToggle = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/GetTextToggle',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetTextToggle,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.getTextToggle =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/GetTextToggle',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetTextToggle,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.GetTextToggleRequest} request The
@@ -1222,17 +1223,15 @@ proto.backend.BackendClient.prototype.getTextToggle = function (
  * @return {!Promise<!proto.backend.GetTextToggleReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.getTextToggle = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/GetTextToggle',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetTextToggle
-    )
-}
+proto.backend.BackendPromiseClient.prototype.getTextToggle =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/GetTextToggle',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetTextToggle);
+};
+
 
 /**
  * @const
@@ -1241,19 +1240,20 @@ proto.backend.BackendPromiseClient.prototype.getTextToggle = function (
  *   !proto.backend.UpdateTextToggleReply>}
  */
 const methodDescriptor_Backend_UpdateTextToggle = new grpc.web.MethodDescriptor(
-    '/backend.Backend/UpdateTextToggle',
-    grpc.web.MethodType.UNARY,
-    proto.backend.UpdateTextToggleRequest,
-    proto.backend.UpdateTextToggleReply,
-    /**
-     * @param {!proto.backend.UpdateTextToggleRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.UpdateTextToggleReply.deserializeBinary
-)
+  '/backend.Backend/UpdateTextToggle',
+  grpc.web.MethodType.UNARY,
+  proto.backend.UpdateTextToggleRequest,
+  proto.backend.UpdateTextToggleReply,
+  /**
+   * @param {!proto.backend.UpdateTextToggleRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.UpdateTextToggleReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.UpdateTextToggleRequest} request The
@@ -1265,19 +1265,16 @@ const methodDescriptor_Backend_UpdateTextToggle = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.UpdateTextToggleReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.updateTextToggle = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/UpdateTextToggle',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_UpdateTextToggle,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.updateTextToggle =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/UpdateTextToggle',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_UpdateTextToggle,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.UpdateTextToggleRequest} request The
@@ -1287,17 +1284,15 @@ proto.backend.BackendClient.prototype.updateTextToggle = function (
  * @return {!Promise<!proto.backend.UpdateTextToggleReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.updateTextToggle = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/UpdateTextToggle',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_UpdateTextToggle
-    )
-}
+proto.backend.BackendPromiseClient.prototype.updateTextToggle =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/UpdateTextToggle',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_UpdateTextToggle);
+};
+
 
 /**
  * @const
@@ -1306,19 +1301,20 @@ proto.backend.BackendPromiseClient.prototype.updateTextToggle = function (
  *   !proto.backend.GetUpdateFlagReply>}
  */
 const methodDescriptor_Backend_GetUpdateFlag = new grpc.web.MethodDescriptor(
-    '/backend.Backend/GetUpdateFlag',
-    grpc.web.MethodType.UNARY,
-    proto.backend.GetUpdateFlagRequest,
-    proto.backend.GetUpdateFlagReply,
-    /**
-     * @param {!proto.backend.GetUpdateFlagRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.GetUpdateFlagReply.deserializeBinary
-)
+  '/backend.Backend/GetUpdateFlag',
+  grpc.web.MethodType.UNARY,
+  proto.backend.GetUpdateFlagRequest,
+  proto.backend.GetUpdateFlagReply,
+  /**
+   * @param {!proto.backend.GetUpdateFlagRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.GetUpdateFlagReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.GetUpdateFlagRequest} request The
@@ -1330,19 +1326,16 @@ const methodDescriptor_Backend_GetUpdateFlag = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.GetUpdateFlagReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.getUpdateFlag = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/GetUpdateFlag',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetUpdateFlag,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.getUpdateFlag =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/GetUpdateFlag',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetUpdateFlag,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.GetUpdateFlagRequest} request The
@@ -1352,17 +1345,15 @@ proto.backend.BackendClient.prototype.getUpdateFlag = function (
  * @return {!Promise<!proto.backend.GetUpdateFlagReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.getUpdateFlag = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/GetUpdateFlag',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetUpdateFlag
-    )
-}
+proto.backend.BackendPromiseClient.prototype.getUpdateFlag =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/GetUpdateFlag',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetUpdateFlag);
+};
+
 
 /**
  * @const
@@ -1371,19 +1362,20 @@ proto.backend.BackendPromiseClient.prototype.getUpdateFlag = function (
  *   !proto.backend.EditUpdateFlagReply>}
  */
 const methodDescriptor_Backend_EditUpdateFlag = new grpc.web.MethodDescriptor(
-    '/backend.Backend/EditUpdateFlag',
-    grpc.web.MethodType.UNARY,
-    proto.backend.EditUpdateFlagRequest,
-    proto.backend.EditUpdateFlagReply,
-    /**
-     * @param {!proto.backend.EditUpdateFlagRequest} request
-     * @return {!Uint8Array}
-     */
-    function (request) {
-        return request.serializeBinary()
-    },
-    proto.backend.EditUpdateFlagReply.deserializeBinary
-)
+  '/backend.Backend/EditUpdateFlag',
+  grpc.web.MethodType.UNARY,
+  proto.backend.EditUpdateFlagRequest,
+  proto.backend.EditUpdateFlagReply,
+  /**
+   * @param {!proto.backend.EditUpdateFlagRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.EditUpdateFlagReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.EditUpdateFlagRequest} request The
@@ -1395,19 +1387,16 @@ const methodDescriptor_Backend_EditUpdateFlag = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.backend.EditUpdateFlagReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.editUpdateFlag = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/EditUpdateFlag',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_EditUpdateFlag,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.editUpdateFlag =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/EditUpdateFlag',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_EditUpdateFlag,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.EditUpdateFlagRequest} request The
@@ -1417,17 +1406,15 @@ proto.backend.BackendClient.prototype.editUpdateFlag = function (
  * @return {!Promise<!proto.backend.EditUpdateFlagReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.editUpdateFlag = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/EditUpdateFlag',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_EditUpdateFlag
-    )
-}
+proto.backend.BackendPromiseClient.prototype.editUpdateFlag =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/EditUpdateFlag',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_EditUpdateFlag);
+};
+
 
 /**
  * @const
@@ -1435,21 +1422,21 @@ proto.backend.BackendPromiseClient.prototype.editUpdateFlag = function (
  *   !proto.backend.GetTimeOfSimulationRequest,
  *   !proto.backend.GetTimeOfSimulationReply>}
  */
-const methodDescriptor_Backend_GetTimeOfSimulation =
-    new grpc.web.MethodDescriptor(
-        '/backend.Backend/GetTimeOfSimulation',
-        grpc.web.MethodType.UNARY,
-        proto.backend.GetTimeOfSimulationRequest,
-        proto.backend.GetTimeOfSimulationReply,
-        /**
-         * @param {!proto.backend.GetTimeOfSimulationRequest} request
-         * @return {!Uint8Array}
-         */
-        function (request) {
-            return request.serializeBinary()
-        },
-        proto.backend.GetTimeOfSimulationReply.deserializeBinary
-    )
+const methodDescriptor_Backend_GetTimeOfSimulation = new grpc.web.MethodDescriptor(
+  '/backend.Backend/GetTimeOfSimulation',
+  grpc.web.MethodType.UNARY,
+  proto.backend.GetTimeOfSimulationRequest,
+  proto.backend.GetTimeOfSimulationReply,
+  /**
+   * @param {!proto.backend.GetTimeOfSimulationRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.GetTimeOfSimulationReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.GetTimeOfSimulationRequest} request The
@@ -1461,19 +1448,16 @@ const methodDescriptor_Backend_GetTimeOfSimulation =
  * @return {!grpc.web.ClientReadableStream<!proto.backend.GetTimeOfSimulationReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.getTimeOfSimulation = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/GetTimeOfSimulation',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetTimeOfSimulation,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.getTimeOfSimulation =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/GetTimeOfSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetTimeOfSimulation,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.GetTimeOfSimulationRequest} request The
@@ -1483,17 +1467,15 @@ proto.backend.BackendClient.prototype.getTimeOfSimulation = function (
  * @return {!Promise<!proto.backend.GetTimeOfSimulationReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.getTimeOfSimulation = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/GetTimeOfSimulation',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetTimeOfSimulation
-    )
-}
+proto.backend.BackendPromiseClient.prototype.getTimeOfSimulation =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/GetTimeOfSimulation',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetTimeOfSimulation);
+};
+
 
 /**
  * @const
@@ -1501,21 +1483,21 @@ proto.backend.BackendPromiseClient.prototype.getTimeOfSimulation = function (
  *   !proto.backend.GetLightVisibilityRequest,
  *   !proto.backend.GetLightVisibilityReply>}
  */
-const methodDescriptor_Backend_GetLightVisibility =
-    new grpc.web.MethodDescriptor(
-        '/backend.Backend/GetLightVisibility',
-        grpc.web.MethodType.UNARY,
-        proto.backend.GetLightVisibilityRequest,
-        proto.backend.GetLightVisibilityReply,
-        /**
-         * @param {!proto.backend.GetLightVisibilityRequest} request
-         * @return {!Uint8Array}
-         */
-        function (request) {
-            return request.serializeBinary()
-        },
-        proto.backend.GetLightVisibilityReply.deserializeBinary
-    )
+const methodDescriptor_Backend_GetLightVisibility = new grpc.web.MethodDescriptor(
+  '/backend.Backend/GetLightVisibility',
+  grpc.web.MethodType.UNARY,
+  proto.backend.GetLightVisibilityRequest,
+  proto.backend.GetLightVisibilityReply,
+  /**
+   * @param {!proto.backend.GetLightVisibilityRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.backend.GetLightVisibilityReply.deserializeBinary
+);
+
 
 /**
  * @param {!proto.backend.GetLightVisibilityRequest} request The
@@ -1527,19 +1509,16 @@ const methodDescriptor_Backend_GetLightVisibility =
  * @return {!grpc.web.ClientReadableStream<!proto.backend.GetLightVisibilityReply>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.backend.BackendClient.prototype.getLightVisibility = function (
-    request,
-    metadata,
-    callback
-) {
-    return this.client_.rpcCall(
-        this.hostname_ + '/backend.Backend/GetLightVisibility',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetLightVisibility,
-        callback
-    )
-}
+proto.backend.BackendClient.prototype.getLightVisibility =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/backend.Backend/GetLightVisibility',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetLightVisibility,
+      callback);
+};
+
 
 /**
  * @param {!proto.backend.GetLightVisibilityRequest} request The
@@ -1549,16 +1528,15 @@ proto.backend.BackendClient.prototype.getLightVisibility = function (
  * @return {!Promise<!proto.backend.GetLightVisibilityReply>}
  *     Promise that resolves to the response
  */
-proto.backend.BackendPromiseClient.prototype.getLightVisibility = function (
-    request,
-    metadata
-) {
-    return this.client_.unaryCall(
-        this.hostname_ + '/backend.Backend/GetLightVisibility',
-        request,
-        metadata || {},
-        methodDescriptor_Backend_GetLightVisibility
-    )
-}
+proto.backend.BackendPromiseClient.prototype.getLightVisibility =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/backend.Backend/GetLightVisibility',
+      request,
+      metadata || {},
+      methodDescriptor_Backend_GetLightVisibility);
+};
 
-module.exports = proto.backend
+
+module.exports = proto.backend;
+
