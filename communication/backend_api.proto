@@ -190,6 +190,7 @@ message CreateNewSpeciesReply {
 message CreateNewCreatureRequest {
     string speciesName = 1;
     GenomeInfo genome = 2;
+    int32 initialNumberToSpawn = 3;
 }
 
 message CreateNewCreatureReply {

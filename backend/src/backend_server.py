@@ -211,10 +211,13 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
 
     def CreateNewCreature(self, request, context):
         logging.info("Creating new creature")
-        self.god.createNewCreature(
-            request.speciesName,
-            _convertRequestToGenome(
-                request.genome))
+        
+        for i in range(request.initialNumberToSpawn):
+            self.god.createNewCreature(
+                request.speciesName,
+                _convertRequestToGenome(
+                    request.genome))
+
         return backend_api_pb2.CreateNewCreatureReply(creatureCreated=True)
 
     def GetSpeciesList(self, request, context):

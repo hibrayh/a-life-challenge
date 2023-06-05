@@ -629,6 +629,7 @@ function NewCreatureForm(props) {
             var request = new CreateNewCreatureRequest()
             request.setSpeciesname(speciesName)
             request.setGenome(genomeRequest)
+            request.setInitialnumbertospawn(numberToSpawn)
 
             await backendService.createNewCreature(
                 request,
