@@ -12,6 +12,8 @@ import {
     TopographyTable,
     TopographyRow,
     TopographyInfo,
+    TopographyTemplateInfo,
+    GetTopographyTemplatesRequest,
 } from './../../generated_comm_files/backend_api_pb'
 import { BackendClient } from '../../generated_comm_files/backend_api_grpc_web_pb'
 
@@ -36,6 +38,8 @@ function TopographyPage(props) {
     const [elevation, setElevation] = useState(0.5)
     const [resourceDensity, setResourceDensity] = useState(0.5)
     const [resourceReplenishment, setResourceReplenishment] = useState(0.5)
+
+    const [topographyTypes, setTopographyTypes] = useState([])
 
     // list will be initialized to be equal to topogrpahyInfo
     // if a user clicks on a topography, it will only update topographyInfo
@@ -71,6 +75,28 @@ function TopographyPage(props) {
                             topographyInfo.push(topoRows[i].getItemList()[j])
                         }
                     }
+                }
+            )
+
+            var presetRequest = new GetTopographyTemplatesRequest()
+
+            await backendService.getTopographyTemplates(
+                presetRequest,
+                {},
+                function (err, response) {
+                    var listOfTopographyTypes = []
+                    let templateNames = response.getTemplatenameList()
+                    let templateColors = response.getColorList()
+
+                    for (let i = 0; i < templateNames.length; i += 1) {
+                        listOfTopographyTypes.push({
+                            type: templateNames[i],
+                            color: templateColors[i],
+                        })
+                    }
+
+                    console.log(listOfTopographyTypes)
+                    setTopographyTypes(listOfTopographyTypes)
                 }
             )
         }
@@ -113,7 +139,7 @@ function TopographyPage(props) {
                         selectTopography={topography}
                         topographyInfo={topographyInfo}
                         forceUpdateMain={forceUpdateMain}
-                        listOfTopographies={dummyListOfTopographyTypes}
+                        listOfTopographies={topographyTypes}
                     />
                     <div
                         id="topographyContainer"
@@ -163,7 +189,7 @@ function TopographyPage(props) {
                         <TopographyForm
                             setTopography={setCurrentTopography}
                             submitTopography={submitTopography}
-                            topographyList={dummyListOfTopographyTypes}
+                            topographyList={topographyTypes}
                         />
                     </div>
                 </>
@@ -178,7 +204,7 @@ function TopographyPage(props) {
                         selectTopography={topography}
                         topographyInfo={topographyInfo}
                         forceUpdateMain={forceUpdateMain}
-                        listOfTopographies={dummyListOfTopographyTypes}
+                        listOfTopographies={topographyTypes}
                     />
                     <div
                         id="topographyContainer"
@@ -332,7 +358,7 @@ function TopographyPage(props) {
                 showGridBorder={props.showGridBorder}
                 topographyInfo={topographyInfo}
                 forceUpdateMain={forceUpdateMain}
-                listOfTopographies={dummyListOfTopographyTypes}
+                listOfTopographies={topographyTypes}
             />
         )
     }
@@ -344,6 +370,27 @@ function TopographyPage(props) {
     function createTopography(e) {
         // create new topography using given data
         // [topographyName, resourceShape, elevation, resourceDensity, resourceReplenishment, color(hex value)]
+        var request = new TopographyTemplateInfo()
+        request.setName(topographyName)
+        request.setElevationamplitude(elevation)
+        request.setResourcedensity(resourceDensity)
+        request.setResourcereplenishment(resourceReplenishment)
+        request.setResourcecolor(color)
+        request.setResourceshape(resourceShape)
+
+        backendService.defineTopographyTemplate(
+            request,
+            {},
+            function (err, response) {
+                if (response.getPresetdefined()) {
+                    console.log('Defined new template topography successfully')
+                } else {
+                    console.error(
+                        'There was an issue setting the new topography preset'
+                    )
+                }
+            }
+        )
     }
     function submitTopography(e) {
         // Send all of the topographies to backend
@@ -445,6 +492,7 @@ function Grid(props) {
                 showGridBorder={props.showGridBorder}
                 row={topographyInfo[i].getRow()}
                 col={topographyInfo[i].getColumn()}
+                listOfTopographies={props.listOfTopographies}
             />
         )
     }

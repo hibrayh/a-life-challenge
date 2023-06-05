@@ -20,6 +20,8 @@ service Backend {
     rpc DeleteTopography (DeleteTopographyRequest) returns (DeleteTopographyReply) {}
     rpc GetTopography (GetTopographyRequest) returns (TopographyTable) {}
     rpc SetTopography (TopographyTable) returns (SetTopographyReply) {}
+    rpc DefineTopographyTemplate (TopographyTemplateInfo) returns (DefineTopographyTemplateReply) {}
+    rpc GetTopographyTemplates (GetTopographyTemplatesRequest) returns (GetTopographyTemplatesReply) {}
     rpc AdvanceSimulation (AdvanceSimulationRequest) returns (AdvanceSimulationReply) {}
     rpc GetTextToggle (GetTextToggleRequest) returns (GetTextToggleReply) {}
     rpc UpdateTextToggle (UpdateTextToggleRequest) returns (UpdateTextToggleReply) {}
@@ -262,6 +264,28 @@ message GetTopographyRequest {
 
 message SetTopographyReply {
     bool topographySet = 1;
+}
+
+message TopographyTemplateInfo {
+    string name = 1;
+    float elevationAmplitude = 2;
+    float resourceDensity = 3;
+    float resourceReplenishment = 4;
+    string resourceColor = 5;
+    string resourceShape = 6;
+}
+
+message DefineTopographyTemplateReply {
+    bool presetDefined = 1;
+}
+
+message GetTopographyTemplatesRequest {
+
+}
+
+message GetTopographyTemplatesReply {
+    repeated string templateName = 1;
+    repeated string color = 2;
 }
 
 message AdvanceSimulationRequest {

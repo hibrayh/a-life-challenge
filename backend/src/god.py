@@ -67,6 +67,14 @@ class God:
             self._simulationHeight = simulationHeight
             self._columnCount = columnCount
             self._rowCount = rowCount
+
+            self._topographyTemplates = [
+                topography.TopographyPreset('unselected', 0, 0, 0, "none", "none"),
+                topography.TopographyPreset("flat", 0, 0.5, 0.1, "blue", "circle"),
+                topography.TopographyPreset("mild", 0.2, 0.4, 0.2, "purple", "triangle"),
+                topography.TopographyPreset("moderate", 0.4, 0.3, 0.3, "yellow", "square"),
+                topography.TopographyPreset("extreme", 0.6, 0.2, 0.4, "red", "circle")
+            ]
         else:
             logging.info("Loading existing God object")
             self._simulationWidth = saveData['_simulationWidth']
@@ -93,15 +101,35 @@ class God:
                         loadExistingSave=True,
                         saveData=savedSpecies))
 
+            self._topographyTemplates = []
+            for savedTemplate in saveData['_topographyTemplates']:
+                self._topographyTemplates.append(
+                    topography.TopographyPreset(
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        loadExistingSave=True,
+                        saveData=savedTemplate
+                    )
+                )
+
     def save(self):
         logging.info("Saving God object")
         speciesList = []
         for speciesManager in self._speciesManagers:
             speciesList.append(speciesManager.save())
 
+        topographyPresetList = []
+        for template in self._topographyTemplates:
+            topographyPresetList.append(template.save())
+
         return {
             '_speciesManagers': speciesList,
             '_environment': self._environment.save(),
+            '_topographyTemplates': topographyPresetList,
             '_simulationWidth': self._simulationWidth,
             '_simulationHeight': self._simulationHeight,
             '_columnCount': self._columnCount,
@@ -230,7 +258,7 @@ class God:
         else:
             speciesManagerOfInterest.editCreatureGenome(creatureId, newGenome)
 
-    def addNewTopography(self, topographyType, column, row, color):
+    def addNewTopography(self, topographyType, column, row):
         topographyId = f"topography_column{column}_row{row}"
         logging.info(
             f"Creating new topography of type {topographyType} with id {topographyId}")
@@ -248,6 +276,18 @@ class God:
         bottomLeftXCoordinate = topLeftXCoordinate
         bottomLeftYCoordinate = bottomRightYCoordinate
 
+        preset = 0
+        for template in self._topographyTemplates:
+            if template.name == topographyType:
+                preset = template
+                break
+
+        if preset == 0:
+            logging.info(
+                f"Given unknown topography type {topographyType}. Defaulting to \
+                         unselected preset")
+            preset = self._topographyTemplates[0]
+
         newTopography = topography.Topography(topLeftXCoordinate,
                                               topLeftYCoordinate,
                                               topRightXCoordinate,
@@ -259,164 +299,10 @@ class God:
                                               topographyId,
                                               column,
                                               row,
-                                              topographyType,
-                                              color,
+                                              preset,
                                               self._environment)
 
         self._environment.addToTopographyRegistry(newTopography)
-
-    def addPresetTopography(self, presetTopographyId):
-        logging.info(
-            f"Setting topography type to {presetTopographyId} for the entire environment...")
-        for row in range(self._rowCount):
-            rowList = []
-            for column in range(self._columnCount):
-                # Define the preset parameters based on the coordinates of the
-                # current grid block
-                topLeftXCoordinate = (column) * \
-                    (self._simulationWidth / self._columnCount)
-                topLeftYCoordinate = (row) * \
-                    (self._simulationHeight / self._rowCount)
-                bottomRightXCoordinate = (column + 1) * \
-                    (self._simulationWidth / self._columnCount)
-                bottomRightYCoordinate = (row + 1) * \
-                    (self._simulationHeight / self._rowCount)
-                topRightXCoordinate = bottomRightXCoordinate
-                topRightYCoordinate = topLeftYCoordinate
-                bottomLeftXCoordinate = topLeftXCoordinate
-                bottomLeftYCoordinate = bottomRightYCoordinate
-
-                if presetTopographyId == "Preset1":
-                    topographyType = topography.TemplateTopography.FLAT
-                    topographyId = f"topography_column{column}_row{row}"
-                    logging.info(
-                        f"Creating new topography of type {topographyType} with id {topographyId}")
-                    newTopography = topography.Topography(
-                        topLeftXCoordinate,
-                        topLeftYCoordinate,
-                        topRightXCoordinate,
-                        topRightYCoordinate,
-                        bottomLeftXCoordinate,
-                        bottomLeftYCoordinate,
-                        bottomRightXCoordinate,
-                        bottomRightYCoordinate,
-                        topographyId,
-                        column,
-                        row,
-                        topographyType,
-                        self._environment)
-
-                elif presetTopographyId == "Preset2":
-                    topographyType = topography.TemplateTopography.MILD
-                    topographyId = f"topography_column{column}_row{row}"
-                    logging.info(
-                        f"Creating new topography of type {topographyType} with id {topographyId}")
-                    newTopography = topography.Topography(
-                        topLeftXCoordinate,
-                        topLeftYCoordinate,
-                        topRightXCoordinate,
-                        topRightYCoordinate,
-                        bottomLeftXCoordinate,
-                        bottomLeftYCoordinate,
-                        bottomRightXCoordinate,
-                        bottomRightYCoordinate,
-                        topographyId,
-                        column,
-                        row,
-                        topographyType,
-                        self._environment)
-
-                elif presetTopographyId == "Preset3":
-                    topographyType = topography.TemplateTopography.MODERATE
-                    topographyId = f"topography_column{column}_row{row}"
-                    logging.info(
-                        f"Creating new topography of type {topographyType} with id {topographyId}")
-                    newTopography = topography.Topography(
-                        topLeftXCoordinate,
-                        topLeftYCoordinate,
-                        topRightXCoordinate,
-                        topRightYCoordinate,
-                        bottomLeftXCoordinate,
-                        bottomLeftYCoordinate,
-                        bottomRightXCoordinate,
-                        bottomRightYCoordinate,
-                        topographyId,
-                        column,
-                        row,
-                        topographyType,
-                        self._environment)
-
-                elif presetTopographyId == "Preset4":
-                    topographyType = topography.TemplateTopography.EXTREME
-                    topographyId = f"topography_column{column}_row{row}"
-                    logging.info(
-                        f"Creating new topography of type {topographyType} with id {topographyId}")
-                    newTopography = topography.Topography(
-                        topLeftXCoordinate,
-                        topLeftYCoordinate,
-                        topRightXCoordinate,
-                        topRightYCoordinate,
-                        bottomLeftXCoordinate,
-                        bottomLeftYCoordinate,
-                        bottomRightXCoordinate,
-                        bottomRightYCoordinate,
-                        topographyId,
-                        column,
-                        row,
-                        topographyType,
-                        self._environment)
-
-                elif presetTopographyId == "Randomize":
-                    topographyType = random.choice(list([topo for topo in list(
-                        topography.TemplateTopography) if topo != topography.TemplateTopography.UNSELECTED]))
-                    topographyId = f"topography_column{column}_row{row}"
-                    logging.info(
-                        f"Creating new topography of type {topographyType} with id {topographyId}")
-                    newTopography = topography.Topography(
-                        topLeftXCoordinate,
-                        topLeftYCoordinate,
-                        topRightXCoordinate,
-                        topRightYCoordinate,
-                        bottomLeftXCoordinate,
-                        bottomLeftYCoordinate,
-                        bottomRightXCoordinate,
-                        bottomRightYCoordinate,
-                        topographyId,
-                        column,
-                        row,
-                        topographyType,
-                        self._environment)
-
-                self._environment.addToTopographyRegistry(newTopography)
-            logging.info(
-                f"Topography Preset: '{presetTopographyId}' has been set")
-
-    def addCustomResource(
-            self,
-            resourceIdPrefix,
-            replenishment,
-            color,
-            shape,
-            numOfResources):
-        # Randomly spawn in resources with user-specified attributes
-        for resourceObj in range(numOfResources):
-            locationX = random.randrange(
-                0,
-                self._simulationWidth)
-            locationY = random.randrange(
-                0,
-                self._simulationHeight)
-            resourceId = f"{resourceIdPrefix}_{resourceObj}"
-            newResource = Resource(
-                resourceId,
-                replenishment,
-                locationX,
-                locationY,
-                color,
-                shape,
-                self._environment)
-
-            #print(f"Resource '{resourceId}' created with replenishment value '{replenishment}', color '{color}', shape '{shape}', and placed at coordinates ({locationX}, {locationY})")
 
     def removeTopography(self, column, row):
         self._environment.removeTopography(column, row)
@@ -498,19 +384,37 @@ class God:
 
     def setTopographyInfo(self, newTopographyTable):
         # Call the environment to set the topography
-        self._environment.setRegisteredTopography(newTopographyTable)
+        self._environment.setRegisteredTopography(
+            newTopographyTable, self._topographyTemplates)
 
     def getTopographyInfo(self):
         return self._environment.getRegisteredTopography()
 
-    def getTopographyTypes(self):
-        topographyTypes = {
-            topography.TemplateTopography.FLAT: "blue",
-            topography.TemplateTopography.MILD: "purple",
-            topography.TemplateTopography.MODERATE: "yellow",
-            topography.TemplateTopography.EXTREME: "red",
-        }
-        return (topographyTypes)
+    def getTopographyPresets(self):
+        presetList = []
+        colorList = []
+        for preset in self._topographyTemplates:
+            presetList.append(preset.name)
+            colorList.append(preset.resourceColor)
+
+        return [presetList, colorList]
+
+    def defineNewTopographyPreset(
+            self,
+            name,
+            elevationAmplitude,
+            resourceDensity,
+            resourceReplenishment,
+            resourceColor,
+            resourceShape):
+        self._topographyTemplates.append(topography.TopographyPreset(
+            name,
+            elevationAmplitude,
+            resourceDensity,
+            resourceReplenishment,
+            resourceColor,
+            resourceShape
+        ))
 
 #myGod = God(1920, 989, 50, 25)
 #myGod.addCustomResource("Fish", 0.5,"blue", "circle", 8)

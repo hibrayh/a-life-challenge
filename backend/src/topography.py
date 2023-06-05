@@ -17,14 +17,6 @@ logging.basicConfig(
 THRESHOLD = 20
 
 
-class TemplateTopography(str, Enum):
-    UNSELECTED = 'unselected'
-    FLAT = 'flat'
-    MILD = 'mild'
-    MODERATE = 'moderate'
-    EXTREME = 'extreme'
-
-
 class Region:
     def __init__(
             self,
@@ -69,6 +61,46 @@ class Region:
         }
 
 
+class TopographyPreset:
+    def __init__(
+            self,
+            name,
+            elevationAmplitude,
+            resourceDensity,
+            resourceReplenishment,
+            resourceColor,
+            resourceShape,
+            loadExistingSave=False,
+            saveData=None):
+        if not loadExistingSave:
+            logging.info(f"Defining new topography preset of type {name}")
+            self.name = name
+            self.elevationAmplitude = elevationAmplitude
+            self.resourceDensity = resourceDensity
+            self.resourceReplenishment = resourceReplenishment
+            self.resourceColor = resourceColor
+            self.resourceShape = resourceShape
+        else:
+            logging.info("Loading topography preset")
+            self.name = saveData['name']
+            self.elevationAmplitude = saveData['elevationAmplitude']
+            self.resourceDensity = saveData['resourceDensity']
+            self.resourceReplenishment = saveData['resourceReplenishment']
+            self.resourceColor = saveData['resourceColor']
+            self.resourceShape = saveData['resourceShape']
+
+    def save(self):
+        logging.info(f"Saving topography preset {self.name}")
+        return {
+            "name": self.name,
+            "elevationAmplitude": self.elevationAmplitude,
+            "resourceDensity": self.resourceDensity,
+            "resourceReplenishment": self.resourceReplenishment,
+            "resourceColor": self.resourceColor,
+            "resourceShape": self.resourceShape,
+        }
+
+
 class Topography:
     def __init__(
             self,
@@ -83,8 +115,7 @@ class Topography:
             id,
             column,
             row,
-            topographyType,
-            color,
+            topographyPreset,
             environment,
             loadExistingSave=False, saveData=None):
         if not loadExistingSave:
@@ -92,8 +123,12 @@ class Topography:
             self.id = id
             self.column = column
             self.row = row
-            self.type = topographyType
-            self.color = color
+            self.type = topographyPreset.name
+            self.resourceRarity = topographyPreset.resourceDensity
+            self.resourceReplenishment = topographyPreset.resourceReplenishment
+            self.resourceColor = topographyPreset.resourceColor
+            self.resourceShape = topographyPreset.resourceShape
+
             self.region = Region(
                 topLeftXCoordinate,
                 topLeftYCoordinate,
@@ -106,15 +141,9 @@ class Topography:
             self.shape = (int(bottomLeftYCoordinate - topLeftYCoordinate),
                           int(topRightXCoordinate - topLeftXCoordinate))
             self.environment = environment
-            self.elevationEnergyCost = 0
-            self.elevation = 0
-
-            # Initialize random geography based on topography type
-            if topographyType != TemplateTopography.UNSELECTED:
-                self.generateRandomGeography()
 
             # Initialize resources based on topography type
-            if topographyType != TemplateTopography.UNSELECTED:
+            if self.type != "unselected":
                 self.generateResources()
 
             # Register to environment
@@ -125,9 +154,12 @@ class Topography:
             self.id = saveData['id']
             self.column = saveData['column']
             self.row = saveData['row']
-            self.type = TemplateTopography(saveData['type'])
-            self.color = saveData['color']
-            """
+            self.type = saveData['type']
+            self.resourceRarity = saveData['resourceRarity']
+            self.resourceReplenishment = saveData['resourceReplenishment']
+            self.resourceColor = saveData['resourceColor']
+            self.resourceShape = saveData['resourceShape']
+
             self.region = Region(saveData['region']['topLeftXCoordinate'],
                                  saveData['region']['topLeftYCoordinate'],
                                  saveData['region']['topRightXCoordinate'],
@@ -136,7 +168,6 @@ class Topography:
                                  saveData['region']['bottomLeftYCoordinate'],
                                  saveData['region']['bottomRightXCoordinate'],
                                  saveData['region']['bottomRightYCoordinate'])
-            """
             self.shape = saveData['shape']
             #self.geography = saveData['geography']
             self.environment = environment
@@ -148,7 +179,7 @@ class Topography:
             'column': self.column,
             'row': self.row,
             'type': self.type,
-            'color': self.color,
+            'color': self.resourceColor,
         }
 
     def getDetails(self):
@@ -157,7 +188,7 @@ class Topography:
             row=self.row,
             column=self.column,
             type=f'{self.type}',
-            color=self.color
+            color=self.resourceColor
         )
 
     def save(self):
@@ -168,109 +199,61 @@ class Topography:
             'row': self.row,
             'type': self.type,
             'shape': self.shape,
-            'color': self.color,
+            'region': self.region.save(),
+            'resourceRarity': self.resourceRarity,
+            'resourceReplenishment': self.resourceReplenishment,
+            'resourceColor': self.resourceColor,
+            'resourceShape': self.resourceShape
         }
-
-    # Distinguishes between the elevation values
-    def getElevationOfRegion(self):
-        elevation = self.elevation
-        if elevation <= 54:
-            return "no incline"
-        elif elevation <= 104:
-            return "mild incline"
-        elif elevation <= 164:
-            return "average incline"
-        elif elevation <= 214:
-            return "steep incline"
-        else:
-            return "mountainous/extreme incline"
-
-    # Gets the energy expenditure value based on the level of elevation
-    # Calculates an energy factor used by a creature when moving throughout
-    # various inclines in elevation
-    def getElevationEnergyCost(self):
-        elevation = self.elevation
-        if elevation <= 54:                     # No incline
-            self.elevationEnergyCost = 1.0
-        elif elevation <= 104:                  # Mild incline
-            self.elevationEnergyCost = 0.8
-        elif elevation <= 164:                  # Average incline
-            self.elevationEnergyCost = 0.6
-        elif elevation <= 214:                  # Steep incline
-            self.elevationEnergyCost = 0.4
-        else:                                   # Extreme incline
-            self.elevationEnergyCost = 0.2
 
     # Using perlin-noise to create random geography
     # (https://en.wikipedia.org/wiki/Perlin_noise)
-    def generateRandomGeography(self):
-        scale = 100.0
-        octaves = 6
-        lacunarity = 2.0
-        persistence = 0.0
+    # Unfortunately, due to time constraints, we were not able to fully implement this functionality.
+    # def generateRandomGeography(self):
+    #    scale = 100.0
+    #    octaves = 6
+    #    lacunarity = 2.0
+    #    persistence = 0.0
+#
+    #    if self.type == TemplateTopography.FLAT:
+    #        persistence = 1.0
+    #    elif self.type == TemplateTopography.MILD:
+    #        persistence = 0.8
+    #    elif self.type == TemplateTopography.MODERATE:
+    #        persistence = 0.6
+    #    elif self.type == TemplateTopography.EXTREME:
+    #        persistence = 0.4
+    #    else:
+    #        logging.info("Unknown topography type encountered")
+    #        persistence = 0.5
+#
+    #    # Generate a random seed to use with the Perlin noise generator
+    #    random.seed(time.time())
+    #    seed = int(random.random() * 1_000)
+#
+    #    geography = np.zeros(self.shape)
+    #    for i in range(self.shape[0]):
+    #        for j in range(self.shape[1]):
+    #            geography[i][j] = noise.pnoise2(i / scale,
+    #                                            j / scale,
+    #                                            octaves=octaves,
+    #                                            persistence=persistence,
+    #                                            lacunarity=lacunarity,
+    #                                            repeatx=self.shape[0],
+    #                                            repeaty=self.shape[1],
+    #                                            base=seed)
+#
+    #    self.geography = np.floor(
+    #        (geography + .5) * 255).astype(np.uint8).tolist()
 
-        if self.type == TemplateTopography.FLAT:
-            persistence = 1.0
-        elif self.type == TemplateTopography.MILD:
-            persistence = 0.8
-        elif self.type == TemplateTopography.MODERATE:
-            persistence = 0.6
-        elif self.type == TemplateTopography.EXTREME:
-            persistence = 0.4
-        else:
-            logging.info("Unknown topography type encountered")
-            persistence = 0.5
-
-        # Generate a random seed to use with the Perlin noise generator
-        random.seed(time.time())
-        seed = int(random.random() * 1_000)
-
-        geography = np.zeros(self.shape)
-        for i in range(self.shape[0]):
-            for j in range(self.shape[1]):
-                geography[i][j] = noise.pnoise2(i / scale,
-                                                j / scale,
-                                                octaves=octaves,
-                                                persistence=persistence,
-                                                lacunarity=lacunarity,
-                                                repeatx=self.shape[0],
-                                                repeaty=self.shape[1],
-                                                base=seed)
-
-        self.geography = np.floor(
-            (geography + .5) * 255).astype(np.uint8).tolist()
-
-    def getGeography(self):
-        return self.geography
+    # def getGeography(self):
+    #    return self.geography
 
     def generateResources(self):
-        rarity = 0.0
-        replenishment = 0.0
-        color = ''
-        shape = ''
-
-        if self.type == TemplateTopography.FLAT:
-            rarity = 0.5
-            replenishment = 0.1
-            color = 'blue'
-            shape = 'circle'
-        elif self.type == TemplateTopography.MILD:
-            rarity = 0.4
-            replenishment = 0.2
-            color = 'purple'
-            shape = 'triangle'
-        elif self.type == TemplateTopography.MODERATE:
-            rarity = 0.3
-            replenishment = 0.3
-            color = 'yellow'
-            shape = 'square'
-        elif self.type == TemplateTopography.EXTREME:
-            rarity = 0.2
-            replenishment = 0.4
-            color = 'red'
-            shape = 'circle'
-        else:
-            logging.info("Unknown/unselected topography type encountered")
+        rarity = self.resourceRarity
+        replenishment = self.resourceReplenishment
+        color = self.resourceColor
+        shape = self.resourceShape
 
         # Determine how many resources could fit into this area
         totalResourcesPossible = (
@@ -288,7 +271,7 @@ class Topography:
                 self.region.topLeftYCoordinate - 20,
                 self.region.bottomLeftYCoordinate)
             Resource(
-                f"{self.id}{resourcesToCreate}",
+                f"{self.id}{random.randrange(100000)}",
                 replenishment,
                 randomX,
                 randomY,

@@ -1171,6 +1171,136 @@ proto.backend.BackendPromiseClient.prototype.setTopography = function (
 /**
  * @const
  * @type {!grpc.web.MethodDescriptor<
+ *   !proto.backend.TopographyTemplateInfo,
+ *   !proto.backend.DefineTopographyTemplateReply>}
+ */
+const methodDescriptor_Backend_DefineTopographyTemplate =
+    new grpc.web.MethodDescriptor(
+        '/backend.Backend/DefineTopographyTemplate',
+        grpc.web.MethodType.UNARY,
+        proto.backend.TopographyTemplateInfo,
+        proto.backend.DefineTopographyTemplateReply,
+        /**
+         * @param {!proto.backend.TopographyTemplateInfo} request
+         * @return {!Uint8Array}
+         */
+        function (request) {
+            return request.serializeBinary()
+        },
+        proto.backend.DefineTopographyTemplateReply.deserializeBinary
+    )
+
+/**
+ * @param {!proto.backend.TopographyTemplateInfo} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.backend.DefineTopographyTemplateReply)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.backend.DefineTopographyTemplateReply>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.backend.BackendClient.prototype.defineTopographyTemplate = function (
+    request,
+    metadata,
+    callback
+) {
+    return this.client_.rpcCall(
+        this.hostname_ + '/backend.Backend/DefineTopographyTemplate',
+        request,
+        metadata || {},
+        methodDescriptor_Backend_DefineTopographyTemplate,
+        callback
+    )
+}
+
+/**
+ * @param {!proto.backend.TopographyTemplateInfo} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.backend.DefineTopographyTemplateReply>}
+ *     Promise that resolves to the response
+ */
+proto.backend.BackendPromiseClient.prototype.defineTopographyTemplate =
+    function (request, metadata) {
+        return this.client_.unaryCall(
+            this.hostname_ + '/backend.Backend/DefineTopographyTemplate',
+            request,
+            metadata || {},
+            methodDescriptor_Backend_DefineTopographyTemplate
+        )
+    }
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.backend.GetTopographyTemplatesRequest,
+ *   !proto.backend.GetTopographyTemplatesReply>}
+ */
+const methodDescriptor_Backend_GetTopographyTemplates =
+    new grpc.web.MethodDescriptor(
+        '/backend.Backend/GetTopographyTemplates',
+        grpc.web.MethodType.UNARY,
+        proto.backend.GetTopographyTemplatesRequest,
+        proto.backend.GetTopographyTemplatesReply,
+        /**
+         * @param {!proto.backend.GetTopographyTemplatesRequest} request
+         * @return {!Uint8Array}
+         */
+        function (request) {
+            return request.serializeBinary()
+        },
+        proto.backend.GetTopographyTemplatesReply.deserializeBinary
+    )
+
+/**
+ * @param {!proto.backend.GetTopographyTemplatesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.backend.GetTopographyTemplatesReply)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.backend.GetTopographyTemplatesReply>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.backend.BackendClient.prototype.getTopographyTemplates = function (
+    request,
+    metadata,
+    callback
+) {
+    return this.client_.rpcCall(
+        this.hostname_ + '/backend.Backend/GetTopographyTemplates',
+        request,
+        metadata || {},
+        methodDescriptor_Backend_GetTopographyTemplates,
+        callback
+    )
+}
+
+/**
+ * @param {!proto.backend.GetTopographyTemplatesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.backend.GetTopographyTemplatesReply>}
+ *     Promise that resolves to the response
+ */
+proto.backend.BackendPromiseClient.prototype.getTopographyTemplates = function (
+    request,
+    metadata
+) {
+    return this.client_.unaryCall(
+        this.hostname_ + '/backend.Backend/GetTopographyTemplates',
+        request,
+        metadata || {},
+        methodDescriptor_Backend_GetTopographyTemplates
+    )
+}
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
  *   !proto.backend.AdvanceSimulationRequest,
  *   !proto.backend.AdvanceSimulationReply>}
  */

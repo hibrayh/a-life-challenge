@@ -89,8 +89,13 @@ class Environment:
                             topographyId,
                             column,
                             row,
-                            topography.TemplateTopography.UNSELECTED,
-                            "white",
+                            topography.TopographyPreset(
+                                'unselected',
+                                0,
+                                0,
+                                0,
+                                "none",
+                                "none"),
                             self))
                 self.topographyRegistry.append(rowList)
 
@@ -230,7 +235,7 @@ class Environment:
             None,
             column,
             row,
-            topography.TemplateTopography.UNSELECTED,
+            topography.TopographyPreset('unselected', 0, 0, 0, "none", "none"),
             self)
 
     def _getVisionPerceivableCreatures(
@@ -472,11 +477,20 @@ class Environment:
         return backend_api_pb2.TopographyTable(
             row=copy.deepcopy(topographyTableRows))
 
-    def setRegisteredTopography(self, newTopographyTable):
+    def setRegisteredTopography(self, newTopographyTable, presets):
         self.topographyRegistry = []
         for row in newTopographyTable.row:
             newRow = []
             for item in row.item:
+                newPreset = 0
+                for preset in presets:
+                    if preset.name == item.type:
+                        newPreset = preset
+
+                if newPreset == 0:
+                    logging.info(
+                        "Could not find defined template. Setting to unselected")
+
                 newRow.append(
                     topography.Topography(
                         0,
@@ -490,9 +504,7 @@ class Environment:
                         item.id,
                         item.column,
                         item.row,
-                        topography.TemplateTopography(
-                            item.type),
-                        item.color,
+                        newPreset,
                         self))
 
             self.topographyRegistry.append(copy.deepcopy(newRow))
@@ -520,6 +532,12 @@ class Environment:
         # Increment the simulation time by one tick to track simulation time in
         # ticks per second
         self.timeOfSimulation += 1
+
+        if self.timeOfSimulation % 20 == 0:
+            logging.info("Refreshing resources in topography regions")
+            for row in self.topographyRegistry:
+                for topography in row:
+                    topography.generateResources()
 
         # Check if 300 ticks have elapsed and increment daysElapsed in the
         # simulation if so
@@ -550,6 +568,12 @@ class Environment:
             # Increment the simulation time by one tick to track simulation time in
             # ticks per second
             self.timeOfSimulation += 1
+
+            if self.timeOfSimulation % 20 == 0:
+                logging.info("Refreshing resources in topography regions")
+                for row in self.topographyRegistry:
+                    for topography in row:
+                        topography.generateResources()
 
             # Check if 300 ticks have elapsed and increment daysElapsed in the
             # simulation if so

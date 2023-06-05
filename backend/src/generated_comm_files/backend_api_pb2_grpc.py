@@ -99,6 +99,16 @@ class BackendStub(object):
             request_serializer=backend__api__pb2.TopographyTable.SerializeToString,
             response_deserializer=backend__api__pb2.SetTopographyReply.FromString,
         )
+        self.DefineTopographyTemplate = channel.unary_unary(
+            '/backend.Backend/DefineTopographyTemplate',
+            request_serializer=backend__api__pb2.TopographyTemplateInfo.SerializeToString,
+            response_deserializer=backend__api__pb2.DefineTopographyTemplateReply.FromString,
+        )
+        self.GetTopographyTemplates = channel.unary_unary(
+            '/backend.Backend/GetTopographyTemplates',
+            request_serializer=backend__api__pb2.GetTopographyTemplatesRequest.SerializeToString,
+            response_deserializer=backend__api__pb2.GetTopographyTemplatesReply.FromString,
+        )
         self.AdvanceSimulation = channel.unary_unary(
             '/backend.Backend/AdvanceSimulation',
             request_serializer=backend__api__pb2.AdvanceSimulationRequest.SerializeToString,
@@ -241,6 +251,18 @@ class BackendServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DefineTopographyTemplate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetTopographyTemplates(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def AdvanceSimulation(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -370,6 +392,16 @@ def add_BackendServicer_to_server(servicer, server):
             servicer.SetTopography,
             request_deserializer=backend__api__pb2.TopographyTable.FromString,
             response_serializer=backend__api__pb2.SetTopographyReply.SerializeToString,
+        ),
+        'DefineTopographyTemplate': grpc.unary_unary_rpc_method_handler(
+            servicer.DefineTopographyTemplate,
+            request_deserializer=backend__api__pb2.TopographyTemplateInfo.FromString,
+            response_serializer=backend__api__pb2.DefineTopographyTemplateReply.SerializeToString,
+        ),
+        'GetTopographyTemplates': grpc.unary_unary_rpc_method_handler(
+            servicer.GetTopographyTemplates,
+            request_deserializer=backend__api__pb2.GetTopographyTemplatesRequest.FromString,
+            response_serializer=backend__api__pb2.GetTopographyTemplatesReply.SerializeToString,
         ),
         'AdvanceSimulation': grpc.unary_unary_rpc_method_handler(
             servicer.AdvanceSimulation,
@@ -850,6 +882,58 @@ class Backend(object):
             '/backend.Backend/SetTopography',
             backend__api__pb2.TopographyTable.SerializeToString,
             backend__api__pb2.SetTopographyReply.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata)
+
+    @staticmethod
+    def DefineTopographyTemplate(request,
+                                 target,
+                                 options=(),
+                                 channel_credentials=None,
+                                 call_credentials=None,
+                                 insecure=False,
+                                 compression=None,
+                                 wait_for_ready=None,
+                                 timeout=None,
+                                 metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/backend.Backend/DefineTopographyTemplate',
+            backend__api__pb2.TopographyTemplateInfo.SerializeToString,
+            backend__api__pb2.DefineTopographyTemplateReply.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata)
+
+    @staticmethod
+    def GetTopographyTemplates(request,
+                               target,
+                               options=(),
+                               channel_credentials=None,
+                               call_credentials=None,
+                               insecure=False,
+                               compression=None,
+                               wait_for_ready=None,
+                               timeout=None,
+                               metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/backend.Backend/GetTopographyTemplates',
+            backend__api__pb2.GetTopographyTemplatesRequest.SerializeToString,
+            backend__api__pb2.GetTopographyTemplatesReply.FromString,
             options,
             channel_credentials,
             insecure,
