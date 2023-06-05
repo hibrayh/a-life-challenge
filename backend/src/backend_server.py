@@ -3,8 +3,8 @@ from generated_comm_files import backend_api_pb2, backend_api_pb2_grpc
 from god import God
 from creatures.genome import Genome, Receptors, ReproductionType
 from creatures.species_manager import SpeciesRelationship
-from topography import TemplateTopography
 import grpc
+import topography
 from concurrent import futures
 import os
 import json
@@ -106,24 +106,6 @@ def _convertGenomeToRequest(inputGenome):
         shape=inputGenome.shape,
         color=inputGenome.color,
     )
-
-
-def _convertRequestToTopographyType(inputTopography):
-    convertedTopographyType = None
-    if inputTopography == 'flat':
-        convertedTopographyType = TemplateTopography.FLAT
-    elif inputTopography == 'mild':
-        convertedTopographyType = TemplateTopography.MILD
-    elif inputTopography == 'moderate':
-        convertedTopographyType = TemplateTopography.MODERATE
-    elif inputTopography == 'extreme':
-        convertedTopographyType = TemplateTopography.EXTREME
-    else:
-        logging.info(
-            f"Unknown topography type {inputTopography}. Setting default of FLAT")
-        convertedTopographyType = TemplateTopography.FLAT
-
-    return convertedTopographyType
 
 
 def _convertRequestToSpeciesRelationship(inputRelationship):
@@ -273,11 +255,9 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
     def CreateTopography(self, request, context):
         logging.info("Creating new topography")
         self.god.addNewTopography(
-            _convertRequestToTopographyType(
-                request.type),
+            request.type,
             request.column,
-            request.row,
-            request.color)
+            request.row)
         return backend_api_pb2.CreateTopographyReply(topographyAdded=True)
 
     def DeleteTopography(self, request, context):
@@ -293,6 +273,18 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
         logging.info("Setting entire topography registry")
         self.god.setTopographyInfo(request)
         return backend_api_pb2.CreateSetTopographyReply(topographySet=True)
+    
+    def DefineTopographyTemplate(self, request, context):
+        logging.info("Defining new topography preset")
+        self.god.defineNewTopographyPreset(request.name, request.elevationAmplitude,
+                                           request.resourceDensity, request.resourceReplenishment,
+                                           request.resourceColor, request.resourceShape)
+        return backend_api_pb2.DefineTopographyTemplateReply(presetDefined=True)
+    
+    def GetTopographyTemplates(self, request, context):
+        logging.info("Getting a list of topography presets")
+        templateInfo = self.god.getTopographyPresets()
+        return backend_api_pb2.GetTopographyTemplatesReply(templateName=templateInfo[0], color=templateInfo[1])
 
     def AdvanceSimulation(self, request, context):
         logging.info("Advancing simulation")
