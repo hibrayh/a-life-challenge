@@ -133,6 +133,71 @@ proto.backend.BackendPromiseClient.prototype.startSimulation = function (
 /**
  * @const
  * @type {!grpc.web.MethodDescriptor<
+ *   !proto.backend.SaveSimulationRequest,
+ *   !proto.backend.SaveSimulationReply>}
+ */
+const methodDescriptor_Backend_SaveSimulation = new grpc.web.MethodDescriptor(
+    '/backend.Backend/SaveSimulation',
+    grpc.web.MethodType.UNARY,
+    proto.backend.SaveSimulationRequest,
+    proto.backend.SaveSimulationReply,
+    /**
+     * @param {!proto.backend.SaveSimulationRequest} request
+     * @return {!Uint8Array}
+     */
+    function (request) {
+        return request.serializeBinary()
+    },
+    proto.backend.SaveSimulationReply.deserializeBinary
+)
+
+/**
+ * @param {!proto.backend.SaveSimulationRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.backend.SaveSimulationReply)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.backend.SaveSimulationReply>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.backend.BackendClient.prototype.saveSimulation = function (
+    request,
+    metadata,
+    callback
+) {
+    return this.client_.rpcCall(
+        this.hostname_ + '/backend.Backend/SaveSimulation',
+        request,
+        metadata || {},
+        methodDescriptor_Backend_SaveSimulation,
+        callback
+    )
+}
+
+/**
+ * @param {!proto.backend.SaveSimulationRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.backend.SaveSimulationReply>}
+ *     Promise that resolves to the response
+ */
+proto.backend.BackendPromiseClient.prototype.saveSimulation = function (
+    request,
+    metadata
+) {
+    return this.client_.unaryCall(
+        this.hostname_ + '/backend.Backend/SaveSimulation',
+        request,
+        metadata || {},
+        methodDescriptor_Backend_SaveSimulation
+    )
+}
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
  *   !proto.backend.LoadSimulationRequest,
  *   !proto.backend.LoadSimulationReply>}
  */

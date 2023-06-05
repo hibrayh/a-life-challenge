@@ -168,6 +168,12 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
             request.rowCount)
         return backend_api_pb2.StartSimulationReply(simStarted=True)
 
+    def SaveSimulation(self, request, context):
+        logging.info("Saving simulation")
+        save = json.dumps(self.god.save(), indent=4)
+
+        return backend_api_pb2.SaveSimulationReply(saveInfo=save)
+
     def LoadSimulation(self, request, context):
         logging.info("Loading existing simulation")
         filename = request.filePath + '.json'

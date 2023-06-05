@@ -19,6 +19,11 @@ class BackendStub(object):
             request_serializer=backend__api__pb2.StartSimulationRequest.SerializeToString,
             response_deserializer=backend__api__pb2.StartSimulationReply.FromString,
         )
+        self.SaveSimulation = channel.unary_unary(
+            '/backend.Backend/SaveSimulation',
+            request_serializer=backend__api__pb2.SaveSimulationRequest.SerializeToString,
+            response_deserializer=backend__api__pb2.SaveSimulationReply.FromString,
+        )
         self.LoadSimulation = channel.unary_unary(
             '/backend.Backend/LoadSimulation',
             request_serializer=backend__api__pb2.LoadSimulationRequest.SerializeToString,
@@ -135,6 +140,12 @@ class BackendServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def StartSimulation(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SaveSimulation(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -280,6 +291,11 @@ def add_BackendServicer_to_server(servicer, server):
             request_deserializer=backend__api__pb2.StartSimulationRequest.FromString,
             response_serializer=backend__api__pb2.StartSimulationReply.SerializeToString,
         ),
+        'SaveSimulation': grpc.unary_unary_rpc_method_handler(
+            servicer.SaveSimulation,
+            request_deserializer=backend__api__pb2.SaveSimulationRequest.FromString,
+            response_serializer=backend__api__pb2.SaveSimulationReply.SerializeToString,
+        ),
         'LoadSimulation': grpc.unary_unary_rpc_method_handler(
             servicer.LoadSimulation,
             request_deserializer=backend__api__pb2.LoadSimulationRequest.FromString,
@@ -418,6 +434,32 @@ class Backend(object):
             '/backend.Backend/StartSimulation',
             backend__api__pb2.StartSimulationRequest.SerializeToString,
             backend__api__pb2.StartSimulationReply.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata)
+
+    @staticmethod
+    def SaveSimulation(request,
+                       target,
+                       options=(),
+                       channel_credentials=None,
+                       call_credentials=None,
+                       insecure=False,
+                       compression=None,
+                       wait_for_ready=None,
+                       timeout=None,
+                       metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/backend.Backend/SaveSimulation',
+            backend__api__pb2.SaveSimulationRequest.SerializeToString,
+            backend__api__pb2.SaveSimulationReply.FromString,
             options,
             channel_credentials,
             insecure,

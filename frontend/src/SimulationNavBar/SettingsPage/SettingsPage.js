@@ -1,6 +1,11 @@
 import './SettingsPage.css'
 import { FaTimes } from 'react-icons/fa'
 
+import { SaveSimulationRequest } from '../../generated_comm_files/backend_api_pb'
+import { BackendClient } from '../../generated_comm_files/backend_api_grpc_web_pb'
+
+var backendService = new BackendClient('http://localhost:44039')
+
 function SettingsPage(props) {
     if (props.show) {
         return (
@@ -48,15 +53,18 @@ function SettingsPage(props) {
     function handleSaveClick() {
         // this is where we need to make the backend call to get the simulation data
         // jsonData = resultOfBackendCall
-        const jsonData = { key: 'value' }
+        var request = new SaveSimulationRequest()
 
-        // this filename is just a filler, the user can change it if they desire
-        const fileName = 'mySimulation.json'
-        saveJsonFile(jsonData, fileName)
+        backendService.saveSimulation(request, {}, function (err, response) {
+            const jsonData = response.getSaveinfo()
+
+            const fileName = 'mySimulation.json'
+            saveJsonFile(jsonData, fileName)
+        })
     }
 
     function saveJsonFile(jsonData, fileName) {
-        const jsonBlob = new Blob([JSON.stringify(jsonData)], {
+        const jsonBlob = new Blob([jsonData], {
             type: 'application/json',
         })
         const url = URL.createObjectURL(jsonBlob)
