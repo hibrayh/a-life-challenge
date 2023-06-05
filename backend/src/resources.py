@@ -29,7 +29,7 @@ class Resource:
         self.environment.addToResourceRegistry(self)
 
     def noticeOfConsumption(self):
-        logging.info(f"Destroying resource with id {self.resourceId}")
+        logging.info(f"Destroying resource with id {self.id}")
         self.environment.removeFromResourceRegistry(self)
 
     def serialize(self):
