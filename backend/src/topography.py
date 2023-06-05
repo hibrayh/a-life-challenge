@@ -62,8 +62,16 @@ class Region:
 
 
 class TopographyPreset:
-    def __init__(self, name, elevationAmplitude, resourceDensity, resourceReplenishment,
-                 resourceColor, resourceShape, loadExistingSave=False, saveData=None):
+    def __init__(
+            self,
+            name,
+            elevationAmplitude,
+            resourceDensity,
+            resourceReplenishment,
+            resourceColor,
+            resourceShape,
+            loadExistingSave=False,
+            saveData=None):
         if not loadExistingSave:
             logging.info(f"Defining new topography preset of type {name}")
             self.name = name
@@ -80,7 +88,7 @@ class TopographyPreset:
             self.resourceReplenishment = saveData['resourceReplenishment']
             self.resourceColor = saveData['resourceColor']
             self.resourceShape = saveData['resourceShape']
-    
+
     def save(self):
         logging.info(f"Saving topography preset {self.name}")
         return {
@@ -120,7 +128,7 @@ class Topography:
             self.resourceReplenishment = topographyPreset.resourceReplenishment
             self.resourceColor = topographyPreset.resourceColor
             self.resourceShape = topographyPreset.resourceShape
-            
+
             self.region = Region(
                 topLeftXCoordinate,
                 topLeftYCoordinate,
@@ -201,7 +209,7 @@ class Topography:
     # Using perlin-noise to create random geography
     # (https://en.wikipedia.org/wiki/Perlin_noise)
     # Unfortunately, due to time constraints, we were not able to fully implement this functionality.
-    #def generateRandomGeography(self):
+    # def generateRandomGeography(self):
     #    scale = 100.0
     #    octaves = 6
     #    lacunarity = 2.0
@@ -238,7 +246,7 @@ class Topography:
     #    self.geography = np.floor(
     #        (geography + .5) * 255).astype(np.uint8).tolist()
 
-    #def getGeography(self):
+    # def getGeography(self):
     #    return self.geography
 
     def generateResources(self):

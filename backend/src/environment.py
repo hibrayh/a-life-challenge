@@ -89,7 +89,13 @@ class Environment:
                             topographyId,
                             column,
                             row,
-                            topography.TopographyPreset('unselected', 0, 0, 0, "none", "none"),
+                            topography.TopographyPreset(
+                                'unselected',
+                                0,
+                                0,
+                                0,
+                                "none",
+                                "none"),
                             self))
                 self.topographyRegistry.append(rowList)
 
@@ -480,9 +486,10 @@ class Environment:
                 for preset in presets:
                     if preset.name == item.type:
                         newPreset = preset
-                
+
                 if newPreset == 0:
-                    logging.info("Could not find defined template. Setting to unselected")
+                    logging.info(
+                        "Could not find defined template. Setting to unselected")
 
                 newRow.append(
                     topography.Topography(
@@ -566,7 +573,7 @@ class Environment:
                 logging.info("Refreshing resources in topography regions")
                 for row in self.topographyRegistry:
                     for topography in row:
-                        topography.generateResources() 
+                        topography.generateResources()
 
             # Check if 300 ticks have elapsed and increment daysElapsed in the
             # simulation if so

@@ -273,18 +273,24 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
         logging.info("Setting entire topography registry")
         self.god.setTopographyInfo(request)
         return backend_api_pb2.CreateSetTopographyReply(topographySet=True)
-    
+
     def DefineTopographyTemplate(self, request, context):
         logging.info("Defining new topography preset")
-        self.god.defineNewTopographyPreset(request.name, request.elevationAmplitude,
-                                           request.resourceDensity, request.resourceReplenishment,
-                                           request.resourceColor, request.resourceShape)
-        return backend_api_pb2.DefineTopographyTemplateReply(presetDefined=True)
-    
+        self.god.defineNewTopographyPreset(
+            request.name,
+            request.elevationAmplitude,
+            request.resourceDensity,
+            request.resourceReplenishment,
+            request.resourceColor,
+            request.resourceShape)
+        return backend_api_pb2.DefineTopographyTemplateReply(
+            presetDefined=True)
+
     def GetTopographyTemplates(self, request, context):
         logging.info("Getting a list of topography presets")
         templateInfo = self.god.getTopographyPresets()
-        return backend_api_pb2.GetTopographyTemplatesReply(templateName=templateInfo[0], color=templateInfo[1])
+        return backend_api_pb2.GetTopographyTemplatesReply(
+            templateName=templateInfo[0], color=templateInfo[1])
 
     def AdvanceSimulation(self, request, context):
         logging.info("Advancing simulation")

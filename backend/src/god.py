@@ -100,7 +100,7 @@ class God:
                         decisionNetworkToUse,
                         loadExistingSave=True,
                         saveData=savedSpecies))
-            
+
             self._topographyTemplates = []
             for savedTemplate in saveData['_topographyTemplates']:
                 self._topographyTemplates.append(
@@ -121,7 +121,7 @@ class God:
         speciesList = []
         for speciesManager in self._speciesManagers:
             speciesList.append(speciesManager.save())
-        
+
         topographyPresetList = []
         for template in self._topographyTemplates:
             topographyPresetList.append(template.save())
@@ -281,9 +281,10 @@ class God:
             if template.name == topographyType:
                 preset = template
                 break
-        
+
         if preset == 0:
-            logging.info(f"Given unknown topography type {topographyType}. Defaulting to \
+            logging.info(
+                f"Given unknown topography type {topographyType}. Defaulting to \
                          unselected preset")
             preset = self._topographyTemplates[0]
 
@@ -383,21 +384,29 @@ class God:
 
     def setTopographyInfo(self, newTopographyTable):
         # Call the environment to set the topography
-        self._environment.setRegisteredTopography(newTopographyTable, self._topographyTemplates)
+        self._environment.setRegisteredTopography(
+            newTopographyTable, self._topographyTemplates)
 
     def getTopographyInfo(self):
         return self._environment.getRegisteredTopography()
-    
+
     def getTopographyPresets(self):
         presetList = []
         colorList = []
         for preset in self._topographyTemplates:
             presetList.append(preset.name)
             colorList.append(preset.resourceColor)
-        
+
         return [presetList, colorList]
-    
-    def defineNewTopographyPreset(self, name, elevationAmplitude, resourceDensity, resourceReplenishment, resourceColor, resourceShape):
+
+    def defineNewTopographyPreset(
+            self,
+            name,
+            elevationAmplitude,
+            resourceDensity,
+            resourceReplenishment,
+            resourceColor,
+            resourceShape):
         self._topographyTemplates.append(topography.TopographyPreset(
             name,
             elevationAmplitude,

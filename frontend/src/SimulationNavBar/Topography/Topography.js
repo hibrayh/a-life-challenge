@@ -77,26 +77,28 @@ function TopographyPage(props) {
                     }
                 }
             )
-            
+
             var presetRequest = new GetTopographyTemplatesRequest()
 
-            await backendService.getTopographyTemplates(presetRequest, {}, function(err, response) {
-                var listOfTopographyTypes = []
-                let templateNames = response.getTemplatenameList()
-                let templateColors = response.getColorList()
+            await backendService.getTopographyTemplates(
+                presetRequest,
+                {},
+                function (err, response) {
+                    var listOfTopographyTypes = []
+                    let templateNames = response.getTemplatenameList()
+                    let templateColors = response.getColorList()
 
-                for (let i = 0; i < templateNames.length; i += 1) {
-                    listOfTopographyTypes.push(
-                        {
+                    for (let i = 0; i < templateNames.length; i += 1) {
+                        listOfTopographyTypes.push({
                             type: templateNames[i],
-                            color: templateColors[i]
-                        }
-                    )
-                }
+                            color: templateColors[i],
+                        })
+                    }
 
-                console.log(listOfTopographyTypes)
-                setTopographyTypes(listOfTopographyTypes)
-            })
+                    console.log(listOfTopographyTypes)
+                    setTopographyTypes(listOfTopographyTypes)
+                }
+            )
         }
 
         fetchData()
@@ -376,14 +378,19 @@ function TopographyPage(props) {
         request.setResourcecolor(color)
         request.setResourceshape(resourceShape)
 
-        backendService.defineTopographyTemplate(request, {}, function(err, response) {
-            if (response.getPresetdefined()) {
-                console.log("Defined new template topography successfully")
+        backendService.defineTopographyTemplate(
+            request,
+            {},
+            function (err, response) {
+                if (response.getPresetdefined()) {
+                    console.log('Defined new template topography successfully')
+                } else {
+                    console.error(
+                        'There was an issue setting the new topography preset'
+                    )
+                }
             }
-            else {
-                console.error("There was an issue setting the new topography preset")
-            }
-        })
+        )
     }
     function submitTopography(e) {
         // Send all of the topographies to backend
