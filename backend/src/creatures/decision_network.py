@@ -2,6 +2,7 @@ import logging
 from abc import ABCMeta, abstractmethod
 from enum import Enum
 import math
+from . import species_manager
 
 
 logging.basicConfig(
@@ -9,7 +10,7 @@ logging.basicConfig(
     format='%(levelname)s %(asctime)s - %(message)s')
 
 
-UNIT = 10
+UNIT = 20
 
 
 class CreatureAction(str, Enum):
@@ -67,7 +68,8 @@ class Stimuli:
             perceivableNurturers,
             immediateNurturers,
             perceivableNurturees,
-            immediateNurturees):
+            immediateNurturees,
+            relationships):
         self.healthRatio = healthRatio
         self.energyRatio = energyRatio
         self.ageRatio = ageRatio
@@ -96,6 +98,7 @@ class Stimuli:
         self.immediateNurturers = immediateNurturers
         self.perceivableNurturees = perceivableNurturees
         self.immediateNurturees = immediateNurturees
+        self.relationships = relationships
 
 
 def _skew_positive(traitValue, environmentalFavorability, midPoint):
@@ -168,13 +171,17 @@ class SearchForMateTrigger(TriggerPerceptron):
 
 class FleeFromCreatureTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.perceivablePredators) > 0) or (
-            len(stimuli.immediatePredators) > 0)
+        return ((species_manager.SpeciesRelationship.IS_HUNTED_BY in stimuli.relationships) or
+                (species_manager.SpeciesRelationship.COMPETES_WITH in stimuli.relationships)) \
+            and ((len(stimuli.perceivablePredators) > 0) or (
+                len(stimuli.immediatePredators) > 0))
 
 
 class ChaseCreatureTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.perceivablePrey) > 0) or (
+        return ((species_manager.SpeciesRelationship.HUNTS in stimuli.relationships) or
+                (species_manager.SpeciesRelationship.COMPETES_WITH in stimuli.relationships)) and \
+            (len(stimuli.perceivablePrey) > 0) or (
             len(stimuli.immediatePrey) > 0)
 
 
@@ -194,60 +201,69 @@ class SeekAlliesTrigger(TriggerPerceptron):
 
 class LeechOffCreatureTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.immediateHosts) > 0)
+        return (species_manager.SpeciesRelationship.LEECHES in stimuli.relationships) and (
+            len(stimuli.immediateHosts) > 0)
 
 
 class SeekHostTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.immediateHosts) == 0)
+        return (species_manager.SpeciesRelationship.LEECHES in stimuli.relationships) and (
+            len(stimuli.immediateHosts) == 0)
 
 
 class EvadeHostTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.immediateHosts) > 0) or (
-            len(stimuli.perceivableHosts) > 0)
+        return (species_manager.SpeciesRelationship.LEECHED_OFF_OF in stimuli.relationships) and (
+            len(stimuli.immediateHosts) > 0) or (len(stimuli.perceivableHosts) > 0)
 
 
 class SeekParasiteTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.immediateParasites) == 0)
+        return (species_manager.SpeciesRelationship.LEECHED_OFF_OF in stimuli.relationships) and (
+            len(stimuli.immediateParasites) == 0)
 
 
 class EvadeParasiteTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.immediateParasites) > 0) or (
-            len(stimuli.perceivableParasites) > 0)
+        return (species_manager.SpeciesRelationship.LEECHED_OFF_OF in stimuli.relationships) and (
+            len(stimuli.immediateParasites) > 0) or (len(stimuli.perceivableParasites) > 0)
 
 
 class ProtectCreatureTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return ((len(stimuli.perceivablePredators) > 0) or (
-            len(stimuli.immediatePredators) > 0)) and (len(stimuli.immediateDefendees) > 0)
+        return (species_manager.SpeciesRelationship.PROTECTS in stimuli.relationships) and \
+            ((len(stimuli.perceivablePredators) > 0) or (
+                len(stimuli.immediatePredators) > 0)) and (len(stimuli.immediateDefendees) > 0)
 
 
 class SeekDefendeeTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.immediateDefendees) == 0)
+        return (species_manager.SpeciesRelationship.PROTECTS in stimuli.relationships) and (
+            len(stimuli.immediateDefendees) == 0)
 
 
 class SeekDefenderTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.immediateDefenders) == 0)
+        return (species_manager.SpeciesRelationship.DEFENDED_BY in stimuli.relationships) and (
+            len(stimuli.immediateDefenders) == 0)
 
 
 class NurtureCreatureTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.perceivableNurturees) > 0)
+        return (species_manager.SpeciesRelationship.NURTURES in stimuli.relationships) and (
+            len(stimuli.perceivableNurturees) > 0)
 
 
 class SeekNurtureeTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.immediateNurturees) > 0)
+        return (species_manager.SpeciesRelationship.NURTURES in stimuli.relationships) and (
+            len(stimuli.immediateNurturees) > 0)
 
 
 class SeekNurturerTrigger(TriggerPerceptron):
     def determinePossibility(self, stimuli):
-        return (len(stimuli.immediateNurturers) > 0)
+        return (species_manager.SpeciesRelationship.NURTURED_BY in stimuli.relationships) and (
+            len(stimuli.immediateNurturers) > 0)
 
 
 class ActionPerceptron(metaclass=ABCMeta):
@@ -1103,6 +1119,11 @@ def _cast_to_stimuli(creatureOfInterest, perceivableEnvironment):
     [immediateNurturees, perceivableNurturees] = _seperate_immediate_objects(
         perceivableEnvironment.perceivableNurturees, creatureOfInterest)
 
+    relationships = []
+    for species in creatureOfInterest.speciesManager.speciesRelations:
+        relationships.append(
+            creatureOfInterest.speciesManager.speciesRelations[species])
+
     return Stimuli(
         healthRatio,
         energyRatio,
@@ -1131,7 +1152,8 @@ def _cast_to_stimuli(creatureOfInterest, perceivableEnvironment):
         perceivableNurturers,
         immediateNurturers,
         perceivableNurturees,
-        immediateNurturees
+        immediateNurturees,
+        relationships
     )
 
 
@@ -1163,6 +1185,8 @@ class DecisionNetwork(metaclass=ABCMeta):
                         environmentalFavorability,
                         creatureOfInterest.genome))
 
+        logging.info(f"Activation values: {activationValues}")
+
         # Recall a past similar event
         similarMemories = creatureOfInterest.memory.searchForResponseToSimilarSituation(
             stimuli, tolerance=(1 - creatureOfInterest.genome.shortTermMemoryAccuracy))
@@ -1174,7 +1198,9 @@ class DecisionNetwork(metaclass=ABCMeta):
                 break
 
         if beneficialMemory is None:
-            logging.info(f"Activation values: {activationValues}")
+            if activationValues == []:
+                return CreatureAction.NOTHING
+
             mostLikelyDecision = CreatureAction(
                 activatedTriggerNodes[activationValues.index(max(activationValues))])
             return mostLikelyDecision

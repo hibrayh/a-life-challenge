@@ -310,6 +310,7 @@ function ListSpeciesGenomeInformation(props) {
 function ListCreatureGenomeInfo(props) {
     //use props.creatureName to get actual creature data
     const [creatureGenomeInfo, setCreatureGenomeInfo] = useState({})
+    const [hasData, setHasData] = useState(false)
 
     useEffect(() => {
         const getCreatureInfo = async () => {
@@ -322,147 +323,155 @@ function ListCreatureGenomeInfo(props) {
                 {},
                 function (err, response) {
                     setCreatureGenomeInfo(response.getGenome())
+                    setHasData(true)
                 }
             )
         }
+
         getCreatureInfo()
     }, [props.creatureName])
 
-    return (
-        <>
-            <ul>
-                <li className="genomeStat">
-                    visibility: {creatureGenomeInfo.getVisibility()}
-                </li>
-                <li className="genomeStat">
-                    max health: {creatureGenomeInfo.getMaxhealth()}
-                </li>
-                <li className="genomeStat">
-                    can see: {creatureGenomeInfo.getCansee()}
-                </li>
-                <li className="genomeStat">
-                    can smell: {creatureGenomeInfo.getCansmell()}
-                </li>
-                <li className="genomeStat">
-                    can hear: {creatureGenomeInfo.getCansee()}
-                </li>
-                <li className="genomeStat">
-                    sight ability: {creatureGenomeInfo.getSightability()}
-                </li>
-                <li className="genomeStat">
-                    smell ability: {creatureGenomeInfo.getSmellability()}
-                </li>
-                <li className="genomeStat">
-                    hearing ability: {creatureGenomeInfo.getHearingability()}
-                </li>
-                <li className="genomeStat">
-                    sight range: {creatureGenomeInfo.getSightrange()}
-                </li>
-                <li className="genomeStat">
-                    smell range: {creatureGenomeInfo.getSmellrange()}
-                </li>
-                <li className="genomeStat">
-                    hearing range: {creatureGenomeInfo.getHearingrange()}
-                </li>
-                <li className="genomeStat">
-                    reaction time: {creatureGenomeInfo.getReactiontime()}
-                </li>
-                <li className="genomeStat">
-                    impulsivity: {creatureGenomeInfo.getImpulsivity()}
-                </li>
-                <li className="genomeStat">
-                    self preservation:{' '}
-                    {creatureGenomeInfo.getSelfpreservation()}
-                </li>
-                <li className="genomeStat">
-                    mobility: {creatureGenomeInfo.getMobility()}
-                </li>
-                <li className="genomeStat">
-                    reproduction type:{' '}
-                    {creatureGenomeInfo.getReproductiontype()}
-                </li>
-                <li className="genomeStat">
-                    reproduction cooldown:{' '}
-                    {creatureGenomeInfo.getReproductioncooldown()}
-                </li>
-                <li className="genomeStat">
-                    offspring amount: {creatureGenomeInfo.getOffspringamount()}
-                </li>
-                <li className="genomeStat">
-                    motivation: {creatureGenomeInfo.getMotivation()}
-                </li>
-                <li className="genomeStat">
-                    max energy: {creatureGenomeInfo.getMaxenergy()}
-                </li>
-                <li className="genomeStat">
-                    metabolism: {creatureGenomeInfo.getMetabolism()}
-                </li>
-                <li className="genomeStat">
-                    individualism: {creatureGenomeInfo.getIndividualism()}
-                </li>
-                <li className="genomeStat">
-                    territorial: {creatureGenomeInfo.getTerritorial()}
-                </li>
-                <li className="genomeStat">
-                    fight or flight: {creatureGenomeInfo.getFightorflight()}
-                </li>
-                <li className="genomeStat">
-                    hostility: {creatureGenomeInfo.getHostility()}
-                </li>
-                <li className="genomeStat">
-                    scent: {creatureGenomeInfo.getScent()}
-                </li>
-                <li className="genomeStat">
-                    stealth: {creatureGenomeInfo.getStealth()}
-                </li>
-                <li className="genomeStat">
-                    life expectancy: {creatureGenomeInfo.getLifeexpectancy()}
-                </li>
-                <li className="genomeStat">
-                    maturity: {creatureGenomeInfo.getMaturity()}
-                </li>
-                <li className="genomeStat">
-                    offensive ability:{' '}
-                    {creatureGenomeInfo.getOffensiveability()}
-                </li>
-                <li className="genomeStat">
-                    defensive ability:{' '}
-                    {creatureGenomeInfo.getDefensiveability()}
-                </li>
-                <li className="genomeStat">
-                    effect from host: {creatureGenomeInfo.getEffectfromhost()}
-                </li>
-                <li className="genomeStat">
-                    effect from parasite:{' '}
-                    {creatureGenomeInfo.getEffectfromparasite()}
-                </li>
-                <li className="genomeStat">
-                    protecting: {creatureGenomeInfo.getProtecting()}
-                </li>
-                <li className="genomeStat">
-                    nurturing: {creatureGenomeInfo.getNurturing()}
-                </li>
-                <li className="genomeStat">
-                    effect from being nurtured:{' '}
-                    {creatureGenomeInfo.getEffectfrombeingnurtured()}
-                </li>
-                <li className="genomeStat">
-                    short term memory accuracy:{' '}
-                    {creatureGenomeInfo.getShorttermmemoryaccuracy()}
-                </li>
-                <li className="genomeStat">
-                    short term memory capacity:{' '}
-                    {creatureGenomeInfo.getShorttermmemorycapacity()}
-                </li>
-                <li className="genomeStat">
-                    shape: {creatureGenomeInfo.getShape()}
-                </li>
-                <li className="genomeStat">
-                    color: {creatureGenomeInfo.getColor()}
-                </li>
-            </ul>
-        </>
-    )
+    if (hasData) {
+        return (
+            <>
+                <ul>
+                    <li className="genomeStat">
+                        visibility: {creatureGenomeInfo.getVisibility()}
+                    </li>
+                    <li className="genomeStat">
+                        max health: {creatureGenomeInfo.getMaxhealth()}
+                    </li>
+                    <li className="genomeStat">
+                        can see: {creatureGenomeInfo.getCansee()}
+                    </li>
+                    <li className="genomeStat">
+                        can smell: {creatureGenomeInfo.getCansmell()}
+                    </li>
+                    <li className="genomeStat">
+                        can hear: {creatureGenomeInfo.getCansee()}
+                    </li>
+                    <li className="genomeStat">
+                        sight ability: {creatureGenomeInfo.getSightability()}
+                    </li>
+                    <li className="genomeStat">
+                        smell ability: {creatureGenomeInfo.getSmellability()}
+                    </li>
+                    <li className="genomeStat">
+                        hearing ability:{' '}
+                        {creatureGenomeInfo.getHearingability()}
+                    </li>
+                    <li className="genomeStat">
+                        sight range: {creatureGenomeInfo.getSightrange()}
+                    </li>
+                    <li className="genomeStat">
+                        smell range: {creatureGenomeInfo.getSmellrange()}
+                    </li>
+                    <li className="genomeStat">
+                        hearing range: {creatureGenomeInfo.getHearingrange()}
+                    </li>
+                    <li className="genomeStat">
+                        reaction time: {creatureGenomeInfo.getReactiontime()}
+                    </li>
+                    <li className="genomeStat">
+                        impulsivity: {creatureGenomeInfo.getImpulsivity()}
+                    </li>
+                    <li className="genomeStat">
+                        self preservation:{' '}
+                        {creatureGenomeInfo.getSelfpreservation()}
+                    </li>
+                    <li className="genomeStat">
+                        mobility: {creatureGenomeInfo.getMobility()}
+                    </li>
+                    <li className="genomeStat">
+                        reproduction type:{' '}
+                        {creatureGenomeInfo.getReproductiontype()}
+                    </li>
+                    <li className="genomeStat">
+                        reproduction cooldown:{' '}
+                        {creatureGenomeInfo.getReproductioncooldown()}
+                    </li>
+                    <li className="genomeStat">
+                        offspring amount:{' '}
+                        {creatureGenomeInfo.getOffspringamount()}
+                    </li>
+                    <li className="genomeStat">
+                        motivation: {creatureGenomeInfo.getMotivation()}
+                    </li>
+                    <li className="genomeStat">
+                        max energy: {creatureGenomeInfo.getMaxenergy()}
+                    </li>
+                    <li className="genomeStat">
+                        metabolism: {creatureGenomeInfo.getMetabolism()}
+                    </li>
+                    <li className="genomeStat">
+                        individualism: {creatureGenomeInfo.getIndividualism()}
+                    </li>
+                    <li className="genomeStat">
+                        territorial: {creatureGenomeInfo.getTerritorial()}
+                    </li>
+                    <li className="genomeStat">
+                        fight or flight: {creatureGenomeInfo.getFightorflight()}
+                    </li>
+                    <li className="genomeStat">
+                        hostility: {creatureGenomeInfo.getHostility()}
+                    </li>
+                    <li className="genomeStat">
+                        scent: {creatureGenomeInfo.getScent()}
+                    </li>
+                    <li className="genomeStat">
+                        stealth: {creatureGenomeInfo.getStealth()}
+                    </li>
+                    <li className="genomeStat">
+                        life expectancy:{' '}
+                        {creatureGenomeInfo.getLifeexpectancy()}
+                    </li>
+                    <li className="genomeStat">
+                        maturity: {creatureGenomeInfo.getMaturity()}
+                    </li>
+                    <li className="genomeStat">
+                        offensive ability:{' '}
+                        {creatureGenomeInfo.getOffensiveability()}
+                    </li>
+                    <li className="genomeStat">
+                        defensive ability:{' '}
+                        {creatureGenomeInfo.getDefensiveability()}
+                    </li>
+                    <li className="genomeStat">
+                        effect from host:{' '}
+                        {creatureGenomeInfo.getEffectfromhost()}
+                    </li>
+                    <li className="genomeStat">
+                        effect from parasite:{' '}
+                        {creatureGenomeInfo.getEffectfromparasite()}
+                    </li>
+                    <li className="genomeStat">
+                        protecting: {creatureGenomeInfo.getProtecting()}
+                    </li>
+                    <li className="genomeStat">
+                        nurturing: {creatureGenomeInfo.getNurturing()}
+                    </li>
+                    <li className="genomeStat">
+                        effect from being nurtured:{' '}
+                        {creatureGenomeInfo.getEffectfrombeingnurtured()}
+                    </li>
+                    <li className="genomeStat">
+                        short term memory accuracy:{' '}
+                        {creatureGenomeInfo.getShorttermmemoryaccuracy()}
+                    </li>
+                    <li className="genomeStat">
+                        short term memory capacity:{' '}
+                        {creatureGenomeInfo.getShorttermmemorycapacity()}
+                    </li>
+                    <li className="genomeStat">
+                        shape: {creatureGenomeInfo.getShape()}
+                    </li>
+                    <li className="genomeStat">
+                        color: {creatureGenomeInfo.getColor()}
+                    </li>
+                </ul>
+            </>
+        )
+    }
 }
 
 export default StatsPage

@@ -141,7 +141,7 @@ message CreatureAnimationInfo {
 }
 
 message CreatureInfo {
-    int32 id = 1;
+    string id = 1;
     string species = 2;
     GenomeInfo genome = 3;
 }
@@ -190,6 +190,7 @@ message CreateNewSpeciesReply {
 message CreateNewCreatureRequest {
     string speciesName = 1;
     GenomeInfo genome = 2;
+    int32 initialNumberToSpawn = 3;
 }
 
 message CreateNewCreatureReply {

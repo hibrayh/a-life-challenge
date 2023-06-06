@@ -4992,7 +4992,7 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
     proto.backend.CreatureInfo.toObject = function (includeInstance, msg) {
         var f,
             obj = {
-                id: jspb.Message.getFieldWithDefault(msg, 1, 0),
+                id: jspb.Message.getFieldWithDefault(msg, 1, ''),
                 species: jspb.Message.getFieldWithDefault(msg, 2, ''),
                 genome:
                     (f = msg.getGenome()) &&
@@ -5035,7 +5035,7 @@ proto.backend.CreatureInfo.deserializeBinaryFromReader = function (
         var field = reader.getFieldNumber()
         switch (field) {
             case 1:
-                var value = /** @type {number} */ (reader.readInt32())
+                var value = /** @type {string} */ (reader.readString())
                 msg.setId(value)
                 break
             case 2:
@@ -5081,8 +5081,8 @@ proto.backend.CreatureInfo.serializeBinaryToWriter = function (
 ) {
     var f = undefined
     f = message.getId()
-    if (f !== 0) {
-        writer.writeInt32(1, f)
+    if (f.length > 0) {
+        writer.writeString(1, f)
     }
     f = message.getSpecies()
     if (f.length > 0) {
@@ -5099,19 +5099,19 @@ proto.backend.CreatureInfo.serializeBinaryToWriter = function (
 }
 
 /**
- * optional int32 id = 1;
- * @return {number}
+ * optional string id = 1;
+ * @return {string}
  */
 proto.backend.CreatureInfo.prototype.getId = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0))
+    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ''))
 }
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.backend.CreatureInfo} returns this
  */
 proto.backend.CreatureInfo.prototype.setId = function (value) {
-    return jspb.Message.setProto3IntField(this, 1, value)
+    return jspb.Message.setProto3StringField(this, 1, value)
 }
 
 /**
@@ -6698,6 +6698,11 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
                 genome:
                     (f = msg.getGenome()) &&
                     proto.backend.GenomeInfo.toObject(includeInstance, f),
+                initialnumbertospawn: jspb.Message.getFieldWithDefault(
+                    msg,
+                    3,
+                    0
+                ),
             }
 
         if (includeInstance) {
@@ -6750,6 +6755,10 @@ proto.backend.CreateNewCreatureRequest.deserializeBinaryFromReader = function (
                 )
                 msg.setGenome(value)
                 break
+            case 3:
+                var value = /** @type {number} */ (reader.readInt32())
+                msg.setInitialnumbertospawn(value)
+                break
             default:
                 reader.skipField()
                 break
@@ -6791,6 +6800,10 @@ proto.backend.CreateNewCreatureRequest.serializeBinaryToWriter = function (
             f,
             proto.backend.GenomeInfo.serializeBinaryToWriter
         )
+    }
+    f = message.getInitialnumbertospawn()
+    if (f !== 0) {
+        writer.writeInt32(3, f)
     }
 }
 
@@ -6845,6 +6858,26 @@ proto.backend.CreateNewCreatureRequest.prototype.clearGenome = function () {
 proto.backend.CreateNewCreatureRequest.prototype.hasGenome = function () {
     return jspb.Message.getField(this, 2) != null
 }
+
+/**
+ * optional int32 initialNumberToSpawn = 3;
+ * @return {number}
+ */
+proto.backend.CreateNewCreatureRequest.prototype.getInitialnumbertospawn =
+    function () {
+        return /** @type {number} */ (
+            jspb.Message.getFieldWithDefault(this, 3, 0)
+        )
+    }
+
+/**
+ * @param {number} value
+ * @return {!proto.backend.CreateNewCreatureRequest} returns this
+ */
+proto.backend.CreateNewCreatureRequest.prototype.setInitialnumbertospawn =
+    function (value) {
+        return jspb.Message.setProto3IntField(this, 3, value)
+    }
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**

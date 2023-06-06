@@ -262,7 +262,7 @@ class SpeciesManager:
         if creatureId is None:
             logging.info(f"Could not find requested creature: {creatureId}")
         else:
-            return creatureOfInterest.genome.serialize()
+            return creatureOfInterest.genome
 
     def unregisterCreature(self, creature):
         self._creatures.remove(creature)
