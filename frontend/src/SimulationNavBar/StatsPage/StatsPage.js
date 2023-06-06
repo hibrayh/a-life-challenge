@@ -357,7 +357,8 @@ function ListCreatureGenomeInfo(props) {
                         smell ability: {creatureGenomeInfo.getSmellability()}
                     </li>
                     <li className="genomeStat">
-                        hearing ability: {creatureGenomeInfo.getHearingability()}
+                        hearing ability:{' '}
+                        {creatureGenomeInfo.getHearingability()}
                     </li>
                     <li className="genomeStat">
                         sight range: {creatureGenomeInfo.getSightrange()}
@@ -390,7 +391,8 @@ function ListCreatureGenomeInfo(props) {
                         {creatureGenomeInfo.getReproductioncooldown()}
                     </li>
                     <li className="genomeStat">
-                        offspring amount: {creatureGenomeInfo.getOffspringamount()}
+                        offspring amount:{' '}
+                        {creatureGenomeInfo.getOffspringamount()}
                     </li>
                     <li className="genomeStat">
                         motivation: {creatureGenomeInfo.getMotivation()}
@@ -420,7 +422,8 @@ function ListCreatureGenomeInfo(props) {
                         stealth: {creatureGenomeInfo.getStealth()}
                     </li>
                     <li className="genomeStat">
-                        life expectancy: {creatureGenomeInfo.getLifeexpectancy()}
+                        life expectancy:{' '}
+                        {creatureGenomeInfo.getLifeexpectancy()}
                     </li>
                     <li className="genomeStat">
                         maturity: {creatureGenomeInfo.getMaturity()}
@@ -434,7 +437,8 @@ function ListCreatureGenomeInfo(props) {
                         {creatureGenomeInfo.getDefensiveability()}
                     </li>
                     <li className="genomeStat">
-                        effect from host: {creatureGenomeInfo.getEffectfromhost()}
+                        effect from host:{' '}
+                        {creatureGenomeInfo.getEffectfromhost()}
                     </li>
                     <li className="genomeStat">
                         effect from parasite:{' '}

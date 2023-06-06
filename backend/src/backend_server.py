@@ -211,7 +211,7 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
 
     def CreateNewCreature(self, request, context):
         logging.info("Creating new creature")
-        
+
         for i in range(request.initialNumberToSpawn):
             self.god.createNewCreature(
                 request.speciesName,
