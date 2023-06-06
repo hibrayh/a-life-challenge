@@ -228,8 +228,8 @@ function App() {
                     <div>
                         <button
                             id="menuButtonLoad"
-                            onClick={() => {
-                                setShowLoad(true)
+                            onClick={async () => {
+                                await handlefileExplorer()
                             }}>
                             Load
                         </button>
@@ -238,56 +238,31 @@ function App() {
                 </div>
             </>
         )
-    }
 
-    // "Page" that will show the simulation
-    const SimulationPage = () => {
-        return (
-            <div>
-                <Simulation />
-                <SimulationNavBar
-                    toggleMenuAndSimulation={toggleMenuAndSimulation}
-                />
-            </div>
-        )
-    }
+        async function handlefileExplorer(event) {
+            const fileInput = document.createElement('input')
+            fileInput.type = 'file'
 
-    const LoadPage = () => {
-        const [loadName, setLoadName] = useState('')
-        return (
-            <div id="loadContainer">
-                <button
-                    onClick={() => {
-                        setShowLoad(false)
-                    }}
-                    className="formExitButton buttonHover2">
-                    <FaTimes size={25} />
-                </button>
-                <h1 className="loadTitle">Load Simulation</h1>
+            fileInput.addEventListener('change', async (event) => {
+                const selectedFile = event.target.files[0]
 
-                <form id="loadForm">
-                    <label>Simulation Name:</label>
-                    <input
-                        type="text"
-                        value={loadName}
-                        onChange={(event) =>
-                            setLoadName(event.target.value)
-                        }></input>
+                const fileReader = new FileReader()
+                fileReader.onload = (e) => {
+                    const fileContents = e.target.result
+                    console.log('File Contents:', fileContents)
 
-                    <button
-                        onClick={handleSubmit}
-                        className="loadButton buttonHover2 buttonBackgroundColor">
-                        Load
-                    </button>
-                </form>
-            </div>
-        )
+                    //handleSubmit(fileContents)
+                }
+                fileReader.readAsText(selectedFile)
+            })
 
-        async function handleSubmit(event) {
-            event.preventDefault()
+            // Trigger click event to open file explorer
+            fileInput.click()
+        }
 
+        async function handleSubmit(fileContents) {
             var request = new LoadSimulationRequest()
-            request.setFilepath(loadName)
+            //request.setFilepath(loadName)   -------- loadName doesn't exist anymore
 
             await backendService.loadSimulation(
                 request,
@@ -303,11 +278,22 @@ function App() {
                 }
             )
 
-            setShowLoad(false)
             setShowMenu(false)
             setShowSimulation(true)
             setHasSimulationStarted(true)
         }
+    }
+
+    // "Page" that will show the simulation
+    const SimulationPage = () => {
+        return (
+            <div>
+                <Simulation />
+                <SimulationNavBar
+                    toggleMenuAndSimulation={toggleMenuAndSimulation}
+                />
+            </div>
+        )
     }
 
     return (
@@ -320,7 +306,6 @@ function App() {
             }
             {showMenu ? <Menu /> : null}
             {showSimulation ? <SimulationPage /> : null}
-            {showLoad ? <LoadPage show={showLoad} /> : null}
         </>
     )
 }
