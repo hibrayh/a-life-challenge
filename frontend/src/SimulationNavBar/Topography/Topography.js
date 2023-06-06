@@ -393,6 +393,8 @@ function TopographyPage(props) {
                 }
             }
         )
+
+        props.closeTopographyPage()
     }
 }
 
