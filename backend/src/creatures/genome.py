@@ -6,7 +6,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(levelname)s %(asctime)s - %(message)s')
 
-MinorVariationConstant = 0.01
+MinorVariationConstant = 0.05
 
 
 class Receptors(Enum):

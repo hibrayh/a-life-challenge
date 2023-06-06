@@ -4811,7 +4811,7 @@ proto.backend.CreatureInfo.prototype.toObject = function(opt_includeInstance) {
  */
 proto.backend.CreatureInfo.toObject = function(includeInstance, msg) {
   var f, obj = {
-    id: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    id: jspb.Message.getFieldWithDefault(msg, 1, ""),
     species: jspb.Message.getFieldWithDefault(msg, 2, ""),
     genome: (f = msg.getGenome()) && proto.backend.GenomeInfo.toObject(includeInstance, f)
   };
@@ -4851,7 +4851,7 @@ proto.backend.CreatureInfo.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setId(value);
       break;
     case 2:
@@ -4893,8 +4893,8 @@ proto.backend.CreatureInfo.prototype.serializeBinary = function() {
 proto.backend.CreatureInfo.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getId();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -4918,20 +4918,20 @@ proto.backend.CreatureInfo.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional int32 id = 1;
- * @return {number}
+ * optional string id = 1;
+ * @return {string}
  */
 proto.backend.CreatureInfo.prototype.getId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.backend.CreatureInfo} returns this
  */
 proto.backend.CreatureInfo.prototype.setId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
