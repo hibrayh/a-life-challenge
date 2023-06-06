@@ -207,7 +207,6 @@ function App() {
     }
 
     const Menu = () => {
-       
         return (
             <>
                 <header className="menu">
@@ -241,15 +240,12 @@ function App() {
         )
 
         async function handlefileExplorer(event) {
-            
-    
-    
             const fileInput = document.createElement('input')
             fileInput.type = 'file'
-            
+
             fileInput.addEventListener('change', async (event) => {
                 const selectedFile = event.target.files[0]
-        
+
                 const fileReader = new FileReader()
                 fileReader.onload = (e) => {
                     const fileContents = e.target.result
@@ -257,22 +253,17 @@ function App() {
 
                     //handleSubmit(fileContents)
                 }
-                fileReader.readAsText(selectedFile) 
+                fileReader.readAsText(selectedFile)
             })
-        
-            // Trigger click event to open file explorer
-            fileInput.click();
-    
-           
 
-           
+            // Trigger click event to open file explorer
+            fileInput.click()
         }
 
-        async function handleSubmit(fileContents){
-
+        async function handleSubmit(fileContents) {
             var request = new LoadSimulationRequest()
             //request.setFilepath(loadName)   -------- loadName doesn't exist anymore
-    
+
             await backendService.loadSimulation(
                 request,
                 {},
@@ -291,8 +282,6 @@ function App() {
             setShowSimulation(true)
             setHasSimulationStarted(true)
         }
-
-       
     }
 
     // "Page" that will show the simulation
@@ -306,7 +295,6 @@ function App() {
             </div>
         )
     }
-
 
     return (
         <>
