@@ -2092,7 +2092,7 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
     ) {
         var f,
             obj = {
-                filepath: jspb.Message.getFieldWithDefault(msg, 1, ''),
+                savedata: jspb.Message.getFieldWithDefault(msg, 1, ''),
             }
 
         if (includeInstance) {
@@ -2135,7 +2135,7 @@ proto.backend.LoadSimulationRequest.deserializeBinaryFromReader = function (
         switch (field) {
             case 1:
                 var value = /** @type {string} */ (reader.readString())
-                msg.setFilepath(value)
+                msg.setSavedata(value)
                 break
             default:
                 reader.skipField()
@@ -2167,17 +2167,17 @@ proto.backend.LoadSimulationRequest.serializeBinaryToWriter = function (
     writer
 ) {
     var f = undefined
-    f = message.getFilepath()
+    f = message.getSavedata()
     if (f.length > 0) {
         writer.writeString(1, f)
     }
 }
 
 /**
- * optional string filePath = 1;
+ * optional string saveData = 1;
  * @return {string}
  */
-proto.backend.LoadSimulationRequest.prototype.getFilepath = function () {
+proto.backend.LoadSimulationRequest.prototype.getSavedata = function () {
     return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ''))
 }
 
@@ -2185,7 +2185,7 @@ proto.backend.LoadSimulationRequest.prototype.getFilepath = function () {
  * @param {string} value
  * @return {!proto.backend.LoadSimulationRequest} returns this
  */
-proto.backend.LoadSimulationRequest.prototype.setFilepath = function (value) {
+proto.backend.LoadSimulationRequest.prototype.setSavedata = function (value) {
     return jspb.Message.setProto3StringField(this, 1, value)
 }
 

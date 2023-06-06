@@ -158,22 +158,9 @@ class BackendServicer(backend_api_pb2_grpc.BackendServicer):
 
     def LoadSimulation(self, request, context):
         logging.info("Loading existing simulation")
-        filename = request.filePath + '.json'
 
-        saveData = None
-        if os.path.isfile(filename):
-            with open(filename, "r") as savefile:
-                saveData = json.load(savefile)
-
-            self.god = God(
-                0,
-                0,
-                0,
-                0,
-                loadExistingSave=True,
-                saveData=saveData)
-        else:
-            logging.info(f"No file of name {filename} was found to load from")
+        saveData = json.loads(request.saveData)
+        self.god = God(0, 0, 0, 0, loadExistingSave=True, saveData=saveData)
 
         return backend_api_pb2.LoadSimulationReply(simLoaded=True)
 

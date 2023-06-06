@@ -251,7 +251,7 @@ function App() {
                     const fileContents = e.target.result
                     console.log('File Contents:', fileContents)
 
-                    //handleSubmit(fileContents)
+                    handleSubmit(fileContents)
                 }
                 fileReader.readAsText(selectedFile)
             })
@@ -262,6 +262,7 @@ function App() {
 
         async function handleSubmit(fileContents) {
             var request = new LoadSimulationRequest()
+            request.setSavedata(fileContents)
             //request.setFilepath(loadName)   -------- loadName doesn't exist anymore
 
             await backendService.loadSimulation(

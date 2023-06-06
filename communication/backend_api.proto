@@ -51,7 +51,7 @@ message SaveSimulationReply {
 }
 
 message LoadSimulationRequest {
-    string filePath = 1;
+    string saveData = 1;
 }
 
 message LoadSimulationReply {
