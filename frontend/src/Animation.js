@@ -596,7 +596,7 @@ class Animation extends React.Component {
         for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
             let resource = this.props.resourcesToAnimate[i]
             jsx.push(
-                <div key={'resource' + { i }}>
+                <div key={keyId++}>
                     {this.CreateResource(resource)}
                 </div>
             )
@@ -616,7 +616,7 @@ class Animation extends React.Component {
         for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
             let resource = this.props.resourcesToAnimate[i]
             resourceJsx.push(
-                <div key={'resource' + { i }}>
+                <div key={keyId++}>
                     {this.CreateResource(resource)}
                 </div>
             )

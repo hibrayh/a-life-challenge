@@ -94,7 +94,7 @@ function TopographyPage(props) {
                             color: templateColors[i],
                         })
                     }
-
+                    listOfTopographyTypes.shift()
                     console.log(listOfTopographyTypes)
                     setTopographyTypes(listOfTopographyTypes)
                 }
@@ -102,8 +102,10 @@ function TopographyPage(props) {
         }
 
         fetchData()
-    }, [props.show])
+    }, [props.show, forceUpdateMain])
 
+
+    console.log(topographyInfo)
     //do not attempt to load the grid or anything else until the topography data is gotten
     if (topographyInfo.length === 0) {
         return <></>
@@ -138,7 +140,7 @@ function TopographyPage(props) {
                         showGridBorder={props.showGridBorder}
                         selectTopography={topography}
                         topographyInfo={topographyInfo}
-                        forceUpdateMain={forceUpdateMain}
+                        forceUpdateMain={forceUpdateMainX}
                         listOfTopographies={topographyTypes}
                     />
                     <div
@@ -175,8 +177,6 @@ function TopographyPage(props) {
                         </div>
                         <button
                             onClick={() => {
-                                topographyInfo = list
-                                setForceUpdateMain(!forceUpdateMain)
                                 props.closeTopographyPage()
                             }}
                             className="formExitButton buttonHover2">
@@ -188,7 +188,6 @@ function TopographyPage(props) {
                         }
                         <TopographyForm
                             setTopography={setCurrentTopography}
-                            submitTopography={submitTopography}
                             topographyList={topographyTypes}
                         />
                     </div>
@@ -203,7 +202,7 @@ function TopographyPage(props) {
                         showGridBorder={props.showGridBorder}
                         selectTopography={topography}
                         topographyInfo={topographyInfo}
-                        forceUpdateMain={forceUpdateMain}
+                        forceUpdateMain={forceUpdateMainX}
                         listOfTopographies={topographyTypes}
                     />
                     <div
@@ -240,8 +239,6 @@ function TopographyPage(props) {
 
                         <button
                             onClick={() => {
-                                topographyInfo = list
-                                setForceUpdateMain(!forceUpdateMain)
                                 props.closeTopographyPage()
                             }}
                             className="formExitButton buttonHover2">
@@ -357,10 +354,15 @@ function TopographyPage(props) {
             <Grid
                 showGridBorder={props.showGridBorder}
                 topographyInfo={topographyInfo}
-                forceUpdateMain={forceUpdateMain}
+                forceUpdateMain={forceUpdateMainX}
                 listOfTopographies={topographyTypes}
             />
         )
+    }
+
+    function forceUpdateMainX(){
+        console.log("forced an Update")
+        setForceUpdateMain(!forceUpdateMain)
     }
 
     function setCurrentTopography(topography) {
@@ -391,43 +393,6 @@ function TopographyPage(props) {
                 }
             }
         )
-    }
-    function submitTopography(e) {
-        // Send all of the topographies to backend
-        // topographyInfo contains all correct nodes
-        var newTopographyTable = new TopographyTable()
-        var rows = []
-        var currentIndex = 0
-
-        for (var i = 0; i < 25; i++) {
-            var currentRow = []
-            for (var j = 0; j < 50; j++) {
-                currentRow.push(topographyInfo[currentIndex])
-                currentIndex += 1
-            }
-
-            var currentRowObject = new TopographyRow()
-            currentRowObject.setItemList(currentRow)
-            rows.push(currentRowObject)
-        }
-
-        newTopographyTable.setRowList(rows)
-
-        backendService.setTopography(
-            newTopographyTable,
-            {},
-            function (err, response) {
-                if (response.getTopographyset()) {
-                    console.log('Topography submitted successfully')
-                } else {
-                    console.error(
-                        'Something went wrong submitting the topography'
-                    )
-                }
-            }
-        )
-
-        props.closeTopographyPage()
     }
 }
 
@@ -465,13 +430,6 @@ function TopographyForm(props) {
                 />
             ))}
 
-            <div
-                onClick={(event) => {
-                    props.submitTopography(event)
-                }}
-                className="buttonHover buttonBackgroundColor topographySubmitButton">
-                Submit Changes
-            </div>
         </form>
     )
 }
@@ -493,6 +451,7 @@ function Grid(props) {
                 row={topographyInfo[i].getRow()}
                 col={topographyInfo[i].getColumn()}
                 listOfTopographies={props.listOfTopographies}
+                forceUpdateMain={props.forceUpdateMain}
             />
         )
     }
@@ -512,7 +471,7 @@ function Grid(props) {
         })
 
         //props.updateList(row, col, props.selectTopography)
-
+        console.log(topographyInfo[index].getType())
         //if the topography is selected, update the coord, else flip it
         if (topographyInfo[index].getType() != 'unselected') {
             // This is what I had to do to actually change the visuals, unfortunately it wouldn't
@@ -530,6 +489,7 @@ function Grid(props) {
                     console.log(response)
                     if (response.getTopographydeleted()) {
                         console.log('Successfully deleted topography')
+                        //props.forceUpdateMain()
                     } else {
                         console.log(
                             'Something went wrong deleting the topography'
@@ -553,6 +513,7 @@ function Grid(props) {
                 function (err, response) {
                     if (response.getTopographyadded()) {
                         console.log('Successfully added topography')
+                        //props.forceUpdateMain()
                     } else {
                         console.log(
                             'Something went wrong adding the topography'
@@ -565,7 +526,8 @@ function Grid(props) {
         // this is the only way I was able to get the actual nodes to change color on the
         // screen right when they are clicked. Without this, it will only update once you
         // click another button or change topographies.
-        setForceUpdate(!forceUpdate)
+        
+        //props.forceUpdateMain()
     }
 }
 
@@ -600,15 +562,16 @@ function Node(props) {
         )
     }
 
-    const handleClick = () => {
+    const handleClick = async () => {
         if (props.showGridBorder) {
-            props.toggleSelected(props.row, props.col)
-        }
+            await props.toggleSelected(props.row, props.col)
+            props.forceUpdateMain()
+        }   
     }
 
     return (
         <div
-            className="defaultNode"
+            className={"defaultNode" + gridBorder}
             onClick={handleClick}
             style={{ backgroundColor: topographyOption.color }}
             row={props.row}
