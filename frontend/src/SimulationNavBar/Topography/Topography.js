@@ -104,7 +104,6 @@ function TopographyPage(props) {
         fetchData()
     }, [props.show, forceUpdateMain])
 
-
     console.log(topographyInfo)
     //do not attempt to load the grid or anything else until the topography data is gotten
     if (topographyInfo.length === 0) {
@@ -360,8 +359,8 @@ function TopographyPage(props) {
         )
     }
 
-    function forceUpdateMainX(){
-        console.log("forced an Update")
+    function forceUpdateMainX() {
+        console.log('forced an Update')
         setForceUpdateMain(!forceUpdateMain)
     }
 
@@ -431,7 +430,6 @@ function TopographyForm(props) {
                     setTopography={props.setTopography}
                 />
             ))}
-
         </form>
     )
 }
@@ -528,7 +526,7 @@ function Grid(props) {
         // this is the only way I was able to get the actual nodes to change color on the
         // screen right when they are clicked. Without this, it will only update once you
         // click another button or change topographies.
-        
+
         //props.forceUpdateMain()
     }
 }
@@ -568,12 +566,12 @@ function Node(props) {
         if (props.showGridBorder) {
             await props.toggleSelected(props.row, props.col)
             props.forceUpdateMain()
-        }   
+        }
     }
 
     return (
         <div
-            className={"defaultNode" + gridBorder}
+            className={'defaultNode' + gridBorder}
             onClick={handleClick}
             style={{ backgroundColor: topographyOption.color }}
             row={props.row}

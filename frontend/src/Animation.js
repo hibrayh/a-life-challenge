@@ -595,11 +595,7 @@ class Animation extends React.Component {
 
         for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
             let resource = this.props.resourcesToAnimate[i]
-            jsx.push(
-                <div key={keyId++}>
-                    {this.CreateResource(resource)}
-                </div>
-            )
+            jsx.push(<div key={keyId++}>{this.CreateResource(resource)}</div>)
         }
 
         return <div id="animation-wrapper">{jsx}</div>
@@ -616,9 +612,7 @@ class Animation extends React.Component {
         for (let i = 0; i < this.props.resourcesToAnimate.length; i++) {
             let resource = this.props.resourcesToAnimate[i]
             resourceJsx.push(
-                <div key={keyId++}>
-                    {this.CreateResource(resource)}
-                </div>
+                <div key={keyId++}>{this.CreateResource(resource)}</div>
             )
         }
 
